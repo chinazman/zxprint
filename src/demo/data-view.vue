@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-button type="primary" @click="show">
-      界面数据
+      来源数据
     </a-button>
     <a-modal :visible="visible" :maskClosable="false"
              @cancel="hideModal">
@@ -30,8 +30,10 @@
 </template>
 
 <script>
+import printData from './design/print-data'
+
 export default {
-  name: "JSONView",
+  name: "DataView",
   props: {
     template: {
       type: Object,
@@ -54,7 +56,20 @@ export default {
   },
   methods: {
     ok() {
-      this.template.update(JSON.parse(this.jsonOut));
+      let data = JSON.parse(this.jsonOut);
+      Object.keys(printData).forEach(key => {
+        delete printData[key];
+      });
+      Object.assign(printData, data);
+      // localStorage.setItem('hiprintdata', JSON.stringify({
+      //   panel:this.template.getJson(),
+      //   data:printData
+      // }));
+      // for (let key in data) {
+      //   if (data.hasOwnProperty(key)) { // 确保不会复制原型链上的属性
+      //     printData[key] = data[key];
+      //   }
+      // }
       this.visible = false
     },
     hideModal() {
@@ -64,9 +79,8 @@ export default {
       this.visible = true
       this.spinning = true
       setTimeout(() => {
-        let json = this.tidMode ? this.template.getJsonTid() : this.template.getJson();
         let beautify = this.beautify ? 2 : 0;
-        this.jsonOut = JSON.stringify(json, null, beautify);
+        this.jsonOut = JSON.stringify(printData, null, beautify);
         this.spinning = false
       }, 500)
     },

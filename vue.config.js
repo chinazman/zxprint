@@ -4,7 +4,7 @@ const fs = require("fs");
 
 module.exports = {
   publicPath: '/vue-plugin-hiprint',
-  outputDir: 'demo',
+  outputDir: 'vue-plugin-hiprint',
   assetsDir: 'static',
   productionSourceMap: false,
   chainWebpack: config => {

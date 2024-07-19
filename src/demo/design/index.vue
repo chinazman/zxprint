@@ -24,7 +24,7 @@
             <a-button :type="'other'==curPaperType?'primary':''">自定义纸张</a-button>
           </a-popover>
         </a-button-group>
-        <a-button type="text" icon="zoom-out" @click="changeScale(false)"></a-button>
+        <!-- <a-button type="text" icon="zoom-out" @click="changeScale(false)"></a-button>
         <a-input-number
           :value="scaleValue"
           :min="scaleMin"
@@ -35,20 +35,36 @@
           :formatter="value => `${(value * 100).toFixed(0)}%`"
           :parser="value => value.replace('%', '')"
         />
-        <a-button type="text" icon="zoom-in" @click="changeScale(true)"></a-button>
+        <a-button type="text" icon="zoom-in" @click="changeScale(true)"></a-button> -->
         <a-button type="primary" icon="redo" @click="rotatePaper()">旋转</a-button>
         <a-button type="primary" icon="eye" @click="preView">
           预览
         </a-button>
-        <a-button type="primary" icon="printer" @click="print">
+         <a-button type="primary" icon="printer" @click="print">
           直接打印
         </a-button>
-        <a-button type="primary" @click="onlyPrint">
-          Api单独打印
+        <a-button type="primary" icon="printer" @click="onlyPrint">
+         打印
         </a-button>
-        <a-button type="primary" @click="onlyPrint2">
+        <!-- <a-button type="primary" @click="onlyPrint2">
           Api单独直接打印
-        </a-button>
+        </a-button> -->
+        
+        <json-view :template="template"/>
+        <data-view :template="template"/>
+        <a-button type="primary" icon="save" @click="save">保存</a-button>
+        <a-popconfirm
+          title="是否确认重置?"
+          okType="danger"
+          okText="确定重置"
+          @confirm="reset"
+        >
+          <a-icon slot="icon" type="question-circle-o" style="color: red"/>
+          <a-button type="danger">
+            重置
+            <a-icon type="close"/>
+          </a-button>
+        </a-popconfirm>
         <a-popconfirm
           title="是否确认清空?"
           okType="danger"
@@ -61,9 +77,8 @@
             <a-icon type="close"/>
           </a-button>
         </a-popconfirm>
-        <json-view :template="template"/>
       </a-space>
-      <a-space style="margin-bottom: 10px">
+      <!-- <a-space style="margin-bottom: 10px">
         <a-button type="primary" @click="exportPdf('')">
           导出获取pdf(Blob)
         </a-button>
@@ -96,8 +111,8 @@
         <a-button type="primary" @click="ippRequestPrint">
           ipp请求 打印测试
         </a-button>
-      </a-space>
-      <a-space style="margin-bottom: 10px">
+      </a-space> -->
+      <!-- <a-space style="margin-bottom: 10px">
         <a-textarea style="width:30vw" v-model="jsonIn" @pressEnter="updateJson"
                     placeholder="复制json模板到此后 点击右侧更新"
                     allow-clear/>
@@ -108,9 +123,9 @@
           导出json模板到 textArea
         </a-button>
         <a-textarea style="width:30vw" v-model="jsonOut" placeholder="点击左侧导出json" allow-clear/>
-      </a-space>
+      </a-space> -->
       <a-space style="margin-bottom: 10px">
-        <a-button type="primary" @click="getSelectEls">
+        <!-- <a-button type="primary" @click="getSelectEls">
           获取选中元素
         </a-button>
         <a-button type="primary" @click="setEleSelectByField">
@@ -126,7 +141,7 @@
         <a-button type="primary" @click="setElsSpace(true)"> 水平间距10
         </a-button>
         <a-button type="primary" @click="setElsSpace(false)"> 垂直间距10
-        </a-button>
+        </a-button> -->
         <a-radio-group>
           <a-radio-button @click="setElsAlign('left')" title="左对齐">
             <span class="glyphicon glyphicon-object-align-left"></span>
@@ -304,11 +319,13 @@
 
 <script defer>
 // import {defaultElementTypeProvider, hiprint} from '../../index'
+import { message } from 'ant-design-vue';
 import * as vuePluginHiprint from '../../index'
 // import panel from './panel'
 import printData from './print-data'
 import printPreview from './preview'
 import jsonView from "../json-view.vue";
+import dataView from "../data-view.vue";
 import fontSize from "./font-size.js";
 import scale from "./scale.js";
 import { decodeVer } from '@/utils'
@@ -316,9 +333,11 @@ import { decodeVer } from '@/utils'
 var hiprint, defaultElementTypeProvider, panel;
 let hiprintTemplate;
 
+var printDataBak = {...printData};
+
 export default {
   name: "printDesign",
-  components: {printPreview, jsonView},
+  components: {printPreview, jsonView, dataView},
   data() {
     return {
       template: null,
@@ -410,6 +429,21 @@ export default {
     }
   },
   methods: {
+    //保存
+    save(){
+      localStorage.setItem('hiprintdata', JSON.stringify({
+        panel:this.template.getJson(),
+        data:printData
+      }));
+      message.success('保存成功');
+    },
+    //重置
+    reset(){
+      localStorage.removeItem('hiprintdata');
+      this.getPanel();
+      hiprintTemplate.update(panel);
+      Object.assign(printData, printDataBak);
+    },
     /**
      * @description: 加载 panel
      */
@@ -421,8 +455,14 @@ export default {
         ...decodeVer(key.replace(/(\.\/panel-?)|(\.js)/g, '')),
         key
       }))
+      var hiprintdata = localStorage.getItem('hiprintdata');
+      if (hiprintdata){
+        var obj = JSON.parse(hiprintdata);
+        panel = obj.panel;
+        Object.assign(printData, obj.data);
+      }
       // 存在一个固定版本号，并且不是开发版本
-      if (this.$parent.version && this.$parent.version != "development") {
+      else if (this.$parent.version && this.$parent.version != "development") {
         // 解析对应版本信息
         var currVerInfo = decodeVer(this.$parent.version)
         // 查找小于等于当前版本的 panel
