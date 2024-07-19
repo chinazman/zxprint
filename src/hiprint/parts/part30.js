@@ -5,7 +5,7 @@
  */
 import {_instanceof,_typeof} from "../hiprint.comm.js";
 
-export default function (v12244, v12245, v12246) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     var v12247,
       v12248,
       v12249 = {},
@@ -38,7 +38,7 @@ export default function (v12244, v12245, v12246) {
       v12261 = null,
       v12262 = 0,
       v12263 = [],
-      v12264 = v12246(31);
+      v12264 = webpack_require(31);
   
     function v12265(v12266, v12267) {
       for (var v12268 = 0; v12268 < v12266.length; v12268++) {
@@ -113,7 +113,7 @@ export default function (v12244, v12245, v12246) {
       if (void 0 === v12293.attrs.type && (v12293.attrs.type = "text/css"), void 0 === v12293.attrs.nonce) {
         var v12295 = function () {
           0;
-          return v12246.nc;
+          return webpack_require.nc;
         }();
   
         v12295 && (v12293.attrs.nonce = v12295);
@@ -179,7 +179,7 @@ export default function (v12244, v12245, v12246) {
       };
     }
   
-    v12244.exports = function (v12325, v12326) {
+    webpack_module.exports = function (v12325, v12326) {
       if ("undefined" != typeof DEBUG && DEBUG && "object" != (typeof document === "undefined" ? "undefined" : _typeof(document))) throw new Error("The style-loader cannot be used in a non-browser environment");
       (v12326 = v12326 || {}).attrs = "object" == _typeof(v12326.attrs) ? v12326.attrs : {}, v12326.singleton || "boolean" == typeof v12326.singleton || (v12326.singleton = v12250()), v12326.insertInto || (v12326.insertInto = "head"), v12326.insertAt || (v12326.insertAt = "bottom");
       var v12327 = v12274(v12325, v12326);

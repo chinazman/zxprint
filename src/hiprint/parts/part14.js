@@ -4,15 +4,14 @@
 
  */
 
-
-export default function (v11404, v11405, v11406) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v11406.d(v11405, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v11408;
     });
   
-    var v11409 = v11406(10),
+    var v11409 = webpack_require(10),
       v11408 = function () {
         function v11410() {
         }

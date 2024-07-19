@@ -26,6 +26,8 @@ import JsBarcode from "jsbarcode";
 import bwipjs from "bwip-js";
 // 水印
 import watermark from "../plugins/watermark.js";
+// 直接打印需要
+import { io } from "socket.io-client";
 //引入标尺
 import lImg from "../css/image/l_img.svg";
 import vImg from "../css/image/v_img.svg";

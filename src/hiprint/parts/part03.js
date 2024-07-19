@@ -4,8 +4,7 @@
  * import 相关资源
  */
 import {_typeof} from "../hiprint.comm.js";
-
-export default function (v10167, v10168, v10169) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
     var v10170 = function () {
@@ -13,7 +12,7 @@ export default function (v10167, v10168, v10169) {
       };
     }();
   
-    v10169.d(v10168, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v10172;
     });
   

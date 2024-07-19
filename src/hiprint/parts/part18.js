@@ -5,19 +5,19 @@
  */
 import {_instanceof} from "../hiprint.comm.js";
 
-export default function (v11865, v11866, v11867) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    var v11868 = v11867(3),
-      v11869 = v11867(12),
+    var v11868 = webpack_require(3),
+      v11869 = webpack_require(12),
       v11870 = (function () {
       }(), function () {
         return function (v11871) {
           this.width = v11871.width, this.title = v11871.title, this.field = v11871.field, this.checked = v11871.checked, this.columnId = v11871.columnId, this.fixed = !1, this.rowspan = v11871.rowspan || 1, this.colspan = v11871.colspan || 1, this.align = v11871.align, this.halign = v11871.halign, this.vAlign = v11871.vAlign, this.renderFormatter = v11871.renderFormatter, this.formatter2 = v11871.formatter2, this.styler2 = v11871.styler2, this.stylerHeader = v11871.stylerHeader, this.tableColumnHeight = v11871.tableColumnHeight, this.tableTextType = v11871.tableTextType, this.tableBarcodeMode = v11871.tableBarcodeMode, this.tableQRCodeLevel = v11871.tableQRCodeLevel, this.tableSummaryTitle = v11871.tableSummaryTitle, this.tableSummaryText = v11871.tableSummaryText, this.tableSummaryColspan = v11871.tableSummaryColspan, this.tableSummary = v11871.tableSummary, this.tableSummaryAlign = v11871.tableSummaryAlign, this.tableSummaryNumFormat = v11871.tableSummaryNumFormat, this.tableSummaryFormatter = v11871.tableSummaryFormatter, this.showCodeTitle = v11871.showCodeTitle, this.upperCase = v11871.upperCase;
         };
       }()),
-      v11872 = v11867(5);
-    v11867.d(v11866, "a", function () {
+      v11872 = webpack_require(5);
+    webpack_require.d(webpack_exports, "a", function () {
       return v11874;
     });
   

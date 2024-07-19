@@ -1,8 +1,8 @@
 "use strict";
 
 
-export default function (v12345, v12346) {
-    v12345.exports = function (v12347) {
+export default function (webpack_module, webpack_exports) {
+    webpack_module.exports = function (v12347) {
       var v12348 = "undefined" != typeof window && window.location;
       if (!v12348) throw new Error("fixUrls requires window.location");
       if (!v12347 || "string" != typeof v12347) return v12347;

@@ -5,8 +5,7 @@
  */
 import {$,jQuery} from "../hiprint.comm.js";
 
-
-export default function (v12359, v12360) {
+export default function (webpack_module, webpack_exports) {
     var v12361, v12362;
     window, document, v12361 = jQuery, (v12362 = function v12363(v12364, v12365) {
       this.init(v12364, v12365);

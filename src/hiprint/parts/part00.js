@@ -7,12 +7,11 @@ import {$} from "../hiprint.comm.js";
 // 数字转中文,大写,金额
 import Nzh from "nzh/dist/nzh.min.js";
 
-
-export default function (v10036, v10037, v10038) {/**/
+export default function (webpack_module, webpack_exports, webpack_require) {/**/
 "use strict";
 
 var v10039;
-v10038.d(v10037, "a", function () {
+webpack_require.d(webpack_exports, "a", function () {
   return hinnn;
 }), window.hinnn = {}, hinnn.event = (v10039 = {}, {
   on: function on(v10041, v10042) {

@@ -5,16 +5,16 @@
  */
 import {_instanceof} from "../hiprint.comm.js";
 
-export default function (v11336, v11337, v11338) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v11338.d(v11337, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v11340;
     });
   
     var _i,
-      v11341 = v11338(5),
-      v11342 = v11338(13),
+      v11341 = webpack_require(5),
+      v11342 = webpack_require(13),
       v11343 = (_i = function v11344(v11345, v11346) {
         return (_i = Object.setPrototypeOf || _instanceof({
           __proto__: []

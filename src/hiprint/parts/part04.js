@@ -4,21 +4,20 @@
  * import 相关资源
  */
 import {$,_typeof} from "../hiprint.comm.js";
-
-export default  function (module, __webpack_exports__, __webpack_require__) {
+export default  function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    __webpack_require__.d(__webpack_exports__, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return BasePrintElement;
     });
   
-    var _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17),
-      _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1),
-      _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9),
-      _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6),
-      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(0),
-      _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8),
-      _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2),
+    var _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__ = webpack_require(17),
+      _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__ = webpack_require(1),
+      _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__ = webpack_require(9),
+      _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__ = webpack_require(6),
+      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_4__ = webpack_require(0),
+      _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__ = webpack_require(8),
+      _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__ = webpack_require(2),
       BasePrintElement = function () {
         function BasePrintElement(v10205) {
           this.printElementType = v10205, this.id = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.guid();

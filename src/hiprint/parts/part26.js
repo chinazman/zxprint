@@ -5,7 +5,7 @@
  */
 import {jQuery} from "../hiprint.comm.js";
 
-export default function (v12190, v12191) {
+export default function (webpack_module, webpack_exports) {
     var v12192, v12193;
     jQuery, v12192 = "connected", v12193 = "reconnecting", window.hiwebSocket = {
       opened: !1,

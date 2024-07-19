@@ -28,8 +28,7 @@
  */
 import {i18n,$} from "../hiprint.comm.js";
 
-
-export default function (v11601, v11602, v11603) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
     var v11604 = function () {
@@ -50,13 +49,13 @@ export default function (v11601, v11602, v11603) {
           return this.options.isEnableEdit;
         }, v11608;
       }(),
-      v11609 = v11603(0),
+      v11609 = webpack_require(0),
       v11610 = function () {
         return function (v11611) {
           this.cell = v11611.cell, this.link = v11611.link, this.linkType = v11611.linkType, this.bottom = v11611.bottom, this.rightMost = v11611.rightMost, this.rowLevel = v11611.rowLevel, this.columnLevel = v11611.columnLevel, this.indexInTableGridRow = v11611.indexInTableGridRow, this.indexInTableGridColumn = v11611.indexInTableGridColumn;
         };
       }(),
-      v11612 = v11603(10),
+      v11612 = webpack_require(10),
       v11613 = function () {
         function v11614() {
         }
@@ -73,8 +72,8 @@ export default function (v11601, v11602, v11603) {
           }), v11622;
         }, v11614;
       }(),
-      v11625 = v11603(13),
-      v11626 = v11603(11),
+      v11625 = webpack_require(13),
+      v11626 = webpack_require(11),
       v11627 = function () {
         return function (v11628, v11629) {
           this.target = v11628, this.grips = v11629;
@@ -125,7 +124,7 @@ export default function (v11601, v11602, v11603) {
           return v11651;
         }, v11634;
       }(),
-      v11657 = v11603(2),
+      v11657 = webpack_require(2),
       v11658 = function () {
         function v11660(v11659) {
           this.signature = "HiTresizer", this.hitable = v11659, this.rows = v11659.rows, this.target = v11659.target;
@@ -234,7 +233,7 @@ export default function (v11601, v11602, v11603) {
         }, v11704;
       }();
   
-    v11603.d(v11602, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v11706;
     });
   

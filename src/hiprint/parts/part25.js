@@ -5,7 +5,7 @@
  */
 import {jQuery,_typeof} from "../hiprint.comm.js";
 
-export default function (v12083, v12084) {
+export default function (webpack_module, webpack_exports) {
     var v12085, v12086, v12087;
     v12085 = jQuery, v12086 = {
       maxPanelIndex: 0

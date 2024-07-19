@@ -32,8 +32,7 @@
  */
 import {$,jQuery} from "../hiprint.comm.js";
 
-
-export default function (v11928, v11929) {
+export default function (webpack_module, webpack_exports) {
     !function (v11930) {
       function v11948(v11931) {
         var v11932 = v11930.data(v11931.data.target, "hidraggable"),

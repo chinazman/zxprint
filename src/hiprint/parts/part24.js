@@ -4,7 +4,8 @@
  * import 相关资源
  */
 import {jQuery} from "../hiprint.comm.js";
-export default function (v12064, v12065) {
+
+export default function (webpack_module, webpack_exports) {
     var v12066;
     (v12066 = jQuery).hiprintparser = {
       parseOptions: function parseOptions(v12067, v12068) {

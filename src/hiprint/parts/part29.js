@@ -1,9 +1,9 @@
 "use strict";
 
-export default function (v12222, v12223, v12224) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v12222.exports = function (v12225) {
+    webpack_module.exports = function (v12225) {
       var v12226 = [];
       return v12226.toString = function () {
         return this.map(function (v12227) {

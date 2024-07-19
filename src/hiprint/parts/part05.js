@@ -5,7 +5,7 @@
  */
 import {i18n,$,_instanceof} from "../hiprint.comm.js";
 
-export default function (v10434, v10435, v10436) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
     var v10437 = function () {
@@ -89,9 +89,9 @@ export default function (v10434, v10435, v10436) {
           return $.extend({}, o2.Instance[v10454]);
         }, v10452;
       }(),
-      v10455 = v10436(10),
-      v10456 = v10436(14),
-      v10457 = v10436(11),
+      v10455 = webpack_require(10),
+      v10456 = webpack_require(14),
+      v10457 = webpack_require(11),
       v10458 = function () {
         function v10459() {
         }
@@ -213,7 +213,7 @@ export default function (v10434, v10435, v10436) {
         }, v10476;
       }();
   
-    v10436.d(v10435, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v10523;
     });
   

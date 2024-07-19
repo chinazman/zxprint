@@ -1,9 +1,9 @@
 "use strict";
 
-export default function (v11857, v11858, v11859) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v11859.d(v11858, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v11861;
     });
   

@@ -40,8 +40,7 @@
  * import 相关资源
  */
 import {i18n,$} from "../hiprint.comm.js";
-
-export default function (v10693, v10694, v10695) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
     var v10696 = function () {
@@ -2245,7 +2244,7 @@ export default function (v10693, v10694, v10695) {
           this.target.remove();
         }, v11080;
       }(),
-      rt = v10695(5),
+      rt = webpack_require(5),
       at = function () {
         function v11085() {
           this.name = "columns";
@@ -3095,7 +3094,7 @@ export default function (v10693, v10694, v10695) {
         }, v11279;
       }();
   
-    v10695.d(v10694, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return Ct;
     });
   

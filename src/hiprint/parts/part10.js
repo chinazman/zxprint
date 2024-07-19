@@ -4,17 +4,16 @@
  * import 相关资源
  */
 
-
-export default function (v11287, v11288, v11289) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v11289.d(v11288, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v11291;
-    }), v11289.d(v11288, "b", function () {
+    }), webpack_require.d(webpack_exports, "b", function () {
       return v11293;
     });
   
-    var v11294 = v11289(14),
+    var v11294 = webpack_require(14),
       v11291 = function () {
         function v11297(v11295, v11296) {
           this.selectedCells = [], this.rows = v11295, this.tableTatget = v11296;

@@ -7,15 +7,15 @@ import {i18n,$} from "../hiprint.comm.js";
 // 条形码
 import JsBarcode from "jsbarcode";
 
-export default function (module, __webpack_exports__, __webpack_require__) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    __webpack_require__.d(__webpack_exports__, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return TableExcelHelper;
     });
   
-    var _ReconsitutionTableColumns__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19),
-      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0),
+    var _ReconsitutionTableColumns__WEBPACK_IMPORTED_MODULE_0__ = webpack_require(19),
+      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__ = webpack_require(0),
       TableExcelHelper = function () {
         function TableExcelHelper() {
         }

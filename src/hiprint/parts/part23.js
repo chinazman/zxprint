@@ -5,7 +5,7 @@
  */
 import {jQuery} from "../hiprint.comm.js";
 
-export default function (v12036, v12037) {
+export default function (webpack_module, webpack_exports) {
     !function (v12038) {
       v12038.fn.hidroppable = function (v12039, v12040) {
         return "string" == typeof v12039 ? v12038.fn.hidroppable.methods[v12039](this, v12040) : (v12039 = v12039 || {}, this.each(function () {

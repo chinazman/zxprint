@@ -4,11 +4,10 @@
  * import 相关资源
  */
 
-
-export default function (v10685, v10686, v10687) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v10687.d(v10686, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v10689;
     });
   

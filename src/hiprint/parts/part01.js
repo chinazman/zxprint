@@ -5,14 +5,14 @@
  */
 import {$} from "../hiprint.comm.js";
 
-export default function (v10122, v10123, v10124) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    v10124.d(v10123, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return v10126;
     });
   
-    var v10127 = v10124(9),
+    var v10127 = webpack_require(9),
       v10126 = function () {
         function v10128() {
   

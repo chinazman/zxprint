@@ -5,23 +5,23 @@
  */
 import {i18n,$,_instanceof} from "../hiprint.comm.js";
 
-export default function (module, __webpack_exports__, __webpack_require__) {
+export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
-    __webpack_require__.d(__webpack_exports__, "a", function () {
+    webpack_require.d(webpack_exports, "a", function () {
       return TablePrintElement;
     });
   
-    var _BasePrintElement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4),
-      _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1),
-      _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6),
-      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0),
-      _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8),
-      _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(18),
-      _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7),
-      _hitable_HiTale__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16),
-      _table_GridColumnsStructure__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(20),
-      _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(2),
+    var _BasePrintElement__WEBPACK_IMPORTED_MODULE_0__ = webpack_require(4),
+      _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__ = webpack_require(1),
+      _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__ = webpack_require(6),
+      _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__ = webpack_require(0),
+      _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_4__ = webpack_require(8),
+      _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__ = webpack_require(18),
+      _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__ = webpack_require(7),
+      _hitable_HiTale__WEBPACK_IMPORTED_MODULE_7__ = webpack_require(16),
+      _table_GridColumnsStructure__WEBPACK_IMPORTED_MODULE_8__ = webpack_require(20),
+      _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__ = webpack_require(2),
       __extends = (_extendStatics = function extendStatics(v11431, v11432) {
         return (_extendStatics = Object.setPrototypeOf || _instanceof({
           __proto__: []
