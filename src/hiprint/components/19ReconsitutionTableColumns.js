@@ -3,11 +3,9 @@
 /**
  * 表格列
  */
-
-  
-    var ReconsitutionTableColumns = function () {
-      return function () {
-        this.rowColumns = [];
-      };
-    }();
- export default ReconsitutionTableColumns;
+class ReconsitutionTableColumns {
+  constructor() {
+    this.rowColumns = [];
+  }
+}
+export default ReconsitutionTableColumns;

@@ -3,14 +3,26 @@
  * id 工具
  */
 
-var IdGenerator = function () {
-    function v11335() {
-    }
+/**
+ * IdGenerator 类
+ * 用于生成唯一的递增 ID
+ */
+class IdGenerator {
+  /**
+   * 当前 ID 值，初始化为 1
+   * @static
+   * @type {number}
+   */
+  static id = 1;
 
-    return v11335.createId = function () {
-    return this.id += 1, this.id;
-    }, v11335.id = 1, v11335;
-}();
+  /**
+   * 创建并返回一个新的唯一 ID
+   * @static
+   * @returns {number} 新的唯一 ID
+   */
+  static createId() {
+      return ++this.id;
+  }
+}
 
-
-  export default IdGenerator;
+export default IdGenerator;

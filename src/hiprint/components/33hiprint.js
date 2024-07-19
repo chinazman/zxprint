@@ -537,7 +537,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           v12629 && (v12629 = 0 != this.options.leftSpaceRemoved ? v12629.toString().replace(/^\s*/, "") : v12629);
           return (this.getField() ? (this.options.getHideTitle() ? "" : v12628 ? v12628 + "：" : "") + (v12630 ? v12630(v12628, v12629, this.options, this._currenttemplateData) : v12629) : v12630 ? v12630(v12628, v12628, this.options, this._currenttemplateData) : v12628 || "") || "";
         }, v12606.prototype.getHtml = function (v12631, v12632) {
-          this.setCurrenttemplateData(v12632), this.createTempContainer();
+          this.setCurrentTemplateData(v12632), this.createTempContainer();
           var v12633 = this.getPaperHtmlResult(v12631, v12632);
           return this.removeTempContainer(), v12633;
         }, v12606.prototype.getHeightByData = function (v12634) {
@@ -1845,7 +1845,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           var v13194 = PrintConfig.instance.movingDistance;
           return Math.round(v13193 / v13194) * v13194;
         }, v13094.prototype.appendDesignPrintElement = function (v13196, v13197, v13198) {
-          v13197.setCurrenttemplateData(void 0);
+          v13197.setCurrentTemplateData(void 0);
           var v13199 = v13197.getDesignTarget(v13196);
           v13199.addClass("design"), v13198 && v13197.initSizeByHtml(v13199), v13196.append(v13199);
         }, v13094.prototype.createNewPage = function (v13200, v13201) {
@@ -1987,7 +1987,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           var v13266 = this,
             v13267 = this.designPaper.getTarget();
           var ptr = this.designPaper.scale || 1;
-          this.mouseRect.target || (this.mouseRect.target = $('<div tabindex="1" class="mouseRect" style="z-index:2;position: absolute;opacity:0.2;border: 1px dashed #000;background-color:#31676f;"><span></span></div>'), v13267.find(".hiprint-printPaper-content").append(this.mouseRect.target), this.bingKeyboardMoveEvent(this.mouseRect.target), this.mouseRect.target.hidraggable({
+          this.mouseRect.target || (this.mouseRect.target = $('<div tabindex="1" class="mouseRect" style="z-index:2;position: absolute;opacity:0.2;border: 1px dashed #000;background-color:#31676f;"><span></span></div>'), v13267.find(".hiprint-printPaper-content").append(this.mouseRect.target), this.bindKeyboardMoveEvent(this.mouseRect.target), this.mouseRect.target.hidraggable({
             onDrag: function onDrag(v13268, v13269, v13270) {
               v13266.mouseRect.lastLeft = v13266.mouseRect.lastLeft ? hinnn.px.toPt(v13266.mouseRect.target[0].offsetLeft) : v13269 / ptr, v13266.mouseRect.lastTop = v13266.mouseRect.lastTop ? hinnn.px.toPt(v13266.mouseRect.target[0].offsetTop) : v13270 / ptr,
               (v13266.mouseRect.mouseRectSelectedElement || []).forEach(function (v13273) {
@@ -2052,7 +2052,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
             });
           }
           v13265.target.focus();
-        }, v13094.prototype.bingKeyboardMoveEvent = function (v13283) {
+        }, v13094.prototype.bindKeyboardMoveEvent = function (v13283) {
           var v13284 = this;
           v13283.attr("tabindex", "1"), v13283.keydown(function (v13285) {
             v13284.mouseRect.mouseRectSelectedElement || (v13284.mouseRect.mouseRectSelectedElement = v13284.getElementInRect(v13284.mouseRect));

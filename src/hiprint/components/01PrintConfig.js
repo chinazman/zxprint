@@ -1,37 +1,74 @@
 "use strict";
 
-/**
- * 注册打印组件
- */
-import {$} from "../hiprint.comm";
+import { $ } from "../hiprint.comm";
+import hinnn from "./00hinnn";
 import PrintElementOptionItemManager from "./09PrintElementOptionItemManager";
 
-  
-    // var v10127 = webpack_require(9),
-      var PrintConfig = function () {
-        function v10128() {
-  
-          // see hiprint.config.js
-        }
-        return v10128.prototype.init = function (v10129) {
-          v10129 && $.extend(this, v10129);
-        }, v10128.prototype.on = function (v10130, v10131) {
-          hinnn.event.on(v10130, v10131);
-        }, v10128.prototype.clear = function (v10132) {
-          hinnn.event.clear(v10132);
-        }, v10128.prototype.registerItems = function (items) {
-          items.forEach(function (v10133) {
-            PrintElementOptionItemManager.registerItem(new v10133());
-          });
-        }, Object.defineProperty(v10128, "instance", {
-          get: function get() {
-            return v10128._instance || (v10128._instance = new v10128(), window.HIPRINT_CONFIG && $.extend(v10128._instance, HIPRINT_CONFIG), v10128._instance.optionItems && v10128._instance.optionItems.forEach(function (v10135) {
-              PrintElementOptionItemManager.registerItem(new v10135());
-            })), v10128._instance;
-          },
-          enumerable: !0,
-          configurable: !0
-        }), v10128;
-      }();
+/**
+ * PrintConfig类用于管理打印配置。
+ * 提供了初始化配置、事件绑定、事件清除和注册打印元素选项的方法。
+ */
+class PrintConfig {
+  constructor() {
+    // see hiprint.config.js
+  }
 
-      export default PrintConfig;
+  /**
+   * 初始化配置
+   * @param {Object} config - 配置对象
+   */
+  init(config) {
+    if (config) {
+      $.extend(this, config); // 合并配置对象到当前实例
+    }
+  }
+
+  /**
+   * 绑定事件处理函数
+   * @param {string} event - 事件名称
+   * @param {Function} handler - 事件处理函数
+   */
+  on(event, handler) {
+    hinnn.event.on(event, handler); // 注册事件处理函数
+  }
+
+  /**
+   * 清除事件处理函数
+   * @param {string} event - 事件名称
+   */
+  clear(event) {
+    hinnn.event.clear(event); // 清除指定事件的处理函数
+  }
+
+  /**
+   * 注册打印元素选项
+   * @param {Array} items - 打印元素选项类数组
+   */
+  registerItems(items) {
+    items.forEach((ItemClass) => {
+      PrintElementOptionItemManager.registerItem(new ItemClass()); // 注册每一个打印元素选项实例
+    });
+  }
+
+  /**
+   * 获取单例实例
+   * @returns {PrintConfig} - PrintConfig单例实例
+   */
+  static get instance() {
+    if (!PrintConfig._instance) {
+      PrintConfig._instance = new PrintConfig();
+      if (window.HIPRINT_CONFIG) {
+        $.extend(PrintConfig._instance, HIPRINT_CONFIG);
+        if (PrintConfig._instance.optionItems) {
+          PrintConfig._instance.optionItems.forEach((ItemClass) => {
+            PrintElementOptionItemManager.registerItem(new ItemClass());
+          });
+        }
+      }
+    }
+    return PrintConfig._instance;
+  }
+}
+
+export default PrintConfig;
+

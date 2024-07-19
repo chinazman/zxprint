@@ -8,243 +8,426 @@ import TableRect from "./10TableRect.js";
 import TableRectHelper from "./14TableRectHelper.js";
 import IdUtil from "./11IdGenerator.js";
 
-    var v10437 = function () {
-        function v10438() {
-        }
-  
-        return v10438.prototype.init = function (v10439) {
-          this.target = $('<input type="text" class="hitable-editor-text" value="" />'), v10439.getTarget().append(this.target), this.target.focus();
-        }, v10438.prototype.getValue = function () {
-          return this.target.val();
-        }, v10438.prototype.setValue = function (v10440) {
-          this.target.val(v10440);
-        }, v10438.prototype.destroy = function () {
-          this.target.remove();
-        }, v10438;
-      }(),
-      v10441 = function () {
-        function v10442() {
-          this.text = new v10437();
-        }
-  
-        return Object.defineProperty(v10442, "Instance", {
-          get: function get() {
-            return v10442._instance || (v10442._instance = new v10442()), v10442._instance;
-          },
-          enumerable: !0,
-          configurable: !0
-        }), v10442;
-      }(),
-      i2 = function () {
-        function v10443() {
-        }
-        // 表格头双击字段选择
-        return v10443.prototype.init = function (v10444, v10445) {
-          var v10446 = `<select class="auto-submit" style="width:100%">\n                <option value="" disabled>${i18n.__('请选择字段')}</option>`;
-          v10444.forEach(function (v10447, v10448) {
-            if (v10447.field == v10445.field) {
-              v10446 += ' <option value="' + (v10447.field || "") + '" selected >' + (v10447.text || "") + "</option>";
-            } else {
-              v10446 += ' <option value="' + (v10447.field || "") + '" >' + (v10447.text || "") + "</option>";
-            }
-          }), v10446 += " </select>";
-          this.target = $(v10446), v10445.getTarget().append(this.target), this.target.focus();
-        }, v10443.prototype.getValue = function () {
-          var val = this.target.val();
-          var text = this.target.find('option[value="' + val + '"]').text();
-          return text + '#' + val;
-        }, v10443.prototype.setValue = function (v10449) {
-          v10449 && (this.target.find('option[value="' + v10449 + '"]').length || this.target.find("select").prepend('<option value="' + v10449 + '" >' + v10449 + "</option>"));
-          this.target.find("select").val(v10449);
-        }, v10443.prototype.destroy = function () {
-          this.target.remove();
-        }, v10443;
-      }(),
-      o2 = function () {
-        function v10450() {
-          this.select = new i2();
-        }
-  
-        return Object.defineProperty(v10450, "Instance", {
-          get: function get() {
-            return v10450._instance || (v10450._instance = new v10450()), v10450._instance;
-          },
-          enumerable: !0,
-          configurable: !0
-        }), v10450;
-      }(),
-      v10451 = function () {
-        function v10452() {
-        }
-  
-        return Object.defineProperty(v10452, "Instance", {
-          get: function get() {
-            return v10441._instance || (v10452._instance = new v10452()), v10452._instance;
-          },
-          enumerable: !0,
-          configurable: !0
-        }), v10452.prototype.createEditor = function (v10453) {
-          return $.extend({}, v10441.Instance[v10453]);
-        }, v10452.prototype.createSelect = function (v10454) {
-          return $.extend({}, o2.Instance[v10454]);
-        }, v10452;
-      }(),
-    //   v10455 = webpack_require(10),
-    //    v10456 = webpack_require(14),
-    //    v10457 = webpack_require(11),
-      v10458 = function () {
-        function v10459() {
-        }
-  
-        return v10459.prototype.init = function (v10460, v10461) {
-          var v10462 = this;
-          this.tableOptions = v10461, this.title = v10460.title, this.field = v10460.field, v10460.getTarget().unbind("dblclick.hitable").bind("dblclick.hitable", function () {
-            v10460.isEditing = !0, v10462.beginEdit(v10460);
-          });
-        }, v10459.prototype.getDisplayHtml = function () {
-          return this.title;
-        }, v10459.prototype.beginEdit = function (v10463) {
-          var v10464 = this;
-          if (v10464.tableOptions.options.fields && v10464.tableOptions.options.fields.length) {
-            this.editor = v10451.Instance.createSelect("select"), v10463.getTarget().html(""), this.editor.init(v10464.tableOptions.options.fields, v10463), this.editor.setValue(this.field || ""), $(this.editor.target).keydown(function (v10465) {
-              13 == v10465.keyCode && v10464.endEdit(v10463);
-            }), $(this.editor.target).change(function (v10466) {
-              v10464.endEdit(v10463);
-            }), $(this.editor.target).blur(function (v10467) {
-              v10464.endEdit(v10463);
-            });
-          } else {
-            this.editor = v10451.Instance.createEditor("text"), v10463.getTarget().html(""), this.editor.init(v10463), (this.title || this.field) && (this.tableOptions.options.isEnableEditField ? this.editor.setValue((this.title || "") + "#" + (this.field || "")) : this.editor.setValue(this.title || "")), $(this.editor.target).keydown(function (v10468) {
-              13 == v10468.keyCode && v10464.endEdit(v10463);
-            }), $(this.editor.target).blur(function (v10469) {
-              v10464.endEdit(v10463);
-            }), this.tableOptions.editingCell && this.tableOptions.editingCell.id != v10463.id && this.tableOptions.editingCell.innerElement.endEdit(this.tableOptions.editingCell), this.tableOptions.editingCell = v10463;
-          }
-        }, v10459.prototype.endEdit = function (v10470) {
-          v10470.isEditing = 0;
-          var v10471 = this.editor.getValue();
-          if (v10471) {
-            if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
-              var v10472 = v10471.split("#");
-              v10470.title = this.title = v10472[0], v10472.length > 0 && (v10470.columnId = v10470.field = this.field = v10472[1]);
-              v10470.id && v10470.target.attr("id", v10470.id), v10470.columnId && v10470.target.attr("column-id", v10470.columnId);
-              hinnn.event.trigger("hiprintTemplateDataChanged_" + this.tableOptions.options.templateId, "调整表格列字段");
-            } else v10470.title = this.title = v10471;
-          } else this.tableOptions.options.isEnableEditField ? (v10470.title = this.title = "", v10470.field = this.field = "") : v10470.title = this.title = "";
-          this.editor.destroy(), v10470.getTarget().html(this.title);
-        }, v10459;
-      }(),
-      v10473 = function () {
-        return function (v10474) {
-          this.title = v10474.title, this.field = v10474.field, this.width = v10474.width, this.align = v10474.align, this.halign = v10474.halign, this.vAlign = v10474.vAlign, this.colspan = v10474.colspan, this.rowspan = v10474.rowspan, this.checked = v10474.checked, this.columnId = v10474.columnId, this.tableSummaryTitle = v10474.tableSummaryTitle, this.tableSummaryText = v10474.tableSummaryText, this.tableSummaryColspan = v10474.tableSummaryColspan, this.tableSummary = v10474.tableSummary, this.tableSummaryAlign = v10474.tableSummaryAlign, this.tableSummaryNumFormat = v10474.tableSummaryNumFormat, this.tableSummaryFormatter = v10474.tableSummaryFormatter, this.showCodeTitle = v10474.showCodeTitle, this.upperCase = v10474.upperCase, this.renderFormatter = v10474.renderFormatter && v10474.renderFormatter.toString(), this.formatter2 = v10474.formatter2 && v10474.formatter2.toString(), this.styler2 = v10474.styler2 && v10474.styler2.toString(), this.stylerHeader = v10474.stylerHeader && v10474.stylerHeader.toString(), this.tableColumnHeight = v10474.tableColumnHeight, this.tableTextType = v10474.tableTextType, this.tableBarcodeMode = v10474.tableBarcodeMode, this.tableQRCodeLevel = v10474.tableQRCodeLevel;
-        };
-      }(),
-      //这个是表格对象
-      v10475 = function () {
-        function v10476() {
-          this.id = IdUtil.createId();
-        }
-  
-        return v10476.prototype.init = function (v10478, v10479, v10480, v10481) {
-          this.isHead = v10481, this.rowId = v10480, this.isEditing = !1;
-          var v10482 = /^[0-9]*$/;
-          this.target = v10478, this.tableOptions = v10479;
-          var v10483 = this.target.attr("colspan");
-          this.colspan = v10482.test(v10483) ? parseInt(v10483) : 1;
-          var v10484 = this.target.attr("rowspan");
-          this.rowspan = v10482.test(v10484) ? parseInt(v10484) : 1, this.initEvent(), this.isHead && this.initInnerEelement();
-        }, v10476.prototype.beginEdit = function () {
-          if (!this.isEditing && this.tableOptions.isEnableEdit && this.tableOptions.onBeforEdit(this)) {
-            var v10485 = this.getValue();
-            this.editor = v10451.Instance.createEditor("text"), this.isEditing = !0, this.tableOptions.editingCell = this, this.target.html(""), this.editor.init(this), this.editor.setValue(v10485);
-          }
-        }, v10476.prototype.endEdit = function () {
-          this.isEditing = !1;
-          var v10486 = this.editor.getValue();
-          this.editor.destroy(), this.target.html(v10486);
-        }, v10476.prototype.getTarget = function () {
-          return this.target;
-        }, v10476.prototype.getValue = function () {
-          return this.target.html();
-        }, v10476.prototype.setValue = function (v10487) {
-        }, v10476.prototype.initInnerEelement = function () {
-          this.innerElement = new v10458(), this.innerElement.init(this, this.tableOptions);
-        }, v10476.prototype.initEvent = function () {
-        }, v10476.prototype.isXYinCell = function (v10488, v10489) {
-          var v10490 = new TableRect({
-            x: v10488,
-            y: v10489,
-            height: 0,
-            width: 0
-          });
-          return this.isOverlap(v10490);
-        }, v10476.prototype.getTableRect = function () {
-          return new TableRect({
-            x: this.target.offset().left,
-            y: this.target.offset().top,
-            height: this.target[0].offsetHeight,
-            width: this.target[0].offsetWidth
-          });
-        }, v10476.prototype.isOverlap = function (v10497) {
-          var v10498 = this.getTableRect();
-          return v10497.x + v10497.width > v10498.x && v10498.x + v10498.width > v10497.x && v10497.y + v10497.height > v10498.y && v10498.y + v10498.height > v10497.y;
-        }, v10476.prototype.isInRect = function (v10507) {
-          var v10508 = v10507.rect,
-            v10509 = this.getTableRect();
-  
-          // if (e.x + e.width > n.x && n.x + n.width > e.x && e.y + e.height > n.y && n.y + n.height > e.y) {
-          if (v10509.x >= v10508.x && v10509.x + v10509.width <= v10508.x + v10508.width && v10509.y >= v10508.y && v10509.y + v10509.height <= v10508.y + v10508.height) {
-            var v10518 = TableRectHelper.mergeRect(v10508, v10509);
-            return JSON.stringify(v10508) == JSON.stringify(v10518) || (v10507.changed = !0, v10507.rect = v10518, !0);
-          }
-  
-          return !1;
-        }, v10476.prototype.isSelected = function () {
-          return this.target.hasClass("selected");
-        }, v10476.prototype.select = function () {
-          this.target.addClass("selected");
-        }, v10476.prototype.isHeader = function () {
-          return !1;
-        }, v10476.prototype.setAlign = function (v10520) {
-          this.align = v10520, v10520 ? this.target.css("text-align", v10520) : this.target[0].style.textAlign = "";
-        }, v10476.prototype.setVAlign = function (v10521) {
-          this.vAlign = v10521, v10521 ? this.target.css("vertical-align", v10521) : this.target[0].style.verticalAlign = "";
-        }, v10476.prototype.getEntity = function () {
-          return new v10473(this);
-        }, v10476;
-      }();
-  
+// 文本编辑器类
+class TextEditor {
+  constructor() {}
 
-  
-    var _c,
-    //实现继承
-      v10524 = (_c = function v10525(v10526, v10527) {
-        return (_c = Object.setPrototypeOf || _instanceof({
-          __proto__: []
-        }, Array) && function (v10528, v10529) {
-          v10528.__proto__ = v10529;
-        } || function (v10530, v10531) {
-          for (var v10532 in v10531) {
-            v10531.hasOwnProperty(v10532) && (v10530[v10532] = v10531[v10532]);
-          }
-        })(v10526, v10527);
+  init(cell) {
+    this.target = $('<input type="text" class="hitable-editor-text" value="" />');
+    cell.getTarget().append(this.target);
+    this.target.focus();
+  }
+
+  getValue() {
+    return this.target.val();
+  }
+
+  setValue(value) {
+    this.target.val(value);
+  }
+
+  destroy() {
+    this.target.remove();
+  }
+}
+
+// 编辑器工厂类
+class EditorFactory {
+  constructor() {
+    this.text = new TextEditor();
+  }
+
+  static get Instance() {
+    if (!EditorFactory._instance) {
+      EditorFactory._instance = new EditorFactory();
+    }
+    return EditorFactory._instance;
+  }
+}
+
+// 选择器类
+class Selector {
+  constructor() {}
+
+  // 初始化表格头双击字段选择
+  init(fields, cell) {
+    let optionsHtml = `<select class="auto-submit" style="width:100%">
+                <option value="" disabled>${i18n.__('请选择字段')}</option>`;
+    
+    fields.forEach((field) => {
+      if (field.field == cell.field) {
+        optionsHtml += ` <option value="${field.field || ""}" selected>${field.text || ""}</option>`;
+      } else {
+        optionsHtml += ` <option value="${field.field || ""}">${field.text || ""}</option>`;
       }
-      , function (v10533, v10534) {
-        function v10535() {
-          this.constructor = v10533;
+    });
+    
+    optionsHtml += " </select>";
+    this.target = $(optionsHtml);
+    cell.getTarget().append(this.target);
+    this.target.focus();
+  }
+
+  getValue() {
+    const val = this.target.val();
+    const text = this.target.find(`option[value="${val}"]`).text();
+    return `${text}#${val}`;
+  }
+
+  setValue(value) {
+    if (value) {
+      if (!this.target.find(`option[value="${value}"]`).length) {
+        this.target.find("select").prepend(`<option value="${value}">${value}</option>`);
+      }
+      this.target.find("select").val(value);
+    }
+  }
+
+  destroy() {
+    this.target.remove();
+  }
+}
+
+// 选择器工厂类
+class SelectorFactory {
+  constructor() {
+    this.select = new Selector();
+  }
+
+  static get Instance() {
+    if (!SelectorFactory._instance) {
+      SelectorFactory._instance = new SelectorFactory();
+    }
+    return SelectorFactory._instance;
+  }
+}
+
+// 编辑器管理类
+class EditorManager {
+  static get Instance() {
+    if (!EditorFactory._instance) {
+      EditorManager._instance = new EditorManager();
+    }
+    return EditorManager._instance;
+  }
+
+  createEditor(type) {
+    return $.extend({}, EditorFactory.Instance[type]);
+  }
+
+  createSelect(type) {
+    return $.extend({}, SelectorFactory.Instance[type]);
+  }
+}
+
+// 内部元素类
+class InnerElement {
+  constructor() {}
+
+  init(cell, tableOptions) {
+    this.tableOptions = tableOptions;
+    this.title = cell.title;
+    this.field = cell.field;
+    cell.getTarget().unbind("dblclick.hitable").bind("dblclick.hitable", () => {
+      cell.isEditing = true;
+      this.beginEdit(cell);
+    });
+  }
+
+  getDisplayHtml() {
+    return this.title;
+  }
+
+  beginEdit(cell) {
+    if (this.tableOptions.options.fields && this.tableOptions.options.fields.length) {
+      this.editor = EditorManager.Instance.createSelect("select");
+      cell.getTarget().html("");
+      this.editor.init(this.tableOptions.options.fields, cell);
+      this.editor.setValue(this.field || "");
+      $(this.editor.target).keydown((event) => {
+        if (event.keyCode == 13) this.endEdit(cell);
+      });
+      $(this.editor.target).change(() => {
+        this.endEdit(cell);
+      });
+      $(this.editor.target).blur(() => {
+        this.endEdit(cell);
+      });
+    } else {
+      this.editor = EditorManager.Instance.createEditor("text");
+      cell.getTarget().html("");
+      this.editor.init(cell);
+      if (this.title || this.field) {
+        this.tableOptions.options.isEnableEditField
+          ? this.editor.setValue(`${this.title || ""}#${this.field || ""}`)
+          : this.editor.setValue(this.title || "");
+      }
+      $(this.editor.target).keydown((event) => {
+        if (event.keyCode == 13) this.endEdit(cell);
+      });
+      $(this.editor.target).blur(() => {
+        this.endEdit(cell);
+      });
+      if (this.tableOptions.editingCell && this.tableOptions.editingCell.id != cell.id) {
+        this.tableOptions.editingCell.innerElement.endEdit(this.tableOptions.editingCell);
+      }
+      this.tableOptions.editingCell = cell;
+    }
+  }
+
+  endEdit(cell) {
+    cell.isEditing = false;
+    const value = this.editor.getValue();
+    if (value) {
+      if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
+        const splitValue = value.split("#");
+        cell.title = this.title = splitValue[0];
+        if (splitValue.length > 0) {
+          cell.columnId = cell.field = this.field = splitValue[1];
         }
-  
-        _c(v10533, v10534), v10533.prototype = null === v10534 ? Object.create(v10534) : (v10535.prototype = v10534.prototype, new v10535());
-      }),
-      PrintTableCell = function (v10536) {
-        function v10539(v10537) {
-          var v10538 = this;
-          return v10537 = v10537 || {}, (v10538 = v10536.call(this) || this).width = v10537.width ? parseFloat(v10537.width.toString()) : 100, v10538.title = v10537.title, v10538.descTitle = v10537.descTitle, v10538.field = v10537.field, v10538.fixed = v10537.fixed, v10538.rowspan = v10537.rowspan ? parseInt(v10537.rowspan) : 1, v10538.colspan = v10537.colspan ? parseInt(v10537.colspan) : 1, v10538.align = v10537.align, v10538.halign = v10537.halign, v10538.vAlign = v10537.vAlign, v10538.formatter = v10537.formatter, v10538.styler = v10537.styler, v10538.renderFormatter = v10537.renderFormatter, v10538.formatter2 = v10537.formatter2, v10538.styler2 = v10537.styler2, v10538.stylerHeader = v10537.stylerHeader, v10538.checkbox = v10537.checkbox, v10538.checked = 0 != v10537.checked, v10538.columnId = v10537.columnId || v10537.field, v10538.tableColumnHeight = v10537.tableColumnHeight, v10538.tableTextType = v10537.tableTextType, v10538.tableBarcodeMode = v10537.tableBarcodeMode, v10538.tableQRCodeLevel = v10537.tableQRCodeLevel, v10538.tableSummaryTitle = v10537.tableSummaryTitle, v10538.tableSummaryText = v10537.tableSummaryText, v10538.tableSummaryColspan = v10537.tableSummaryColspan, v10538.tableSummary = v10537.tableSummary, v10538.tableSummaryAlign = v10537.tableSummaryAlign, v10538.tableSummaryNumFormat = v10537.tableSummaryNumFormat, v10538.tableSummaryFormatter = v10537.tableSummaryFormatter,
-          v10538.showCodeTitle = v10537.showCodeTitle, v10538.upperCase = v10537.upperCase, v10538;
-        }
-  
-        return v10524(v10539, v10536), v10539.prototype.css = function (v10540) {
-        }, v10539;
-      }(v10475);
- 
-      export default PrintTableCell;
+        if (cell.id) cell.target.attr("id", cell.id);
+        if (cell.columnId) cell.target.attr("column-id", cell.columnId);
+        hinnn.event.trigger(`hiprintTemplateDataChanged_${this.tableOptions.options.templateId}`, "调整表格列字段");
+      } else {
+        cell.title = this.title = value;
+      }
+    } else {
+      if (this.tableOptions.options.isEnableEditField) {
+        cell.title = this.title = "";
+        cell.field = this.field = "";
+      } else {
+        cell.title = this.title = "";
+      }
+    }
+    this.editor.destroy();
+    cell.getTarget().html(this.title);
+  }
+}
+
+// 单元格实体类
+class CellEntity {
+  constructor(cell) {
+    this.title = cell.title;
+    this.field = cell.field;
+    this.width = cell.width;
+    this.align = cell.align;
+    this.halign = cell.halign;
+    this.vAlign = cell.vAlign;
+    this.colspan = cell.colspan;
+    this.rowspan = cell.rowspan;
+    this.checked = cell.checked;
+    this.columnId = cell.columnId;
+    this.tableSummaryTitle = cell.tableSummaryTitle;
+    this.tableSummaryText = cell.tableSummaryText;
+    this.tableSummaryColspan = cell.tableSummaryColspan;
+    this.tableSummary = cell.tableSummary;
+    this.tableSummaryAlign = cell.tableSummaryAlign;
+    this.tableSummaryNumFormat = cell.tableSummaryNumFormat;
+    this.tableSummaryFormatter = cell.tableSummaryFormatter;
+    this.showCodeTitle = cell.showCodeTitle;
+    this.upperCase = cell.upperCase;
+    this.renderFormatter = cell.renderFormatter && cell.renderFormatter.toString();
+    this.formatter2 = cell.formatter2 && cell.formatter2.toString();
+    this.styler2 = cell.styler2 && cell.styler2.toString();
+    this.stylerHeader = cell.stylerHeader && cell.stylerHeader.toString();
+    this.tableColumnHeight = cell.tableColumnHeight;
+    this.tableTextType = cell.tableTextType;
+    this.tableBarcodeMode = cell.tableBarcodeMode;
+    this.tableQRCodeLevel = cell.tableQRCodeLevel;
+  }
+}
+
+// 表格单元格基类
+class TableCell {
+  constructor() {
+    this.id = IdUtil.createId();
+  }
+
+  init(target, tableOptions, rowId, isHead) {
+    this.isHead = isHead;
+    this.rowId = rowId;
+    this.isEditing = false;
+    const numberPattern = /^[0-9]*$/;
+    this.target = target;
+    this.tableOptions = tableOptions;
+    const colspanAttr = this.target.attr("colspan");
+    this.colspan = numberPattern.test(colspanAttr) ? parseInt(colspanAttr) : 1;
+    const rowspanAttr = this.target.attr("rowspan");
+    this.rowspan = numberPattern.test(rowspanAttr) ? parseInt(rowspanAttr) : 1;
+    this.initEvent();
+    if (this.isHead) {
+      this.initInnerEelement();
+    }
+  }
+
+  beginEdit() {
+    if (!this.isEditing && this.tableOptions.isEnableEdit && this.tableOptions.onBeforEdit(this)) {
+      const value = this.getValue();
+      this.editor = EditorManager.Instance.createEditor("text");
+      this.isEditing = true;
+      this.tableOptions.editingCell = this;
+      this.target.html("");
+      this.editor.init(this);
+      this.editor.setValue(value);
+    }
+  }
+
+  endEdit() {
+    this.isEditing = false;
+    const value = this.editor.getValue();
+    this.editor.destroy();
+    this.target.html(value);
+  }
+
+  getTarget() {
+    return this.target;
+  }
+
+  getValue() {
+    return this.target.html();
+  }
+
+  setValue(value) {
+    // 实现待添加
+  }
+
+  initInnerEelement() {
+    this.innerElement = new InnerElement();
+    this.innerElement.init(this, this.tableOptions);
+  }
+
+  initEvent() {
+    // 实现待添加
+  }
+
+  isXYinCell(x, y) {
+    const point = new TableRect({
+      x: x,
+      y: y,
+      height: 0,
+      width: 0
+    });
+    return this.isOverlap(point);
+  }
+
+  getTableRect() {
+    return new TableRect({
+      x: this.target.offset().left,
+      y: this.target.offset().top,
+      height: this.target[0].offsetHeight,
+      width: this.target[0].offsetWidth
+    });
+  }
+
+  isOverlap(rect) {
+    const cellRect = this.getTableRect();
+    return (
+      rect.x + rect.width > cellRect.x &&
+      cellRect.x + cellRect.width > rect.x &&
+      rect.y + rect.height > cellRect.y &&
+      cellRect.y + cellRect.height > rect.y
+    );
+  }
+
+  isInRect(selectionRect) {
+    const rect = selectionRect.rect;
+    const cellRect = this.getTableRect();
+
+    if (
+      cellRect.x >= rect.x &&
+      cellRect.x + cellRect.width <= rect.x + rect.width &&
+      cellRect.y >= rect.y &&
+      cellRect.y + cellRect.height <= rect.y + rect.height
+    ) {
+      const mergedRect = TableRectHelper.mergeRect(rect, cellRect);
+      if (JSON.stringify(rect) === JSON.stringify(mergedRect)) {
+        return true;
+      } else {
+        selectionRect.changed = true;
+        selectionRect.rect = mergedRect;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  isSelected() {
+    return this.target.hasClass("selected");
+  }
+
+  select() {
+    this.target.addClass("selected");
+  }
+
+  isHeader() {
+    return false;
+  }
+
+  setAlign(align) {
+    this.align = align;
+    if (align) {
+      this.target.css("text-align", align);
+    } else {
+      this.target[0].style.textAlign = "";
+    }
+  }
+
+  setVAlign(vAlign) {
+    this.vAlign = vAlign;
+    if (vAlign) {
+      this.target.css("vertical-align", vAlign);
+    } else {
+      this.target[0].style.verticalAlign = "";
+    }
+  }
+
+  getEntity() {
+    return new CellEntity(this);
+  }
+}
+
+// 打印表格单元格类
+class PrintTableCell extends TableCell {
+  constructor(options = {}) {
+    super();
+    this.width = options.width ? parseFloat(options.width.toString()) : 100;
+    this.title = options.title;
+    this.descTitle = options.descTitle;
+    this.field = options.field;
+    this.fixed = options.fixed;
+    this.rowspan = options.rowspan ? parseInt(options.rowspan) : 1;
+    this.colspan = options.colspan ? parseInt(options.colspan) : 1;
+    this.align = options.align;
+    this.halign = options.halign;
+    this.vAlign = options.vAlign;
+    this.formatter = options.formatter;
+    this.styler = options.styler;
+    this.renderFormatter = options.renderFormatter;
+    this.formatter2 = options.formatter2;
+    this.styler2 = options.styler2;
+    this.stylerHeader = options.stylerHeader;
+    this.checkbox = options.checkbox;
+    this.checked = options.checked != 0;
+    this.columnId = options.columnId || options.field;
+    this.tableColumnHeight = options.tableColumnHeight;
+    this.tableTextType = options.tableTextType;
+    this.tableBarcodeMode = options.tableBarcodeMode;
+    this.tableQRCodeLevel = options.tableQRCodeLevel;
+    this.tableSummaryTitle = options.tableSummaryTitle;
+    this.tableSummaryText = options.tableSummaryText;
+    this.tableSummaryColspan = options.tableSummaryColspan;
+    this.tableSummary = options.tableSummary;
+    this.tableSummaryAlign = options.tableSummaryAlign;
+    this.tableSummaryNumFormat = options.tableSummaryNumFormat;
+    this.tableSummaryFormatter = options.tableSummaryFormatter;
+    this.showCodeTitle = options.showCodeTitle;
+    this.upperCase = options.upperCase;
+  }
+
+  css(styles) {
+    // 实现待添加
+  }
+}
+
+export default PrintTableCell;

@@ -1,117 +1,157 @@
-"use strict";
+import { $ } from "../hiprint.comm.js";
 
 /**
- * 图片对象
+ * PrintElement类用于管理打印元素的位置。
  */
-import {$} from "../hiprint.comm.js";
+class PrintElement {
+  constructor(printElement) {
+    this.printElement = printElement;
+  }
 
-  
-    var v10140 = function () {
-      function v10142(v10141) {
-        this.printElement = v10141;
-      }
-  
-      return v10142.prototype.updatePosition = function (v10143, v10144) {
-        this.left = v10143, this.top = v10144;
-      }, v10142;
-    }();
-  
+  /**
+   * 更新打印元素的位置
+   * @param {number} left - 元素的左边位置
+   * @param {number} top - 元素的顶部位置
+   */
+  updatePosition(left, top) {
+    this.left = left;
+    this.top = top;
+  }
+}
 
-  
-    var PrintLib = function () {
-      function v10147() {
-        this.printTemplateContainer = {}, this.A1 = {
-          width: 841,
-          height: 594
-        }, this.A2 = {
-          width: 420,
-          height: 594
-        }, this.A3 = {
-          width: 420,
-          height: 297
-        }, this.A4 = {
-          width: 210,
-          height: 297
-        }, this.A5 = {
-          width: 210,
-          height: 148
-        }, this.A6 = {
-          width: 105,
-          height: 148
-        }, this.A7 = {
-          width: 105,
-          height: 74
-        }, this.A8 = {
-          width: 52,
-          height: 74
-        }, this.B1 = {
-          width: 1e3,
-          height: 707
-        }, this.B2 = {
-          width: 500,
-          height: 707
-        }, this.B3 = {
-          width: 500,
-          height: 353
-        }, this.B4 = {
-          width: 250,
-          height: 353
-        }, this.B5 = {
-          width: 250,
-          height: 176
-        }, this.B6 = {
-          width: 125,
-          height: 176
-        }, this.B7 = {
-          width: 125,
-          height: 88
-        }, this.B8 = {
-          width: 62,
-          height: 88
-        }, this.dragLengthCNum = function (v10148, v10149) {
-          var v10150 = .75 * v10148;
-          return v10149 && (v10149 = v10149), Math.round(v10150 / v10149) * v10149;
-        };
-      }
-  
-      return Object.defineProperty(v10147, "instance", {
-        get: function get() {
-          return this._instance || (this._instance = new v10147()), this._instance;
-        },
-        enumerable: !0,
-        configurable: !0
-      }), v10147.prototype.getDragingPrintElement = function () {
-        return v10147.instance.dragingPrintElement;
-      }, v10147.prototype.setDragingPrintElement = function (v10151) {
-        v10147.instance.dragingPrintElement = new v10140(v10151);
-      }, v10147.prototype.guid = function () {
-        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (v10152) {
-          var v10153 = 16 * Math.random() | 0;
-          return ("x" == v10152 ? v10153 : 3 & v10153 | 8).toString(16);
-        });
-      }, v10147.prototype.imageToBase64 = function (v10154) {
-        if (-1 == $(v10154).attr("src").indexOf("base64")) try {
-          var v10155 = document.createElement("canvas"),
-            v10156 = new Image();
-          v10156.src = v10154.attr("src"), v10155.width = v10156.width, v10155.height = v10156.height, v10155.getContext("2d").drawImage(v10156, 0, 0), v10154.attr("src", v10155.toDataURL("image/png"));
-        } catch (v10157) {
-          try {
-            this.xhrLoadImage(v10154);
-          } catch (v10158) {
-            console.log(v10158);
-          }
+/**
+ * PrintLib类用于管理打印库的配置和操作。
+ */
+class PrintLib {
+  constructor() {
+    this.printTemplateContainer = {}; // 打印模板容器
+    this.A1 = { width: 841, height: 594 };
+    this.A2 = { width: 420, height: 594 };
+    this.A3 = { width: 420, height: 297 };
+    this.A4 = { width: 210, height: 297 };
+    this.A5 = { width: 210, height: 148 };
+    this.A6 = { width: 105, height: 148 };
+    this.A7 = { width: 105, height: 74 };
+    this.A8 = { width: 52, height: 74 };
+    this.B1 = { width: 1000, height: 707 };
+    this.B2 = { width: 500, height: 707 };
+    this.B3 = { width: 500, height: 353 };
+    this.B4 = { width: 250, height: 353 };
+    this.B5 = { width: 250, height: 176 };
+    this.B6 = { width: 125, height: 176 };
+    this.B7 = { width: 125, height: 88 };
+    this.B8 = { width: 62, height: 88 };
+  }
+
+  /**
+   * 根据给定的值计算拖拽长度
+   * @param {number} value - 输入值
+   * @param {number} unit - 单位长度
+   * @returns {number} - 计算后的拖拽长度
+   */
+  dragLengthCNum(value, unit) {
+    const length = 0.75 * value;
+    return unit ? Math.round(length / unit) * unit : length;
+  }
+
+  /**
+   * 获取单例实例
+   * @returns {PrintLib} - PrintLib单例实例
+   */
+  static get instance() {
+    if (!this._instance) {
+      this._instance = new PrintLib();
+    }
+    return this._instance;
+  }
+
+  /**
+   * 获取正在拖动的打印元素
+   * @returns {PrintElement} - 正在拖动的打印元素
+   */
+  getDragingPrintElement() {
+    return PrintLib.instance.dragingPrintElement;
+  }
+
+  /**
+   * 设置正在拖动的打印元素
+   * @param {HTMLElement} element - 拖动的打印元素
+   */
+  setDragingPrintElement(element) {
+    PrintLib.instance.dragingPrintElement = new PrintElement(element);
+  }
+
+  /**
+   * 生成唯一标识符
+   * @returns {string} - UUID
+   */
+  guid() {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (char) {
+      const random = Math.random() * 16 | 0;
+      return (char === "x" ? random : (random & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  /**
+   * 将图像转换为Base64格式
+   * @param {jQuery} $image - 图像元素
+   */
+  imageToBase64($image) {
+    if ($image.attr("src").indexOf("base64") === -1) {
+      try {
+        const canvas = document.createElement("canvas");
+        const img = new Image();
+        img.src = $image.attr("src");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        $image.attr("src", canvas.toDataURL("image/png"));
+      } catch (error) {
+        try {
+          this.xhrLoadImage($image);
+        } catch (xhrError) {
+          console.log(xhrError);
         }
-      }, v10147.prototype.xhrLoadImage = function (v10159) {
-      }, v10147.prototype.transformImg = function (v10160) {
-        var v10161 = this;
-        v10160.map(function (v10162, v10163) {
-          v10161.imageToBase64($(v10163));
-        });
-      }, v10147.prototype.getPrintTemplateById = function (v10164) {
-        return v10147.instance.printTemplateContainer[v10164];
-      }, v10147.prototype.setPrintTemplateById = function (v10165, v10166) {
-        return v10147.instance.printTemplateContainer[v10165] = v10166;
-      }, v10147;
-    }();
+      }
+    }
+  }
 
-    export default PrintLib;
+  /**
+   * 加载图像（未实现）
+   * @param {jQuery} $image - 图像元素
+   */
+  xhrLoadImage($image) {
+    // 未实现的方法
+  }
+
+  /**
+   * 转换多个图像为Base64格式
+   * @param {Array} images - 图像元素数组
+   */
+  transformImg(images) {
+    const self = this;
+    images.map((_, image) => {
+      self.imageToBase64($(image));
+    });
+  }
+
+  /**
+   * 根据ID获取打印模板
+   * @param {string} id - 模板ID
+   * @returns {Object} - 打印模板
+   */
+  getPrintTemplateById(id) {
+    return PrintLib.instance.printTemplateContainer[id];
+  }
+
+  /**
+   * 根据ID设置打印模板
+   * @param {string} id - 模板ID
+   * @param {Object} template - 打印模板
+   */
+  setPrintTemplateById(id, template) {
+    PrintLib.instance.printTemplateContainer[id] = template;
+  }
+}
+
+export default PrintLib;

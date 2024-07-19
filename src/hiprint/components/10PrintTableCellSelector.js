@@ -1,70 +1,125 @@
-"use strict";
-
 /**
  * 表格元素
  */
 import TableRectHelper from "./14TableRectHelper";
-   var PrintTableCellSelector = function () {
-        function v11297(v11295, v11296) {
-          this.selectedCells = [], this.rows = v11295, this.tableTatget = v11296;
-        }
-  
-        return v11297.prototype.clear = function () {
-          this.tableTatget.find("td").removeClass("selected");
-        }, v11297.prototype.setSingleSelect = function (v11298) {
-          this.startCell = v11298, this.selectedCells = [];
-        }, v11297.prototype.getSingleSelect = function () {
-          if (this.selectedCells.length) {
-            if (1 == this.selectedCells.length) return 1 == this.selectedCells[0].length ? this.selectedCells[0][0] : void 0;
-            if (this.selectedCells.length > 1) return;
-          }
-  
-          return this.startCell;
-        }, v11297.prototype.singleSelectByXY = function (v11299, v11300) {
-          var v11301 = this.getCellByXY(v11299, v11300);
-          v11301 && (this.clear(), v11301 && (v11301.cell.select(), this.startCell = v11301, this.selectedCells = []));
-        }, v11297.prototype.multipleSelectByXY = function (v11302, v11303) {
-          this.clear();
-          var v11304 = [];
-  
-          if (this.startCell) {
-            var v11305 = this.getCellByXY(v11302, v11303);
-  
-            if (v11305) {
-              var v11306 = TableRectHelper.mergeRect(this.startCell.cell.getTableRect(), v11305.cell.getTableRect());
-              this.selectByRect(new v11307(v11306), v11304);
-            }
-          }
-  
-          this.selectedCells = v11304;
-        }, v11297.prototype.selectByRect = function (v11308, v11309) {
-          this.rows.forEach(function (v11310, v11311) {
-            var v11312 = [];
-            v11310.columns.forEach(function (v11313) {
-              v11313.isInRect(v11308) && (v11312.push(new v11314(v11311, v11313)), v11313.select());
-            }), v11312.length && v11309.push(v11312);
-          }), v11308.changed && (v11308.changed = !1, v11309.splice(0, v11309.length), this.selectByRect(v11308, v11309));
-        }, v11297.prototype.getSelectedCells = function () {
-          return this.selectedCells;
-        }, v11297.prototype.getCellByXY = function (v11315, v11316) {
-          var v11317;
-          return this.rows.forEach(function (v11318, v11319) {
-            var v11320 = (v11318.columns || []).filter(function (column) {return column.checked;}).filter(function (v11321) {
-              return v11321.isXYinCell(v11315, v11316);
-            });
-            v11320.length && (v11317 = new v11314(v11319, v11320[0]));
-          }), v11317;
-        }, v11297;
-      }(),
-      v11307 = function () {
-        return function (v11327) {
-          this.rect = v11327;
-        };
-      }(),
-      v11314 = function () {
-        return function (v11328, v11329) {
-          this.rowIndex = v11328, this.cell = v11329;
-        };
-      }();
 
-  export default PrintTableCellSelector;
+class PrintTableCellSelector {
+  constructor(rows, tableTarget) {
+    this.selectedCells = [];
+    this.rows = rows;
+    this.tableTarget = tableTarget;
+  }
+
+  // 清除所有选中的单元格
+  clear() {
+    this.tableTarget.find("td").removeClass("selected");
+  }
+
+  // 设置单选模式
+  setSingleSelect(startCell) {
+    this.startCell = startCell;
+    this.selectedCells = [];
+  }
+
+  // 获取单选的单元格
+  getSingleSelect() {
+    if (this.selectedCells.length) {
+      if (this.selectedCells.length === 1) {
+        return this.selectedCells[0].length === 1 ? this.selectedCells[0][0] : undefined;
+      }
+      if (this.selectedCells.length > 1) {
+        return undefined;
+      }
+    }
+    return this.startCell;
+  }
+
+  // 通过坐标进行单选
+  singleSelectByXY(x, y) {
+    const targetCell = this.getCellByXY(x, y);
+    if (targetCell) {
+      this.clear();
+      targetCell.cell.select();
+      this.startCell = targetCell;
+      this.selectedCells = [];
+    }
+  }
+
+  // 通过坐标进行多选
+  multipleSelectByXY(x, y) {
+    this.clear();
+    const selectedCellGroups = [];
+
+    if (this.startCell) {
+      const endCell = this.getCellByXY(x, y);
+      if (endCell) {
+        const mergedRect = TableRectHelper.mergeRect(
+          this.startCell.cell.getTableRect(),
+          endCell.cell.getTableRect()
+        );
+        this.selectByRect(new SelectionRect(mergedRect), selectedCellGroups);
+      }
+    }
+
+    this.selectedCells = selectedCellGroups;
+  }
+
+  // 根据矩形区域选择单元格
+  selectByRect(selectionRect, selectedCellGroups) {
+    this.rows.forEach((row, rowIndex) => {
+      const selectedCellsInRow = [];
+      row.columns.forEach((cell) => {
+        if (cell.isInRect(selectionRect)) {
+          selectedCellsInRow.push(new SelectedCell(rowIndex, cell));
+          cell.select();
+        }
+      });
+      if (selectedCellsInRow.length) {
+        selectedCellGroups.push(selectedCellsInRow);
+      }
+    });
+
+    if (selectionRect.changed) {
+      selectionRect.changed = false;
+      selectedCellGroups.splice(0, selectedCellGroups.length);
+      this.selectByRect(selectionRect, selectedCellGroups);
+    }
+  }
+
+  // 获取所有选中的单元格
+  getSelectedCells() {
+    return this.selectedCells;
+  }
+
+  // 根据坐标获取单元格
+  getCellByXY(x, y) {
+    let targetCell;
+    this.rows.forEach((row, rowIndex) => {
+      const matchedColumns = (row.columns || [])
+        .filter((column) => column.checked)
+        .filter((column) => column.isXYinCell(x, y));
+      
+      if (matchedColumns.length) {
+        targetCell = new SelectedCell(rowIndex, matchedColumns[0]);
+      }
+    });
+    return targetCell;
+  }
+}
+
+// 选择矩形类
+class SelectionRect {
+  constructor(rect) {
+    this.rect = rect;
+  }
+}
+
+// 选中的单元格类
+class SelectedCell {
+  constructor(rowIndex, cell) {
+    this.rowIndex = rowIndex;
+    this.cell = cell;
+  }
+}
+
+export default PrintTableCellSelector;

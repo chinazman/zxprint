@@ -1,28 +1,45 @@
-import TableRect from './10TableRect';
+import TableRect from "./10TableRect";
 /**
  * 界面元素工具类
  */
-var TableRectHelper = function () {
-    function v11410() {
-    }
 
-    return v11410.mergeRect = function (v11411, v11412) {
-      var v11413 = Math.min(v11411.x, v11412.x),
-        v11416 = Math.min(v11411.y, v11412.y);
-      return new TableRect({
-        x: v11413,
-        y: v11416,
-        height: Math.max(v11411.y + v11411.height, v11412.y + v11412.height) - v11416,
-        width: Math.max(v11411.x + v11411.width, v11412.x + v11412.width) - v11413
-      });
-    }, v11410.Rect = function (v11426, v11427, v11428, v11429) {
-      return {
-        minX: v11426 < v11428 ? v11426 : v11428,
-        minY: v11427 < v11429 ? v11427 : v11429,
-        maxX: v11426 < v11428 ? v11428 : v11426,
-        maxY: v11427 < v11429 ? v11429 : v11427
-      };
-    }, v11410;
-  }();
+class TableRectHelper {
+  /**
+   * 合并两个矩形区域
+   * @param {TableRect} rect1 第一个矩形
+   * @param {TableRect} rect2 第二个矩形
+   * @returns {TableRect} 合并后的新矩形
+   */
+  static mergeRect(rect1, rect2) {
+    // 计算新矩形的左上角坐标
+    var newX = Math.min(rect1.x, rect2.x),
+      newY = Math.min(rect1.y, rect2.y);
 
-  export default TableRectHelper;
+    // 返回新的 TableRect 对象
+    return new TableRect({
+      x: newX,
+      y: newY,
+      // 计算新矩形的高度和宽度
+      height: Math.max(rect1.y + rect1.height, rect2.y + rect2.height) - newY,
+      width: Math.max(rect1.x + rect1.width, rect2.x + rect2.width) - newX,
+    });
+  }
+
+  /**
+   * 创建一个矩形对象，包含最小和最大的 x, y 坐标
+   * @param {number} x1 第一个点的 x 坐标
+   * @param {number} y1 第一个点的 y 坐标
+   * @param {number} x2 第二个点的 x 坐标
+   * @param {number} y2 第二个点的 y 坐标
+   * @returns {Object} 包含 minX, minY, maxX, maxY 的对象
+   */
+  static Rect(x1, y1, x2, y2) {
+    return {
+      minX: Math.min(x1, x2),
+      minY: Math.min(y1, y2),
+      maxX: Math.max(x1, x2),
+      maxY: Math.max(y1, y2),
+    };
+  }
+}
+export default TableRectHelper;
