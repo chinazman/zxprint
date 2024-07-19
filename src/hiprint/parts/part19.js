@@ -1,15 +1,9 @@
 "use strict";
-
+import ReconsitutionTableColumns from "../components/19ReconsitutionTableColumns";
 export default function (webpack_module, webpack_exports, webpack_require) {
     "use strict";
   
     webpack_require.d(webpack_exports, "a", function () {
-      return v11915;
+      return ReconsitutionTableColumns;
     });
-  
-    var v11915 = function () {
-      return function () {
-        this.rowColumns = [];
-      };
-    }();
   }

@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * import 相关资源
+ * webpack处理样式的没有用，将这个移动css文件中
  */
 
 export default function (webpack_module, webpack_exports, webpack_require) {

@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * import 相关资源
+ * webpack处理样式的没有用
  */
 import {_instanceof,_typeof} from "../hiprint.comm.js";
 

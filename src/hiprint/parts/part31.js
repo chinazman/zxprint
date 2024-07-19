@@ -1,6 +1,8 @@
 "use strict";
 
-
+/**
+ * webpack处理样式的没有用
+ */
 export default function (webpack_module, webpack_exports) {
     webpack_module.exports = function (v12347) {
       var v12348 = "undefined" != typeof window && window.location;
