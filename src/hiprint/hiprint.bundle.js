@@ -79,33 +79,48 @@ window.autoConnect = true;
 window.io = io;
 
 var hiprint = function (modules) {
+  // 模块缓存对象
   var moduleCache = {};
 
+  // 模块加载函数
   function require(moduleId) {
+    // 如果模块已经被加载,直接返回其exports
     if (moduleCache[moduleId]) return moduleCache[moduleId].exports;
+    
+    // 创建新的模块对象并缓存
     var module = moduleCache[moduleId] = {
       i: moduleId,
       l: !1,
       exports: {}
     };
+    
+    // 执行模块函数,并返回exports
     return modules[moduleId].call(module.exports, module, module.exports, require), module.l = !0, module.exports;
   }
 
+  // 存储所有模块
   require.m = modules;
+  // 存储模块缓存
   require.c = moduleCache;
+
+  // 定义getter函数用于exports
   require.d = function (exports, exportName, getter) {
     require.o(exports, exportName) || Object.defineProperty(exports, exportName, {
       enumerable: !0,
       get: getter
     });
   };
-   require.r = function (moduleExports) {
+
+  // 将模块标记为 ES Module
+  require.r = function (moduleExports) {
     "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(moduleExports, Symbol.toStringTag, {
       value: "Module"
     }), Object.defineProperty(moduleExports, "__esModule", {
       value: !0
     });
   };
+
+  // 创建命名空间对象
   require.t = function (value, mode) {
     if (1 & mode && (value = require(value)), 8 & mode) return value;
     if (4 & mode && "object" == _typeof(value) && value && value.__esModule) return value;
@@ -120,6 +135,8 @@ var hiprint = function (modules) {
     }
     return ns;
   };
+
+  // 兼容 ES Module 和 CommonJS
   require.n = function (getter) {
     var getModuleExports = getter && getter.__esModule ? function () {
       return getter.default;
@@ -128,10 +145,16 @@ var hiprint = function (modules) {
     };
     return require.d(getModuleExports, "a", getModuleExports), getModuleExports;
   }
+
+  // 检查对象是否具有特定属性
   require.o = function (object, property) {
     return Object.prototype.hasOwnProperty.call(object, property);
   };
+
+  // 公共路径
   require.p = "/";
+
+  // 加载入口模块并返回
   return require(require.s = 21);
 }
 ([ part00,part01, part02, part03, part04, part05, part06, part07, part08, part09, part10, part11
