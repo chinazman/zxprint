@@ -42,16 +42,16 @@ import "@claviska/jquery-minicolors/jquery.minicolors.min";
 import JsBarcode from "jsbarcode";
 // 二维码
 import "./plugins/qrcode.js";
-import bwipjs from "bwip-js"
+import bwipjs from "bwip-js";
 // 水印
 import watermark from "./plugins/watermark.js";
 // 直接打印需要
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 //引入标尺
 import lImg from "./css/image/l_img.svg";
 import vImg from "./css/image/v_img.svg";
 // pdf
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import html2canvas from "@wtto00/html2canvas";
 // 数字转中文,大写,金额
 import Nzh from "nzh/dist/nzh.min.js";
@@ -64,135 +64,135 @@ window.$ = window.jQuery = $;
 window.autoConnect = true;
 window.io = io;
 
-var languages = {}
+var languages = {};
 const ctx = require.context("../i18n", true, /\.json$/);
-ctx.keys().forEach(key => {
-  languages[key.match(/\.\/([^.]+)/)[1]] = ctx(key)
-})
+ctx.keys().forEach((key) => {
+  languages[key.match(/\.\/([^.]+)/)[1]] = ctx(key);
+});
 
 var i18n = {
   lang: 'cn',
   languages,
-  __: function(key, params) {
-    var str = this.languages[this.lang][key] || key
+  __: function (key, params) {
+    var str = this.languages[this.lang][key] || key;
     if (params && params instanceof Object) {
-      Object.keys(params).forEach(key => {
-        str = str.replace(new RegExp(`{{${key}}}`, 'g'), params[key])
-      })
-      return str
+      Object.keys(params).forEach((key) => {
+        str = str.replace(new RegExp(`{{${key}}}`, 'g'), params[key]);
+      });
+      return str;
     } else if (params) {
-      str= str.replace(/%s/g, params)
-      return str
+      str = str.replace(/%s/g, params);
+      return str;
     } else {
-      return str
+      return str;
     }
   },
-  __n: function(key, val) {
-    var str = this.languages[this.lang][key]
-    str = str.replace(/%s/g, val)
-    return str
-  },
-}
+  __n: function (key, val) {
+    var str = this.languages[this.lang][key];
+    str = str.replace(/%s/g, val);
+    return str;
+  }
+};
 
-var hiprint = function (t) {
-  var e = {};
+var hiprint = function (v10002) {
+  var v10003 = {};
 
-  function n(i) {
-    if (e[i]) return e[i].exports;
-    var o = e[i] = {
-      i: i,
+  function v10004(v10005) {
+    if (v10003[v10005]) return v10003[v10005].exports;
+    var v10006 = v10003[v10005] = {
+      i: v10005,
       l: !1,
       exports: {}
     };
-    return t[i].call(o.exports, o, o.exports, n), o.l = !0, o.exports;
+    return v10002[v10005].call(v10006.exports, v10006, v10006.exports, v10004), v10006.l = !0, v10006.exports;
   }
 
-  return n.m = t, n.c = e, n.d = function (t, e, i) {
-    n.o(t, e) || Object.defineProperty(t, e, {
+  return v10004.m = v10002, v10004.c = v10003, v10004.d = function (v10013, v10014, v10015) {
+    v10004.o(v10013, v10014) || Object.defineProperty(v10013, v10014, {
       enumerable: !0,
-      get: i
+      get: v10015
     });
-  }, n.r = function (t) {
-    "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(t, Symbol.toStringTag, {
+  }, v10004.r = function (v10018) {
+    "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(v10018, Symbol.toStringTag, {
       value: "Module"
-    }), Object.defineProperty(t, "__esModule", {
+    }), Object.defineProperty(v10018, "__esModule", {
       value: !0
     });
-  }, n.t = function (t, e) {
-    if (1 & e && (t = n(t)), 8 & e) return t;
-    if (4 & e && "object" == _typeof(t) && t && t.__esModule) return t;
-    var i = Object.create(null);
-    if (n.r(i), Object.defineProperty(i, "default", {
+  }, v10004.t = function (v10020, v10021) {
+    if (1 & v10021 && (v10020 = v10004(v10020)), 8 & v10021) return v10020;
+    if (4 & v10021 && "object" == _typeof(v10020) && v10020 && v10020.__esModule) return v10020;
+    var v10022 = Object.create(null);
+    if (v10004.r(v10022), Object.defineProperty(v10022, "default", {
       enumerable: !0,
-      value: t
-    }), 2 & e && "string" != typeof t) for (var o in t) {
-      n.d(i, o, function (e) {
-        return t[e];
-      }.bind(null, o));
+      value: v10020
+    }), 2 & v10021 && "string" != typeof v10020) for (var v10024 in v10020) {
+      v10004.d(v10022, v10024, function (v10026) {
+        return v10020[v10026];
+      }.bind(null, v10024));
     }
-    return i;
-  }, n.n = function (t) {
-    var e = t && t.__esModule ? function () {
-      return t.default;
+    return v10022;
+  }, v10004.n = function (v10028) {
+    var v10029 = v10028 && v10028.__esModule ? function () {
+      return v10028.default;
     } : function () {
-      return t;
+      return v10028;
     };
-    return n.d(e, "a", e), e;
-  }, n.o = function (t, e) {
-    return Object.prototype.hasOwnProperty.call(t, e);
-  }, n.p = "/", n(n.s = 21);
-}([function (t, e, n) {/**/
+    return v10004.d(v10029, "a", v10029), v10029;
+  }, v10004.o = function (v10032, v10033) {
+    return Object.prototype.hasOwnProperty.call(v10032, v10033);
+  }, v10004.p = "/", v10004(v10004.s = 21);
+}([function (v10036, v10037, v10038) {/**/
   "use strict";
 
-  var i;
-  n.d(e, "a", function () {
+  var v10039;
+  v10038.d(v10037, "a", function () {
     return hinnn;
-  }), window.hinnn = {}, hinnn.event = (i = {}, {
-    on: function on(t, e) {
-      i[t] || (i[t] = []), i[t].push(e);
+  }), window.hinnn = {}, hinnn.event = (v10039 = {}, {
+    on: function on(v10041, v10042) {
+      v10039[v10041] || (v10039[v10041] = []), v10039[v10041].push(v10042);
     },
     id: 0,
-    off: function off(t, e) {
-      var n = i[t];
-      if (n) {
-        for (var o = -1, r = 0; r < n.length; r++) {
-          if (n[r] === e) {
-            o = r;
+    off: function off(v10043, v10044) {
+      var v10045 = v10039[v10043];
+      if (v10045) {
+        for (var v10046 = -1, v10047 = 0; v10047 < v10045.length; v10047++) {
+          if (v10045[v10047] === v10044) {
+            v10046 = v10047;
             break;
           }
         }
-        o < 0 || i[t].splice(o, 1);
+        v10046 < 0 || v10039[v10043].splice(v10046, 1);
       }
     },
-    trigger: function trigger(t) {
-      var e = i[t];
-      if (e && e.length) for (var n = Array.prototype.slice.call(arguments, 1), o = 0; o < e.length; o++) {
-        e[o].apply(this, n);
+    trigger: function trigger(v10048) {
+      var v10049 = v10039[v10048];
+      if (v10049 && v10049.length) for (var v10050 = Array.prototype.slice.call(arguments, 1), v10051 = 0; v10051 < v10049.length; v10051++) {
+        v10049[v10051].apply(this, v10050);
       }
     },
-    clear: function clear(t) {
-      i[t] = [];
+    clear: function clear(v10052) {
+      v10039[v10052] = [];
     },
     getId: function getId() {
       return this.id += 1, this.id;
     },
-    getNameWithId: function getNameWithId(t) {
-      return t + "-" + this.getId();
+    getNameWithId: function getNameWithId(v10053) {
+      return v10053 + "-" + this.getId();
     }
   }), hinnn.form = {
-    serialize: function serialize(t) {
-      var e = $(t).serializeArray(),
-        n = {};
-      return $.each(e, function () {
-        n[this.name] ? "[object Array]" == Object.prototype.toString.call(n[this.name]) ? n[this.name].push(this.value) : n[this.name] = [n[this.name], this.value] : n[this.name] = this.value;
-      }), n;
+    serialize: function serialize(v10054) {
+      var v10055 = $(v10054).serializeArray(),
+        v10056 = {};
+      return $.each(v10055, function () {
+        v10056[this.name] ? "[object Array]" == Object.prototype.toString.call(v10056[this.name]) ? v10056[this.name].push(this.value) : v10056[this.name] = [v10056[this.name], this.value] : v10056[this.name] = this.value;
+      }), v10056;
     }
   }, hinnn.pt = {
-    toPx: function toPx(t) {
-      return t * (this.getDpi() / 72);
+    toPx: function toPx(v10057) {
+      return v10057 * (this.getDpi() / 72);
     },
-    toMm: function toMm(t) {
-      return hinnn.px.toMm(hinnn.pt.toPx(t));
+    toMm: function toMm(v10058) {
+      return hinnn.px.toMm(hinnn.pt.toPx(v10058));
     },
     dpi: 0,
     getDpi: function getDpi() {
@@ -205,11 +205,11 @@ var hiprint = function (t) {
       return this.dpi;
     }
   }, hinnn.px = {
-    toPt: function toPt(t) {
-      return t * (72 / this.getDpi());
+    toPt: function toPt(v10059) {
+      return v10059 * (72 / this.getDpi());
     },
-    toMm: function toMm(t) {
-      return Math.round((t / this.getDpi() * 25.4) * 100) / 100;
+    toMm: function toMm(v10060) {
+      return Math.round(v10060 / this.getDpi() * 25.4 * 100) / 100;
     },
     dpi: 0,
     getDpi: function getDpi() {
@@ -222,81 +222,81 @@ var hiprint = function (t) {
       return this.dpi;
     }
   }, hinnn.mm = {
-    toPt: function toPt(t) {
-      return 72 / 25.4 * t;
+    toPt: function toPt(v10061) {
+      return 72 / 25.4 * v10061;
     },
-    toPx: function toPx(t) {
-      return hinnn.pt.toPx(hinnn.mm.toPt(t));
+    toPx: function toPx(v10062) {
+      return hinnn.pt.toPx(hinnn.mm.toPt(v10062));
     }
-  }, hinnn.throttle = function (t, e, n) {
-    var i,
-      o,
-      r,
-      a = null,
-      p = 0;
-    n || (n = {});
+  }, hinnn.throttle = function (v10063, v10064, v10065) {
+    var v10066,
+      v10067,
+      v10068,
+      v10069 = null,
+      v10070 = 0;
+    v10065 || (v10065 = {});
 
-    var s = function s() {
-      p = !1 === n.leading ? 0 : _.now(), a = null, r = t.apply(i, o), a || (i = o = null);
+    var v10071 = function v10072() {
+      v10070 = !1 === v10065.leading ? 0 : _.now(), v10069 = null, v10068 = v10063.apply(v10066, v10067), v10069 || (v10066 = v10067 = null);
     };
 
     return function () {
-      var l = _.now();
+      var v10074 = _.now();
 
-      p || !1 !== n.leading || (p = l);
-      var u = e - (l - p);
-      return i = this, o = arguments, u <= 0 || u > e ? (a && (clearTimeout(a), a = null), p = l, r = t.apply(i, o), a || (i = o = null)) : a || !1 === n.trailing || (a = setTimeout(s, u)), r;
+      v10070 || !1 !== v10065.leading || (v10070 = v10074);
+      var v10076 = v10064 - (v10074 - v10070);
+      return v10066 = this, v10067 = arguments, v10076 <= 0 || v10076 > v10064 ? (v10069 && (clearTimeout(v10069), v10069 = null), v10070 = v10074, v10068 = v10063.apply(v10066, v10067), v10069 || (v10066 = v10067 = null)) : v10069 || !1 === v10065.trailing || (v10069 = setTimeout(v10071, v10076)), v10068;
     };
-  }, hinnn.debounce = function (t, e, n) {
-    var i,
-      o,
-      r,
-      a,
-      p,
-      s = function s() {
-        var l = _.now() - a;
-        l < e && l >= 0 ? i = setTimeout(s, e - l) : (i = null, n || (p = t.apply(r, o), i || (r = o = null)));
+  }, hinnn.debounce = function (v10077, v10078, v10079) {
+    var v10080,
+      v10081,
+      v10082,
+      v10083,
+      v10084,
+      v10085 = function v10086() {
+        var v10087 = _.now() - v10083;
+        v10087 < v10078 && v10087 >= 0 ? v10080 = setTimeout(v10086, v10078 - v10087) : (v10080 = null, v10079 || (v10084 = v10077.apply(v10082, v10081), v10080 || (v10082 = v10081 = null)));
       };
 
     return function () {
-      r = this, o = arguments, a = _.now();
-      var l = n && !i;
-      return i || (i = setTimeout(s, e)), l && (p = t.apply(r, o), r = o = null), p;
+      v10082 = this, v10081 = arguments, v10083 = _.now();
+      var v10090 = v10079 && !v10080;
+      return v10080 || (v10080 = setTimeout(v10085, v10078)), v10090 && (v10084 = v10077.apply(v10082, v10081), v10082 = v10081 = null), v10084;
     };
-  }, hinnn.toUtf8 = function (t) {
-    var e, n, i, o;
+  }, hinnn.toUtf8 = function (v10091) {
+    var v10092, v10093, v10094, v10095;
 
-    for (e = "", i = t.length, n = 0; n < i; n++) {
-      (o = t.charCodeAt(n)) >= 1 && o <= 127 ? e += t.charAt(n) : o > 2047 ? (e += String.fromCharCode(224 | o >> 12 & 15), e += String.fromCharCode(128 | o >> 6 & 63), e += String.fromCharCode(128 | o >> 0 & 63)) : (e += String.fromCharCode(192 | o >> 6 & 31), e += String.fromCharCode(128 | o >> 0 & 63));
+    for (v10092 = "", v10094 = v10091.length, v10093 = 0; v10093 < v10094; v10093++) {
+      (v10095 = v10091.charCodeAt(v10093)) >= 1 && v10095 <= 127 ? v10092 += v10091.charAt(v10093) : v10095 > 2047 ? (v10092 += String.fromCharCode(224 | v10095 >> 12 & 15), v10092 += String.fromCharCode(128 | v10095 >> 6 & 63), v10092 += String.fromCharCode(128 | v10095 >> 0 & 63)) : (v10092 += String.fromCharCode(192 | v10095 >> 6 & 31), v10092 += String.fromCharCode(128 | v10095 >> 0 & 63));
     }
 
-    return e;
-  }, hinnn.groupBy = function (t, e, n) {
-    var i = {};
-    return t.forEach(function (t) {
-      var o = JSON.stringify(n(t));
-      i[o] || (i[o] = {
+    return v10092;
+  }, hinnn.groupBy = function (v10096, v10097, v10098) {
+    var v10099 = {};
+    return v10096.forEach(function (v10100) {
+      var v10101 = JSON.stringify(v10098(v10100));
+      v10099[v10101] || (v10099[v10101] = {
         rows: []
-      }, e.forEach(function (e) {
-        i[o][e] = t[e];
-      })), i[o].rows.push(t);
-    }), Object.keys(i).map(function (t) {
-      return i[t];
+      }, v10097.forEach(function (v10102) {
+        v10099[v10101][v10102] = v10100[v10102];
+      })), v10099[v10101].rows.push(v10100);
+    }), Object.keys(v10099).map(function (v10103) {
+      return v10099[v10103];
     });
-  }, hinnn.orderBy = function (t, e) {
-    if (t.length <= 1) return t;
-    var n = Math.floor(t.length / 2),
-      i = t.splice(n, 1)[0],
-      o = [],
-      r = [];
+  }, hinnn.orderBy = function (v10104, v10105) {
+    if (v10104.length <= 1) return v10104;
+    var v10106 = Math.floor(v10104.length / 2),
+      v10107 = v10104.splice(v10106, 1)[0],
+      v10108 = [],
+      v10109 = [];
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = t[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      for (var _iterator = v10104[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var _n = _step.value;
-        e(_n) < e(i) ? o.push(_n) : r.push(_n);
+        v10105(_n) < v10105(v10107) ? v10108.push(_n) : v10109.push(_n);
       }
     } catch (err) {
       _didIteratorError = true;
@@ -313,125 +313,125 @@ var hiprint = function (t) {
       }
     }
 
-    return this.orderBy(o, e).concat([i], this.orderBy(r, e));
-  }, hinnn.dateFormat = function (t, e) {
-    if (t) try {
-      var o = "string" == typeof t ? new Date(t) : t;
-      var n = {
-        "y+": o.getFullYear(),
-        "M+": o.getMonth() + 1,
-        "d+": o.getDate(),
-        "H+": o.getHours(),
-        "m+": o.getMinutes(),
-        "s+": o.getSeconds(),
-        "q+": Math.floor((o.getMonth() + 3) / 3),
-        S: o.getMilliseconds()
+    return this.orderBy(v10108, v10105).concat([v10107], this.orderBy(v10109, v10105));
+  }, hinnn.dateFormat = function (v10110, v10111) {
+    if (v10110) try {
+      var v10112 = "string" == typeof v10110 ? new Date(v10110) : v10110;
+      var v10113 = {
+        "y+": v10112.getFullYear(),
+        "M+": v10112.getMonth() + 1,
+        "d+": v10112.getDate(),
+        "H+": v10112.getHours(),
+        "m+": v10112.getMinutes(),
+        "s+": v10112.getSeconds(),
+        "q+": Math.floor((v10112.getMonth() + 3) / 3),
+        S: v10112.getMilliseconds()
       };
 
-      for (var i in /(y+)/.test(e) && (e = e.replace(RegExp.$1, (o.getFullYear() + "").substr(4 - RegExp.$1.length))), n) {
-        new RegExp("(" + i + ")").test(e) && (e = e.replace(RegExp.$1, 1 == RegExp.$1.length ? n[i] : ("00" + n[i]).substr(("" + n[i]).length)));
+      for (var v10115 in /(y+)/.test(v10111) && (v10111 = v10111.replace(RegExp.$1, (v10112.getFullYear() + "").substr(4 - RegExp.$1.length))), v10113) {
+        new RegExp("(" + v10115 + ")").test(v10111) && (v10111 = v10111.replace(RegExp.$1, 1 == RegExp.$1.length ? v10113[v10115] : ("00" + v10113[v10115]).substr(("" + v10113[v10115]).length)));
       }
 
-      return e;
-    } catch (t) {
-      return console.log(t), "";
+      return v10111;
+    } catch (v10116) {
+      return console.log(v10116), "";
     }
     return "";
-  }, hinnn.numFormat = function (t, e) {
-    if (t != void 0) try {
-      var o = "string" == typeof t ? parseFloat(t) : t;
-      var l = parseInt(e);
-      if (l > 0) {
-        return o.toFixed(l);
+  }, hinnn.numFormat = function (v10117, v10118) {
+    if (v10117 != void 0) try {
+      var v10119 = "string" == typeof v10117 ? parseFloat(v10117) : v10117;
+      var v10120 = parseInt(v10118);
+      if (v10120 > 0) {
+        return v10119.toFixed(v10120);
       }
-      return parseInt(o.toString());
-    } catch (t) {
-      return console.log(t), "";
+      return parseInt(v10119.toString());
+    } catch (v10121) {
+      return console.log(v10121), "";
     }
     return "";
-  }, hinnn.toUpperCase = function(type, val) {
+  }, hinnn.toUpperCase = function (type, val) {
     if (!Nzh) return val;
     var backStr = val;
     switch (type) {
-		case "0":
-			backStr = Nzh.cn.encodeS(val);
-			break;
-		case "1":
-			backStr = Nzh.cn.encodeS(val, {tenMin: false});
-			break;
-		case "2":
-			backStr = Nzh.cn.encodeB(val, {tenMin: true});
-			break;
-		case "3":
-			backStr = Nzh.cn.encodeB(val);
-			break;
-		case "4":
-			backStr = Nzh.cn.toMoney(val, {tenMin: true});
-			break;
-		case "5":
-			backStr = Nzh.cn.toMoney(val);
-			break;
-		case "6":
-			backStr = Nzh.cn.toMoney(val, {complete: true});
-			break;
-		case "7":
-			backStr = Nzh.cn.toMoney(val, {complete: true, outSymbol: false});
-			break;
-	}
+      case "0":
+        backStr = Nzh.cn.encodeS(val);
+        break;
+      case "1":
+        backStr = Nzh.cn.encodeS(val, { tenMin: false });
+        break;
+      case "2":
+        backStr = Nzh.cn.encodeB(val, { tenMin: true });
+        break;
+      case "3":
+        backStr = Nzh.cn.encodeB(val);
+        break;
+      case "4":
+        backStr = Nzh.cn.toMoney(val, { tenMin: true });
+        break;
+      case "5":
+        backStr = Nzh.cn.toMoney(val);
+        break;
+      case "6":
+        backStr = Nzh.cn.toMoney(val, { complete: true });
+        break;
+      case "7":
+        backStr = Nzh.cn.toMoney(val, { complete: true, outSymbol: false });
+        break;
+    }
     return backStr;
   };
-}, function (t, e, n) {
+}, function (v10122, v10123, v10124) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return o;
+  v10124.d(v10123, "a", function () {
+    return v10126;
   });
 
-  var i = n(9),
-    o = function () {
-      function t() {
+  var v10127 = v10124(9),
+    v10126 = function () {
+      function v10128() {
+
         // see hiprint.config.js
       }
-
-      return t.prototype.init = function (t) {
-        t && $.extend(this, t);
-      }, t.prototype.on = function (t, c) {
-        hinnn.event.on(t, c);
-      }, t.prototype.clear = function (t) {
-        hinnn.event.clear(t);
-      }, t.prototype.registerItems = function (items) {
-        items.forEach(function (t) {
-          i.a.registerItem(new t());
+      return v10128.prototype.init = function (v10129) {
+        v10129 && $.extend(this, v10129);
+      }, v10128.prototype.on = function (v10130, v10131) {
+        hinnn.event.on(v10130, v10131);
+      }, v10128.prototype.clear = function (v10132) {
+        hinnn.event.clear(v10132);
+      }, v10128.prototype.registerItems = function (items) {
+        items.forEach(function (v10133) {
+          v10127.a.registerItem(new v10133());
         });
-      }, Object.defineProperty(t, "instance", {
+      }, Object.defineProperty(v10128, "instance", {
         get: function get() {
-          return t._instance || (t._instance = new t(), window.HIPRINT_CONFIG && $.extend(t._instance, HIPRINT_CONFIG), t._instance.optionItems && t._instance.optionItems.forEach(function (t) {
-            i.a.registerItem(new t());
-          })), t._instance;
+          return v10128._instance || (v10128._instance = new v10128(), window.HIPRINT_CONFIG && $.extend(v10128._instance, HIPRINT_CONFIG), v10128._instance.optionItems && v10128._instance.optionItems.forEach(function (v10135) {
+            v10127.a.registerItem(new v10135());
+          })), v10128._instance;
         },
         enumerable: !0,
         configurable: !0
-      }), t;
+      }), v10128;
     }();
-}, function (t, e, n) {
+}, function (v10137, v10138, v10139) {
   "use strict";
 
-  var i = function () {
-    function t(t) {
-      this.printElement = t;
+  var v10140 = function () {
+    function v10142(v10141) {
+      this.printElement = v10141;
     }
 
-    return t.prototype.updatePosition = function (t, e) {
-      this.left = t, this.top = e;
-    }, t;
+    return v10142.prototype.updatePosition = function (v10143, v10144) {
+      this.left = v10143, this.top = v10144;
+    }, v10142;
   }();
 
-  n.d(e, "a", function () {
-    return o;
+  v10139.d(v10138, "a", function () {
+    return v10146;
   });
 
-  var o = function () {
-    function t() {
+  var v10146 = function () {
+    function v10147() {
       this.printTemplateContainer = {}, this.A1 = {
         width: 841,
         height: 594
@@ -480,163 +480,163 @@ var hiprint = function (t) {
       }, this.B8 = {
         width: 62,
         height: 88
-      }, this.dragLengthCNum = function (t, e) {
-        var n = .75 * t;
-        return e && (e = e), Math.round(n / e) * e;
+      }, this.dragLengthCNum = function (v10148, v10149) {
+        var v10150 = .75 * v10148;
+        return v10149 && (v10149 = v10149), Math.round(v10150 / v10149) * v10149;
       };
     }
 
-    return Object.defineProperty(t, "instance", {
+    return Object.defineProperty(v10147, "instance", {
       get: function get() {
-        return this._instance || (this._instance = new t()), this._instance;
+        return this._instance || (this._instance = new v10147()), this._instance;
       },
       enumerable: !0,
       configurable: !0
-    }), t.prototype.getDragingPrintElement = function () {
-      return t.instance.dragingPrintElement;
-    }, t.prototype.setDragingPrintElement = function (e) {
-      t.instance.dragingPrintElement = new i(e);
-    }, t.prototype.guid = function () {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (t) {
-        var e = 16 * Math.random() | 0;
-        return ("x" == t ? e : 3 & e | 8).toString(16);
+    }), v10147.prototype.getDragingPrintElement = function () {
+      return v10147.instance.dragingPrintElement;
+    }, v10147.prototype.setDragingPrintElement = function (v10151) {
+      v10147.instance.dragingPrintElement = new v10140(v10151);
+    }, v10147.prototype.guid = function () {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (v10152) {
+        var v10153 = 16 * Math.random() | 0;
+        return ("x" == v10152 ? v10153 : 3 & v10153 | 8).toString(16);
       });
-    }, t.prototype.imageToBase64 = function (t) {
-      if (-1 == $(t).attr("src").indexOf("base64")) try {
-        var e = document.createElement("canvas"),
-          n = new Image();
-        n.src = t.attr("src"), e.width = n.width, e.height = n.height, e.getContext("2d").drawImage(n, 0, 0), t.attr("src", e.toDataURL("image/png"));
-      } catch (e) {
+    }, v10147.prototype.imageToBase64 = function (v10154) {
+      if (-1 == $(v10154).attr("src").indexOf("base64")) try {
+        var v10155 = document.createElement("canvas"),
+          v10156 = new Image();
+        v10156.src = v10154.attr("src"), v10155.width = v10156.width, v10155.height = v10156.height, v10155.getContext("2d").drawImage(v10156, 0, 0), v10154.attr("src", v10155.toDataURL("image/png"));
+      } catch (v10157) {
         try {
-          this.xhrLoadImage(t);
-        } catch (t) {
-          console.log(t);
+          this.xhrLoadImage(v10154);
+        } catch (v10158) {
+          console.log(v10158);
         }
       }
-    }, t.prototype.xhrLoadImage = function (t) {
-    }, t.prototype.transformImg = function (t) {
-      var e = this;
-      t.map(function (t, n) {
-        e.imageToBase64($(n));
+    }, v10147.prototype.xhrLoadImage = function (v10159) {
+    }, v10147.prototype.transformImg = function (v10160) {
+      var v10161 = this;
+      v10160.map(function (v10162, v10163) {
+        v10161.imageToBase64($(v10163));
       });
-    }, t.prototype.getPrintTemplateById = function (e) {
-      return t.instance.printTemplateContainer[e];
-    }, t.prototype.setPrintTemplateById = function (e, n) {
-      return t.instance.printTemplateContainer[e] = n;
-    }, t;
+    }, v10147.prototype.getPrintTemplateById = function (v10164) {
+      return v10147.instance.printTemplateContainer[v10164];
+    }, v10147.prototype.setPrintTemplateById = function (v10165, v10166) {
+      return v10147.instance.printTemplateContainer[v10165] = v10166;
+    }, v10147;
   }();
-}, function (t, e, n) {
+}, function (v10167, v10168, v10169) {
   "use strict";
 
-  var i = function () {
+  var v10170 = function () {
     return function () {
     };
   }();
 
-  n.d(e, "a", function () {
-    return o;
+  v10169.d(v10168, "a", function () {
+    return v10172;
   });
 
-  var o = function () {
-    function t(t) {
-      t = t || {}, this.left = t.left, this.top = t.top, this.topInDesign = this.top, this.height = t.height, this.width = t.width, this.transform = t.transform, this.init(t);
+  var v10172 = function () {
+    function v10174(v10173) {
+      v10173 = v10173 || {}, this.left = v10173.left, this.top = v10173.top, this.topInDesign = this.top, this.height = v10173.height, this.width = v10173.width, this.transform = v10173.transform, this.init(v10173);
     }
 
-    return t.prototype.setDefault = function (t) {
-      this.defaultOptions = t, this.initSize();
-      Object.keys(this.defaultOptions).forEach(key => {
+    return v10174.prototype.setDefault = function (v10175) {
+      this.defaultOptions = v10175, this.initSize();
+      Object.keys(this.defaultOptions).forEach((key) => {
         this[key] = this[key] || this.defaultOptions[key];
-      })
-    }, t.prototype.initSize = function () {
+      });
+    }, v10174.prototype.initSize = function () {
       this.width || this.setWidth(this.defaultOptions.width), this.height || this.setHeight(this.defaultOptions.height);
-    }, t.prototype.initSizeByHtml = function (t, e) {
-      this.width || this.setWidth(t), this.height || this.setHeight(e);
-    }, t.prototype.getRectInfo = function () {
-      var d = {w: 0, h: 0, diffW: 0, diffH: 0};
+    }, v10174.prototype.initSizeByHtml = function (v10176, v10177) {
+      this.width || this.setWidth(v10176), this.height || this.setHeight(v10177);
+    }, v10174.prototype.getRectInfo = function () {
+      var v10178 = { w: 0, h: 0, diffW: 0, diffH: 0 };
       if (this.transform) {
         var rad = this.transform * Math.PI / 180,
-          width = this.width, height = this.height,
-          sin = Math.sin(rad), cos = Math.cos(rad),
-          w = Math.abs(width * cos) + Math.abs(height * sin),
-          h = Math.abs(width * sin) + Math.abs(height * cos),
-          diffW = (width - w) / 2, diffH = (height - h) / 2;
-        d.w = w, d.h = h, d.diffW = diffW, d.diffH = diffH;
+          width = this.width,height = this.height,
+          sin = Math.sin(rad),cos = Math.cos(rad),
+          v10179 = Math.abs(width * cos) + Math.abs(height * sin),
+          v10180 = Math.abs(width * sin) + Math.abs(height * cos),
+          diffW = (width - v10179) / 2,diffH = (height - v10180) / 2;
+        v10178.w = v10179, v10178.h = v10180, v10178.diffW = diffW, v10178.diffH = diffH;
       }
-      return d;
-    }, t.prototype.getLeft = function () {
+      return v10178;
+    }, v10174.prototype.getLeft = function () {
       return this.left;
-    }, t.prototype.posLeft = function () {
+    }, v10174.prototype.posLeft = function () {
       var left = this.left;
       if (this.transform) left += this.getRectInfo().diffW;
       return Math.floor(left * 10) / 10;
-    }, t.prototype.setRotate = function (t) {
-      null != t && (this.transform = t);
-    }, t.prototype.displayLeft = function (t) {
-      if (this.transform && t) {
+    }, v10174.prototype.setRotate = function (v10183) {
+      null != v10183 && (this.transform = v10183);
+    }, v10174.prototype.displayLeft = function (v10184) {
+      if (this.transform && v10184) {
         return this.left + this.getRectInfo().diffW + "pt";
       }
       return this.left + "pt";
-    }, t.prototype.setLeft = function (t) {
-      null != t && (this.left = t);
-    }, t.prototype.getTop = function () {
+    }, v10174.prototype.setLeft = function (v10185) {
+      null != v10185 && (this.left = v10185);
+    }, v10174.prototype.getTop = function () {
       return this.top;
-    }, t.prototype.posTop = function () {
+    }, v10174.prototype.posTop = function () {
       var top = this.top;
       if (this.transform) top += this.getRectInfo().diffH;
       return Math.floor(top * 10) / 10;
-    }, t.prototype.getTopInDesign = function () {
+    }, v10174.prototype.getTopInDesign = function () {
       return this.topInDesign;
-    }, t.prototype.displayTop = function (t) {
-      if (this.transform && t) {
+    }, v10174.prototype.displayTop = function (v10186) {
+      if (this.transform && v10186) {
         return this.top + this.getRectInfo().diffH + "pt";
       }
       return this.top + "pt";
-    }, t.prototype.setTop = function (t) {
-      null != t && (this.top = t);
-    }, t.prototype.copyDesignTopFromTop = function () {
+    }, v10174.prototype.setTop = function (v10187) {
+      null != v10187 && (this.top = v10187);
+    }, v10174.prototype.copyDesignTopFromTop = function () {
       this.topInDesign = this.top;
-    }, t.prototype.getHeight = function () {
+    }, v10174.prototype.getHeight = function () {
       if (this.transform) {
-        var i = this.getRectInfo();
-        return i.h + i.diffH;
+        var v10188 = this.getRectInfo();
+        return v10188.h + v10188.diffH;
       }
       return this.height;
-    }, t.prototype.displayHeight = function () {
+    }, v10174.prototype.displayHeight = function () {
       return this.height + "pt";
-    }, t.prototype.setHeight = function (t) {
-      null != t && (this.height = t);
-    }, t.prototype.getWidth = function () {
+    }, v10174.prototype.setHeight = function (v10190) {
+      null != v10190 && (this.height = v10190);
+    }, v10174.prototype.getWidth = function () {
       if (this.transform) {
-        var i = this.getRectInfo();
-        return i.w + i.diffW;
+        var v10191 = this.getRectInfo();
+        return v10191.w + v10191.diffW;
       }
       return this.width;
-    }, t.prototype.displayWidth = function () {
+    }, v10174.prototype.displayWidth = function () {
       return this.width + "pt";
-    }, t.prototype.setWidth = function (t) {
-      null != t && (this.width = t);
-    }, t.prototype.getValueFromOptionsOrDefault = function (t) {
-      return null == this[t] ? this.defaultOptions[t] : this[t];
-    }, t.prototype.getPrintElementOptionEntity = function () {
-      var t = new i(),
-        e = this;
-      return Object.keys(this).filter(function (t) {
-        return "topInDesign" != t;
-      }).forEach(function (n) {
-        if ("number" != typeof e[n] && "string" != typeof e[n] && !['fields'].includes(n) && _typeof(e[n]) != _typeof(!0) || (t[n] = e[n]), "style" == n) {
-          t.style = {};
-          var i = e[n];
-          if (i) Object.keys(i).forEach(function (e) {
-            "number" != typeof i[e] && "string" != typeof i[e] || (t.style[e] = i[e]);
+    }, v10174.prototype.setWidth = function (v10193) {
+      null != v10193 && (this.width = v10193);
+    }, v10174.prototype.getValueFromOptionsOrDefault = function (v10194) {
+      return null == this[v10194] ? this.defaultOptions[v10194] : this[v10194];
+    }, v10174.prototype.getPrintElementOptionEntity = function () {
+      var v10195 = new v10170(),
+        v10196 = this;
+      return Object.keys(this).filter(function (v10197) {
+        return "topInDesign" != v10197;
+      }).forEach(function (v10198) {
+        if ("number" != typeof v10196[v10198] && "string" != typeof v10196[v10198] && !['fields'].includes(v10198) && _typeof(v10196[v10198]) != _typeof(!0) || (v10195[v10198] = v10196[v10198]), "style" == v10198) {
+          v10195.style = {};
+          var v10199 = v10196[v10198];
+          if (v10199) Object.keys(v10199).forEach(function (v10200) {
+            "number" != typeof v10199[v10200] && "string" != typeof v10199[v10200] || (v10195.style[v10200] = v10199[v10200]);
           });
         }
-      }), t;
-    }, t.prototype.init = function (t) {
-      var e = this;
-      t && Object.keys(t).forEach(function (n) {
-        e[n] = t[n];
+      }), v10195;
+    }, v10174.prototype.init = function (v10201) {
+      var v10202 = this;
+      v10201 && Object.keys(v10201).forEach(function (v10203) {
+        v10202[v10203] = v10201[v10203];
       });
-    }, t;
+    }, v10174;
   }();
 }, function (module, __webpack_exports__, __webpack_require__) {
   "use strict";
@@ -653,561 +653,561 @@ var hiprint = function (t) {
     _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8),
     _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2),
     BasePrintElement = function () {
-      function BasePrintElement(t) {
-        this.printElementType = t, this.id = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.guid();
+      function BasePrintElement(v10205) {
+        this.printElementType = v10205, this.id = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.guid();
       }
 
-      return BasePrintElement.prototype.getConfigOptionsByName = function (t) {
-        return _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance[t];
-      }, BasePrintElement.prototype.getProxyTarget = function (t) {
-        t && this.SetProxyTargetOption(t);
-        var e = this.getData(),
-          n = this.createTarget(this.getTitle(), e);
-        return this.updateTargetSize(n), this.css(n, e), n;
-      }, BasePrintElement.prototype.SetProxyTargetOption = function (t) {
+      return BasePrintElement.prototype.getConfigOptionsByName = function (v10207) {
+        return _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance[v10207];
+      }, BasePrintElement.prototype.getProxyTarget = function (v10209) {
+        v10209 && this.SetProxyTargetOption(v10209);
+        var v10210 = this.getData(),
+          v10211 = this.createTarget(this.getTitle(), v10210);
+        return this.updateTargetSize(v10211), this.css(v10211, v10210), v10211;
+      }, BasePrintElement.prototype.SetProxyTargetOption = function (v10212) {
         this.options.getPrintElementOptionEntity();
-        $.extend(this.options, t);
-        this.copyFromType()
-      }, BasePrintElement.prototype.showInPage = function (t, e) {
-        var n = this.options.showInPage,
-          i = this.options.unShowInPage;
+        $.extend(this.options, v10212);
+        this.copyFromType();
+      }, BasePrintElement.prototype.showInPage = function (v10213, v10214) {
+        var v10215 = this.options.showInPage,
+          v10216 = this.options.unShowInPage;
 
-        if (n) {
-          if ("first" == n) return 0 == t;
-          if (t == e - 1 && "last" == i) return !1;
-          if ("odd" == n) return (0 != t || "first" != i) && t % 2 == 0;
-          if ("even" == n) return t % 2 == 1;
-          if ("last" == n) return t == e - 1;
+        if (v10215) {
+          if ("first" == v10215) return 0 == v10213;
+          if (v10213 == v10214 - 1 && "last" == v10216) return !1;
+          if ("odd" == v10215) return (0 != v10213 || "first" != v10216) && v10213 % 2 == 0;
+          if ("even" == v10215) return v10213 % 2 == 1;
+          if ("last" == v10215) return v10213 == v10214 - 1;
         }
 
-        return (0 != t || "first" != i) && (t != e - 1 || "last" != i);
-      }, BasePrintElement.prototype.setTemplateId = function (t) {
-        this.templateId = t;
-      }, BasePrintElement.prototype.setPanel = function (t) {
-        this.panel = t;
+        return (0 != v10213 || "first" != v10216) && (v10213 != v10214 - 1 || "last" != v10216);
+      }, BasePrintElement.prototype.setTemplateId = function (v10217) {
+        this.templateId = v10217;
+      }, BasePrintElement.prototype.setPanel = function (v10218) {
+        this.panel = v10218;
       }, BasePrintElement.prototype.getField = function () {
         return this.options.field || this.printElementType.field;
       }, BasePrintElement.prototype.getTitle = function () {
         return this.printElementType.title;
-      }, BasePrintElement.prototype.updateSizeAndPositionOptions = function (t, e, n, i) {
-        const template = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId)
+      }, BasePrintElement.prototype.updateSizeAndPositionOptions = function (v10219, v10220, v10221, v10222) {
+        const template = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId);
         if (this.panel !== void 0 && !template.willOutOfBounds) {
-          const panelWidthPt = hinnn.mm.toPt(this.panel.width)
-          const panelHeightPt = hinnn.mm.toPt(this.panel.height)
-          if (t < 0) {
-            return
+          const panelWidthPt = hinnn.mm.toPt(this.panel.width);
+          const panelHeightPt = hinnn.mm.toPt(this.panel.height);
+          if (v10219 < 0) {
+            return;
           }
-          if (e < 0) {
-            return
+          if (v10220 < 0) {
+            return;
           }
-          if (t + this.options.width > panelWidthPt) {
-            return
+          if (v10219 + this.options.width > panelWidthPt) {
+            return;
           }
-          if (e + this.options.height > panelHeightPt) {
-            return
+          if (v10220 + this.options.height > panelHeightPt) {
+            return;
           }
         }
-        this.options.setLeft(t), this.options.setTop(e), this.options.copyDesignTopFromTop(), this.options.setWidth(n), this.options.setHeight(i);
-      }, BasePrintElement.prototype.initSizeByHtml = function (t) {
-        if (t && t.length) {
+        this.options.setLeft(v10219), this.options.setTop(v10220), this.options.copyDesignTopFromTop(), this.options.setWidth(v10221), this.options.setHeight(v10222);
+      }, BasePrintElement.prototype.initSizeByHtml = function (v10224) {
+        if (v10224 && v10224.length) {
           this.createTempContainer();
-          var e = t.clone();
-          this.getTempContainer().append(e), this.options.initSizeByHtml(parseInt(hinnn.px.toPt(e.width()).toString()), parseInt(hinnn.px.toPt(e.height()).toString())), this.removeTempContainer();
+          var v10225 = v10224.clone();
+          this.getTempContainer().append(v10225), this.options.initSizeByHtml(parseInt(hinnn.px.toPt(v10225.width()).toString()), parseInt(hinnn.px.toPt(v10225.height()).toString())), this.removeTempContainer();
         }
-      }, BasePrintElement.prototype.updateTargetSize = function (t) {
-        t.css("width", this.options.displayWidth()), t.css("height", this.options.displayHeight());
-      }, BasePrintElement.prototype.updateTargetWidth = function (t) {
-        t.css("width", this.options.displayWidth());
-      }, BasePrintElement.prototype.getDesignTarget = function (t) {
-        var e = this, lastTimeStamp = 0;
-        return this.designTarget = this.getHtml(t)[0].target, this.designPaper = t, this.designTarget.click(function (ev) {
+      }, BasePrintElement.prototype.updateTargetSize = function (v10226) {
+        v10226.css("width", this.options.displayWidth()), v10226.css("height", this.options.displayHeight());
+      }, BasePrintElement.prototype.updateTargetWidth = function (v10227) {
+        v10227.css("width", this.options.displayWidth());
+      }, BasePrintElement.prototype.getDesignTarget = function (v10228) {
+        var v10229 = this,lastTimeStamp = 0;
+        return this.designTarget = this.getHtml(v10228)[0].target, this.designPaper = v10228, this.designTarget.click(function (ev) {
           if (ev.timeStamp - lastTimeStamp > 500) {
-            hinnn.event.trigger(e.getPrintElementSelectEventKey(), {
-              printElement: e
+            hinnn.event.trigger(v10229.getPrintElementSelectEventKey(), {
+              printElement: v10229
             });
           }
           lastTimeStamp = ev.timeStamp;
         }), this.designTarget.dblclick(function (ev) {
-          var c = e.designTarget.find(".hiprint-printElement-content");
-          if (c) {
-            var p = e.designTarget.find(".resize-panel");
-            if (e.printElementType.type == "text" && !(e.options.textType && "text" != e.options.textType)) {
-              e._editing = true;
-              e.designTarget.hidraggable('update', {draggable: false});
-              c.css("cursor", "text"), c.addClass("editing");
-              e.designTarget.addClass("editing");
-              c.click(function (ev) {
-                if (e._editing) {
+          var v10230 = v10229.designTarget.find(".hiprint-printElement-content");
+          if (v10230) {
+            var v10231 = v10229.designTarget.find(".resize-panel");
+            if (v10229.printElementType.type == "text" && !(v10229.options.textType && "text" != v10229.options.textType)) {
+              v10229._editing = true;
+              v10229.designTarget.hidraggable('update', { draggable: false });
+              v10230.css("cursor", "text"), v10230.addClass("editing");
+              v10229.designTarget.addClass("editing");
+              v10230.click(function (ev) {
+                if (v10229._editing) {
                   ev.stopPropagation();
                 }
-              })
-              c.attr("contenteditable", true), p && p.css("display", "none");
-              e.selectEnd(c);
+              });
+              v10230.attr("contenteditable", true), v10231 && v10231.css("display", "none");
+              v10229.selectEnd(v10230);
             }
           }
         }), this.designTarget;
       }, BasePrintElement.prototype.selectEnd = function (el) {
         el.focus();
-        if (typeof window.getSelection != "undefined"
-          && typeof document.createRange != "undefined") {
-          var r = document.createRange();
-          r.selectNodeContents(el[0]);
-          r.collapse(false);
+        if (typeof window.getSelection != "undefined" &&
+        typeof document.createRange != "undefined") {
+          var v10232 = document.createRange();
+          v10232.selectNodeContents(el[0]);
+          v10232.collapse(false);
           var sel = window.getSelection();
           sel.removeAllRanges();
-          sel.addRange(r);
+          sel.addRange(v10232);
         } else if (typeof document.body.createTextRange != "undefined") {
-          var r = document.body.createTextRange();
-          r.moveToElementText(el[0]), r.collapse(false), r.select();
+          var v10232 = document.body.createTextRange();
+          v10232.moveToElementText(el[0]), v10232.collapse(false), v10232.select();
         }
       }, BasePrintElement.prototype.updateByContent = function (clear) {
-        var e = this, c = e.designTarget.find(".hiprint-printElement-content");
-        if (e._editing) {
-          c && c.css("cursor", "") && c.removeClass("editing") && c.removeAttr("contenteditable");
-          e.designTarget.removeClass("editing");
-          var t = c.text(), title = e.options.title;
-          if (t.startsWith(title) && e.options.field) {
-            if (t.length > title.length) {
-              e.options.testData = t.split("：")[1];
+        var v10233 = this,v10234 = v10233.designTarget.find(".hiprint-printElement-content");
+        if (v10233._editing) {
+          v10234 && v10234.css("cursor", "") && v10234.removeClass("editing") && v10234.removeAttr("contenteditable");
+          v10233.designTarget.removeClass("editing");
+          var v10235 = v10234.text(),title = v10233.options.title;
+          if (v10235.startsWith(title) && v10233.options.field) {
+            if (v10235.length > title.length) {
+              v10233.options.testData = v10235.split("：")[1];
             } else {
-              e.options.title = t;
-              e.options.testData = "";
+              v10233.options.title = v10235;
+              v10233.options.testData = "";
             }
           } else {
-            e.options.title = t;
+            v10233.options.title = v10235;
           }
-          e.options.title = e.options.title.split("：")[0]
+          v10233.options.title = v10233.options.title.split("：")[0];
           if (!clear) {
-            hinnn.event.trigger(e.getPrintElementSelectEventKey(), {
-              printElement: e
+            hinnn.event.trigger(v10233.getPrintElementSelectEventKey(), {
+              printElement: v10233
             });
           }
-          e.updateDesignViewFromOptions(), hinnn.event.trigger("hiprintTemplateDataChanged_" + e.templateId, "编辑修改");
-          e._editing = false;
-          var draggable = e.options.draggable == undefined || true == e.options.draggable;
-          e.designTarget.hidraggable('update', {draggable: draggable});
+          v10233.updateDesignViewFromOptions(), hinnn.event.trigger("hiprintTemplateDataChanged_" + v10233.templateId, "编辑修改");
+          v10233._editing = false;
+          var draggable = v10233.options.draggable == undefined || true == v10233.options.draggable;
+          v10233.designTarget.hidraggable('update', { draggable: draggable });
         }
       }, BasePrintElement.prototype.getPrintElementSelectEventKey = function () {
         return "PrintElementSelectEventKey_" + this.templateId;
-      }, BasePrintElement.prototype.design = function (t, e) {
-        var n = this;
+      }, BasePrintElement.prototype.design = function (v10236, v10237) {
+        var v10238 = this;
         this.designTarget.hidraggable({
           // 添加 draggable 属性
-          draggable: n.options.draggable,
-          axis: n.options.axis ? n.options.axis : void 0,
-          designTarget: n,
-          onDrag: function onDrag(t, i, o) {
+          draggable: v10238.options.draggable,
+          axis: v10238.options.axis ? v10238.options.axis : void 0,
+          designTarget: v10238,
+          onDrag: function onDrag(v10239, v10240, v10241) {
             // 处理按住 ctrl / command 多选元素
-            var els = n.panel.printElements.filter(function (t) {
-              return ('block' == t.designTarget.children().last().css('display')
-                && t.designTarget.children().last().hasClass('selected')) && !t.printElementType.type.includes('table');
+            var els = v10238.panel.printElements.filter(function (v10242) {
+              return 'block' == v10242.designTarget.children().last().css('display') &&
+              v10242.designTarget.children().last().hasClass('selected') && !v10242.printElementType.type.includes('table');
             });
             var isMultiple = els.length > 1;
-            var notSelected = !n.designTarget.children().last().hasClass('selected');
+            var notSelected = !v10238.designTarget.children().last().hasClass('selected');
             if (isMultiple) {
-              var left = i - n.options.left, top = o - n.options.top;
-              els.forEach(function (t) {
-                t.updateSizeAndPositionOptions(left + t.options.getLeft(), top + t.options.getTop()),
-                  t.designTarget.css("left", t.options.displayLeft()), t.designTarget.css("top", t.options.displayTop());
-                t.createLineOfPosition(e);
-              })
+              var left = v10240 - v10238.options.left,top = v10241 - v10238.options.top;
+              els.forEach(function (v10243) {
+                v10243.updateSizeAndPositionOptions(left + v10243.options.getLeft(), top + v10243.options.getTop()),
+                v10243.designTarget.css("left", v10243.options.displayLeft()), v10243.designTarget.css("top", v10243.options.displayTop());
+                v10243.createLineOfPosition(v10237);
+              });
               if (notSelected) {
-                n.updateSizeAndPositionOptions(i, o), n.createLineOfPosition(e);
+                v10238.updateSizeAndPositionOptions(v10240, v10241), v10238.createLineOfPosition(v10237);
               }
             } else {
-              n.updateSizeAndPositionOptions(i, o), n.createLineOfPosition(e);
+              v10238.updateSizeAndPositionOptions(v10240, v10241), v10238.createLineOfPosition(v10237);
             }
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.changed = !0;
           },
           moveUnit: "pt",
           minMove: _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.movingDistance,
-          onBeforeDrag: function onBeforeDrag(t) {
-            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !0, n.designTarget.focus(), n.createLineOfPosition(e);
+          onBeforeDrag: function onBeforeDrag(v10246) {
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !0, v10238.designTarget.focus(), v10238.createLineOfPosition(v10237);
           },
           onBeforeSelectAllDrag: function onBeforeSelectAllDrag() {
-            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !0, n.designTarget.focus()
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !0, v10238.designTarget.focus();
           },
           getScale: function getScale() {
-            return n.designPaper.scale || 1;
+            return v10238.designPaper.scale || 1;
           },
-          onStopDrag: function onStopDrag(t) {
+          onStopDrag: function onStopDrag(v10249) {
             // 普通元素拖动结束事件history
-            if (_HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.changed) hinnn.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "移动");
+            if (_HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.changed) hinnn.event.trigger("hiprintTemplateDataChanged_" + v10238.templateId, "移动");
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !1,
-              _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.changed = !1;
-            var els = n.panel.printElements.filter(function (t) {
-              return 'block' == t.designTarget.children().last().css('display') && !t.printElementType.type.includes('table');
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.changed = !1;
+            var els = v10238.panel.printElements.filter(function (v10253) {
+              return 'block' == v10253.designTarget.children().last().css('display') && !v10253.printElementType.type.includes('table');
             });
             if (els.length > 1) {
-              els.forEach(function (t) { t.removeLineOfPosition() })
-            } else n.removeLineOfPosition();
+              els.forEach(function (v10254) {v10254.removeLineOfPosition();});
+            } else v10238.removeLineOfPosition();
           }
-        }), this.setResizePanel(), this.bingCopyEvent(this.designTarget), this.bingKeyboardMoveEvent(this.designTarget, e);
-      }, BasePrintElement.prototype.getPrintElementEntity = function (t) {
-        return t ? new _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__.a(void 0, this.options.getPrintElementOptionEntity(), this.printElementType.getPrintElementTypeEntity()) : new _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__.a(this.printElementType.tid, this.options.getPrintElementOptionEntity());
+        }), this.setResizePanel(), this.bingCopyEvent(this.designTarget), this.bingKeyboardMoveEvent(this.designTarget, v10237);
+      }, BasePrintElement.prototype.getPrintElementEntity = function (v10255) {
+        return v10255 ? new _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__.a(void 0, this.options.getPrintElementOptionEntity(), this.printElementType.getPrintElementTypeEntity()) : new _entity_PrintElementEntity__WEBPACK_IMPORTED_MODULE_0__.a(this.printElementType.tid, this.options.getPrintElementOptionEntity());
       }, BasePrintElement.prototype.submitOption = function () {
-        var els = this.panel.printElements.filter(function (t) {
-            return ('block' == t.designTarget.children().last().css('display')
-              && t.designTarget.children().last().hasClass('selected'))
-              && !t.printElementType.type.includes('table');
+        var els = this.panel.printElements.filter(function (v10258) {
+          return 'block' == v10258.designTarget.children().last().css('display') &&
+          v10258.designTarget.children().last().hasClass('selected') &&
+          !v10258.printElementType.type.includes('table');
+        });
+        els = els.filter((ele) => ele.printElementType.type == this.printElementType.type);
+        var v10259 = this,v10260 = this.getConfigOptions();
+        if (v10260 && v10260.tabs && v10260.tabs.length) {
+          this.getPrintElementOptionTabs().forEach(function (tab) {
+            // 样式更新要应用到其他选中的同种元素
+            if (tab.name === "样式" && els.length) {
+              tab.list.forEach(function (v10261) {
+                els.forEach((ele) => {
+                  var v10262 = v10261.getValue(),
+                    v10263 = 'textType' == v10261.name && ele.options[v10261.name] !== v10262,
+                    v10264 = 'axis' == v10261.name && ele.options[v10261.name] !== v10262;
+                  v10262 && "object" == _typeof(v10262) ? Object.keys(v10262).forEach(function (v10265) {
+                    ele.options[v10265] = v10262[v10265];
+                  }) : ele.options[v10261.name] = v10262;
+                  if (v10263) {
+                    ele.setResizePanel();
+                  }
+                  if (v10264) {
+                    ele.designTarget.hidraggable('update', { axis: v10262 });
+                  }
+                });
+              });
+            } else {
+              tab.list.forEach(function (v10266) {
+                var v10267 = v10266.getValue(),v10268 = 'textType' == v10266.name && v10259.options[v10266.name] !== v10267,
+                  v10269 = 'axis' == v10266.name && v10259.options[v10266.name] !== v10267;
+                v10267 && "object" == _typeof(v10267) ? Object.keys(v10267).forEach(function (v10270) {
+                  v10259.options[v10270] = v10267[v10270];
+                }) : v10259.options[v10266.name] = v10267;
+                if (v10268) {
+                  v10259.setResizePanel();
+                }
+                if (v10269) {
+                  v10259.designTarget.hidraggable('update', { axis: v10267 });
+                }
+              });
+            }
           });
-          els = els.filter(ele => ele.printElementType.type == this.printElementType.type)
-          var t = this, o = this.getConfigOptions();
-          if (o && o.tabs && o.tabs.length) {
-            this.getPrintElementOptionTabs().forEach(function (tab) {
-              // 样式更新要应用到其他选中的同种元素
-              if(tab.name === "样式" && els.length){
-                tab.list.forEach(function (e) {
-                  els.forEach(ele => {
-                    var n = e.getValue(),
-                      r = 'textType' == e.name && ele.options[e.name] !== n,
-                      a = 'axis' == e.name && ele.options[e.name] !== n;
-                    n && "object" == _typeof(n) ? Object.keys(n).forEach(function (e) {
-                      ele.options[e] = n[e];
-                    }) : ele.options[e.name] = n;
-                    if (r) {
-                      ele.setResizePanel()
-                    }
-                    if (a) {
-                      ele.designTarget.hidraggable('update', { axis: n })
-                    }
-                  })
-                })
-              }else{
-                tab.list.forEach(function (e) {
-                  var n = e.getValue(), r = 'textType' == e.name && t.options[e.name] !== n,
-                    a = 'axis' == e.name && t.options[e.name] !== n;
-                  n && "object" == _typeof(n) ? Object.keys(n).forEach(function (e) {
-                    t.options[e] = n[e];
-                  }) : t.options[e.name] = n;
-                  if (r) {
-                    t.setResizePanel()
-                  }
-                  if (a) {
-                    t.designTarget.hidraggable('update', {axis: n})
-                  }
-                })
-              }
-            });
-          } else {
-            this.getPrintElementOptionItems().forEach(function (e) {
-              var n = e.getValue(), r = 'textType' == e.name && t.options[e.name] !== n,
-                a = 'axis' == e.name && t.options[e.name] !== n;
-              n && "object" == _typeof(n) ? Object.keys(n).forEach(function (e) {
-                t.options[e] = n[e];
-              }) : t.options[e.name] = n;
-              if (r) {
-                t.setResizePanel()
-              }
-              if (a) {
-                t.designTarget.hidraggable('update', {axis: n})
-              }
-            });
-          }
-          this.updateDesignViewFromOptions(), hinnn.event.trigger("hiprintTemplateDataChanged_" + this.templateId, "元素修改");
-      }, BasePrintElement.prototype.updateOption = function (o, v, b) {
+        } else {
+          this.getPrintElementOptionItems().forEach(function (v10271) {
+            var v10272 = v10271.getValue(),v10273 = 'textType' == v10271.name && v10259.options[v10271.name] !== v10272,
+              v10274 = 'axis' == v10271.name && v10259.options[v10271.name] !== v10272;
+            v10272 && "object" == _typeof(v10272) ? Object.keys(v10272).forEach(function (v10275) {
+              v10259.options[v10275] = v10272[v10275];
+            }) : v10259.options[v10271.name] = v10272;
+            if (v10273) {
+              v10259.setResizePanel();
+            }
+            if (v10274) {
+              v10259.designTarget.hidraggable('update', { axis: v10272 });
+            }
+          });
+        }
+        this.updateDesignViewFromOptions(), hinnn.event.trigger("hiprintTemplateDataChanged_" + this.templateId, "元素修改");
+      }, BasePrintElement.prototype.updateOption = function (v10276, v10277, v10278) {
         try {
-          var e = this.getConfigOptions();
+          var v10279 = this.getConfigOptions();
           var optionKeys = [];
-          if (e && e.tabs && e.tabs.length) {
-            e.tabs.forEach(function (n) {
-              n.options.forEach(function (e) {
-                optionKeys.push(e.name);
-              })
+          if (v10279 && v10279.tabs && v10279.tabs.length) {
+            v10279.tabs.forEach(function (v10280) {
+              v10280.options.forEach(function (v10281) {
+                optionKeys.push(v10281.name);
+              });
             });
           } else {
-            optionKeys = e.supportOptions.map(function (e) {return e.name});
+            optionKeys = v10279.supportOptions.map(function (v10282) {return v10282.name;});
           }
-          if (optionKeys && optionKeys.includes(o)) {
-            this.options[o] = v;
+          if (optionKeys && optionKeys.includes(v10276)) {
+            this.options[v10276] = v10277;
             this.updateDesignViewFromOptions();
-            if (!b) {
+            if (!v10278) {
               hinnn.event.trigger("hiprintTemplateDataChanged_" + this.templateId, "参数修改");
             }
           }
-          this._printElementOptionTabs.forEach(tab=>{
-            tab.list.forEach(item=>{
-              if(item.name === o){
-                item.target.find('select')?.val(v.toString())
-                item.target.find('input')?.val(v.toString())
+          this._printElementOptionTabs.forEach((tab) => {
+            tab.list.forEach((item) => {
+              if (item.name === v10276) {
+                item.target.find('select')?.val(v10277.toString());
+                item.target.find('input')?.val(v10277.toString());
               }
-            })
+            });
           });
-        } catch (e) {
-          console.log('updateOption error', e)
+        } catch (v10283) {
+          console.log('updateOption error', v10283);
         }
       }, BasePrintElement.prototype.getReizeableShowPoints = function () {
         return ['barcode', 'qrcode'].includes(this.options.textType) ? ["se", "s", "e", "r"] : ["s", "e", "r"];
       }, BasePrintElement.prototype.setResizePanel = function () {
-        var n = this, e = this.designPaper;
+        var v10284 = this,v10285 = this.designPaper;
         this.designTarget.hireizeable({
-          showPoints: n.getReizeableShowPoints(),
-          draggable: n.options.draggable, // 元素是否可拖拽、删除
+          showPoints: v10284.getReizeableShowPoints(),
+          draggable: v10284.options.draggable, // 元素是否可拖拽、删除
           // 是否显示宽高box
           showSizeBox: _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.showSizeBox,
           getScale: function getScale() {
-            return n.designPaper.scale || 1
+            return v10284.designPaper.scale || 1;
           },
           onBeforeResize: function onBeforeResize() {
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !0;
           },
-          onResize: function onResize(t, i, o, r, a, rt) {
+          onResize: function onResize(v10288, v10289, v10290, v10291, v10292, rt) {
             if (undefined != rt) {
-              n.onRotate(t, rt);
+              v10284.onRotate(v10288, rt);
             } else {
-              n.onResize(t, i, o, r, a)
+              v10284.onResize(v10288, v10289, v10290, v10291, v10292);
             }
-            n.createLineOfPosition(e);
+            v10284.createLineOfPosition(v10285);
           },
-          onStopResize: function onStopResize(r) {
-            hinnn.event.trigger("hiprintTemplateDataChanged_" + n.templateId, r ? "旋转" : "大小");
-            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !1, n.removeLineOfPosition();
+          onStopResize: function onStopResize(v10293) {
+            hinnn.event.trigger("hiprintTemplateDataChanged_" + v10284.templateId, v10293 ? "旋转" : "大小");
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.draging = !1, v10284.removeLineOfPosition();
           }
-        })
-      }, BasePrintElement.prototype.onRotate = function (t, r) {
-        this.options.setRotate(r);
-      }, BasePrintElement.prototype.onResize = function (t, e, n, i, o) {
-        this.updateSizeAndPositionOptions(o, i, n, e);
+        });
+      }, BasePrintElement.prototype.onRotate = function (v10295, v10296) {
+        this.options.setRotate(v10296);
+      }, BasePrintElement.prototype.onResize = function (v10297, v10298, v10299, v10300, v10301) {
+        this.updateSizeAndPositionOptions(v10301, v10300, v10299, v10298);
       }, BasePrintElement.prototype.getOrderIndex = function () {
         return this.options.getTop();
-      }, BasePrintElement.prototype.getHtml = function (t, e, n) {
-        var i = 0;
-        this.setCurrenttemplateData(e);
-        var o = [],
-          r = this.getBeginPrintTopInPaperByReferenceElement(t),
-          a = t.getPaperFooter(i);
-        this.isHeaderOrFooter() || this.isFixed() || r > a && "none" != t.panelPageRule && (o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+      }, BasePrintElement.prototype.getHtml = function (v10302, v10303, v10304) {
+        var v10305 = 0;
+        this.setCurrenttemplateData(v10303);
+        var v10306 = [],
+          v10307 = this.getBeginPrintTopInPaperByReferenceElement(v10302),
+          v10308 = v10302.getPaperFooter(v10305);
+        this.isHeaderOrFooter() || this.isFixed() || v10307 > v10308 && "none" != v10302.panelPageRule && (v10306.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
           target: void 0,
           printLine: void 0
-        })), r = r - a + t.paperHeader, i++ , a = t.getPaperFooter(i));
-        var p = this.getData(e),
-          s = this.createTarget(this.getTitle(), p, n);
-        this.updateTargetSize(s), this.css(s, p), s.css("position", "absolute"), s.css("left", this.options.displayLeft()), s.css("top", r + "pt"), o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-          target: s,
-          printLine: r + this.options.getHeight(),
+        })), v10307 = v10307 - v10308 + v10302.paperHeader, v10305++, v10308 = v10302.getPaperFooter(v10305));
+        var v10310 = this.getData(v10303),
+          v10311 = this.createTarget(this.getTitle(), v10310, v10304);
+        this.updateTargetSize(v10311), this.css(v10311, v10310), v10311.css("position", "absolute"), v10311.css("left", this.options.displayLeft()), v10311.css("top", v10307 + "pt"), v10306.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+          target: v10311,
+          printLine: v10307 + this.options.getHeight(),
           referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
             top: this.options.getTop(),
             left: this.options.getLeft(),
             height: this.options.getHeight(),
             width: this.options.getWidth(),
-            beginPrintPaperIndex: t.index,
-            bottomInLastPaper: r + this.options.getHeight(),
-            printTopInPaper: r
-          })
-        }))
-        if (e && this.options.pageBreak) {
-          o[0].target.css("top", t.paperHeader + "pt");
-          o[0].referenceElement.top = this.options.getTop() - this.options.getHeight() - t.paperHeader;
-          o[0].printLine = t.paperHeader;
-          o[0].referenceElement.bottomInLastPaper = 0;
-          o[0].referenceElement.printTopInPaper = t.paperHeader;
-          o.unshift(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-            target: s,
-            printLine: t.height,
-            referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
-              top: 0,
-              left: 0,
-              height: 0,
-              width: 0,
-              beginPrintPaperIndex: t.index,
-              bottomInLastPaper: t.height,
-              printTopInPaper: t.paperHeader
-            })
-          }))
-        }
-        return o;
-      }, BasePrintElement.prototype.getHtml2 = function (t, e, n) {
-        var i = 0;
-        this.setCurrenttemplateData(e);
-        var o = [],
-          r = this.getBeginPrintTopInPaperByReferenceElement(t),
-          a = t.getPaperFooter(i);
-        // 处理文本/辅助元素 当高度大于模板高度, 插入的分页...
-        this.isHeaderOrFooter() || this.isFixed() || ("none" != t.panelPageRule && r > a && (o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-          target: void 0,
-          printLine: void 0
-        // (e && r + this.options.getHeight() > a) --> 设计时拖拽元素高度超过页脚线时,导致报错问题
-        })), r = r - a + t.paperHeader, i++ , a = t.getPaperFooter(i)), r <= a && (e && r + this.options.getHeight() > a) && "none" != t.panelPageRule && (o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-          target: void 0,
-          printLine: void 0
-        })), r = t.paperHeader, i++ , a = t.getPaperFooter(i)));
-        var p = this.getData(e),
-          s = this.createTarget(this.getTitle(), p);
-        if ("none" == t.panelPageRule && (r + this.options.getHeight()) > a) this.updatePanelHeight(r + this.options.getHeight(), t);
-        this.updateTargetSize(s), this.css(s, p), s.css("position", "absolute"), s.css("left", this.options.displayLeft()), s.css("top", r + "pt"), o.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-          target: s,
-          printLine: r + this.options.getHeight(),
-          referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
-            top: this.options.getTop(),
-            left: this.options.getLeft(),
-            height: this.options.getHeight(),
-            width: this.options.getWidth(),
-            beginPrintPaperIndex: t.index,
-            bottomInLastPaper: r + this.options.getHeight(),
-            printTopInPaper: r
+            beginPrintPaperIndex: v10302.index,
+            bottomInLastPaper: v10307 + this.options.getHeight(),
+            printTopInPaper: v10307
           })
         }));
-        if (e && this.options.pageBreak) {
-          o[0].target.css("top", t.paperHeader + "pt");
-          o[0].referenceElement.top = this.options.getTop() - this.options.getHeight() - t.paperHeader;
-          o[0].printLine = t.paperHeader;
-          o[0].referenceElement.bottomInLastPaper = 0;
-          o[0].referenceElement.printTopInPaper = t.paperHeader;
-          o.unshift(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
-            target: s,
-            printLine: t.height,
+        if (v10303 && this.options.pageBreak) {
+          v10306[0].target.css("top", v10302.paperHeader + "pt");
+          v10306[0].referenceElement.top = this.options.getTop() - this.options.getHeight() - v10302.paperHeader;
+          v10306[0].printLine = v10302.paperHeader;
+          v10306[0].referenceElement.bottomInLastPaper = 0;
+          v10306[0].referenceElement.printTopInPaper = v10302.paperHeader;
+          v10306.unshift(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+            target: v10311,
+            printLine: v10302.height,
             referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
               top: 0,
               left: 0,
               height: 0,
               width: 0,
-              beginPrintPaperIndex: t.index,
-              bottomInLastPaper: t.height,
-              printTopInPaper: t.paperHeader
+              beginPrintPaperIndex: v10302.index,
+              bottomInLastPaper: v10302.height,
+              printTopInPaper: v10302.paperHeader
             })
-          }))
+          }));
         }
-        return o;
-      }, BasePrintElement.prototype.updatePanelHeight = function (h, p) {
+        return v10306;
+      }, BasePrintElement.prototype.getHtml2 = function (v10316, v10317, v10318) {
+        var v10319 = 0;
+        this.setCurrenttemplateData(v10317);
+        var v10320 = [],
+          v10321 = this.getBeginPrintTopInPaperByReferenceElement(v10316),
+          v10322 = v10316.getPaperFooter(v10319);
+        // 处理文本/辅助元素 当高度大于模板高度, 插入的分页...
+        this.isHeaderOrFooter() || this.isFixed() || ("none" != v10316.panelPageRule && v10321 > v10322 && (v10320.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+          target: void 0,
+          printLine: void 0
+          // (e && r + this.options.getHeight() > a) --> 设计时拖拽元素高度超过页脚线时,导致报错问题
+        })), v10321 = v10321 - v10322 + v10316.paperHeader, v10319++, v10322 = v10316.getPaperFooter(v10319)), v10321 <= v10322 && v10317 && v10321 + this.options.getHeight() > v10322 && "none" != v10316.panelPageRule && (v10320.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+          target: void 0,
+          printLine: void 0
+        })), v10321 = v10316.paperHeader, v10319++, v10322 = v10316.getPaperFooter(v10319)));
+        var v10325 = this.getData(v10317),
+          v10326 = this.createTarget(this.getTitle(), v10325);
+        if ("none" == v10316.panelPageRule && v10321 + this.options.getHeight() > v10322) this.updatePanelHeight(v10321 + this.options.getHeight(), v10316);
+        this.updateTargetSize(v10326), this.css(v10326, v10325), v10326.css("position", "absolute"), v10326.css("left", this.options.displayLeft()), v10326.css("top", v10321 + "pt"), v10320.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+          target: v10326,
+          printLine: v10321 + this.options.getHeight(),
+          referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
+            top: this.options.getTop(),
+            left: this.options.getLeft(),
+            height: this.options.getHeight(),
+            width: this.options.getWidth(),
+            beginPrintPaperIndex: v10316.index,
+            bottomInLastPaper: v10321 + this.options.getHeight(),
+            printTopInPaper: v10321
+          })
+        }));
+        if (v10317 && this.options.pageBreak) {
+          v10320[0].target.css("top", v10316.paperHeader + "pt");
+          v10320[0].referenceElement.top = this.options.getTop() - this.options.getHeight() - v10316.paperHeader;
+          v10320[0].printLine = v10316.paperHeader;
+          v10320[0].referenceElement.bottomInLastPaper = 0;
+          v10320[0].referenceElement.printTopInPaper = v10316.paperHeader;
+          v10320.unshift(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_3__.a({
+            target: v10326,
+            printLine: v10316.height,
+            referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_5__.a({
+              top: 0,
+              left: 0,
+              height: 0,
+              width: 0,
+              beginPrintPaperIndex: v10316.index,
+              bottomInLastPaper: v10316.height,
+              printTopInPaper: v10316.paperHeader
+            })
+          }));
+        }
+        return v10320;
+      }, BasePrintElement.prototype.updatePanelHeight = function (v10331, v10332) {
         if ("none" == this.panel.panelPageRule) {
-          var nmh = hinnn.pt.toMm(h);
+          var nmh = hinnn.pt.toMm(v10331);
           // 更改模板高度 paperType, width(mm), height(mm), rotate
           // this.panel.resize(void 0, t.mmwidth, nmh, !1);
           // 这个会更新模板的高度...
           // this.panel.target.css("height", nmh + "mm"), this.panel.target.attr("original-height", nmh);
-          p.paperFooter = h;
-          p.target.css("height", nmh + "mm"), p.target.attr("original-height", nmh);
+          v10332.paperFooter = v10331;
+          v10332.target.css("height", nmh + "mm"), v10332.target.attr("original-height", nmh);
         }
-      }, BasePrintElement.prototype.getBeginPrintTopInPaperByReferenceElement = function (t) {
-        var e = this.options.getTop();
-        return this.isHeaderOrFooter() || this.isFixed() ? e : t.referenceElement.isPositionLeftOrRight(e) ? t.referenceElement.printTopInPaper + (e - t.referenceElement.top) : t.referenceElement.bottomInLastPaper + (e - (t.referenceElement.top + t.referenceElement.height));
-      }, BasePrintElement.prototype.css = function (t, e) {
-        var n = this,
-          i = [],
-          o = this.getConfigOptions();
+      }, BasePrintElement.prototype.getBeginPrintTopInPaperByReferenceElement = function (v10333) {
+        var v10334 = this.options.getTop();
+        return this.isHeaderOrFooter() || this.isFixed() ? v10334 : v10333.referenceElement.isPositionLeftOrRight(v10334) ? v10333.referenceElement.printTopInPaper + (v10334 - v10333.referenceElement.top) : v10333.referenceElement.bottomInLastPaper + (v10334 - (v10333.referenceElement.top + v10333.referenceElement.height));
+      }, BasePrintElement.prototype.css = function (v10335, v10336) {
+        var v10337 = this,
+          v10338 = [],
+          v10339 = this.getConfigOptions();
 
-        if (o) {
-          var r;
-          if (o.tabs && o.tabs.length) {
-            r = [];
-            o.tabs.forEach(function (n) {
-              r = r.concat(n.options)
+        if (v10339) {
+          var v10340;
+          if (v10339.tabs && v10339.tabs.length) {
+            v10340 = [];
+            v10339.tabs.forEach(function (v10341) {
+              v10340 = v10340.concat(v10341.options);
             });
           } else {
-            r = o.supportOptions;
+            v10340 = v10339.supportOptions;
           }
-          r && r.forEach(function (e) {
-            var o = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(e.name);
+          v10340 && v10340.forEach(function (v10342) {
+            var v10343 = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(v10342.name);
 
-            if (o && o.css) {
-              var r = o.css(t, n.options.getValueFromOptionsOrDefault(e.name));
-              r && i.push(r);
+            if (v10343 && v10343.css) {
+              var v10345 = v10343.css(v10335, v10337.options.getValueFromOptionsOrDefault(v10342.name));
+              v10345 && v10338.push(v10345);
             }
           });
         }
 
-        this.stylerCss(t, e);
-      }, BasePrintElement.prototype.stylerCss = function (t, e) {
-        var n = this.getStyler();
+        this.stylerCss(v10335, v10336);
+      }, BasePrintElement.prototype.stylerCss = function (v10346, v10347) {
+        var v10348 = this.getStyler();
 
-        if (n) {
-          var i = n(e, this.options, t, this._currenttemplateData);
-          if (i) Object.keys(i).forEach(function (e) {
-            t.css(e, i[e]);
+        if (v10348) {
+          var v10349 = v10348(v10347, this.options, v10346, this._currenttemplateData);
+          if (v10349) Object.keys(v10349).forEach(function (v10350) {
+            v10346.css(v10350, v10349[v10350]);
           });
         }
-      }, BasePrintElement.prototype.getData = function (t) {
-        var f = this.getField();
-        return t ? f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "" : this.printElementType.getData();
+      }, BasePrintElement.prototype.getData = function (v10351) {
+        var v10352 = this.getField();
+        return v10351 ? v10352 ? v10352.split('.').reduce((v10353, v10354) => v10353 ? v10353[v10354] : v10351 ? v10351[v10354] : "", !1) || "" : "" : this.printElementType.getData();
       }, BasePrintElement.prototype.copyFromType = function () {
-        var options = this.options, type = this.printElementType;
-        var o = this.getConfigOptions();
+        var options = this.options,type = this.printElementType;
+        var v10355 = this.getConfigOptions();
         var names = [];
-        if (o && o.tabs && o.tabs.length) {
-          o.tabs.forEach(function (n) {
-            n.options.forEach(function (e) {
-              names.push(e.name);
-            })
+        if (v10355 && v10355.tabs && v10355.tabs.length) {
+          v10355.tabs.forEach(function (v10356) {
+            v10356.options.forEach(function (v10357) {
+              names.push(v10357.name);
+            });
           });
         } else {
-          names = o.supportOptions.map(function (e) {return e.name});
+          names = v10355.supportOptions.map(function (v10358) {return v10358.name;});
         }
-        Object.keys(type).forEach(function (e) {
-          if (type[e] && ('columns' != e) && names.indexOf(e) > -1) {
-            options[e] = 'function' == _typeof(type[e]) ? type[e].toString() : type[e]
+        Object.keys(type).forEach(function (v10359) {
+          if (type[v10359] && 'columns' != v10359 && names.indexOf(v10359) > -1) {
+            options[v10359] = 'function' == _typeof(type[v10359]) ? type[v10359].toString() : type[v10359];
           }
-        })
-        return options
+        });
+        return options;
       }, BasePrintElement.prototype.getPrintElementOptionTabs = function () {
         if (this._printElementOptionTabs) return this._printElementOptionTabs;
         var tabs = [],
-          e = this.getConfigOptions();
-        if (e) {
-          var t = e.tabs;
-          t && t.forEach(function (n, i) {
-            tabs.push({name: n.name, list: []})
-            n.options.filter(function (t) {
-              return !t.hidden;
-            }).forEach(function (e) {
-              var n = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(e.name);
-              tabs[i].list.push(n);
-            })
+          v10360 = this.getConfigOptions();
+        if (v10360) {
+          var v10361 = v10360.tabs;
+          v10361 && v10361.forEach(function (v10362, v10363) {
+            tabs.push({ name: v10362.name, list: [] });
+            v10362.options.filter(function (v10364) {
+              return !v10364.hidden;
+            }).forEach(function (v10365) {
+              var v10366 = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(v10365.name);
+              tabs[v10363].list.push(v10366);
+            });
           });
         }
         return this._printElementOptionTabs = tabs, this._printElementOptionItems = void 0, this._printElementOptionTabs;
       }, BasePrintElement.prototype.getPrintElementOptionItems = function () {
         if (this._printElementOptionItems) return this._printElementOptionItems;
-        var t = [],
-          e = this.getConfigOptions();
+        var v10368 = [],
+          v10369 = this.getConfigOptions();
 
-        if (e) {
-          var n;
-          if (e.tabs && e.tabs.length) {
-            n = [];
-            e.tabs.forEach(function (n) {
-              n = n.concat(n.options)
+        if (v10369) {
+          var v10370;
+          if (v10369.tabs && v10369.tabs.length) {
+            v10370 = [];
+            v10369.tabs.forEach(function (v10371) {
+              v10371 = v10371.concat(v10371.options);
             });
           } else {
-            n = e.supportOptions;
+            v10370 = v10369.supportOptions;
           }
-          n && n.filter(function (t) {
-            return !t.hidden;
-          }).forEach(function (e) {
-            var n = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(e.name);
+          v10370 && v10370.filter(function (v10372) {
+            return !v10372.hidden;
+          }).forEach(function (v10373) {
+            var v10374 = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(v10373.name);
 
-            t.push(n);
+            v10368.push(v10374);
           });
         }
 
-        return this._printElementOptionItems = this.filterOptionItems(t.concat()), this._printElementOptionTabs = void 0, this._printElementOptionItems;
-      }, BasePrintElement.prototype.getPrintElementOptionItemsByName = function (t) {
-        var e = [],
-          n = this.getConfigOptionsByName(t);
+        return this._printElementOptionItems = this.filterOptionItems(v10368.concat()), this._printElementOptionTabs = void 0, this._printElementOptionItems;
+      }, BasePrintElement.prototype.getPrintElementOptionItemsByName = function (v10376) {
+        var v10377 = [],
+          v10378 = this.getConfigOptionsByName(v10376);
 
-        if (n) {
-          var i;
-          if (n.tabs && n.tabs.length) {
-            i = [];
-            n.tabs.forEach(function (n) {
-              i = i.concat(n.options)
+        if (v10378) {
+          var v10379;
+          if (v10378.tabs && v10378.tabs.length) {
+            v10379 = [];
+            v10378.tabs.forEach(function (v10380) {
+              v10379 = v10379.concat(v10380.options);
             });
           } else {
-            i = n.supportOptions;
+            v10379 = v10378.supportOptions;
           }
-          i && i.filter(function (t) {
-            return !t.hidden;
-          }).forEach(function (t) {
-            var n = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(t.name);
+          v10379 && v10379.filter(function (v10381) {
+            return !v10381.hidden;
+          }).forEach(function (v10382) {
+            var v10383 = _print_element_option_PrintElementOptionItemManager__WEBPACK_IMPORTED_MODULE_2__.a.getItem(v10382.name);
 
-            e.push(n);
+            v10377.push(v10383);
           });
         }
 
-        return e.concat();
-      }, BasePrintElement.prototype.filterOptionItems = function (t) {
-        return this.printElementType.field ? t.filter(function (t) {
-          return "field" != t.name;
-        }) : t;
+        return v10377.concat();
+      }, BasePrintElement.prototype.filterOptionItems = function (v10385) {
+        return this.printElementType.field ? v10385.filter(function (v10386) {
+          return "field" != v10386.name;
+        }) : v10385;
       }, BasePrintElement.prototype.createTempContainer = function () {
         this.removeTempContainer(), $("body").append($('<div class="hiprint_temp_Container hiprint-printPaper" style="overflow:hidden;height: 0px;box-sizing: border-box;"></div>'));
       }, BasePrintElement.prototype.removeTempContainer = function () {
@@ -1218,31 +1218,31 @@ var hiprint = function (t) {
         return this.options.getTopInDesign() < this.panel.paperHeader || this.options.getTopInDesign() >= this.panel.paperFooter;
       }, BasePrintElement.prototype.delete = function () {
         this.designTarget && this.designTarget.remove();
-      }, BasePrintElement.prototype.setCurrenttemplateData = function (t) {
-        this._currenttemplateData = t;
+      }, BasePrintElement.prototype.setCurrenttemplateData = function (v10387) {
+        this._currenttemplateData = v10387;
       }, BasePrintElement.prototype.isFixed = function () {
         return this.options.fixed;
-      }, BasePrintElement.prototype.onRendered = function (t, e) {
-        this.printElementType && this.printElementType.onRendered && this.printElementType.onRendered(e, this.options, t.getTarget());
-      }, BasePrintElement.prototype.createLineOfPosition = function (t) {
-        var e = $(".toplineOfPosition.id" + this.id),
+      }, BasePrintElement.prototype.onRendered = function (v10388, v10389) {
+        this.printElementType && this.printElementType.onRendered && this.printElementType.onRendered(v10389, this.options, v10388.getTarget());
+      }, BasePrintElement.prototype.createLineOfPosition = function (v10390) {
+        var v10391 = $(".toplineOfPosition.id" + this.id),
           topPos = $(".topPosition.id" + this.id),
-          n = $(".leftlineOfPosition.id" + this.id),
+          v10392 = $(".leftlineOfPosition.id" + this.id),
           leftPos = $(".leftPosition.id" + this.id),
-          i = $(".rightlineOfPosition.id" + this.id),
-          o = $(".bottomlineOfPosition.id" + this.id);
+          v10393 = $(".rightlineOfPosition.id" + this.id),
+          v10394 = $(".bottomlineOfPosition.id" + this.id);
         var config = _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance;
-        if (e.length) e.css("top", this.options.displayTop(true)); else {
-          var e = $('<div class="toplineOfPosition id' + this.id + '" style="position: absolute; width: 100%;"></div>');
-          e.css("top", this.options.displayTop(true)), e.css("width", t.displayWidth()), this.designTarget.parents(".hiprint-printPaper-content").append(e);
+        if (v10391.length) v10391.css("top", this.options.displayTop(true));else {
+          var v10391 = $('<div class="toplineOfPosition id' + this.id + '" style="position: absolute; width: 100%;"></div>');
+          v10391.css("top", this.options.displayTop(true)), v10391.css("width", v10390.displayWidth()), this.designTarget.parents(".hiprint-printPaper-content").append(v10391);
         }
         if (config.showPosition) {
           if (topPos.length) {
             topPos.toggleClass("topPosition-lineMode", config.positionLineMode);
             topPos.text(this.options.posTop() + (config.positionUnit ? 'pt' : ''));
-            topPos.css("top", (this.options.posTop() - topPos.height()) + "pt");
+            topPos.css("top", this.options.posTop() - topPos.height() + "pt");
             if (config.positionLineMode) {
-              topPos.css("left", (this.options.posLeft() - topPos.width() / 2) + "pt");
+              topPos.css("left", this.options.posLeft() - topPos.width() / 2 + "pt");
             } else {
               topPos.css("left", this.options.posLeft() + 2 + "pt");
             }
@@ -1252,24 +1252,24 @@ var hiprint = function (t) {
             topPos.toggleClass("topPosition-lineMode", config.positionLineMode);
             topPos.text(this.options.posTop() + (config.positionUnit ? 'pt' : ''));
             if (config.positionLineMode) {
-              topPos.css("left", (this.options.posLeft() - topPos.width() / 2) + "pt");
+              topPos.css("left", this.options.posLeft() - topPos.width() / 2 + "pt");
             } else {
               topPos.css("left", this.options.posLeft() + 2 + "pt");
             }
             this.designTarget.find('.size-box') && this.designTarget.find('.size-box').toggleClass('hide', true);
             this.designTarget.parents(".hiprint-printPaper-content").append(topPos);
-            topPos.css("top", (this.options.posTop() - topPos.height()) + "pt");
+            topPos.css("top", this.options.posTop() - topPos.height() + "pt");
           }
         }
-        if (n.length) n.css("left", this.options.displayLeft(true)); else {
-          var r = $('<div class="leftlineOfPosition id' + this.id + '" style="position: absolute;height: 100%;"></div>');
-          r.css("left", this.options.displayLeft(true)), r.css("height", t.displayHeight()), this.designTarget.parents(".hiprint-printPaper-content").append(r);
+        if (v10392.length) v10392.css("left", this.options.displayLeft(true));else {
+          var v10396 = $('<div class="leftlineOfPosition id' + this.id + '" style="position: absolute;height: 100%;"></div>');
+          v10396.css("left", this.options.displayLeft(true)), v10396.css("height", v10390.displayHeight()), this.designTarget.parents(".hiprint-printPaper-content").append(v10396);
         }
         if (config.showPosition) {
           if (leftPos.length) {
             leftPos.text(this.options.posLeft() + (config.positionUnit ? 'pt' : ''));
             leftPos.toggleClass("leftPosition-lineMode", config.positionLineMode);
-            leftPos.css("left", (this.options.posLeft() - leftPos.width()) + "pt");
+            leftPos.css("left", this.options.posLeft() - leftPos.width() + "pt");
             if (config.positionLineMode) {
               leftPos.css("top", this.options.posTop() - leftPos.height() / 3 + "pt");
             } else {
@@ -1285,66 +1285,66 @@ var hiprint = function (t) {
               leftPos.css("top", this.options.posTop() + 2 + "pt");
             }
             this.designTarget.parents(".hiprint-printPaper-content").append(leftPos);
-            leftPos.css("left", (this.options.posLeft() - leftPos.width()) + "pt");
+            leftPos.css("left", this.options.posLeft() - leftPos.width() + "pt");
           }
         }
-        if (i.length) i.css("left", this.options.getLeft() + this.options.getWidth() + "pt"); else {
-          var a = $('<div class="rightlineOfPosition id' + this.id + '" style="position: absolute;height: 100%;"></div>');
-          a.css("left", this.options.getLeft() + this.options.getWidth() + "pt"), a.css("height", t.displayHeight()), this.designTarget.parents(".hiprint-printPaper-content").append(a);
+        if (v10393.length) v10393.css("left", this.options.getLeft() + this.options.getWidth() + "pt");else {
+          var v10395 = $('<div class="rightlineOfPosition id' + this.id + '" style="position: absolute;height: 100%;"></div>');
+          v10395.css("left", this.options.getLeft() + this.options.getWidth() + "pt"), v10395.css("height", v10390.displayHeight()), this.designTarget.parents(".hiprint-printPaper-content").append(v10395);
         }
-        if (o.length) o.css("top", this.options.getTop() + this.options.getHeight() + "pt"); else {
-          var p = $('<div class="bottomlineOfPosition id' + this.id + '" style="position: absolute;width: 100%;"></div>');
-          p.css("top", this.options.getTop() + this.options.getHeight() + "pt"), p.css("width", t.displayWidth()), this.designTarget.parents(".hiprint-printPaper-content").append(p);
+        if (v10394.length) v10394.css("top", this.options.getTop() + this.options.getHeight() + "pt");else {
+          var v10397 = $('<div class="bottomlineOfPosition id' + this.id + '" style="position: absolute;width: 100%;"></div>');
+          v10397.css("top", this.options.getTop() + this.options.getHeight() + "pt"), v10397.css("width", v10390.displayWidth()), this.designTarget.parents(".hiprint-printPaper-content").append(v10397);
         }
       }, BasePrintElement.prototype.removeLineOfPosition = function () {
         $(".toplineOfPosition.id" + this.id).remove(), $(".topPosition.id" + this.id).remove(), this.designTarget.find('.size-box') && this.designTarget.find('.size-box').toggleClass('hide', false), $(".leftlineOfPosition.id" + this.id).remove(), $(".leftPosition.id" + this.id).remove(), $(".rightlineOfPosition.id" + this.id).remove(), $(".bottomlineOfPosition.id" + this.id).remove();
       }, BasePrintElement.prototype.getFontList = function () {
-        var t = this.options.fontList;
-        return t || (t = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getFontList());
+        var v10398 = this.options.fontList;
+        return v10398 || (v10398 = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getFontList());
       }, BasePrintElement.prototype.getFields = function () {
         if ("table" == this.printElementType.type) {
-          var t = this.options.tableFields;
-          return t
+          var v10400 = this.options.tableFields;
+          return v10400;
         }
-        var t = this.options.fields;
-        return t || (t = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getFields());
+        var v10400 = this.options.fields;
+        return v10400 || (v10400 = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getFields());
       }, BasePrintElement.prototype.getOnImageChooseClick = function () {
-        var t = this.options.onImageChooseClick;
-        return t || (t = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getOnImageChooseClick());
-      }, BasePrintElement.prototype.bingCopyEvent = function (t) {
-        var n = this;
-        t.keydown(function (r) {
-          if (n._editing) {
-            if (!(r.altKey) && 13 == r.keyCode) {
-              n.updateByContent();
-              return
+        var v10402 = this.options.onImageChooseClick;
+        return v10402 || (v10402 = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(this.templateId).getOnImageChooseClick());
+      }, BasePrintElement.prototype.bingCopyEvent = function (v10404) {
+        var v10405 = this;
+        v10404.keydown(function (v10406) {
+          if (v10405._editing) {
+            if (!v10406.altKey && 13 == v10406.keyCode) {
+              v10405.updateByContent();
+              return;
             }
           }
           // ctrl + c / command + c
-          if ((r.ctrlKey || r.metaKey) && 67 == r.keyCode) {
-            n.copyJson();
-            r.preventDefault();
+          if ((v10406.ctrlKey || v10406.metaKey) && 67 == v10406.keyCode) {
+            v10405.copyJson();
+            v10406.preventDefault();
           }
         });
       }, BasePrintElement.prototype.copyJson = function () {
         try {
-          var n = this;
+          var v10407 = this;
           // 使用textarea 存储复制的元素信息
           var copyArea = $('#copyArea');
           if (!copyArea.length) copyArea = $('<textarea id="copyArea" style="position: absolute; left: 0px; top: 0px;opacity: 0"></textarea>');
           $("body").append(copyArea);
-          let copyElements = this.panel.printElements.filter(ele => {
+          let copyElements = this.panel.printElements.filter((ele) => {
             return 'block' == ele.designTarget.children().last().css('display') && !ele.printElementType.type.includes('table');
-          })
-          copyElements = copyElements.map(ele => {
+          });
+          copyElements = copyElements.map((ele) => {
             return {
               options: ele.options,
               printElementType: ele.printElementType,
               id: ele.id,
               templateId: ele.templateId
-            }
-          })
-          var json = JSON.stringify(copyElements)
+            };
+          });
+          var json = JSON.stringify(copyElements);
           // var json = JSON.stringify({
           //   options: n.options,
           //   printElementType: n.printElementType,
@@ -1357,401 +1357,401 @@ var hiprint = function (t) {
           // 尝试修复对复制元素的自动聚焦
           // copyArea.focus();
           if (copyArea.setSelectionRange)
-            copyArea.setSelectionRange(0, copyArea.value.length);
-          else
-            copyArea.select();
+          copyArea.setSelectionRange(0, copyArea.value.length);else
+
+          copyArea.select();
           var flag = false;
           flag = document.execCommand("copy");
           copyArea.css('visibility', 'hidden');
           // 获取元素焦点，不然无法粘贴（keydown问题）
-          n.designTarget.focus();
+          v10407.designTarget.focus();
           console.log('copyJson success');
-        } catch (e) {
+        } catch (v10408) {
           flag = false;
-          console.log('copyJson error', e);
+          console.log('copyJson error', v10408);
         }
         return flag;
-      }, BasePrintElement.prototype.clone = function (t) {
-        var n = this;
-        let newObj = n.printElementType.createPrintElement();
-        Object.keys(n.options).forEach(function (key) {
-          newObj.options[key] = n.options[key];
-        })
+      }, BasePrintElement.prototype.clone = function (v10409) {
+        var v10410 = this;
+        let newObj = v10410.printElementType.createPrintElement();
+        Object.keys(v10410.options).forEach(function (key) {
+          newObj.options[key] = v10410.options[key];
+        });
         return newObj;
       }, BasePrintElement.prototype.getFormatter = function () {
         var formatter = void 0;
         if (this.printElementType.formatter && (formatter = this.printElementType.formatter), this.options.formatter) try {
-          var s = "formatter=" + this.options.formatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10411 = "formatter=" + this.options.formatter;
+          eval(v10411);
+        } catch (v10412) {
+          console.log(v10412);
         }
         return formatter;
       }, BasePrintElement.prototype.getStyler = function () {
         var fnstyler = void 0;
         if (this.printElementType.styler && (fnstyler = this.printElementType.styler), this.options.styler) try {
-          var s = "fnstyler=" + this.options.styler;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10413 = "fnstyler=" + this.options.styler;
+          eval(v10413);
+        } catch (v10414) {
+          console.log(v10414);
         }
         return fnstyler;
-      }, BasePrintElement.prototype.bingKeyboardMoveEvent = function (t, e) {
-        var n = this,
-          i = void 0,
-          o = void 0;
-        t.attr("tabindex", "1"), t.keydown(function (r) {
+      }, BasePrintElement.prototype.bingKeyboardMoveEvent = function (v10415, v10416) {
+        var v10417 = this,
+          v10418 = void 0,
+          v10419 = void 0;
+        v10415.attr("tabindex", "1"), v10415.keydown(function (v10420) {
           // 处理 table / input 输入时 删除元素问题
-          if ('INPUT' == r.target.tagName) {
+          if ('INPUT' == v10420.target.tagName) {
             return;
           }
           // 元素编辑
-          if (n._editing && !(r.altKey)) {
+          if (v10417._editing && !v10420.altKey) {
             return;
           }
           // 元素禁止移动
-          if (false === n.options.draggable) {
+          if (false === v10417.options.draggable) {
             return;
           }
           // 处理按住 ctrl / command 多选元素
-          var els = n.panel.printElements.filter(function (t) {
-            return 'block' == t.designTarget.children().last().css('display') && !t.printElementType.type.includes('table');
+          var els = v10417.panel.printElements.filter(function (v10421) {
+            return 'block' == v10421.designTarget.children().last().css('display') && !v10421.printElementType.type.includes('table');
           });
           var isMultiple = els.length > 1;
           var movingDistance = _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.movingDistance;
-          switch (r.keyCode) {
+          switch (v10420.keyCode) {
             // BackSpace/Delete 删除元素
-          case 8:
-          case 46:
-            var templete = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(n.templateId)
-            templete.deletePrintElement(n)
-            hinnn.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "删除");
-            hinnn.event.trigger("clearSettingContainer")
-             // 获取到了template 拿到template里面所有被选中的元素
-             els.forEach(ele=>{
-              templete.deletePrintElement(ele)
-              hinnn.event.trigger("hiprintTemplateDataChanged_" + ele.templateId, "删除");
-            })
-            hinnn.event.trigger("clearSettingContainer")
-            break
-          case 37:
-            i = n.options.getLeft();
-            if (isMultiple) {
-              els.forEach(function (t) {
-                t.updatePositionByMultipleSelect(0 - movingDistance, 0);
-              })
-            } else {
-              n.updateSizeAndPositionOptions(i - movingDistance), t.css("left", n.options.displayLeft());
-            }
-            r.preventDefault();
-            break;
+            case 8:
+            case 46:
+              var templete = _HiPrintlib__WEBPACK_IMPORTED_MODULE_6__.a.instance.getPrintTemplateById(v10417.templateId);
+              templete.deletePrintElement(v10417);
+              hinnn.event.trigger("hiprintTemplateDataChanged_" + v10417.templateId, "删除");
+              hinnn.event.trigger("clearSettingContainer");
+              // 获取到了template 拿到template里面所有被选中的元素
+              els.forEach((ele) => {
+                templete.deletePrintElement(ele);
+                hinnn.event.trigger("hiprintTemplateDataChanged_" + ele.templateId, "删除");
+              });
+              hinnn.event.trigger("clearSettingContainer");
+              break;
+            case 37:
+              v10418 = v10417.options.getLeft();
+              if (isMultiple) {
+                els.forEach(function (v10424) {
+                  v10424.updatePositionByMultipleSelect(0 - movingDistance, 0);
+                });
+              } else {
+                v10417.updateSizeAndPositionOptions(v10418 - movingDistance), v10415.css("left", v10417.options.displayLeft());
+              }
+              v10420.preventDefault();
+              break;
 
-          case 38:
-            o = n.options.getTop();
-            if (isMultiple) {
-              els.forEach(function (t) {
-                t.updatePositionByMultipleSelect(0, 0 - movingDistance);
-              })
-            } else {
-              n.updateSizeAndPositionOptions(void 0, o - movingDistance), t.css("top", n.options.displayTop());
-            }
-            r.preventDefault();
-            break;
+            case 38:
+              v10419 = v10417.options.getTop();
+              if (isMultiple) {
+                els.forEach(function (v10425) {
+                  v10425.updatePositionByMultipleSelect(0, 0 - movingDistance);
+                });
+              } else {
+                v10417.updateSizeAndPositionOptions(void 0, v10419 - movingDistance), v10415.css("top", v10417.options.displayTop());
+              }
+              v10420.preventDefault();
+              break;
 
-          case 39:
-            i = n.options.getLeft();
-            if (isMultiple) {
-              els.forEach(function (t) {
-                t.updatePositionByMultipleSelect(movingDistance, 0);
-              })
-            } else {
-              n.updateSizeAndPositionOptions(i + movingDistance), t.css("left", n.options.displayLeft());
-            }
-            r.preventDefault();
-            break;
+            case 39:
+              v10418 = v10417.options.getLeft();
+              if (isMultiple) {
+                els.forEach(function (v10426) {
+                  v10426.updatePositionByMultipleSelect(movingDistance, 0);
+                });
+              } else {
+                v10417.updateSizeAndPositionOptions(v10418 + movingDistance), v10415.css("left", v10417.options.displayLeft());
+              }
+              v10420.preventDefault();
+              break;
 
-          case 40:
-            o = n.options.getTop();
-            if (isMultiple) {
-              els.forEach(function (t) {
-                t.updatePositionByMultipleSelect(0, movingDistance);
-              })
-            } else {
-              n.updateSizeAndPositionOptions(void 0, o + movingDistance), t.css("top", n.options.displayTop());
-            }
-            r.preventDefault();
+            case 40:
+              v10419 = v10417.options.getTop();
+              if (isMultiple) {
+                els.forEach(function (v10427) {
+                  v10427.updatePositionByMultipleSelect(0, movingDistance);
+                });
+              } else {
+                v10417.updateSizeAndPositionOptions(void 0, v10419 + movingDistance), v10415.css("top", v10417.options.displayTop());
+              }
+              v10420.preventDefault();
           }
-          if ([37, 38, 39, 40].includes(r.keyCode)) {
-            hinnn.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "键盘移动");
+          if ([37, 38, 39, 40].includes(v10420.keyCode)) {
+            hinnn.event.trigger("hiprintTemplateDataChanged_" + v10417.templateId, "键盘移动");
           }
         });
-      }, BasePrintElement.prototype.inRect = function (t) {
+      }, BasePrintElement.prototype.inRect = function (v10428) {
         var ptr = this.designPaper.scale || 1;
         var x1 = this.designTarget[0].offsetLeft,
-          y1 = this.designTarget[0].offsetTop, h = this.designTarget[0].offsetHeight,
-          w = this.designTarget[0].offsetWidth,
-          x2 = x1 + w, y2 = y1 + h,
-          ex1 = $(t.target[0]).position().left / ptr, ey1 = $(t.target[0]).position().top / ptr,
-          eh = t.target[0].offsetHeight, ew = t.target[0].offsetWidth,
-          ex2 = ex1 + ew, ey2 = ey1 + eh;
+          y1 = this.designTarget[0].offsetTop,v10429 = this.designTarget[0].offsetHeight,
+          v10430 = this.designTarget[0].offsetWidth,
+          x2 = x1 + v10430,y2 = y1 + v10429,
+          ex1 = $(v10428.target[0]).position().left / ptr,ey1 = $(v10428.target[0]).position().top / ptr,
+          eh = v10428.target[0].offsetHeight,ew = v10428.target[0].offsetWidth,
+          ex2 = ex1 + ew,ey2 = ey1 + eh;
         return ex1 < x2 && ex2 > x1 && y1 < ey2 && y2 > ey1;
-      }, BasePrintElement.prototype.multipleSelect = function (t) {
-        t ? this.designTarget.addClass("multipleSelect") : this.designTarget.removeClass("multipleSelect");
-      }, BasePrintElement.prototype.updatePositionByMultipleSelect = function (t, e) {
+      }, BasePrintElement.prototype.multipleSelect = function (v10431) {
+        v10431 ? this.designTarget.addClass("multipleSelect") : this.designTarget.removeClass("multipleSelect");
+      }, BasePrintElement.prototype.updatePositionByMultipleSelect = function (v10432, v10433) {
         if (false === this.options.draggable) return;
-        this.updateSizeAndPositionOptions(t + this.options.getLeft(), e + this.options.getTop()), this.designTarget.css("left", this.options.displayLeft()), this.designTarget.css("top", this.options.displayTop());
+        this.updateSizeAndPositionOptions(v10432 + this.options.getLeft(), v10433 + this.options.getTop()), this.designTarget.css("left", this.options.displayLeft()), this.designTarget.css("top", this.options.displayTop());
       }, BasePrintElement;
     }();
-}, function (t, e, n) {
+}, function (v10434, v10435, v10436) {
   "use strict";
 
-  var i = function () {
-      function t() {
+  var v10437 = function () {
+      function v10438() {
       }
 
-      return t.prototype.init = function (t) {
-        this.target = $('<input type="text" class="hitable-editor-text" value="" />'), t.getTarget().append(this.target), this.target.focus();
-      }, t.prototype.getValue = function () {
+      return v10438.prototype.init = function (v10439) {
+        this.target = $('<input type="text" class="hitable-editor-text" value="" />'), v10439.getTarget().append(this.target), this.target.focus();
+      }, v10438.prototype.getValue = function () {
         return this.target.val();
-      }, t.prototype.setValue = function (t) {
-        this.target.val(t);
-      }, t.prototype.destroy = function () {
+      }, v10438.prototype.setValue = function (v10440) {
+        this.target.val(v10440);
+      }, v10438.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10438;
     }(),
-    o = function () {
-      function t() {
-        this.text = new i();
+    v10441 = function () {
+      function v10442() {
+        this.text = new v10437();
       }
 
-      return Object.defineProperty(t, "Instance", {
+      return Object.defineProperty(v10442, "Instance", {
         get: function get() {
-          return t._instance || (t._instance = new t()), t._instance;
+          return v10442._instance || (v10442._instance = new v10442()), v10442._instance;
         },
         enumerable: !0,
         configurable: !0
-      }), t;
+      }), v10442;
     }(),
     i2 = function () {
-      function t() {
+      function v10443() {
       }
       // 表格头双击字段选择
-      return t.prototype.init = function (e, i) {
-        var n = `<select class="auto-submit" style="width:100%">\n                <option value="" disabled>${i18n.__('请选择字段')}</option>`;
-        e.forEach(function (t, e) {
-          if (t.field == i.field) {
-            n += ' <option value="' + (t.field || "") + '" selected >' + (t.text || "") + "</option>";
+      return v10443.prototype.init = function (v10444, v10445) {
+        var v10446 = `<select class="auto-submit" style="width:100%">\n                <option value="" disabled>${i18n.__('请选择字段')}</option>`;
+        v10444.forEach(function (v10447, v10448) {
+          if (v10447.field == v10445.field) {
+            v10446 += ' <option value="' + (v10447.field || "") + '" selected >' + (v10447.text || "") + "</option>";
           } else {
-            n += ' <option value="' + (t.field || "") + '" >' + (t.text || "") + "</option>";
+            v10446 += ' <option value="' + (v10447.field || "") + '" >' + (v10447.text || "") + "</option>";
           }
-        }), n += " </select>";
-        this.target = $(n), i.getTarget().append(this.target), this.target.focus();
-      }, t.prototype.getValue = function () {
-        var val = this.target.val()
-        var text = this.target.find('option[value="' + val + '"]').text()
+        }), v10446 += " </select>";
+        this.target = $(v10446), v10445.getTarget().append(this.target), this.target.focus();
+      }, v10443.prototype.getValue = function () {
+        var val = this.target.val();
+        var text = this.target.find('option[value="' + val + '"]').text();
         return text + '#' + val;
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10443.prototype.setValue = function (v10449) {
+        v10449 && (this.target.find('option[value="' + v10449 + '"]').length || this.target.find("select").prepend('<option value="' + v10449 + '" >' + v10449 + "</option>"));
+        this.target.find("select").val(v10449);
+      }, v10443.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10443;
     }(),
     o2 = function () {
-      function t() {
+      function v10450() {
         this.select = new i2();
       }
 
-      return Object.defineProperty(t, "Instance", {
+      return Object.defineProperty(v10450, "Instance", {
         get: function get() {
-          return t._instance || (t._instance = new t()), t._instance;
+          return v10450._instance || (v10450._instance = new v10450()), v10450._instance;
         },
         enumerable: !0,
         configurable: !0
-      }), t;
+      }), v10450;
     }(),
-    r = function () {
-      function t() {
+    v10451 = function () {
+      function v10452() {
       }
 
-      return Object.defineProperty(t, "Instance", {
+      return Object.defineProperty(v10452, "Instance", {
         get: function get() {
-          return o._instance || (t._instance = new t()), t._instance;
+          return v10441._instance || (v10452._instance = new v10452()), v10452._instance;
         },
         enumerable: !0,
         configurable: !0
-      }), t.prototype.createEditor = function (t) {
-        return $.extend({}, o.Instance[t]);
-      }, t.prototype.createSelect = function (t) {
-        return $.extend({}, o2.Instance[t]);
-      }, t;
+      }), v10452.prototype.createEditor = function (v10453) {
+        return $.extend({}, v10441.Instance[v10453]);
+      }, v10452.prototype.createSelect = function (v10454) {
+        return $.extend({}, o2.Instance[v10454]);
+      }, v10452;
     }(),
-    a = n(10),
-    p = n(14),
-    s = n(11),
-    l = function () {
-      function t() {
+    v10455 = v10436(10),
+    v10456 = v10436(14),
+    v10457 = v10436(11),
+    v10458 = function () {
+      function v10459() {
       }
 
-      return t.prototype.init = function (t, e) {
-        var n = this;
-        this.tableOptions = e, this.title = t.title, this.field = t.field, t.getTarget().unbind("dblclick.hitable").bind("dblclick.hitable", function () {
-          t.isEditing = !0, n.beginEdit(t);
+      return v10459.prototype.init = function (v10460, v10461) {
+        var v10462 = this;
+        this.tableOptions = v10461, this.title = v10460.title, this.field = v10460.field, v10460.getTarget().unbind("dblclick.hitable").bind("dblclick.hitable", function () {
+          v10460.isEditing = !0, v10462.beginEdit(v10460);
         });
-      }, t.prototype.getDisplayHtml = function () {
+      }, v10459.prototype.getDisplayHtml = function () {
         return this.title;
-      }, t.prototype.beginEdit = function (t) {
-        var e = this;
-        if (e.tableOptions.options.fields && e.tableOptions.options.fields.length) {
-          this.editor = r.Instance.createSelect("select"), t.getTarget().html(""), this.editor.init(e.tableOptions.options.fields, t), this.editor.setValue(this.field || ""), $(this.editor.target).keydown(function (n) {
-            13 == n.keyCode && e.endEdit(t);
-          }), $(this.editor.target).change(function (n) {
-            e.endEdit(t);
-          }), $(this.editor.target).blur(function (n) {
-            e.endEdit(t);
-          })
+      }, v10459.prototype.beginEdit = function (v10463) {
+        var v10464 = this;
+        if (v10464.tableOptions.options.fields && v10464.tableOptions.options.fields.length) {
+          this.editor = v10451.Instance.createSelect("select"), v10463.getTarget().html(""), this.editor.init(v10464.tableOptions.options.fields, v10463), this.editor.setValue(this.field || ""), $(this.editor.target).keydown(function (v10465) {
+            13 == v10465.keyCode && v10464.endEdit(v10463);
+          }), $(this.editor.target).change(function (v10466) {
+            v10464.endEdit(v10463);
+          }), $(this.editor.target).blur(function (v10467) {
+            v10464.endEdit(v10463);
+          });
         } else {
-          this.editor = r.Instance.createEditor("text"), t.getTarget().html(""), this.editor.init(t), (this.title || this.field) && (this.tableOptions.options.isEnableEditField ? this.editor.setValue((this.title || "") + "#" + (this.field || "")) : this.editor.setValue(this.title || "")), $(this.editor.target).keydown(function (n) {
-            13 == n.keyCode && e.endEdit(t);
-          }), $(this.editor.target).blur(function (n) {
-            e.endEdit(t);
-          }), this.tableOptions.editingCell && this.tableOptions.editingCell.id != t.id && this.tableOptions.editingCell.innerElement.endEdit(this.tableOptions.editingCell), this.tableOptions.editingCell = t;
+          this.editor = v10451.Instance.createEditor("text"), v10463.getTarget().html(""), this.editor.init(v10463), (this.title || this.field) && (this.tableOptions.options.isEnableEditField ? this.editor.setValue((this.title || "") + "#" + (this.field || "")) : this.editor.setValue(this.title || "")), $(this.editor.target).keydown(function (v10468) {
+            13 == v10468.keyCode && v10464.endEdit(v10463);
+          }), $(this.editor.target).blur(function (v10469) {
+            v10464.endEdit(v10463);
+          }), this.tableOptions.editingCell && this.tableOptions.editingCell.id != v10463.id && this.tableOptions.editingCell.innerElement.endEdit(this.tableOptions.editingCell), this.tableOptions.editingCell = v10463;
         }
-      }, t.prototype.endEdit = function (t) {
-        t.isEditing = 0
-        var e = this.editor.getValue();
-        if (e) {
+      }, v10459.prototype.endEdit = function (v10470) {
+        v10470.isEditing = 0;
+        var v10471 = this.editor.getValue();
+        if (v10471) {
           if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
-            var n = e.split("#");
-            t.title = this.title = n[0], n.length > 0 && (t.columnId = t.field = this.field = n[1]);
-            t.id && t.target.attr("id", t.id), t.columnId && t.target.attr("column-id", t.columnId);
+            var v10472 = v10471.split("#");
+            v10470.title = this.title = v10472[0], v10472.length > 0 && (v10470.columnId = v10470.field = this.field = v10472[1]);
+            v10470.id && v10470.target.attr("id", v10470.id), v10470.columnId && v10470.target.attr("column-id", v10470.columnId);
             hinnn.event.trigger("hiprintTemplateDataChanged_" + this.tableOptions.options.templateId, "调整表格列字段");
-          } else t.title = this.title = e;
-        } else this.tableOptions.options.isEnableEditField ? (t.title = this.title = "", t.field = this.field = "") : t.title = this.title = "";
-        this.editor.destroy(), t.getTarget().html(this.title);
-      }, t;
+          } else v10470.title = this.title = v10471;
+        } else this.tableOptions.options.isEnableEditField ? (v10470.title = this.title = "", v10470.field = this.field = "") : v10470.title = this.title = "";
+        this.editor.destroy(), v10470.getTarget().html(this.title);
+      }, v10459;
     }(),
-    u = function () {
-      return function (t) {
-        this.title = t.title, this.field = t.field, this.width = t.width, this.align = t.align, this.halign = t.halign, this.vAlign = t.vAlign, this.colspan = t.colspan, this.rowspan = t.rowspan, this.checked = t.checked, this.columnId = t.columnId, this.tableSummaryTitle = t.tableSummaryTitle, this.tableSummaryText = t.tableSummaryText, this.tableSummaryColspan = t.tableSummaryColspan, this.tableSummary = t.tableSummary, this.tableSummaryAlign = t.tableSummaryAlign, this.tableSummaryNumFormat = t.tableSummaryNumFormat, this.tableSummaryFormatter = t.tableSummaryFormatter, this.showCodeTitle = t.showCodeTitle, this.upperCase = t.upperCase, this.renderFormatter = t.renderFormatter && t.renderFormatter.toString(), this.formatter2 = t.formatter2 && t.formatter2.toString(), this.styler2 = t.styler2 && t.styler2.toString(), this.stylerHeader = t.stylerHeader && t.stylerHeader.toString(), this.tableColumnHeight = t.tableColumnHeight, this.tableTextType = t.tableTextType, this.tableBarcodeMode = t.tableBarcodeMode, this.tableQRCodeLevel = t.tableQRCodeLevel
+    v10473 = function () {
+      return function (v10474) {
+        this.title = v10474.title, this.field = v10474.field, this.width = v10474.width, this.align = v10474.align, this.halign = v10474.halign, this.vAlign = v10474.vAlign, this.colspan = v10474.colspan, this.rowspan = v10474.rowspan, this.checked = v10474.checked, this.columnId = v10474.columnId, this.tableSummaryTitle = v10474.tableSummaryTitle, this.tableSummaryText = v10474.tableSummaryText, this.tableSummaryColspan = v10474.tableSummaryColspan, this.tableSummary = v10474.tableSummary, this.tableSummaryAlign = v10474.tableSummaryAlign, this.tableSummaryNumFormat = v10474.tableSummaryNumFormat, this.tableSummaryFormatter = v10474.tableSummaryFormatter, this.showCodeTitle = v10474.showCodeTitle, this.upperCase = v10474.upperCase, this.renderFormatter = v10474.renderFormatter && v10474.renderFormatter.toString(), this.formatter2 = v10474.formatter2 && v10474.formatter2.toString(), this.styler2 = v10474.styler2 && v10474.styler2.toString(), this.stylerHeader = v10474.stylerHeader && v10474.stylerHeader.toString(), this.tableColumnHeight = v10474.tableColumnHeight, this.tableTextType = v10474.tableTextType, this.tableBarcodeMode = v10474.tableBarcodeMode, this.tableQRCodeLevel = v10474.tableQRCodeLevel;
       };
     }(),
-    d = function () {
-      function t() {
-        this.id = s.a.createId();
+    v10475 = function () {
+      function v10476() {
+        this.id = v10457.a.createId();
       }
 
-      return t.prototype.init = function (t, e, n, i) {
-        this.isHead = i, this.rowId = n, this.isEditing = !1;
-        var o = /^[0-9]*$/;
-        this.target = t, this.tableOptions = e;
-        var r = this.target.attr("colspan");
-        this.colspan = o.test(r) ? parseInt(r) : 1;
-        var a = this.target.attr("rowspan");
-        this.rowspan = o.test(a) ? parseInt(a) : 1, this.initEvent(), this.isHead && this.initInnerEelement();
-      }, t.prototype.beginEdit = function () {
+      return v10476.prototype.init = function (v10478, v10479, v10480, v10481) {
+        this.isHead = v10481, this.rowId = v10480, this.isEditing = !1;
+        var v10482 = /^[0-9]*$/;
+        this.target = v10478, this.tableOptions = v10479;
+        var v10483 = this.target.attr("colspan");
+        this.colspan = v10482.test(v10483) ? parseInt(v10483) : 1;
+        var v10484 = this.target.attr("rowspan");
+        this.rowspan = v10482.test(v10484) ? parseInt(v10484) : 1, this.initEvent(), this.isHead && this.initInnerEelement();
+      }, v10476.prototype.beginEdit = function () {
         if (!this.isEditing && this.tableOptions.isEnableEdit && this.tableOptions.onBeforEdit(this)) {
-          var t = this.getValue();
-          this.editor = r.Instance.createEditor("text"), this.isEditing = !0, this.tableOptions.editingCell = this, this.target.html(""), this.editor.init(this), this.editor.setValue(t);
+          var v10485 = this.getValue();
+          this.editor = v10451.Instance.createEditor("text"), this.isEditing = !0, this.tableOptions.editingCell = this, this.target.html(""), this.editor.init(this), this.editor.setValue(v10485);
         }
-      }, t.prototype.endEdit = function () {
+      }, v10476.prototype.endEdit = function () {
         this.isEditing = !1;
-        var t = this.editor.getValue();
-        this.editor.destroy(), this.target.html(t);
-      }, t.prototype.getTarget = function () {
+        var v10486 = this.editor.getValue();
+        this.editor.destroy(), this.target.html(v10486);
+      }, v10476.prototype.getTarget = function () {
         return this.target;
-      }, t.prototype.getValue = function () {
+      }, v10476.prototype.getValue = function () {
         return this.target.html();
-      }, t.prototype.setValue = function (t) {
-      }, t.prototype.initInnerEelement = function () {
-        this.innerElement = new l(), this.innerElement.init(this, this.tableOptions);
-      }, t.prototype.initEvent = function () {
-      }, t.prototype.isXYinCell = function (t, e) {
-        var n = new a.b({
-          x: t,
-          y: e,
+      }, v10476.prototype.setValue = function (v10487) {
+      }, v10476.prototype.initInnerEelement = function () {
+        this.innerElement = new v10458(), this.innerElement.init(this, this.tableOptions);
+      }, v10476.prototype.initEvent = function () {
+      }, v10476.prototype.isXYinCell = function (v10488, v10489) {
+        var v10490 = new v10455.b({
+          x: v10488,
+          y: v10489,
           height: 0,
           width: 0
         });
-        return this.isOverlap(n);
-      }, t.prototype.getTableRect = function () {
-        return new a.b({
+        return this.isOverlap(v10490);
+      }, v10476.prototype.getTableRect = function () {
+        return new v10455.b({
           x: this.target.offset().left,
           y: this.target.offset().top,
           height: this.target[0].offsetHeight,
           width: this.target[0].offsetWidth
         });
-      }, t.prototype.isOverlap = function (t) {
-        var e = this.getTableRect();
-        return t.x + t.width > e.x && e.x + e.width > t.x && t.y + t.height > e.y && e.y + e.height > t.y;
-      }, t.prototype.isInRect = function (t) {
-        var e = t.rect,
-          n = this.getTableRect();
+      }, v10476.prototype.isOverlap = function (v10497) {
+        var v10498 = this.getTableRect();
+        return v10497.x + v10497.width > v10498.x && v10498.x + v10498.width > v10497.x && v10497.y + v10497.height > v10498.y && v10498.y + v10498.height > v10497.y;
+      }, v10476.prototype.isInRect = function (v10507) {
+        var v10508 = v10507.rect,
+          v10509 = this.getTableRect();
 
         // if (e.x + e.width > n.x && n.x + n.width > e.x && e.y + e.height > n.y && n.y + n.height > e.y) {
-        if (n.x >= e.x && n.x + n.width <= e.x + e.width && n.y >= e.y && n.y + n.height <= e.y + e.height) {
-          var i = p.a.mergeRect(e, n);
-          return JSON.stringify(e) == JSON.stringify(i) || (t.changed = !0, t.rect = i, !0);
+        if (v10509.x >= v10508.x && v10509.x + v10509.width <= v10508.x + v10508.width && v10509.y >= v10508.y && v10509.y + v10509.height <= v10508.y + v10508.height) {
+          var v10518 = v10456.a.mergeRect(v10508, v10509);
+          return JSON.stringify(v10508) == JSON.stringify(v10518) || (v10507.changed = !0, v10507.rect = v10518, !0);
         }
 
         return !1;
-      }, t.prototype.isSelected = function () {
+      }, v10476.prototype.isSelected = function () {
         return this.target.hasClass("selected");
-      }, t.prototype.select = function () {
+      }, v10476.prototype.select = function () {
         this.target.addClass("selected");
-      }, t.prototype.isHeader = function () {
+      }, v10476.prototype.isHeader = function () {
         return !1;
-      }, t.prototype.setAlign = function (t) {
-        this.align = t, t ? this.target.css("text-align", t) : this.target[0].style.textAlign = "";
-      }, t.prototype.setVAlign = function (t) {
-        this.vAlign = t, t ? this.target.css("vertical-align", t) : this.target[0].style.verticalAlign = "";
-      }, t.prototype.getEntity = function () {
-        return new u(this);
-      }, t;
+      }, v10476.prototype.setAlign = function (v10520) {
+        this.align = v10520, v10520 ? this.target.css("text-align", v10520) : this.target[0].style.textAlign = "";
+      }, v10476.prototype.setVAlign = function (v10521) {
+        this.vAlign = v10521, v10521 ? this.target.css("vertical-align", v10521) : this.target[0].style.verticalAlign = "";
+      }, v10476.prototype.getEntity = function () {
+        return new v10473(this);
+      }, v10476;
     }();
 
-  n.d(e, "a", function () {
-    return f;
+  v10436.d(v10435, "a", function () {
+    return v10523;
   });
 
   var _c,
-    h = (_c = function c(t, e) {
+    v10524 = (_c = function v10525(v10526, v10527) {
       return (_c = Object.setPrototypeOf || _instanceof({
         __proto__: []
-      }, Array) && function (t, e) {
-        t.__proto__ = e;
-      } || function (t, e) {
-        for (var n in e) {
-          e.hasOwnProperty(n) && (t[n] = e[n]);
+      }, Array) && function (v10528, v10529) {
+        v10528.__proto__ = v10529;
+      } || function (v10530, v10531) {
+        for (var v10532 in v10531) {
+          v10531.hasOwnProperty(v10532) && (v10530[v10532] = v10531[v10532]);
         }
-      })(t, e);
-    }, function (t, e) {
-      function n() {
-        this.constructor = t;
+      })(v10526, v10527);
+    }, function (v10533, v10534) {
+      function v10535() {
+        this.constructor = v10533;
       }
 
-      _c(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+      _c(v10533, v10534), v10533.prototype = null === v10534 ? Object.create(v10534) : (v10535.prototype = v10534.prototype, new v10535());
     }),
-    f = function (t) {
-      function e(e) {
-        var n = this;
-        return e = e || {}, (n = t.call(this) || this).width = e.width ? parseFloat(e.width.toString()) : 100, n.title = e.title, n.descTitle = e.descTitle, n.field = e.field, n.fixed = e.fixed, n.rowspan = e.rowspan ? parseInt(e.rowspan) : 1, n.colspan = e.colspan ? parseInt(e.colspan) : 1, n.align = e.align, n.halign = e.halign, n.vAlign = e.vAlign, n.formatter = e.formatter, n.styler = e.styler, n.renderFormatter = e.renderFormatter, n.formatter2 = e.formatter2, n.styler2 = e.styler2, n.stylerHeader = e.stylerHeader, n.checkbox = e.checkbox, n.checked = 0 != e.checked, n.columnId = e.columnId || e.field, n.tableColumnHeight = e.tableColumnHeight, n.tableTextType = e.tableTextType, n.tableBarcodeMode = e.tableBarcodeMode, n.tableQRCodeLevel = e.tableQRCodeLevel, n.tableSummaryTitle = e.tableSummaryTitle, n.tableSummaryText = e.tableSummaryText, n.tableSummaryColspan = e.tableSummaryColspan, n.tableSummary = e.tableSummary, n.tableSummaryAlign = e.tableSummaryAlign, n.tableSummaryNumFormat = e.tableSummaryNumFormat, n.tableSummaryFormatter = e.tableSummaryFormatter,
-        n.showCodeTitle = e.showCodeTitle, n.upperCase = e.upperCase, n;
+    v10523 = function (v10536) {
+      function v10539(v10537) {
+        var v10538 = this;
+        return v10537 = v10537 || {}, (v10538 = v10536.call(this) || this).width = v10537.width ? parseFloat(v10537.width.toString()) : 100, v10538.title = v10537.title, v10538.descTitle = v10537.descTitle, v10538.field = v10537.field, v10538.fixed = v10537.fixed, v10538.rowspan = v10537.rowspan ? parseInt(v10537.rowspan) : 1, v10538.colspan = v10537.colspan ? parseInt(v10537.colspan) : 1, v10538.align = v10537.align, v10538.halign = v10537.halign, v10538.vAlign = v10537.vAlign, v10538.formatter = v10537.formatter, v10538.styler = v10537.styler, v10538.renderFormatter = v10537.renderFormatter, v10538.formatter2 = v10537.formatter2, v10538.styler2 = v10537.styler2, v10538.stylerHeader = v10537.stylerHeader, v10538.checkbox = v10537.checkbox, v10538.checked = 0 != v10537.checked, v10538.columnId = v10537.columnId || v10537.field, v10538.tableColumnHeight = v10537.tableColumnHeight, v10538.tableTextType = v10537.tableTextType, v10538.tableBarcodeMode = v10537.tableBarcodeMode, v10538.tableQRCodeLevel = v10537.tableQRCodeLevel, v10538.tableSummaryTitle = v10537.tableSummaryTitle, v10538.tableSummaryText = v10537.tableSummaryText, v10538.tableSummaryColspan = v10537.tableSummaryColspan, v10538.tableSummary = v10537.tableSummary, v10538.tableSummaryAlign = v10537.tableSummaryAlign, v10538.tableSummaryNumFormat = v10537.tableSummaryNumFormat, v10538.tableSummaryFormatter = v10537.tableSummaryFormatter,
+        v10538.showCodeTitle = v10537.showCodeTitle, v10538.upperCase = v10537.upperCase, v10538;
       }
 
-      return h(e, t), e.prototype.css = function (t) {
-      }, e;
-    }(d);
-}, function (t, e, n) {
+      return v10524(v10539, v10536), v10539.prototype.css = function (v10540) {
+      }, v10539;
+    }(v10475);
+}, function (v10541, v10542, v10543) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v10543.d(v10542, "a", function () {
+    return v10545;
   });
 
-  var i = function () {
-    return function (t) {
-      this.printLine = t.printLine, this.target = t.target, this.referenceElement = t.referenceElement;
+  var v10545 = function () {
+    return function (v10546) {
+      this.printLine = v10546.printLine, this.target = v10546.target, this.referenceElement = v10546.referenceElement;
     };
   }();
 }, function (module, __webpack_exports__, __webpack_require__) {
@@ -1767,41 +1767,41 @@ var hiprint = function (t) {
       function TableExcelHelper() {
       }
 
-      return TableExcelHelper.createTableHead = function (t, e) {
-        for (var n = TableExcelHelper.reconsitutionTableColumnTree(t), i = $("<thead></thead>"), colgroup = $("<colgroup></colgroup>"), o = TableExcelHelper.getColumnsWidth(n, e), r = function r(t) {
-          var e = $("<tr></tr>");
-          // 重置 colgroup，解决多行表头 col 添加错误问题，仅以最后一行添加
-          colgroup = $("<colgroup></colgroup>");
-          n[t].filter(function (t) {
-            return t.checked;
-          }).forEach(function (t) {
-            var n = $("<td></td>");
-            t.id && n.attr("id", t.id), t.columnId && n.attr("column-id", t.columnId), (t.align || t.halign) && n.css("text-align", t.halign || t.align), t.vAlign && n.css("vertical-align", t.vAlign), t.colspan > 1 && n.attr("colspan", t.colspan), t.rowspan > 1 && n.attr("rowspan", t.rowspan), n.html(t.title), o[t.id] ? (t.hasWidth = !0, t.targetWidth = o[t.id], n.attr("haswidth", "haswidth"), n.css("width", o[t.id] + "pt")) : t.hasWidth = !1;
-            var s = TableExcelHelper.getHeaderStyler(t);
-            if (s) {
-              var l = s(t);
-              if (l) Object.keys(l).forEach(function (t) {
-                n.css(t, l[t]);
-              });
-            }
-            e.append(n);
-            colgroup.append(`<col column-id="${t.columnId}" width="${t.width}pt"></col>`)
-          }), i.append(e);
-        }, a = 0; a < n.totalLayer; a++) {
-          r(a);
+      return TableExcelHelper.createTableHead = function (v10548, v10549) {
+        for (var v10550 = TableExcelHelper.reconsitutionTableColumnTree(v10548), v10551 = $("<thead></thead>"), colgroup = $("<colgroup></colgroup>"), v10552 = TableExcelHelper.getColumnsWidth(v10550, v10549), v10553 = function v10554(v10555) {
+            var v10556 = $("<tr></tr>");
+            // 重置 colgroup，解决多行表头 col 添加错误问题，仅以最后一行添加
+            colgroup = $("<colgroup></colgroup>");
+            v10550[v10555].filter(function (v10557) {
+              return v10557.checked;
+            }).forEach(function (v10558) {
+              var v10559 = $("<td></td>");
+              v10558.id && v10559.attr("id", v10558.id), v10558.columnId && v10559.attr("column-id", v10558.columnId), (v10558.align || v10558.halign) && v10559.css("text-align", v10558.halign || v10558.align), v10558.vAlign && v10559.css("vertical-align", v10558.vAlign), v10558.colspan > 1 && v10559.attr("colspan", v10558.colspan), v10558.rowspan > 1 && v10559.attr("rowspan", v10558.rowspan), v10559.html(v10558.title), v10552[v10558.id] ? (v10558.hasWidth = !0, v10558.targetWidth = v10552[v10558.id], v10559.attr("haswidth", "haswidth"), v10559.css("width", v10552[v10558.id] + "pt")) : v10558.hasWidth = !1;
+              var v10560 = TableExcelHelper.getHeaderStyler(v10558);
+              if (v10560) {
+                var v10561 = v10560(v10558);
+                if (v10561) Object.keys(v10561).forEach(function (v10562) {
+                  v10559.css(v10562, v10561[v10562]);
+                });
+              }
+              v10556.append(v10559);
+              colgroup.append(`<col column-id="${v10558.columnId}" width="${v10558.width}pt"></col>`);
+            }), v10551.append(v10556);
+          }, v10563 = 0; v10563 < v10550.totalLayer; v10563++) {
+          v10553(v10563);
         }
-        return TableExcelHelper.syncTargetWidthToOption(t), [i, colgroup];
-      }, TableExcelHelper.createTableFooter = function (t, e, n, i, o, r) {
+        return TableExcelHelper.syncTargetWidthToOption(v10548), [v10551, colgroup];
+      }, TableExcelHelper.createTableFooter = function (v10564, v10565, v10566, v10567, v10568, v10569) {
         // n=>options e=>表格所有数据 o=>所有打印数据 r=>表格每页数据
-        var a = $("<tfoot></tfoot>"), p = this.getFooterFormatter(n, i);
+        var v10570 = $("<tfoot></tfoot>"),v10571 = this.getFooterFormatter(v10566, v10567);
         var tst = this.tableSummaryTitle;
-        let tSumData = n.tableFooterRepeat == "last" ? e : r;
-        let idx = n.columns.length - 1;
-        var rowColumns = this.rowColumns || n.columns[idx].columns;
-        if (n.tableFooterRepeat != 'no' && rowColumns.some(function (column) {return column.tableSummary})) {
+        let tSumData = v10566.tableFooterRepeat == "last" ? v10565 : v10569;
+        let idx = v10566.columns.length - 1;
+        var rowColumns = this.rowColumns || v10566.columns[idx].columns;
+        if (v10566.tableFooterRepeat != 'no' && rowColumns.some(function (column) {return column.tableSummary;})) {
           var tableFooter = $("<tr></tr>");
-          rowColumns.filter(function (t) {
-            return t.checked;
+          rowColumns.filter(function (v10572) {
+            return v10572.checked;
           }).forEach(function (column) {
             var fieldData = tSumData.filter(function (row) {
               return row && row[column.field];
@@ -1813,309 +1813,309 @@ var hiprint = function (t) {
             var style = `text-align: ${column.tableSummaryAlign || "center"}`;
             var colspan = column.tableSummaryColspan == void 0 ? 1 : column.tableSummaryColspan;
             var upperCaseType = column.upperCase;
-            let {toUpperCase, numFormat} = _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__.a;
+            let { toUpperCase, numFormat } = _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__.a;
             var tableSummaryFormatter = TableExcelHelper.getColumnTableSummaryFormatter(column);
-            var formatterResult = tableSummaryFormatter ? tableSummaryFormatter(column, fieldData, e, n) : '';
+            var formatterResult = tableSummaryFormatter ? tableSummaryFormatter(column, fieldData, v10565, v10566) : '';
             if (formatterResult) {
               tableFooter.append(formatterResult);
               return;
             }
             switch (column.tableSummary) {
-            case "count":
-              var title = tst(column, text || `${i18n.__('计数')}:`, o);
-              var count = toUpperCase(upperCaseType,tSumData.filter(i => i).length || 0);
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${count}</td>`);
-              break;
-            case "sum":
-              var sum = parseFloat(Number(fieldData.reduce(function (prev, cur) {
-                return prev + cur;
-              }, 0)));
-              sum = toUpperCase(upperCaseType,numFormat(sum, numF));
-              var title = tst(column, text || `${i18n.__('合计')}:`, o);
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${sum}</td>`)
-              break;
-            case "avg":
-              var sum = parseFloat(Number(fieldData.reduce(function (prev, cur) {
-                return prev + cur;
-              }, 0)));
-              var avg = parseFloat(Number(sum / (fieldData.length || 1)));
-              avg = toUpperCase(upperCaseType,numFormat(avg, numF));
-              var title = tst(column, text || `${i18n.__('平均值')}:`, o);
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${avg}</td>`)
-              break;
-            case "min":
-              var min = Math.min(...fieldData) || 0;
-              min == Infinity && (min = 0);
-              min = toUpperCase(upperCaseType,numFormat(min, numF));
-              var title = tst(column, text || `${i18n.__('最小值')}:`, o);
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${min || 0}</td>`)
-              break;
-            case "max":
-              var max = Math.max(...fieldData);
-              max == -Infinity && (max = 0);
-              max = toUpperCase(upperCaseType,numFormat(max, numF));
-              var title = tst(column, text || `${i18n.__('最大值')}:`, o);
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${max || 0}</td>`);
-              break;
-            case "text":
-              tableFooter.append(`<td style="${style}" colspan="${colspan}">${text || ""}</td>`);
-              break;
-            default:
-              if (colspan >= 1) {
-                tableFooter.append(`<td style="${style}" colspan="${colspan}">${text || ""}</td>`)
-              }
-              break;
+              case "count":
+                var title = tst(column, text || `${i18n.__('计数')}:`, v10568);
+                var count = toUpperCase(upperCaseType, tSumData.filter((v10574) => v10574).length || 0);
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${count}</td>`);
+                break;
+              case "sum":
+                var sum = parseFloat(Number(fieldData.reduce(function (prev, cur) {
+                  return prev + cur;
+                }, 0)));
+                sum = toUpperCase(upperCaseType, numFormat(sum, numF));
+                var title = tst(column, text || `${i18n.__('合计')}:`, v10568);
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${sum}</td>`);
+                break;
+              case "avg":
+                var sum = parseFloat(Number(fieldData.reduce(function (prev, cur) {
+                  return prev + cur;
+                }, 0)));
+                var avg = parseFloat(Number(sum / (fieldData.length || 1)));
+                avg = toUpperCase(upperCaseType, numFormat(avg, numF));
+                var title = tst(column, text || `${i18n.__('平均值')}:`, v10568);
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${avg}</td>`);
+                break;
+              case "min":
+                var min = Math.min(...fieldData) || 0;
+                min == Infinity && (min = 0);
+                min = toUpperCase(upperCaseType, numFormat(min, numF));
+                var title = tst(column, text || `${i18n.__('最小值')}:`, v10568);
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${min || 0}</td>`);
+                break;
+              case "max":
+                var max = Math.max(...fieldData);
+                max == -Infinity && (max = 0);
+                max = toUpperCase(upperCaseType, numFormat(max, numF));
+                var title = tst(column, text || `${i18n.__('最大值')}:`, v10568);
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${title}${max || 0}</td>`);
+                break;
+              case "text":
+                tableFooter.append(`<td style="${style}" colspan="${colspan}">${text || ""}</td>`);
+                break;
+              default:
+                if (colspan >= 1) {
+                  tableFooter.append(`<td style="${style}" colspan="${colspan}">${text || ""}</td>`);
+                }
+                break;
             }
-          })
-          a.append(tableFooter);
+          });
+          v10570.append(tableFooter);
         }
-        if (p) {
-          a.append(p(n, e, o, r));
+        if (v10571) {
+          v10570.append(v10571(v10566, v10565, v10568, v10569));
         }
-        return a;
+        return v10570;
       }, TableExcelHelper.tableSummaryTitle = function (column, title, data) {
-        var s = column.tableSummaryTitle == undefined || column.tableSummaryTitle == true;
-        return s ? `${title}` : data ? `` : `<span style="color:firebrick">${title}</span>`;
-      }, TableExcelHelper.createTableRow = function (t, e, printData, n, i) {
-        var h = this;
-        var o = TableExcelHelper.reconsitutionTableColumnTree(t),
-          r = $("<tbody></tbody>");
-        var gff = h.getGroupFieldsFormatter(n, i);
-        var groupFields = gff ? (n.groupFields = gff(i, n, e)) : i.groupFields ? i.groupFields : [];
-        (e || (e = []), groupFields.length) ? _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__.a.groupBy(e, groupFields, function (t) {
-          var e = {};
-          return groupFields.forEach(function (n) {
-            return e[n] = t[n];
-          }), e;
-        }).forEach(function (t) {
-          var groupFormatter = h.getGroupFormatter(n, i);
+        var v10575 = column.tableSummaryTitle == undefined || column.tableSummaryTitle == true;
+        return v10575 ? `${title}` : data ? `` : `<span style="color:firebrick">${title}</span>`;
+      }, TableExcelHelper.createTableRow = function (v10576, v10577, printData, v10578, v10579) {
+        var v10580 = this;
+        var v10581 = TableExcelHelper.reconsitutionTableColumnTree(v10576),
+          v10582 = $("<tbody></tbody>");
+        var gff = v10580.getGroupFieldsFormatter(v10578, v10579);
+        var groupFields = gff ? v10578.groupFields = gff(v10579, v10578, v10577) : v10579.groupFields ? v10579.groupFields : [];
+        (v10577 || (v10577 = []), groupFields.length) ? _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_1__.a.groupBy(v10577, groupFields, function (v10584) {
+          var v10585 = {};
+          return groupFields.forEach(function (v10586) {
+            return v10585[v10586] = v10584[v10586];
+          }), v10585;
+        }).forEach(function (v10587) {
+          var groupFormatter = v10580.getGroupFormatter(v10578, v10579);
           if (groupFormatter) {
-            let result = groupFormatter(o.colspan, e, printData, t, n)
+            let result = groupFormatter(v10581.colspan, v10577, printData, v10587, v10578);
             if ($(result).is("tr")) {
-              r.append(result)
+              v10582.append(result);
             } else if ($(result).is("td")) {
-              r.append(`<tr>${result}</tr>`)
+              v10582.append(`<tr>${result}</tr>`);
             } else {
-              r.append(`<tr><td>${result}</td></tr>`)
+              v10582.append(`<tr><td>${result}</td></tr>`);
             }
           }
-          var groupFooterFormatter = h.getGroupFooterFormatter(n, i);
-          var groupData = t;
-          if (groupData.rows.forEach(function (t, rowIndex) {
-            var e = TableExcelHelper.createRowTarget(o, t, n, i, rowIndex, groupData.rows, printData);
-            r.append(e);
+          var groupFooterFormatter = v10580.getGroupFooterFormatter(v10578, v10579);
+          var groupData = v10587;
+          if (groupData.rows.forEach(function (v10588, rowIndex) {
+            var v10589 = TableExcelHelper.createRowTarget(v10581, v10588, v10578, v10579, rowIndex, groupData.rows, printData);
+            v10582.append(v10589);
           }), groupFooterFormatter) {
-            let result = groupFooterFormatter(o.colspan, e, printData, t, n)
+            let result = groupFooterFormatter(v10581.colspan, v10577, printData, v10587, v10578);
             if ($(result).is("tr")) {
-              r.append(result)
+              v10582.append(result);
             } else if ($(result).is("td")) {
-              r.append(`<tr>${result}</tr>`)
+              v10582.append(`<tr>${result}</tr>`);
             } else {
-              r.append(`<tr><td>${result}</td></tr>`)
+              v10582.append(`<tr><td>${result}</td></tr>`);
             }
           }
-        }) : e.forEach(function (t, rowIndex) {
-          var row = TableExcelHelper.createRowTarget(o, t, n, i, rowIndex, e, printData);
-          r.append(row);
+        }) : v10577.forEach(function (v10590, rowIndex) {
+          var row = TableExcelHelper.createRowTarget(v10581, v10590, v10578, v10579, rowIndex, v10577, printData);
+          v10582.append(row);
         });
-        return r;
-      }, TableExcelHelper.createRowTarget = function (t, e, n, i, rowIndex, tableData, printData) {
-        var o = $("<tr></tr>");
-        var columns = t.rowColumns.filter(function (t) {
-          return t.checked;
+        return v10582;
+      }, TableExcelHelper.createRowTarget = function (v10591, v10592, v10593, v10594, rowIndex, tableData, printData) {
+        var v10595 = $("<tr></tr>");
+        var columns = v10591.rowColumns.filter(function (v10596) {
+          return v10596.checked;
         });
-        o.data("rowData", e), t.rowColumns.filter(function (t) {
-          return t.checked;
-        }).forEach(function (t, i) {
-          if (!t.checked) return;
-          var rowsColumnsMerge = ''
-          if (n.rowsColumnsMerge) {
-            eval('rowsColumnsMerge=' + n.rowsColumnsMerge)
-            var rowsColumnsArr = rowsColumnsMerge(e, t, i, rowIndex, tableData, printData) || [1, 1]
-            var r = $(`<td style = 'display:${!(rowsColumnsArr[0] && rowsColumnsArr[1]) ? "none" : ""}' rowspan = '${rowsColumnsArr[0]}' colspan = '${rowsColumnsArr[1]}'></td>`);
+        v10595.data("rowData", v10592), v10591.rowColumns.filter(function (v10597) {
+          return v10597.checked;
+        }).forEach(function (v10598, v10599) {
+          if (!v10598.checked) return;
+          var rowsColumnsMerge = '';
+          if (v10593.rowsColumnsMerge) {
+            eval('rowsColumnsMerge=' + v10593.rowsColumnsMerge);
+            var rowsColumnsArr = rowsColumnsMerge(v10592, v10598, v10599, rowIndex, tableData, printData) || [1, 1];
+            var v10600 = $(`<td style = 'display:${!(rowsColumnsArr[0] && rowsColumnsArr[1]) ? "none" : ""}' rowspan = '${rowsColumnsArr[0]}' colspan = '${rowsColumnsArr[1]}'></td>`);
           } else {
-            var r = $("<td></td>");
+            var v10600 = $("<td></td>");
           }
           // 设计时不去计算宽度
-          if (e && Object.keys(e).length > 0 && ("first" == n.tableHeaderRepeat || "none" == n.tableHeaderRepeat)) {
-            t.field && r.attr("field", t.field), t.align && r.css("text-align", t.align), t.vAlign && r.css("vertical-align", t.vAlign);
+          if (v10592 && Object.keys(v10592).length > 0 && ("first" == v10593.tableHeaderRepeat || "none" == v10593.tableHeaderRepeat)) {
+            v10598.field && v10600.attr("field", v10598.field), v10598.align && v10600.css("text-align", v10598.align), v10598.vAlign && v10600.css("vertical-align", v10598.vAlign);
             // 无表头时跨行无效，需根据所跨行数重新计算宽度
-            if (n.rowsColumnsMerge) {
+            if (v10593.rowsColumnsMerge) {
               if (rowsColumnsArr[1] > 1) {
                 var width = 0;
                 columns.forEach((item, index) => {
-                  if (index >= i && (index < i + rowsColumnsArr[1])) {
-                    width += item.width
+                  if (index >= v10599 && index < v10599 + rowsColumnsArr[1]) {
+                    width += item.width;
                   }
-                })
+                });
               }
             }
-            r.css("width", (width || t.width) + "pt");
+            v10600.css("width", (width || v10598.width) + "pt");
           } else {
-            t.field && r.attr("field", t.field), t.align && r.css("text-align", t.align), t.vAlign && r.css("vertical-align", t.vAlign);
+            v10598.field && v10600.attr("field", v10598.field), v10598.align && v10600.css("text-align", v10598.align), v10598.vAlign && v10600.css("vertical-align", v10598.vAlign);
           }
-          var a = TableExcelHelper.getColumnFormatter(t),
-            p = a ? a(e[t.field], e, i, n) : e[t.field];
-          var rf = TableExcelHelper.getColumnRenderFormatter(t);
+          var v10601 = TableExcelHelper.getColumnFormatter(v10598),
+            v10602 = v10601 ? v10601(v10592[v10598.field], v10592, v10599, v10593) : v10592[v10598.field];
+          var rf = TableExcelHelper.getColumnRenderFormatter(v10598);
           if (rf) {
-            r.html(rf(e[t.field], e, i, n, rowIndex))
-          //表格内容插入二维码等
-          } else if ("text" == t.tableTextType || t.tableTextType == void 0) r.html(p);
-          else {
-            if ("barcode" == t.tableTextType) {
-              r.html(
+            v10600.html(rf(v10592[v10598.field], v10592, v10599, v10593, rowIndex));
+            //表格内容插入二维码等
+          } else if ("text" == v10598.tableTextType || v10598.tableTextType == void 0) v10600.html(v10602);else
+          {
+            if ("barcode" == v10598.tableTextType) {
+              v10600.html(
                 '<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg ><div class="hibarcode_displayValue"></div>'
               );
               try {
-                p ? (JsBarcode(r.find(".hibarcode_imgcode")[0], p, {
-                  format: t.tableBarcodeMode || "CODE128A",
+                v10602 ? (JsBarcode(v10600.find(".hibarcode_imgcode")[0], v10602, {
+                  format: v10598.tableBarcodeMode || "CODE128A",
                   width: 1,
                   textMargin: -1,
                   lineColor: "#000000",
                   margin: 0,
                   height: parseInt(10),
                   displayValue: !1
-                }), r.find(".hibarcode_imgcode").attr("height", t.tableColumnHeight || 30 + 'pt'), r.find(".hibarcode_imgcode").css("margin", '5pt 10pt'), r.find(".hibarcode_imgcode").attr("width", "calc(100% - 20pt)")) : r.html("");
+                }), v10600.find(".hibarcode_imgcode").attr("height", v10598.tableColumnHeight || 30 + 'pt'), v10600.find(".hibarcode_imgcode").css("margin", '5pt 10pt'), v10600.find(".hibarcode_imgcode").attr("width", "calc(100% - 20pt)")) : v10600.html("");
                 // this.options.hideTitle || r.find(".hibarcode_displayValue").html(n)
-                if (t.showCodeTitle) {
-                    r.find('.hibarcode_displayValue').html(p)
+                if (v10598.showCodeTitle) {
+                  v10600.find('.hibarcode_displayValue').html(v10602);
                 }
-              } catch (t) {
-                console.log(t), r.html(`${i18n.__('此格式不支持该文本')}`);
+              } catch (v10603) {
+                console.log(v10603), v10600.html(`${i18n.__('此格式不支持该文本')}`);
               }
             }
-            if ("image" == t.tableTextType) {
-              r.html('')
-              if (p) {
+            if ("image" == v10598.tableTextType) {
+              v10600.html('');
+              if (v10602) {
 
-                var imagebox = $('<div><img style = "max-width:100%;max-height:100%"/></div>')
-                imagebox.find('img').attr('src', p)
-                console.log(imagebox.find('img').css('width'))
-                r.html(imagebox)
+                var imagebox = $('<div><img style = "max-width:100%;max-height:100%"/></div>');
+                imagebox.find('img').attr('src', v10602);
+                console.log(imagebox.find('img').css('width'));
+                v10600.html(imagebox);
               }
 
             }
-            if ("qrcode" == t.tableTextType) {
-              r.html("");
+            if ("qrcode" == v10598.tableTextType) {
+              v10600.html("");
               try {
-                var qrcodebox = $('<div style="margin:2pt 0pt" class="hiqrcode_imgcode"></div>')
+                var qrcodebox = $('<div style="margin:2pt 0pt" class="hiqrcode_imgcode"></div>');
 
-                if (p) {
-                  var l = parseInt(t.width || t.targetWidth || 20),
-                    u = parseInt(t.tableColumnHeight || 20);
-                  qrcodebox.css('height', (l > u ? u : l) + 'pt')
+                if (v10602) {
+                  var v10604 = parseInt(v10598.width || v10598.targetWidth || 20),
+                    v10605 = parseInt(v10598.tableColumnHeight || 20);
+                  qrcodebox.css('height', (v10604 > v10605 ? v10605 : v10604) + 'pt');
                   new QRCode(qrcodebox[0], {
-                    width: l > u ? u : l,
-                    height: l > u ? u : l,
+                    width: v10604 > v10605 ? v10605 : v10604,
+                    height: v10604 > v10605 ? v10605 : v10604,
                     colorDark: "#000000",
                     useSVG: !0,
-                    correctLevel: t.tableQRCodeLevel || 0,
-                  }).makeCode(p);
+                    correctLevel: v10598.tableQRCodeLevel || 0
+                  }).makeCode(v10602);
                   // r.find(".hiqrcode_imgcode").css("margin", '5pt 0pt'),
-                  r.html(qrcodebox)
-                  if(t.showCodeTitle) {
-                  r.append(
+                  v10600.html(qrcodebox);
+                  if (v10598.showCodeTitle) {
+                    v10600.append(
                       '<div class="hiqrcode_displayValue"></div>'
-                    )
-                  r.find('.hiqrcode_displayValue').html(p)
+                    );
+                    v10600.find('.hiqrcode_displayValue').html(v10602);
                   }
                 }
-              } catch (t) {
-                console.log(t), r.html(`${i18n.__('二维码生成失败')}`);
+              } catch (v10606) {
+                console.log(v10606), v10600.html(`${i18n.__('二维码生成失败')}`);
               }
             }
-            if ('sequence' === t.tableTextType) {
-              r.html(rowIndex + 1);
+            if ('sequence' === v10598.tableTextType) {
+              v10600.html(rowIndex + 1);
             }
           }
-          var s = TableExcelHelper.getColumnStyler(t);
+          var v10607 = TableExcelHelper.getColumnStyler(v10598);
 
-          if (s) {
-            var l = s(e[t.field], e, i, n);
-            if (l) Object.keys(l).forEach(function (t) {
-              r.css(t, l[t]);
+          if (v10607) {
+            var v10604 = v10607(v10592[v10598.field], v10592, v10599, v10593);
+            if (v10604) Object.keys(v10604).forEach(function (v10608) {
+              v10600.css(v10608, v10604[v10608]);
             });
           }
 
-          o.append(r);
+          v10595.append(v10600);
         });
-        var r = TableExcelHelper.getRowStyler(n, i);
+        var v10609 = TableExcelHelper.getRowStyler(v10593, v10594);
 
-        if (r) {
-          var a = r(e, n);
-          if (a) Object.keys(a).forEach(function (t) {
-            o.css(t, a[t]);
+        if (v10609) {
+          var v10610 = v10609(v10592, v10593);
+          if (v10610) Object.keys(v10610).forEach(function (v10611) {
+            v10595.css(v10611, v10610[v10611]);
           });
         }
 
-        return o;
-      }, TableExcelHelper.createEmptyRowTarget = function (t, tableElement) {
-        var e = TableExcelHelper.reconsitutionTableColumnTree(t),
-            n = $("<tr></tr>");
-        e.rowColumns.filter(function (t) {
-          return t.checked;
-        }).forEach(function (t, e) {
-          var i = $("<td></td>");
-          t.field && i.attr("field", t.field), t.align && i.css("text-align", t.align), t.vAlign && i.css("vertical-align", t.vAlign), n.append(i);
+        return v10595;
+      }, TableExcelHelper.createEmptyRowTarget = function (v10612, tableElement) {
+        var v10613 = TableExcelHelper.reconsitutionTableColumnTree(v10612),
+          v10614 = $("<tr></tr>");
+        v10613.rowColumns.filter(function (v10615) {
+          return v10615.checked;
+        }).forEach(function (v10616, v10617) {
+          var v10618 = $("<td></td>");
+          v10616.field && v10618.attr("field", v10616.field), v10616.align && v10618.css("text-align", v10616.align), v10616.vAlign && v10618.css("vertical-align", v10616.vAlign), v10614.append(v10618);
         });
         if (tableElement && tableElement.options.tableBodyRowHeight) {
-          n.find('td:not([rowspan])').css('height', tableElement.options.tableBodyRowHeight + 'pt');
+          v10614.find('td:not([rowspan])').css('height', tableElement.options.tableBodyRowHeight + 'pt');
         }
-        return n;
-      }, TableExcelHelper.getColumnsWidth = function (t, e) {
-        var n = {},
-          i = TableExcelHelper.allAutoWidth(t),
-          o = TableExcelHelper.allFixedWidth(t);
-        return t.rowColumns.filter(function (t) {
-          return t.checked;
-        }).forEach(function (t) {
-          if (t.fixed) n[t.id] = t.width; else {
-            var r = e - o,
-              a = t.width / i * (r > 0 ? r : 0);
-            n[t.id] = a;
+        return v10614;
+      }, TableExcelHelper.getColumnsWidth = function (v10619, v10620) {
+        var v10621 = {},
+          v10622 = TableExcelHelper.allAutoWidth(v10619),
+          v10623 = TableExcelHelper.allFixedWidth(v10619);
+        return v10619.rowColumns.filter(function (v10624) {
+          return v10624.checked;
+        }).forEach(function (v10625) {
+          if (v10625.fixed) v10621[v10625.id] = v10625.width;else {
+            var v10626 = v10620 - v10623,
+              v10627 = v10625.width / v10622 * (v10626 > 0 ? v10626 : 0);
+            v10621[v10625.id] = v10627;
           }
-        }), n;
-      }, TableExcelHelper.resizeTableCellWidth = function (t, e, n) {
-        var i = TableExcelHelper.reconsitutionTableColumnTree(e),
-          o = TableExcelHelper.getColumnsWidth(i, n);
-        t.find("thead tr td[haswidth]").map(function (t, e) {
-          var n = $(e).attr("id"),
-            i = o[n];
-          $(e).css("width", i + "pt");
+        }), v10621;
+      }, TableExcelHelper.resizeTableCellWidth = function (v10628, v10629, v10630) {
+        var v10631 = TableExcelHelper.reconsitutionTableColumnTree(v10629),
+          v10632 = TableExcelHelper.getColumnsWidth(v10631, v10630);
+        v10628.find("thead tr td[haswidth]").map(function (v10633, v10634) {
+          var v10635 = $(v10634).attr("id"),
+            v10636 = v10632[v10635];
+          $(v10634).css("width", v10636 + "pt");
         });
-      }, TableExcelHelper.allAutoWidth = function (t) {
-        var e = 0, n = {};
-        return t.rowColumns.filter(function (t) {
-          return t.checked;
-        }).forEach(function (t) {
-          n[t.id] ? n[t.id] = 0 : n[t.id] = t.width;
-          e += t.fixed ? 0 : n[t.id];
-        }), e;
-      }, TableExcelHelper.allFixedWidth = function (t) {
-        var e = 0, n = {};;
-        return t.rowColumns.filter(function (t) {
-          return t.checked;
-        }).forEach(function (t) {
-          n[t.id] ? n[t.id] = 0 : n[t.id] = t.width;
-          e += t.fixed ? n[t.id] : 0;
-        }), e;
-      }, TableExcelHelper.reconsitutionTableColumnTree = function (t, e, n) {
-        var i = e || new _ReconsitutionTableColumns__WEBPACK_IMPORTED_MODULE_0__.a();
-        i.colspan = 0;
+      }, TableExcelHelper.allAutoWidth = function (v10637) {
+        var v10638 = 0,v10639 = {};
+        return v10637.rowColumns.filter(function (v10640) {
+          return v10640.checked;
+        }).forEach(function (v10641) {
+          v10639[v10641.id] ? v10639[v10641.id] = 0 : v10639[v10641.id] = v10641.width;
+          v10638 += v10641.fixed ? 0 : v10639[v10641.id];
+        }), v10638;
+      }, TableExcelHelper.allFixedWidth = function (v10642) {
+        var v10643 = 0,v10644 = {};;
+        return v10642.rowColumns.filter(function (v10645) {
+          return v10645.checked;
+        }).forEach(function (v10646) {
+          v10644[v10646.id] ? v10644[v10646.id] = 0 : v10644[v10646.id] = v10646.width;
+          v10643 += v10646.fixed ? v10644[v10646.id] : 0;
+        }), v10643;
+      }, TableExcelHelper.reconsitutionTableColumnTree = function (v10647, v10648, v10649) {
+        var v10650 = v10648 || new _ReconsitutionTableColumns__WEBPACK_IMPORTED_MODULE_0__.a();
+        v10650.colspan = 0;
 
-        for (var o = function o(e) {
-          i.totalLayer = e + 1, i[e] = t[e].columns, 0 == e && t[e].columns.forEach(function (t) {
-            0 == e && (i.colspan += t.colspan);
-          });
-        }, r = 0; r < t.length; r++) {
-          o(r);
+        for (var v10652 = function v10653(v10654) {
+            v10650.totalLayer = v10654 + 1, v10650[v10654] = v10647[v10654].columns, 0 == v10654 && v10647[v10654].columns.forEach(function (v10655) {
+              0 == v10654 && (v10650.colspan += v10655.colspan);
+            });
+          }, v10656 = 0; v10656 < v10647.length; v10656++) {
+          v10652(v10656);
         }
 
-        return i.rowColumns = TableExcelHelper.getOrderdColumns(i), i;
-      }, TableExcelHelper.syncTargetWidthToOption = function (t) {
-        t.forEach(function (t) {
-          t.columns.forEach(function (t) {
-            t.hasWidth && (t.width = t.targetWidth);
+        return v10650.rowColumns = TableExcelHelper.getOrderdColumns(v10650), v10650;
+      }, TableExcelHelper.syncTargetWidthToOption = function (v10657) {
+        v10657.forEach(function (v10658) {
+          v10658.columns.forEach(function (v10659) {
+            v10659.hasWidth && (v10659.width = v10659.targetWidth);
           });
         });
       }, TableExcelHelper.getGroupFieldsFormatter = function (options, tablePrintElementType) {
@@ -2125,1461 +2125,1461 @@ var hiprint = function (t) {
           options.groupFieldsFormatter = "function(type,options,data){ return " + arr + " }";
         }
         if (tablePrintElementType.groupFieldsFormatter && (groupFieldsFormatter = tablePrintElementType.groupFieldsFormatter), options.groupFieldsFormatter) try {
-          var s = "groupFieldsFormatter=" + options.groupFieldsFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10660 = "groupFieldsFormatter=" + options.groupFieldsFormatter;
+          eval(v10660);
+        } catch (v10661) {
+          console.log(v10661);
         }
         return groupFieldsFormatter;
       }, TableExcelHelper.getGroupFormatter = function (options, tablePrintElementType) {
         var groupFormatter = void 0;
         if (tablePrintElementType.groupFormatter && (groupFormatter = tablePrintElementType.groupFormatter), options.groupFormatter) try {
-          var s = "groupFormatter=" + options.groupFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10662 = "groupFormatter=" + options.groupFormatter;
+          eval(v10662);
+        } catch (v10663) {
+          console.log(v10663);
         }
         return groupFormatter;
       }, TableExcelHelper.getGroupFooterFormatter = function (options, tablePrintElementType) {
         var groupFooterFormatter = void 0;
         if (tablePrintElementType.groupFooterFormatter && (groupFooterFormatter = tablePrintElementType.groupFooterFormatter), options.groupFooterFormatter) try {
-          var s = "groupFooterFormatter=" + options.groupFooterFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10664 = "groupFooterFormatter=" + options.groupFooterFormatter;
+          eval(v10664);
+        } catch (v10665) {
+          console.log(v10665);
         }
         return groupFooterFormatter;
       }, TableExcelHelper.getFooterFormatter = function (options, tablePrintElementType) {
         var footerFormatter = void 0;
         if (tablePrintElementType.footerFormatter && (footerFormatter = tablePrintElementType.footerFormatter), options.footerFormatter) try {
-          var s = "footerFormatter=" + options.footerFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10666 = "footerFormatter=" + options.footerFormatter;
+          eval(v10666);
+        } catch (v10667) {
+          console.log(v10667);
         }
         return footerFormatter;
       }, TableExcelHelper.getRowStyler = function (options, tablePrintElementType) {
         var rowStyler = void 0;
         if (tablePrintElementType.rowStyler && (rowStyler = tablePrintElementType.rowStyler), options.rowStyler) try {
-          var s = "rowStyler=" + options.rowStyler;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10668 = "rowStyler=" + options.rowStyler;
+          eval(v10668);
+        } catch (v10669) {
+          console.log(v10669);
         }
         return rowStyler;
       }, TableExcelHelper.getColumnTableSummaryFormatter = function (column) {
         var tableSummaryFormatter = void 0;
         if (column.tableSummaryFormatter && (tableSummaryFormatter = column.tableSummaryFormatter), column.tableSummaryFormatter) try {
-          var s = "tableSummaryFormatter=" + column.tableSummaryFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10670 = "tableSummaryFormatter=" + column.tableSummaryFormatter;
+          eval(v10670);
+        } catch (v10671) {
+          console.log(v10671);
         }
         return tableSummaryFormatter;
       }, TableExcelHelper.getColumnStyler = function (column) {
         var styler = void 0;
         if (column.styler && (styler = column.styler), column.styler2) try {
-          var s = "styler=" + column.styler2;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10672 = "styler=" + column.styler2;
+          eval(v10672);
+        } catch (v10673) {
+          console.log(v10673);
         }
         return styler;
       }, TableExcelHelper.getHeaderStyler = function (column) {
         var stylerHeader = void 0;
         if (column.stylerHeader && (stylerHeader = column.stylerHeader), column.stylerHeader) try {
-          var s = "stylerHeader=" + column.stylerHeader;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10674 = "stylerHeader=" + column.stylerHeader;
+          eval(v10674);
+        } catch (v10675) {
+          console.log(v10675);
         }
         return stylerHeader;
       }, TableExcelHelper.getColumnRenderFormatter = function (column) {
         var renderFormatter = void 0;
         if (column.renderFormatter && (renderFormatter = column.renderFormatter), column.renderFormatter) try {
-          var s = "renderFormatter=" + column.renderFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10676 = "renderFormatter=" + column.renderFormatter;
+          eval(v10676);
+        } catch (v10677) {
+          console.log(v10677);
         }
         return renderFormatter;
       }, TableExcelHelper.getColumnFormatter = function (column) {
         var formatter = void 0;
         if (column.formatter && (formatter = column.formatter), column.formatter2) try {
-          var s = "formatter=" + column.formatter2;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v10678 = "formatter=" + column.formatter2;
+          eval(v10678);
+        } catch (v10679) {
+          console.log(v10679);
         }
         return formatter;
-      }, TableExcelHelper.getOrderdColumns = function (t) {
+      }, TableExcelHelper.getOrderdColumns = function (v10680) {
         // 新数据
         let newColumns = {};
         // 遍历所有 rawData columns，先处理 colspan 防止后面 rowspan 插入取下标错误
-        for (let i = 0; i < t.totalLayer; i++) {
-          newColumns[i] = []; // 新数据中添加对应 columns
-          t[i].forEach((column, columnIdx) => {
-            newColumns[i].push(...new Array(column.colspan).fill({ ...column, colspan: 1 })); // 创建 colspan 个
+        for (let v10681 = 0; v10681 < v10680.totalLayer; v10681++) {
+          newColumns[v10681] = []; // 新数据中添加对应 columns
+          v10680[v10681].forEach((column, columnIdx) => {
+            newColumns[v10681].push(...new Array(column.colspan).fill({ ...column, colspan: 1 })); // 创建 colspan 个
           });
         }
         // 再次遍历 rawData columns，处理 rowspan 给后面 columns 插入相同 column
-        for (let i = 0; i < t.totalLayer; i++) {
-          newColumns[i].forEach((column, columnIdx) => {
-            for (let n = 1; n < column.rowspan; n++) {
-              newColumns[i + n].splice(columnIdx, 0, { ...column, rowspan: 1 });
+        for (let v10682 = 0; v10682 < v10680.totalLayer; v10682++) {
+          newColumns[v10682].forEach((column, columnIdx) => {
+            for (let v10683 = 1; v10683 < column.rowspan; v10683++) {
+              newColumns[v10682 + v10683].splice(columnIdx, 0, { ...column, rowspan: 1 });
             }
           });
         }
         // 把上层/其他层的 field 赋值给最下层
         let lastColumns = [];
-        for (let i = 0; i < t.totalLayer; i++) {
-          if (i >= t.totalLayer - 1) {
-            newColumns[i].forEach((column, columnIdx) => {
+        for (let v10684 = 0; v10684 < v10680.totalLayer; v10684++) {
+          if (v10684 >= v10680.totalLayer - 1) {
+            newColumns[v10684].forEach((column, columnIdx) => {
               if (!column.field) {
-                 column.field = lastColumns[columnIdx];
+                column.field = lastColumns[columnIdx];
               }
-            })
+            });
           } else {
-            newColumns[i].forEach((column, columnIdx) => {
-              if (i == 0) {
+            newColumns[v10684].forEach((column, columnIdx) => {
+              if (v10684 == 0) {
                 lastColumns.push(column.field || "");
               } else {
                 column.field && (lastColumns[columnIdx] = column.field);
               }
-            })
+            });
           }
         }
-        this.rowColumns = newColumns[t.totalLayer - 1];
-        return newColumns[t.totalLayer - 1];
+        this.rowColumns = newColumns[v10680.totalLayer - 1];
+        return newColumns[v10680.totalLayer - 1];
       }, TableExcelHelper;
     }();
-}, function (t, e, n) {
+}, function (v10685, v10686, v10687) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v10687.d(v10686, "a", function () {
+    return v10689;
   });
 
-  var i = function () {
-    function t(t) {
-      this.top = t.top, this.left = t.left, this.height = t.height, this.width = t.width, this.bottomInLastPaper = t.bottomInLastPaper, this.beginPrintPaperIndex = t.beginPrintPaperIndex, this.printTopInPaper = t.printTopInPaper, this.endPrintPaperIndex = t.endPrintPaperIndex;
+  var v10689 = function () {
+    function v10691(v10690) {
+      this.top = v10690.top, this.left = v10690.left, this.height = v10690.height, this.width = v10690.width, this.bottomInLastPaper = v10690.bottomInLastPaper, this.beginPrintPaperIndex = v10690.beginPrintPaperIndex, this.printTopInPaper = v10690.printTopInPaper, this.endPrintPaperIndex = v10690.endPrintPaperIndex;
     }
 
-    return t.prototype.isPositionLeftOrRight = function (t) {
-      return this.top <= t && this.top + this.height > t;
-    }, t;
+    return v10691.prototype.isPositionLeftOrRight = function (v10692) {
+      return this.top <= v10692 && this.top + this.height > v10692;
+    }, v10691;
   }();
-}, function (t, e, n) {
+}, function (v10693, v10694, v10695) {
   "use strict";
 
-  var i = function () {
-      function t() {
+  var v10696 = function () {
+      function v10697() {
         this.name = "lineHeight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("line-height", e + "pt"), "line-height:" + e + "pt";
-          t[0].style.lineHeight = "";
+      return v10697.prototype.css = function (v10698, v10699) {
+        if (v10698 && v10698.length) {
+          if (v10699) return v10698.css("line-height", v10699 + "pt"), "line-height:" + v10699 + "pt";
+          v10698[0].style.lineHeight = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10697.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体行高')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        <option value="22.5" >22.5pt</option>\n        <option value="23.25" >23.25pt</option>\n        <option value="24" >24pt</option>\n        <option value="24.75" >24.75pt</option>\n        <option value="25.5" >25.5pt</option>\n        <option value="26.25" >26.25pt</option>\n        <option value="27" >27pt</option>\n        <option value="27.75" >27.75pt</option>\n        <option value="28.5" >28.5pt</option>\n        <option value="29.25" >29.25pt</option>\n        <option value="30" >30pt</option>\n        <option value="30.75" >30.75pt</option>\n        <option value="31.5" >31.5pt</option>\n        <option value="32.25" >32.25pt</option>\n        <option value="33" >33pt</option>\n        <option value="33.75" >33.75pt</option>\n        <option value="34.5" >34.5pt</option>\n        <option value="35.25" >35.25pt</option>\n        <option value="36" >36pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10697.prototype.getValue = function () {
+        var v10700 = this.target.find("select").val();
+        if (v10700) return parseFloat(v10700.toString());
+      }, v10697.prototype.setValue = function (v10701) {
+        v10701 && (this.target.find('option[value="' + v10701 + '"]').length || this.target.find("select").prepend('<option value="' + v10701 + '" >' + v10701 + "</option>"));
+        this.target.find("select").val(v10701);
+      }, v10697.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10697;
     }(),
     fontFamily = function () {
-      function t() {
+      function v10702() {
         this.name = "fontFamily";
       }
-      return t.prototype.createTarget = function (t) {
-        var e = void 0;
-        if (t && (e = t.getFontList()), e) {
-          var n = `<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>`;
-          e.forEach(function (t, e) {
-            n += ' <option value="' + (t.value || "") + '" >' + (t.title || "") + "</option>";
-          }), n += " </select>\n            </div>\n        </div>", this.target = $(n);
+      return v10702.prototype.createTarget = function (v10703) {
+        var v10704 = void 0;
+        if (v10703 && (v10704 = v10703.getFontList()), v10704) {
+          var v10705 = `<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>`;
+          v10704.forEach(function (v10706, v10707) {
+            v10705 += ' <option value="' + (v10706.value || "") + '" >' + (v10706.title || "") + "</option>";
+          }), v10705 += " </select>\n            </div>\n        </div>", this.target = $(v10705);
         } else {
           this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="SimSun" >${i18n.__('宋体')}</option>\n            <option value="Microsoft YaHei" >${i18n.__('微软雅黑')}</option>\n        </select>\n        </div>\n    </div>`);
         }
         return this.target;
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("font-family", e), "font-family:" + e;
-          t[0].style.fontFamily = "inherit"; // 从父元素继承字体, 否则模板字体无效
+      }, v10702.prototype.css = function (v10708, v10709) {
+        if (v10708 && v10708.length) {
+          if (v10709) return v10708.css("font-family", v10709), "font-family:" + v10709;
+          v10708[0].style.fontFamily = "inherit"; // 从父元素继承字体, 否则模板字体无效
         }
         return null;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10702.prototype.getValue = function () {
+        var v10710 = this.target.find("select").val();
+        if (v10710) return v10710.toString();
+      }, v10702.prototype.setValue = function (v10711) {
+        v10711 && (this.target.find('option[value="' + v10711 + '"]').length || this.target.find("select").prepend('<option value="' + v10711 + '" >' + v10711 + "</option>"));
+        this.target.find("select").val(v10711);
+      }, v10702.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10702;
     }(),
-    r = function () {
-      function t() {
+    v10712 = function () {
+      function v10713() {
         this.name = "fontSize";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("font-size", e + "pt"), "font-size:" + e + "pt";
-          t[0].style.fontSize = "";
+      return v10713.prototype.css = function (v10714, v10715) {
+        if (v10714 && v10714.length) {
+          if (v10715) return v10714.css("font-size", v10715 + "pt"), "font-size:" + v10715 + "pt";
+          v10714[0].style.fontSize = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10713.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体大小')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10713.prototype.getValue = function () {
+        var v10716 = this.target.find("select").val();
+        if (v10716) return parseFloat(v10716.toString());
+      }, v10713.prototype.setValue = function (v10717) {
+        v10717 && (this.target.find('option[value="' + v10717 + '"]').length || this.target.find("select").prepend('<option value="' + v10717 + '" >' + v10717 + "</option>"));
+        this.target.find("select").val(v10717);
+      }, v10713.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10713;
     }(),
-    a = function () {
-      function t() {
+    v10718 = function () {
+      function v10719() {
         this.name = "fontWeight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("font-weight", e), "font-weight:" + e;
-          t[0].style.fontWeight = "";
+      return v10719.prototype.css = function (v10720, v10721) {
+        if (v10720 && v10720.length) {
+          if (v10721) return v10720.css("font-weight", v10721), "font-weight:" + v10721;
+          v10720[0].style.fontWeight = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10719.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体粗细')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="lighter" >${i18n.__('更细')}</option>\n        <option value="bold" >${i18n.__('粗体')}</option>\n        <option value="bolder" >${i18n.__('粗体+')}</option>\n            <option value="100" >100</option>\n            <option value="200" >200</option>\n            <option value="300" >300</option>\n            <option value="400" >400</option>\n            <option value="500" >500</option>\n            <option value="600" >600</option>\n            <option value="700" >700</option>\n            <option value="800" >800</option>\n            <option value="900" >900</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10719.prototype.getValue = function () {
+        var v10722 = this.target.find("select").val();
+        if (v10722) return v10722.toString();
+      }, v10719.prototype.setValue = function (v10723) {
+        v10723 && (this.target.find('option[value="' + v10723 + '"]').length || this.target.find("select").prepend('<option value="' + v10723 + '" >' + v10723 + "</option>"));
+        this.target.find("select").val(v10723);
+      }, v10719.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10719;
     }(),
-    p = function () {
-      function t() {
+    v10724 = function () {
+      function v10725() {
         this.name = "letterSpacing";
       }
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("letter-spacing", e + "pt"), "letter-spacing:" + e + "pt";
-          t[0].style.letterSpacing = "";
+      return v10725.prototype.css = function (v10726, v10727) {
+        if (v10726 && v10726.length) {
+          if (v10727) return v10726.css("letter-spacing", v10727 + "pt"), "letter-spacing:" + v10727 + "pt";
+          v10726[0].style.letterSpacing = "";
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10725.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字间距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10725.prototype.getValue = function () {
+        var v10728 = this.target.find("select").val();
+        if (v10728) return parseFloat(v10728.toString());
+      }, v10725.prototype.setValue = function (v10729) {
+        v10729 && (this.target.find('option[value="' + v10729 + '"]').length || this.target.find("select").prepend('<option value="' + v10729 + '" >' + v10729 + "</option>"));
+        this.target.find("select").val(v10729);
+      }, v10725.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10725;
     }(),
-    s = function () {
-      function t() {
+    v10730 = function () {
+      function v10731() {
         this.name = "textAlign";
       }
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("text-align", e), "justify" == e ? (t.css("text-align-last", "justify"), t.css("text-justify", "distribute-all-lines")) : (t[0].style.textAlignLast = "", t[0].style.textJustify = ""), "text-align:" + e;
-          t[0].style.textAlign = "", t[0].style.textAlignLast = "", t[0].style.textJustify = "";
+      return v10731.prototype.css = function (v10732, v10733) {
+        if (v10732 && v10732.length) {
+          if (v10733) return v10732.css("text-align", v10733), "justify" == v10733 ? (v10732.css("text-align-last", "justify"), v10732.css("text-justify", "distribute-all-lines")) : (v10732[0].style.textAlignLast = "", v10732[0].style.textJustify = ""), "text-align:" + v10733;
+          v10732[0].style.textAlign = "", v10732[0].style.textAlignLast = "", v10732[0].style.textJustify = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10731.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('左右对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="left" >${i18n.__('居左')}</option>\n        <option value="center" >${i18n.__('居中')}</option>\n        <option value="right" >${i18n.__('居右')}</option>\n        <option value="justify" >${i18n.__('两端对齐')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10731.prototype.getValue = function () {
+        var v10734 = this.target.find("select").val();
+        if (v10734) return v10734.toString();
+      }, v10731.prototype.setValue = function (v10735) {
+        this.target.find("select").val(v10735);
+      }, v10731.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10731;
     }(),
-    l = function () {
-      function t() {
+    v10736 = function () {
+      function v10737() {
         this.name = "hideTitle";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10737.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('标题显示隐藏')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="false" >${i18n.__('显示')}</option>\n            <option value="true" >${i18n.__('隐藏')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10737.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v10737.prototype.setValue = function (v10738) {
+        this.target.find("select").val((null == v10738 ? "" : v10738).toString());
+      }, v10737.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10737;
     }(),
-    u = function () {
-      function t() {
+    v10739 = function () {
+      function v10740() {
         this.name = "tableBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("table").length) {
-          if ("border" == e || void 0 == e) return t.find("table").css("border", "1px solid"), "border:1px solid";
-          "noBorder" == e ? t.find("table").css("border", "0px solid") : t.find("table")[0].style.border = "";
+      return v10740.prototype.css = function (v10741, v10742) {
+        if (v10741.find("table").length) {
+          if ("border" == v10742 || void 0 == v10742) return v10741.find("table").css("border", "1px solid"), "border:1px solid";
+          "noBorder" == v10742 ? v10741.find("table").css("border", "0px solid") : v10741.find("table")[0].style.border = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10740.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n            <select class="auto-submit">\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="border" >${i18n.__('有边框')}</option>\n            <option value="noBorder" >${i18n.__('无边框')}</option>\n            </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10740.prototype.getValue = function () {
+        var v10743 = this.target.find("select").val();
+        if (v10743) return v10743.toString();
+      }, v10740.prototype.setValue = function (v10744) {
+        this.target.find("select").val(v10744);
+      }, v10740.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10740;
     }(),
-    d = function () {
-      function t() {
+    v10745 = function () {
+      function v10746() {
         this.name = "tableHeaderBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead tr").length) {
-          if ("border" == e || void 0 == e) return t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-all");
-          "noBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-tb") : t.find("thead tr").removeClass();
+      return v10746.prototype.css = function (v10747, v10748) {
+        if (v10747.find("thead tr").length) {
+          if ("border" == v10748 || void 0 == v10748) return v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-all");
+          "noBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == v10748 ? v10747.find("thead tr").addClass("hiprint-printElement-tableTarget-border-tb") : v10747.find("thead tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10746.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>    \n        <option value="border" >${i18n.__('有边框')}</option>\n        <option value="noBorder" >${i18n.__('无边框')}</option>\n        <option value="leftBorder" >${i18n.__('左边框')}</option>\n        <option value="rightBorder" >${i18n.__('右边框')}</option>\n        <option value="leftRightBorder" >${i18n.__('左右边框')}</option>\n        <option value="topBorder" >${i18n.__('上边框')}</option>\n        <option value="bottomBorder" >${i18n.__('下边框')}</option>\n        <option value="topBottomBorder" >${i18n.__('上下边框')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10746.prototype.getValue = function () {
+        var v10749 = this.target.find("select").val();
+        if (v10749) return v10749.toString();
+      }, v10746.prototype.setValue = function (v10750) {
+        this.target.find("select").val(v10750);
+      }, v10746.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10746;
     }(),
-    c = function () {
-      function t() {
+    v10751 = function () {
+      function v10752() {
         this.name = "tableHeaderCellBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead tr").length) {
-          if ("border" == e || void 0 == e) return t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-all");
-          "noBorder" == e ? t.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-none") : t.find("thead tr").removeClass();
+      return v10752.prototype.css = function (v10753, v10754) {
+        if (v10753.find("thead tr").length) {
+          if ("border" == v10754 || void 0 == v10754) return v10753.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-all");
+          "noBorder" == v10754 ? v10753.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-none") : v10753.find("thead tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10752.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头单元格边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>    \n        <option value="border" >${i18n.__('有边框')}</option>\n        <option value="noBorder" >${i18n.__('无边框')}</option>\n      \n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10752.prototype.getValue = function () {
+        var v10755 = this.target.find("select").val();
+        if (v10755) return v10755.toString();
+      }, v10752.prototype.setValue = function (v10756) {
+        this.target.find("select").val(v10756);
+      }, v10752.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10752;
     }(),
     d2 = function () {
-      function t() {
+      function v10757() {
         this.name = "tableFooterBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("tfoot tr").length) {
-          if ("border" == e || void 0 == e) return t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-all");
-          "noBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-tb") : t.find("tfoot tr").removeClass();
+      return v10757.prototype.css = function (v10758, v10759) {
+        if (v10758.find("tfoot tr").length) {
+          if ("border" == v10759 || void 0 == v10759) return v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-all");
+          "noBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == v10759 ? v10758.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-tb") : v10758.find("tfoot tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10757.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表尾边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>    \n        <option value="border" >${i18n.__('有边框')}</option>\n        <option value="noBorder" >${i18n.__('无边框')}</option>\n        <option value="leftBorder" >${i18n.__('左边框')}</option>\n        <option value="rightBorder" >${i18n.__('右边框')}</option>\n        <option value="leftRightBorder" >${i18n.__('左右边框')}</option>\n        <option value="topBorder" >${i18n.__('上边框')}</option>\n        <option value="bottomBorder" >${i18n.__('下边框')}</option>\n        <option value="topBottomBorder" >${i18n.__('上下边框')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10757.prototype.getValue = function () {
+        var v10760 = this.target.find("select").val();
+        if (v10760) return v10760.toString();
+      }, v10757.prototype.setValue = function (v10761) {
+        this.target.find("select").val(v10761);
+      }, v10757.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10757;
     }(),
     c2 = function () {
-      function t() {
+      function v10762() {
         this.name = "tableFooterCellBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("tfoot tr").length) {
-          if ("border" == e || void 0 == e) return t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-td-all");
-          "noBorder" == e ? t.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-td-none") : t.find("tfoot tr").removeClass();
+      return v10762.prototype.css = function (v10763, v10764) {
+        if (v10763.find("tfoot tr").length) {
+          if ("border" == v10764 || void 0 == v10764) return v10763.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-td-all");
+          "noBorder" == v10764 ? v10763.find("tfoot tr").addClass("hiprint-printElement-tableTarget-border-td-none") : v10763.find("tfoot tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10762.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表尾单元格边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>    \n        <option value="border" >${i18n.__('有边框')}</option>\n        <option value="noBorder" >${i18n.__('无边框')}</option>\n      \n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10762.prototype.getValue = function () {
+        var v10765 = this.target.find("select").val();
+        if (v10765) return v10765.toString();
+      }, v10762.prototype.setValue = function (v10766) {
+        this.target.find("select").val(v10766);
+      }, v10762.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10762;
     }(),
-    h = function () {
-      function t() {
+    v10767 = function () {
+      function v10768() {
         this.name = "tableHeaderRowHeight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead tr td").length) {
-          if (e) return t.find("thead tr td:not([rowspan])").css("height", e + "pt"), "height:" + e + "pt";
-          t.find("thead tr td").map(function (t, e) {
-            e.style.height = "";
+      return v10768.prototype.css = function (v10769, v10770) {
+        if (v10769.find("thead tr td").length) {
+          if (v10770) return v10769.find("thead tr td:not([rowspan])").css("height", v10770 + "pt"), "height:" + v10770 + "pt";
+          v10769.find("thead tr td").map(function (v10771, v10772) {
+            v10772.style.height = "";
           });
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10768.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头行高')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n       \n        <option value="" >${i18n.__('默认')}</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        <option value="22.5" >22.5pt</option>\n        <option value="23.25" >23.25pt</option>\n        <option value="24" >24pt</option>\n        <option value="24.75" >24.75pt</option>\n        <option value="25.5" >25.5pt</option>\n        <option value="26.25" >26.25pt</option>\n        <option value="27" >27pt</option>\n        <option value="27.75" >27.75pt</option>\n        <option value="28.5" >28.5pt</option>\n        <option value="29.25" >29.25pt</option>\n        <option value="30" >30pt</option>\n        <option value="30.75" >30.75pt</option>\n        <option value="31.5" >31.5pt</option>\n        <option value="32.25" >32.25pt</option>\n        <option value="33" >33pt</option>\n        <option value="33.75" >33.75pt</option>\n        <option value="34.5" >34.5pt</option>\n        <option value="35.25" >35.25pt</option>\n        <option value="36" >36pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10768.prototype.getValue = function () {
+        var v10773 = this.target.find("select").val();
+        if (v10773) return parseFloat(v10773.toString());
+      }, v10768.prototype.setValue = function (v10774) {
+        v10774 && (this.target.find('option[value="' + v10774 + '"]').length || this.target.find("select").prepend('<option value="' + v10774 + '" >' + v10774 + "</option>"));
+        this.target.find("select").val(v10774);
+      }, v10768.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10768;
     }(),
-    f = function () {
-      function t() {
+    v10775 = function () {
+      function v10776() {
         this.name = "tableHeaderFontSize";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead").length) {
-          if (e) return t.find("thead").css("font-size", e + "pt"), "font-size:" + e + "pt";
-          t.find("thead").map(function (t, e) {
-            e.style.fontSize = "";
+      return v10776.prototype.css = function (v10777, v10778) {
+        if (v10777.find("thead").length) {
+          if (v10778) return v10777.find("thead").css("font-size", v10778 + "pt"), "font-size:" + v10778 + "pt";
+          v10777.find("thead").map(function (v10779, v10780) {
+            v10780.style.fontSize = "";
           });
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10776.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头字体大小')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10776.prototype.getValue = function () {
+        var v10781 = this.target.find("select").val();
+        if (v10781) return parseFloat(v10781.toString());
+      }, v10776.prototype.setValue = function (v10782) {
+        v10782 && (this.target.find('option[value="' + v10782 + '"]').length || this.target.find("select").prepend('<option value="' + v10782 + '" >' + v10782 + "</option>"));
+        this.target.find("select").val(v10782);
+      }, v10776.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10776;
     }(),
-    g = function () {
-      function t() {
+    v10783 = function () {
+      function v10784() {
         this.name = "tableHeaderFontWeight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead").length) {
-          if (e) return t.find("thead tr td").css("font-weight", e), "font-weight:" + e;
-          t.find("thead tr td").map(function (t, e) {
-            e.style.fontWeight = "";
+      return v10784.prototype.css = function (v10785, v10786) {
+        if (v10785.find("thead").length) {
+          if (v10786) return v10785.find("thead tr td").css("font-weight", v10786), "font-weight:" + v10786;
+          v10785.find("thead tr td").map(function (v10787, v10788) {
+            v10788.style.fontWeight = "";
           });
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10784.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头字体粗细')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit"> \n        <option value="" >${i18n.__('默认')}</option>\n        <option value="lighter" >${i18n.__('更细')}</option>\n        <option value="bold" >${i18n.__('粗体')}</option>\n        <option value="bolder" >${i18n.__('粗体+')}</option>\n        <option value="100" >100</option>\n        <option value="200" >200</option>\n        <option value="300" >300</option>\n        <option value="400" >400</option>\n        <option value="500" >500</option>\n        <option value="600" >600</option>\n        <option value="700" >700</option>\n        <option value="800" >800</option>\n        <option value="900" >900</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10784.prototype.getValue = function () {
+        var v10789 = this.target.find("select").val();
+        if (v10789) return v10789;
+      }, v10784.prototype.setValue = function (v10790) {
+        v10790 && (this.target.find('option[value="' + v10790 + '"]').length || this.target.find("select").prepend('<option value="' + v10790 + '" >' + v10790 + "</option>"));
+        this.target.find("select").val(v10790);
+      }, v10784.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10784;
     }(),
-    m = function () {
-      function t() {
+    v10791 = function () {
+      function v10792() {
         this.name = "tableBodyCellBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("tbody tr").length) {
-          if ("border" == e || void 0 == e) return t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-td-all");
-          "noBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-td-none") : t.find("tbody tr").removeClass();
+      return v10792.prototype.css = function (v10793, v10794) {
+        if (v10793.find("tbody tr").length) {
+          if ("border" == v10794 || void 0 == v10794) return v10793.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-td-all");
+          "noBorder" == v10794 ? v10793.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-td-none") : v10793.find("tbody tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10792.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n            ${i18n.__('表体单元格边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n            <select class="auto-submit">\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="border" >${i18n.__('有边框')}</option>\n            <option value="noBorder" >${i18n.__('无边框')}</option>\n            </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10792.prototype.getValue = function () {
+        var v10795 = this.target.find("select").val();
+        if (v10795) return v10795.toString();
+      }, v10792.prototype.setValue = function (v10796) {
+        this.target.find("select").val(v10796);
+      }, v10792.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10792;
     }(),
-    v = function () {
-      function t() {
+    v10797 = function () {
+      function v10798() {
         this.name = "tableBodyRowHeight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("tbody tr td").length) {
-          if (e) return t.find("tbody tr td").css("height", e + "pt"), "height:" + e + "pt";
-          t.find("tbody tr td").map(function (t, e) {
-            e.style.height = "";
+      return v10798.prototype.css = function (v10799, v10800) {
+        if (v10799.find("tbody tr td").length) {
+          if (v10800) return v10799.find("tbody tr td").css("height", v10800 + "pt"), "height:" + v10800 + "pt";
+          v10799.find("tbody tr td").map(function (v10801, v10802) {
+            v10802.style.height = "";
           });
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10798.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n            ${i18n.__('表体行高')}\n        </div>\n        <div class="hiprint-option-item-field">\n            <select class="auto-submit">\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="6" >6pt</option>\n            <option value="6.75" >6.75pt</option>\n            <option value="7.5" >7.5pt</option>\n            <option value="8.25" >8.25pt</option>\n            <option value="9" >9pt</option>\n            <option value="9.75" >9.75pt</option>\n            <option value="10.5" >10.5pt</option>\n            <option value="11.25" >11.25pt</option>\n            <option value="12" >12pt</option>\n            <option value="12.75" >12.75pt</option>\n            <option value="13.5" >13.5pt</option>\n            <option value="14.25" >14.25pt</option>\n            <option value="15" >15pt</option>\n            <option value="15.75" >15.75pt</option>\n            <option value="16.5" >16.5pt</option>\n            <option value="17.25" >17.25pt</option>\n            <option value="18" >18pt</option>\n            <option value="18.75" >18.75pt</option>\n            <option value="19.5" >19.5pt</option>\n            <option value="20.25" >20.25pt</option>\n            <option value="21" >21pt</option>\n            <option value="21.75" >21.75pt</option>\n            <option value="22.5" >22.5pt</option>\n            <option value="23.25" >23.25pt</option>\n            <option value="24" >24pt</option>\n            <option value="24.75" >24.75pt</option>\n            <option value="25.5" >25.5pt</option>\n            <option value="26.25" >26.25pt</option>\n            <option value="27" >27pt</option>\n            <option value="27.75" >27.75pt</option>\n            <option value="28.5" >28.5pt</option>\n            <option value="29.25" >29.25pt</option>\n            <option value="30" >30pt</option>\n            <option value="30.75" >30.75pt</option>\n            <option value="31.5" >31.5pt</option>\n            <option value="32.25" >32.25pt</option>\n            <option value="33" >33pt</option>\n            <option value="33.75" >33.75pt</option>\n            <option value="34.5" >34.5pt</option>\n            <option value="35.25" >35.25pt</option>\n            <option value="36" >36pt</option>\n            </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10798.prototype.getValue = function () {
+        var v10803 = this.target.find("select").val();
+        if (v10803) return parseFloat(v10803.toString());
+      }, v10798.prototype.setValue = function (v10804) {
+        v10804 && (this.target.find('option[value="' + v10804 + '"]').length || this.target.find("select").prepend('<option value="' + v10804 + '" >' + v10804 + "</option>"));
+        this.target.find("select").val(v10804);
+      }, v10798.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10798;
     }(),
-    y = function () {
-      function t() {
+    v10805 = function () {
+      function v10806() {
         this.name = "tableHeaderBackground";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("thead").length) {
-          if (e) return t.find("thead").css("background", e), "background:" + e;
-          t.find("thead").map(function (t, e) {
-            e.style.background = "";
+      return v10806.prototype.css = function (v10807, v10808) {
+        if (v10807.find("thead").length) {
+          if (v10808) return v10807.find("thead").css("background", v10808), "background:" + v10808;
+          v10807.find("thead").map(function (v10809, v10810) {
+            v10810.style.background = "";
           });
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10806.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表头背景')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit" />\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
+      }, v10806.prototype.getValue = function () {
+        var v10811 = this.target.find("input").val();
+        if (v10811) return v10811.toString();
+      }, v10806.prototype.setValue = function (v10812) {
         this.target.find("input").minicolors({
-          defaultValue: t || "",
+          defaultValue: v10812 || "",
           theme: "bootstrap"
-        }), this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+        }), this.target.find("input").val(v10812);
+      }, v10806.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10806;
     }(),
-    b = function () {
-      function t() {
+    v10813 = function () {
+      function v10814() {
         this.name = "borderWidth";
       }
 
-      return t.prototype.createTarget = function (t) {
-        var name = ['hline', 'vline', 'rect', 'oval'].includes(t.printElementType.type) ? `${i18n.__('线宽')}` : `${i18n.__('边框大小')}`;
+      return v10814.prototype.createTarget = function (v10815) {
+        var name = ['hline', 'vline', 'rect', 'oval'].includes(v10815.printElementType.type) ? `${i18n.__('线宽')}` : `${i18n.__('边框大小')}`;
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${name}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-width", e + "pt"), "border-width:" + e + "pt";
-          t[0].style.borderWidth = "";
+      }, v10814.prototype.css = function (v10816, v10817) {
+        if (v10816 && v10816.length) {
+          if (v10817) return v10816.css("border-width", v10817 + "pt"), "border-width:" + v10817 + "pt";
+          v10816[0].style.borderWidth = "";
         }
 
         return null;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10814.prototype.getValue = function () {
+        var v10818 = this.target.find("select").val();
+        if (v10818) return v10818.toString();
+      }, v10814.prototype.setValue = function (v10819) {
+        v10819 && (this.target.find('option[value="' + v10819 + '"]').length || this.target.find("select").prepend('<option value="' + v10819 + '" >' + v10819 + "</option>"));
+        this.target.find("select").val(v10819);
+      }, v10814.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10814;
     }(),
-    E = function () {
-      function t() {
+    v10820 = function () {
+      function v10821() {
         this.name = "barcodeMode";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10821.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('条形码格式')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="CODE128A" >CODE128A</option>\n        <option value="CODE128B" >CODE128B</option>\n        <option value="CODE128C" >CODE128C</option>\n        <option value="CODE39" >CODE39</option>\n        <option value="EAN13" >EAN-13</option>\n        <option value="EAN8" >EAN-8</option>\n        <option value="EAN5" >EAN-5</option>\n        <option value="EAN2" >EAN-2</option>\n        <option value="UPC" >UPC（A）</option>\n        <option value="ITF" >ITF</option>\n        <option value="ITF14" >ITF-14</option>\n        <option value="MSI" >MSI</option>\n            <option value="MSI10" >MSI10</option>\n            <option value="MSI11" >MSI11</option>\n            <option value="MSI1010" >MSI1010</option>\n            <option value="MSI1110" >MSI1110</option>\n            <option value="Pharmacode" >Pharmacode</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        return t || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10821.prototype.getValue = function () {
+        var v10822 = this.target.find("select").val();
+        return v10822 || void 0;
+      }, v10821.prototype.setValue = function (v10823) {
+        this.target.find("select").val(v10823);
+      }, v10821.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10821;
     }(),
     barWidth = function () {
-      function t() {
+      function v10824() {
         this.name = "barWidth";
       }
-      return t.prototype.createTarget = function() {
-        this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('条码宽度')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('默认')}</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div></div>`)
+      return v10824.prototype.createTarget = function () {
+        this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('条码宽度')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('默认')}</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div></div>`);
         return this.target;
-      }, t.prototype.getValue = function() {
-        var t = this.target.find("select").val();
-        return t || void 0;
-      }, t.prototype.setValue = function(t) {
-        this.target.find("select").val(t)
-      }, t.prototype.destroy = function() {
-        this.target.remove()
-      }, t;
+      }, v10824.prototype.getValue = function () {
+        var v10825 = this.target.find("select").val();
+        return v10825 || void 0;
+      }, v10824.prototype.setValue = function (v10826) {
+        this.target.find("select").val(v10826);
+      }, v10824.prototype.destroy = function () {
+        this.target.remove();
+      }, v10824;
     }(),
-    barAutoWidth = function() {
-      function t() {
+    barAutoWidth = function () {
+      function v10827() {
         this.name = "barAutoWidth";
       }
-      return t.prototype.createTarget = function() {
-        this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('条码自动增宽')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('默认')}</option><option value="true">${i18n.__('自动')}</option><option value="false">${i18n.__('不自动')}</option></select></div></div>`)
+      return v10827.prototype.createTarget = function () {
+        this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('条码自动增宽')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('默认')}</option><option value="true">${i18n.__('自动')}</option><option value="false">${i18n.__('不自动')}</option></select></div></div>`);
         return this.target;
-      }, t.prototype.getValue = function() {
-        var t = this.target.find("select").val();
-        return t || void 0;
-      }, t.prototype.setValue = function(t) {
-        this.target.find("select").val(t)
-      }, t.prototype.destroy = function() {
-        this.target.remove()
-      }, t;
+      }, v10827.prototype.getValue = function () {
+        var v10828 = this.target.find("select").val();
+        return v10828 || void 0;
+      }, v10827.prototype.setValue = function (v10829) {
+        this.target.find("select").val(v10829);
+      }, v10827.prototype.destroy = function () {
+        this.target.remove();
+      }, v10827;
     }(),
-    barcodeType = function() {
-      function t() {
-        this.name = "barcodeType"
+    barcodeType = function () {
+      function v10830() {
+        this.name = "barcodeType";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10830.prototype.createTarget = function () {
         var options = [{
           label: `${i18n.__('默认')}(Code 128)`,
-          value: "",
+          value: ""
         },
         {
           label: `${i18n.__('商品条码')}`,
           children: [
-            {
-              label: "EAN-13",
-              value: "ean13",
-            },
-            {
-              label: "EAN-8",
-              value: "ean8",
-            },
-            {
-              label: "UPC-A",
-              value: "upca",
-            },
-            {
-              label: "UPC-E",
-              value: "upce",
-            },
-            {
-              label: "ISBN",
-              value: "isbn",
-            },
-            {
-              label: "ISMN",
-              value: "ismn",
-            },
-            {
-              label: "ISSN",
-              value: "issn",
-            },
-          ],
+          {
+            label: "EAN-13",
+            value: "ean13"
+          },
+          {
+            label: "EAN-8",
+            value: "ean8"
+          },
+          {
+            label: "UPC-A",
+            value: "upca"
+          },
+          {
+            label: "UPC-E",
+            value: "upce"
+          },
+          {
+            label: "ISBN",
+            value: "isbn"
+          },
+          {
+            label: "ISMN",
+            value: "ismn"
+          },
+          {
+            label: "ISSN",
+            value: "issn"
+          }]
+
         },
         {
           label: `${i18n.__('条形码')}`,
           children: [
-            {
-              label: "Code 39",
-              value: "code39",
-            },
-            {
-              label: "Code 39 Extended",
-              value: "code39ext",
-            },
-            {
-              label: "Code 93",
-              value: "code93",
-            },
-            {
-              label: "Code 93 Extended",
-              value: "code93ext",
-            },
-            {
-              label: "Code 128",
-              value: "code128",
-            },
-            {
-              label: "Interleaved 2 of 5 (ITF)",
-              value: "interleaved2of5",
-            },
-          ],
+          {
+            label: "Code 39",
+            value: "code39"
+          },
+          {
+            label: "Code 39 Extended",
+            value: "code39ext"
+          },
+          {
+            label: "Code 93",
+            value: "code93"
+          },
+          {
+            label: "Code 93 Extended",
+            value: "code93ext"
+          },
+          {
+            label: "Code 128",
+            value: "code128"
+          },
+          {
+            label: "Interleaved 2 of 5 (ITF)",
+            value: "interleaved2of5"
+          }]
+
         },
         {
           label: `${i18n.__('物流')}`,
           children: [
-            {
-              label: "EAN-14",
-              value: "ean14",
-            },
-            {
-              label: "GS1-128",
-              value: "gs1-128",
-            },
-            {
-              label: "ITF-14",
-              value: "itf14",
-            },
-            {
-              label: "SSCC-18",
-              value: "sscc18",
-            },
-          ],
+          {
+            label: "EAN-14",
+            value: "ean14"
+          },
+          {
+            label: "GS1-128",
+            value: "gs1-128"
+          },
+          {
+            label: "ITF-14",
+            value: "itf14"
+          },
+          {
+            label: "SSCC-18",
+            value: "sscc18"
+          }]
+
         },
         {
           label: "GS1 DataBar",
           children: [
-            {
-              label: "扩展式 GS1 DataBar",
-              value: "databarexpanded",
-            },
-            {
-              label: "层排扩展式 GS1 DataBar",
-              value: "databarexpandedstacked",
-            },
-            {
-              label: "限定式 GS1 DataBar",
-              value: "databarlimited",
-            },
-            {
-              label: "全向式 GS1 DataBar",
-              value: "databaromni",
-            },
-            {
-              label: "层排式 GS1 DataBar",
-              value: "databarstacked",
-            },
-            {
-              label: "全向层排式 GS1 DataBar",
-              value: "databarstackedomni",
-            },
-            {
-              label: "截短式 GS1 DataBar",
-              value: "databartruncated",
-            },
-            {
-              label: "GS1 北美优惠券码",
-              value: "gs1northamericancoupon",
-            },
-          ],
+          {
+            label: "扩展式 GS1 DataBar",
+            value: "databarexpanded"
+          },
+          {
+            label: "层排扩展式 GS1 DataBar",
+            value: "databarexpandedstacked"
+          },
+          {
+            label: "限定式 GS1 DataBar",
+            value: "databarlimited"
+          },
+          {
+            label: "全向式 GS1 DataBar",
+            value: "databaromni"
+          },
+          {
+            label: "层排式 GS1 DataBar",
+            value: "databarstacked"
+          },
+          {
+            label: "全向层排式 GS1 DataBar",
+            value: "databarstackedomni"
+          },
+          {
+            label: "截短式 GS1 DataBar",
+            value: "databartruncated"
+          },
+          {
+            label: "GS1 北美优惠券码",
+            value: "gs1northamericancoupon"
+          }]
+
         },
         {
           label: `${i18n.__('邮政和快递编码')}`,
           children: [
-            {
-              label: "AusPost 4 State Customer Code",
-              value: "auspost",
-            },
-            {
-              label: "Deutsche Post Identcode",
-              value: "identcode",
-            },
-            {
-              label: "Deutsche Post Leitcode",
-              value: "leitcode",
-            },
-            {
-              label: "Japan Post 4 State Customer Code",
-              value: "japanpost",
-            },
-            {
-              label: "Royal TNT Post",
-              value: "kix",
-            },
-            {
-              label: "Royal Mail 4 State Customer Code",
-              value: "royalmail",
-            },
-            {
-              label: "Royal Mail Mailmark",
-              value: "mailmark",
-            },
-            {
-              label: "MaxiCode",
-              value: "maxicode",
-            },
-            {
-              label: "USPS FIM symbols",
-              value: "symbol",
-            },
-            {
-              label: "USPS Intelligent Mail",
-              value: "onecode",
-            },
-            {
-              label: "USPS PLANET",
-              value: "planet",
-            },
-            {
-              label: "USPS POSTNET",
-              value: "postnet",
-            },
-          ],
+          {
+            label: "AusPost 4 State Customer Code",
+            value: "auspost"
+          },
+          {
+            label: "Deutsche Post Identcode",
+            value: "identcode"
+          },
+          {
+            label: "Deutsche Post Leitcode",
+            value: "leitcode"
+          },
+          {
+            label: "Japan Post 4 State Customer Code",
+            value: "japanpost"
+          },
+          {
+            label: "Royal TNT Post",
+            value: "kix"
+          },
+          {
+            label: "Royal Mail 4 State Customer Code",
+            value: "royalmail"
+          },
+          {
+            label: "Royal Mail Mailmark",
+            value: "mailmark"
+          },
+          {
+            label: "MaxiCode",
+            value: "maxicode"
+          },
+          {
+            label: "USPS FIM symbols",
+            value: "symbol"
+          },
+          {
+            label: "USPS Intelligent Mail",
+            value: "onecode"
+          },
+          {
+            label: "USPS PLANET",
+            value: "planet"
+          },
+          {
+            label: "USPS POSTNET",
+            value: "postnet"
+          }]
+
         },
         {
           label: `${i18n.__('医疗产品编码')}`,
           children: [
-            {
-              label: "Italian Pharmacode",
-              value: "code32",
-            },
-            {
-              label: "Pharmaceutical Binary Code",
-              value: "pharmacode",
-            },
-            {
-              label: "Pharmazentralnummer (PZN)",
-              value: "pzn",
-            },
-            {
-              label: "Two-track Pharmacode",
-              value: "pharmacode2",
-            },
-            {
-              label: "HIBC Aztec Code",
-              value: "hibcazteccode",
-            },
-            {
-              label: "HIBC Codablock F",
-              value: "hibccodablockf",
-            },
-            {
-              label: "HIBC Code 128",
-              value: "hibccode128",
-            },
-            {
-              label: "HIBC Code 39",
-              value: "hibccode39",
-            },
-          ],
+          {
+            label: "Italian Pharmacode",
+            value: "code32"
+          },
+          {
+            label: "Pharmaceutical Binary Code",
+            value: "pharmacode"
+          },
+          {
+            label: "Pharmazentralnummer (PZN)",
+            value: "pzn"
+          },
+          {
+            label: "Two-track Pharmacode",
+            value: "pharmacode2"
+          },
+          {
+            label: "HIBC Aztec Code",
+            value: "hibcazteccode"
+          },
+          {
+            label: "HIBC Codablock F",
+            value: "hibccodablockf"
+          },
+          {
+            label: "HIBC Code 128",
+            value: "hibccode128"
+          },
+          {
+            label: "HIBC Code 39",
+            value: "hibccode39"
+          }]
+
         },
         {
           label: `${i18n.__('不常用编码')}`,
           children: [
-            {
-              label: "Code 11",
-              value: "code11",
-            },
-            {
-              label: "Code 16K",
-              value: "code16k",
-            },
-            {
-              label: "Code 2 of 5",
-              value: "code2of5",
-            },
-            {
-              label: "Code 49",
-              value: "code49",
-            },
-            {
-              label: "Code One",
-              value: "codeone",
-            },
-            {
-              label: "Codabar",
-              value: "rationalizedCodabar",
-            },
-            {
-              label: "Codablock F",
-              value: "codablockf",
-            },
-            {
-              label: "BC412",
-              value: "bc412",
-            },
-            {
-              label: "COOP 2 of 5",
-              value: "coop2of5",
-            },
-            {
-              label: "Channel Code",
-              value: "channelcode",
-            },
-            {
-              label: "Datalogic 2 of 5",
-              value: "datalogic2of5",
-            },
-            {
-              label: "DotCode",
-              value: "dotcode",
-            },
-            {
-              label: "IATA 2 of 5",
-              value: "iata2of5",
-            },
-            {
-              label: "MSI Plessey",
-              value: "msi",
-            },
-            {
-              label: "Matrix 2 of 5",
-              value: "matrix2of5",
-            },
-            {
-              label: "Plessey UK",
-              value: "plessey",
-            },
-            {
-              label: "PosiCode",
-              value: "posicode",
-            },
-            {
-              label: "Telepen",
-              value: "telepen",
-            },
-            {
-              label: "Telepen Numeric",
-              value: "telepennumeric",
-            },
-          ],
+          {
+            label: "Code 11",
+            value: "code11"
+          },
+          {
+            label: "Code 16K",
+            value: "code16k"
+          },
+          {
+            label: "Code 2 of 5",
+            value: "code2of5"
+          },
+          {
+            label: "Code 49",
+            value: "code49"
+          },
+          {
+            label: "Code One",
+            value: "codeone"
+          },
+          {
+            label: "Codabar",
+            value: "rationalizedCodabar"
+          },
+          {
+            label: "Codablock F",
+            value: "codablockf"
+          },
+          {
+            label: "BC412",
+            value: "bc412"
+          },
+          {
+            label: "COOP 2 of 5",
+            value: "coop2of5"
+          },
+          {
+            label: "Channel Code",
+            value: "channelcode"
+          },
+          {
+            label: "Datalogic 2 of 5",
+            value: "datalogic2of5"
+          },
+          {
+            label: "DotCode",
+            value: "dotcode"
+          },
+          {
+            label: "IATA 2 of 5",
+            value: "iata2of5"
+          },
+          {
+            label: "MSI Plessey",
+            value: "msi"
+          },
+          {
+            label: "Matrix 2 of 5",
+            value: "matrix2of5"
+          },
+          {
+            label: "Plessey UK",
+            value: "plessey"
+          },
+          {
+            label: "PosiCode",
+            value: "posicode"
+          },
+          {
+            label: "Telepen",
+            value: "telepen"
+          },
+          {
+            label: "Telepen Numeric",
+            value: "telepennumeric"
+          }]
+
         },
         {
           label: "GS1 复合编码",
           children: [
-            {
-              label: "复合 EAN-13",
-              value: "ean13composite",
-            },
-            {
-              label: "复合 EAN-8",
-              value: "ean8composite",
-            },
-            {
-              label: "复合 UPC-A",
-              value: "upcacomposite",
-            },
-            {
-              label: "复合 UPC-E",
-              value: "upcecomposite",
-            },
-            {
-              label: "层排扩展式复合 GS1 DataBar",
-              value: "databarexpandedstackedcomposite",
-            },
-            {
-              label: "扩展式复合 GS1 DataBar",
-              value: "databarexpandedcomposite",
-            },
-            {
-              label: "限定式复合 GS1 DataBar",
-              value: "databarlimitedcomposite",
-            },
-            {
-              label: "全向式复合 GS1 DataBar",
-              value: "databaromnicomposite",
-            },
-            {
-              label: "层排式复合 GS1 DataBar",
-              value: "databarstackedcomposite",
-            },
-            {
-              label: "全向层排式复合 GS1 DataBar",
-              value: "databarstackedomnicomposite",
-            },
-            {
-              label: "截短式复合 GS1 DataBar",
-              value: "databartruncatedcomposite",
-            },
-            {
-              label: "复合 GS1-128",
-              value: "gs1-128composite",
-            },
-          ],
+          {
+            label: "复合 EAN-13",
+            value: "ean13composite"
+          },
+          {
+            label: "复合 EAN-8",
+            value: "ean8composite"
+          },
+          {
+            label: "复合 UPC-A",
+            value: "upcacomposite"
+          },
+          {
+            label: "复合 UPC-E",
+            value: "upcecomposite"
+          },
+          {
+            label: "层排扩展式复合 GS1 DataBar",
+            value: "databarexpandedstackedcomposite"
+          },
+          {
+            label: "扩展式复合 GS1 DataBar",
+            value: "databarexpandedcomposite"
+          },
+          {
+            label: "限定式复合 GS1 DataBar",
+            value: "databarlimitedcomposite"
+          },
+          {
+            label: "全向式复合 GS1 DataBar",
+            value: "databaromnicomposite"
+          },
+          {
+            label: "层排式复合 GS1 DataBar",
+            value: "databarstackedcomposite"
+          },
+          {
+            label: "全向层排式复合 GS1 DataBar",
+            value: "databarstackedomnicomposite"
+          },
+          {
+            label: "截短式复合 GS1 DataBar",
+            value: "databartruncatedcomposite"
+          },
+          {
+            label: "复合 GS1-128",
+            value: "gs1-128composite"
+          }]
+
         },
         {
           label: `${i18n.__('附加组件')}`,
           children: [
-            {
-              label: "EAN-2 (2 位附加码)",
-              value: "ean2",
-            },
-            {
-              label: "EAN-5 (5 位附加码)",
-              value: "ean5",
-            },
-            {
-              label: "GS1 复合 2D 组件",
-              value: "gs1-cc",
-            },
-          ],
+          {
+            label: "EAN-2 (2 位附加码)",
+            value: "ean2"
+          },
+          {
+            label: "EAN-5 (5 位附加码)",
+            value: "ean5"
+          },
+          {
+            label: "GS1 复合 2D 组件",
+            value: "gs1-cc"
+          }]
+
         },
         {
           label: `${i18n.__('实验编码')}`,
           children: [
-            {
-              label: "Raw",
-              value: "raw",
-            },
-            {
-              label: "Custom 4 state symbology",
-              value: "daft",
-            },
-            {
-              label: "Flattermarken",
-              value: "flattermarken",
-            },
-          ],
-        }]
-        this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('条码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`)
-        var select = this.target.find('select.auto-submit')
-        options.forEach(item => {
+          {
+            label: "Raw",
+            value: "raw"
+          },
+          {
+            label: "Custom 4 state symbology",
+            value: "daft"
+          },
+          {
+            label: "Flattermarken",
+            value: "flattermarken"
+          }]
+
+        }];
+        this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('条码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`);
+        var select = this.target.find('select.auto-submit');
+        options.forEach((item) => {
           if (item.children) {
-            var optgroup = $(`<optgroup label="${item.label}"></optgroup`)
-            item.children.forEach(chil => {
-              optgroup.append($(`<option value="${chil.value}">${chil.label}</option>`))
-            })
-            select.append(optgroup)
+            var optgroup = $(`<optgroup label="${item.label}"></optgroup`);
+            item.children.forEach((chil) => {
+              optgroup.append($(`<option value="${chil.value}">${chil.label}</option>`));
+            });
+            select.append(optgroup);
           } else {
-            select.append(`<option value="${item.value}">${item.label}</option>`)
+            select.append(`<option value="${item.value}">${item.label}</option>`);
           }
-        })
-        return this.target
-      }, t.prototype.getValue = function () {
+        });
+        return this.target;
+      }, v10830.prototype.getValue = function () {
         return this.target.find("select").val() || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10830.prototype.setValue = function (v10831) {
+        this.target.find("select").val(v10831);
+      }, v10830.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10830;
     }(),
-    qrcodeType = function() {
-      function t() {
-        this.name = "qrcodeType"
+    qrcodeType = function () {
+      function v10832() {
+        this.name = "qrcodeType";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10832.prototype.createTarget = function () {
         var options = [{
           label: `${i18n.__('默认')}(qrcode)`,
-          value: "",
+          value: ""
         },
         {
           label: "QR Code",
-          value: "qrcode",
+          value: "qrcode"
         },
         {
           label: "Micro QR Code",
-          value: "microqrcode",
+          value: "microqrcode"
         },
         {
           label: "Swiss QR Code",
-          value: "swissqrcode",
+          value: "swissqrcode"
         },
         {
           label: "Rectangular Micro QR Code",
-          value: "rectangularmicroqrcode",
+          value: "rectangularmicroqrcode"
         },
         {
           label: "Aztec Code",
-          value: "azteccode",
+          value: "azteccode"
         },
         {
           label: "Aztec Runes",
-          value: "aztecrune",
+          value: "aztecrune"
         },
         {
           label: "Compact Aztec Code",
-          value: "azteccodecompact",
+          value: "azteccodecompact"
         },
         {
           label: "Data Matrix",
-          value: "datamatrix",
+          value: "datamatrix"
         },
         {
           label: "Data Matrix Rectangular",
-          value: "datamatrixrectangular",
+          value: "datamatrixrectangular"
         },
         {
           label: "汉信码",
-          value: "hanxin",
+          value: "hanxin"
         },
         {
           label: "GS1 Data Matrix",
-          value: "gs1datamatrix",
+          value: "gs1datamatrix"
         },
         {
           label: "GS1 Data Matrix Rectangular",
-          value: "gs1datamatrixrectangular",
+          value: "gs1datamatrixrectangular"
         },
         {
           label: "GS1 QR Code",
-          value: "gs1qrcode",
+          value: "gs1qrcode"
         },
         {
           label: "HIBC Data Matrix",
-          value: "hibcdatamatrix",
+          value: "hibcdatamatrix"
         },
         {
           label: "HIBC Data Matrix Rectangular",
-          value: "hibcdatamatrixrectangular",
+          value: "hibcdatamatrixrectangular"
         },
         {
           label: "HIBC MicroPDF417",
-          value: "hibcmicropdf417",
+          value: "hibcmicropdf417"
         },
         {
           label: "HIBC PDF417",
-          value: "hibcpdf417",
+          value: "hibcpdf417"
         },
         {
           label: "HIBC QR Code",
-          value: "hibcqrcode",
-        }]
-        this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('二维码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`)
-        var select = this.target.find('select.auto-submit')
-        options.forEach(item => {
-          select.append(`<option value="${item.value}">${item.label}</option>`)
-        })
-        return this.target
-      }, t.prototype.getValue = function () {
+          value: "hibcqrcode"
+        }];
+        this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('二维码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`);
+        var select = this.target.find('select.auto-submit');
+        options.forEach((item) => {
+          select.append(`<option value="${item.value}">${item.label}</option>`);
+        });
+        return this.target;
+      }, v10832.prototype.getValue = function () {
         return this.target.find("select").val() || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10832.prototype.setValue = function (v10833) {
+        this.target.find("select").val(v10833);
+      }, v10832.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10832;
     }(),
     qrCodeLevel = function () {
-      function t() {
+      function v10834() {
         this.name = "qrCodeLevel";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10834.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('二维码容错率')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="1" >7% L</option>\n        <option value="0" >15% M</option>\n        <option value="3" >25% Q</option>\n        <option value="2" >30% H</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        return parseInt(t || 0);
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10834.prototype.getValue = function () {
+        var v10835 = this.target.find("select").val();
+        return parseInt(v10835 || 0);
+      }, v10834.prototype.setValue = function (v10836) {
+        this.target.find("select").val(v10836);
+      }, v10834.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10834;
     }(),
-    T = function () {
-      function t() {
+    v10837 = function () {
+      function v10838() {
         this.name = "color";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("color", e), "color:" + e;
-          t[0].style.color = "";
+      return v10838.prototype.css = function (v10839, v10840) {
+        if (v10839 && v10839.length) {
+          if (v10840) return v10839.css("color", v10840), "color:" + v10840;
+          v10839[0].style.color = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10838.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字体颜色')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
+      }, v10838.prototype.getValue = function () {
+        var v10841 = this.target.find("input").val();
+        if (v10841) return v10841.toString();
+      }, v10838.prototype.setValue = function (v10842) {
         this.target.find("input").minicolors({
-          defaultValue: t || "",
+          defaultValue: v10842 || "",
           theme: "bootstrap"
-        }), this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+        }), this.target.find("input").val(v10842);
+      }, v10838.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10838;
     }(),
-    P = function () {
-      function t() {
+    v10843 = function () {
+      function v10844() {
         this.name = "textDecoration";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10844.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('文本修饰')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="underline" >${i18n.__('下划线')}</option>\n            <option value="overline" >${i18n.__('上划线')}</option>\n            <option value="line-through" >${i18n.__('穿梭线')}</option>\n           \n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("text-decoration", e), "text-decoration:" + e;
-          t[0].style.textDecoration = "";
+      }, v10844.prototype.css = function (v10845, v10846) {
+        if (v10845 && v10845.length) {
+          if (v10846) return v10845.css("text-decoration", v10846), "text-decoration:" + v10846;
+          v10845[0].style.textDecoration = "";
         }
 
         return null;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10844.prototype.getValue = function () {
+        var v10847 = this.target.find("select").val();
+        if (v10847) return v10847.toString();
+      }, v10844.prototype.setValue = function (v10848) {
+        v10848 && (this.target.find('option[value="' + v10848 + '"]').length || this.target.find("select").prepend('<option value="' + v10848 + '" >' + v10848 + "</option>"));
+        this.target.find("select").val(v10848);
+      }, v10844.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10844;
     }(),
-    _ = function () {
-      function t() {
+    v10849 = function () {
+      function v10850() {
         this.name = "field";
       }
 
-      return t.prototype.createTarget = function (t) {
-        var e = void 0;
+      return v10850.prototype.createTarget = function (v10851) {
+        var v10852 = void 0;
 
-        if (t && (e = t.getFields()), e) {
+        if (v10851 && (v10852 = v10851.getFields()), v10852) {
           this.isSelect = !0;
-          var n = `<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label">\n            ${i18n.__('字段名')}\n            </div>\n            <div class="hiprint-option-item-field">\n            <select class="auto-submit">\n                <option value="" >${i18n.__('请选择字段')}</option>`;
-          e.forEach(function (t, e) {
-            n += ' <option value="' + (t.field || "") + '" >' + (t.text || "") + "</option>";
-          }), n += " </select>\n            </div>\n        </div>", this.target = $(n);
+          var v10853 = `<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label">\n            ${i18n.__('字段名')}\n            </div>\n            <div class="hiprint-option-item-field">\n            <select class="auto-submit">\n                <option value="" >${i18n.__('请选择字段')}</option>`;
+          v10852.forEach(function (v10854, v10855) {
+            v10853 += ' <option value="' + (v10854.field || "") + '" >' + (v10854.text || "") + "</option>";
+          }), v10853 += " </select>\n            </div>\n        </div>", this.target = $(v10853);
         } else {
           this.isSelect = !1;
           this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label">\n            ${i18n.__('字段名')}\n            </div>\n            <div class="hiprint-option-item-field">\n            <input type="text" placeholder="${i18n.__('请输入字段名')}" class="auto-submit">\n            </div>\n        </div>`);
         }
 
         return this.target;
-      }, t.prototype.getValue = function () {
+      }, v10850.prototype.getValue = function () {
         return (this.isSelect ? this.target.find("select").val() : this.target.find("input").val()) || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.isSelect ? t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"), this.target.find("select").val(t)) : this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10850.prototype.setValue = function (v10856) {
+        this.isSelect ? v10856 && (this.target.find('option[value="' + v10856 + '"]').length || this.target.find("select").prepend('<option value="' + v10856 + '" >' + v10856 + "</option>"), this.target.find("select").val(v10856)) : this.target.find("input").val(v10856);
+      }, v10850.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10850;
     }(),
-    w = function () {
-      function t() {
+    v10857 = function () {
+      function v10858() {
         this.name = "title";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10858.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('标题')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:50px;" placeholder="${i18n.__('请输入标题')}" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10858.prototype.getValue = function () {
+        var v10859 = this.target.find("textarea").val();
+        if (v10859) return v10859;
+      }, v10858.prototype.setValue = function (v10860) {
+        this.target.find("textarea").val(v10860);
+      }, v10858.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10858;
     }(),
-    x = function () {
-      function t() {
+    v10861 = function () {
+      function v10862() {
         this.name = "testData";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10862.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('测试数据')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('仅字段名称存在时有效')}" class="auto-submit" >\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10862.prototype.getValue = function () {
+        var v10863 = this.target.find("input").val();
+        if (v10863) return v10863.toString();
+      }, v10862.prototype.setValue = function (v10864) {
+        this.target.find("input").val(v10864);
+      }, v10862.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10862;
     }(),
     coordinate = function () {
-      function t() {
+      function v10865() {
         this.name = "coordinate";
       }
 
-      return t.prototype.createTarget = function (t, o) {
-        var n = this;
-        n.target = $(`<div class="hiprint-option-item hiprint-option-item-row">
+      return v10865.prototype.createTarget = function (v10866, v10867) {
+        var v10868 = this;
+        v10868.target = $(`<div class="hiprint-option-item hiprint-option-item-row">
           <div class="hiprint-option-item-label">\n        ${i18n.__('位置坐标')}\n        </div>
           <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">\n
           <input type="number" style="width:48%" placeholder="${i18n.__('X位置(左)')}" class="auto-submit" />\n
           <input type="number" style="width:48%" placeholder="${i18n.__('Y位置(上)')}" class="auto-submit" />\n
           </div>\n
           </div>`);
-        n.syncLock = o.coordinateSync || false;
-        n.createSyncLock(n.syncLock);
-        return n.target;
-      }, t.prototype.createSyncLock = function (t) {
-        var n = this;
-        n.lockTarget = n.syncLock ? $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('同步')}">🔗</label>`) : $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('不同步')}">🔓</label>`);
-        n.lockTarget.click(function () {
-          if (n.syncLock) {
-            n.lockTarget.text("🔓").attr("title", `${i18n.__('不同步')}`);
+        v10868.syncLock = v10867.coordinateSync || false;
+        v10868.createSyncLock(v10868.syncLock);
+        return v10868.target;
+      }, v10865.prototype.createSyncLock = function (v10869) {
+        var v10870 = this;
+        v10870.lockTarget = v10870.syncLock ? $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('同步')}">🔗</label>`) : $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('不同步')}">🔓</label>`);
+        v10870.lockTarget.click(function () {
+          if (v10870.syncLock) {
+            v10870.lockTarget.text("🔓").attr("title", `${i18n.__('不同步')}`);
           } else {
-            n.lockTarget.text("🔗").attr("title", `${i18n.__('同步')}`);
+            v10870.lockTarget.text("🔗").attr("title", `${i18n.__('同步')}`);
           }
-          n.syncLock = !n.syncLock;
-        })
-        n.target.find("input:first").after(n.lockTarget);
+          v10870.syncLock = !v10870.syncLock;
+        });
+        v10870.target.find("input:first").after(v10870.lockTarget);
         // 同步编辑...
-        n.target.find("input:first").change(function () {
-          if (n.syncLock) {
-            n.target.find("input:last").val($(this).val())
+        v10870.target.find("input:first").change(function () {
+          if (v10870.syncLock) {
+            v10870.target.find("input:last").val($(this).val());
           }
         });
-        n.target.find("input:last").change(function () {
-          if (n.syncLock) {
-            n.target.find("input:first").val($(this).val())
+        v10870.target.find("input:last").change(function () {
+          if (v10870.syncLock) {
+            v10870.target.find("input:first").val($(this).val());
           }
         });
-        return n.lockTarget
-      }, t.prototype.css = function (t) {
-        if (t && t.length && this.target) {
+        return v10870.lockTarget;
+      }, v10865.prototype.css = function (v10871) {
+        if (v10871 && v10871.length && this.target) {
           // 仅当前元素被选中才更新坐标位置, 以避免冲突
-          if (('block' == t.find('.resize-panel').css('display') || t[0].className.includes('table')) && this.el == t) {
-            var v = this.getValue();
-            return t.css("left", v.left + "pt").css("top", v.top + "pt");
+          if (('block' == v10871.find('.resize-panel').css('display') || v10871[0].className.includes('table')) && this.el == v10871) {
+            var v10872 = this.getValue();
+            return v10871.css("left", v10872.left + "pt").css("top", v10872.top + "pt");
           }
         }
         return null;
-      }, t.prototype.getValue = function () {
-        var v = {
+      }, v10865.prototype.getValue = function () {
+        var v10873 = {
           coordinateSync: this.syncLock,
           left: 0,
-          top: 0,
-        }
-        v.left = parseFloat(this.target.find("input:first").val() || 0)
-        v.top = parseFloat(this.target.find("input:last").val() || 0)
-        return v;
-      }, t.prototype.setValue = function (t, el) {
+          top: 0
+        };
+        v10873.left = parseFloat(this.target.find("input:first").val() || 0);
+        v10873.top = parseFloat(this.target.find("input:last").val() || 0);
+        return v10873;
+      }, v10865.prototype.setValue = function (v10874, el) {
         this.el = el.designTarget || el;
-        this.target.find("input:first").val(t.left);
-        this.target.find("input:last").val(t.top);
-      }, t.prototype.destroy = function () {
+        this.target.find("input:first").val(v10874.left);
+        this.target.find("input:last").val(v10874.top);
+      }, v10865.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10865;
     }(),
     widthHeight = function () {
-      function t() {
+      function v10875() {
         this.name = "widthHeight";
       }
 
-      return t.prototype.createTarget = function (t, o) {
-        var n = this;
-        n.target = $(`<div class="hiprint-option-item hiprint-option-item-row">
+      return v10875.prototype.createTarget = function (v10876, v10877) {
+        var v10878 = this;
+        v10878.target = $(`<div class="hiprint-option-item hiprint-option-item-row">
           <div class="hiprint-option-item-label">\n        ${i18n.__('宽高大小')}\n        </div>
           <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">\n
           <input type="number" style="width:48%" placeholder="${i18n.__('宽')}" class="auto-submit" />\n
           <input type="number" style="width:48%" placeholder="${i18n.__('高')}" class="auto-submit" />\n
           </div>\n
           </div>`);
-        n.syncLock = o.widthHeightSync || false;
-        n.createSyncLock(n.syncLock);
-        return n.target;
-      }, t.prototype.createSyncLock = function (t) {
-        var n = this;
-        n.lockTarget = n.syncLock ? $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('同步')}">🔗</label>`) : $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('不同步')}">🔓</label>`);
-        n.lockTarget.click(function () {
-          if (n.syncLock) {
-            n.lockTarget.text("🔓").attr("title", `${i18n.__('不同步')}`);
+        v10878.syncLock = v10877.widthHeightSync || false;
+        v10878.createSyncLock(v10878.syncLock);
+        return v10878.target;
+      }, v10875.prototype.createSyncLock = function (v10879) {
+        var v10880 = this;
+        v10880.lockTarget = v10880.syncLock ? $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('同步')}">🔗</label>`) : $(`<label style="margin: 0 4px;text-align:center;width: 8%" title="${i18n.__('不同步')}">🔓</label>`);
+        v10880.lockTarget.click(function () {
+          if (v10880.syncLock) {
+            v10880.lockTarget.text("🔓").attr("title", `${i18n.__('不同步')}`);
           } else {
-            n.lockTarget.text("🔗").attr("title", `${i18n.__('同步')}`);
+            v10880.lockTarget.text("🔗").attr("title", `${i18n.__('同步')}`);
           }
-          n.syncLock = !n.syncLock;
-        })
-        n.target.find("input:first").after(n.lockTarget);
+          v10880.syncLock = !v10880.syncLock;
+        });
+        v10880.target.find("input:first").after(v10880.lockTarget);
         // 同步编辑...
-        n.target.find("input:first").change(function () {
-          if (n.syncLock) {
-            n.target.find("input:last").val($(this).val())
+        v10880.target.find("input:first").change(function () {
+          if (v10880.syncLock) {
+            v10880.target.find("input:last").val($(this).val());
           }
         });
-        n.target.find("input:last").change(function () {
-          if (n.syncLock) {
-            n.target.find("input:first").val($(this).val())
+        v10880.target.find("input:last").change(function () {
+          if (v10880.syncLock) {
+            v10880.target.find("input:first").val($(this).val());
           }
         });
-        return n.lockTarget
-      }, t.prototype.css = function (t) {
-        if (t && t.length && this.target) {
+        return v10880.lockTarget;
+      }, v10875.prototype.css = function (v10881) {
+        if (v10881 && v10881.length && this.target) {
           // 仅当前元素被选中才更新宽高大小, 以避免冲突
-          if (('block' == t.find('.resize-panel').css('display') || t[0].className.includes('table')) && this.el == t) {
-            var v = this.getValue();
-            return t.css("width", v.width + "pt").css("height", v.height + "pt");
+          if (('block' == v10881.find('.resize-panel').css('display') || v10881[0].className.includes('table')) && this.el == v10881) {
+            var v10882 = this.getValue();
+            return v10881.css("width", v10882.width + "pt").css("height", v10882.height + "pt");
           }
         }
         return null;
-      }, t.prototype.getValue = function () {
-        var v = {
+      }, v10875.prototype.getValue = function () {
+        var v10883 = {
           widthHeightSync: this.syncLock,
           width: 0,
-          height: 0,
-        }
-        v.width = parseFloat(this.target.find("input:first").val() || 0)
-        v.height = parseFloat(this.target.find("input:last").val() || 0)
-        return v;
-      }, t.prototype.setValue = function (t, el) {
+          height: 0
+        };
+        v10883.width = parseFloat(this.target.find("input:first").val() || 0);
+        v10883.height = parseFloat(this.target.find("input:last").val() || 0);
+        return v10883;
+      }, v10875.prototype.setValue = function (v10884, el) {
         this.el = el.designTarget || el;
-        this.target.find("input:first").val(t.width);
-        this.target.find("input:last").val(t.height);
-      }, t.prototype.destroy = function () {
+        this.target.find("input:first").val(v10884.width);
+        this.target.find("input:last").val(v10884.height);
+      }, v10875.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10875;
     }(),
-    C = function () {
-      function t() {
+    v10885 = function () {
+      function v10886() {
         this.name = "src";
       }
 
-      return t.prototype.createTarget = function (t) {
-        this.el = t;
-        var e = void 0, i = this;
+      return v10886.prototype.createTarget = function (v10887) {
+        this.el = v10887;
+        var v10888 = void 0,v10889 = this;
         this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('图片地址')}\n        </div>\n        <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">\n        <input type="text" placeholder="${i18n.__('请输入图片地址')}" class="auto-submit" style="width:70%">\n    <button class="hiprint-option-item-settingBtn" style="padding:0 10px;margin:0 0 0 5px" type="button">${i18n.__('选择')}</button>        </div>\n    </div>`);
-        if (t && (e = t.getOnImageChooseClick()), e) {
+        if (v10887 && (v10888 = v10887.getOnImageChooseClick()), v10888) {
           this.target.find('button').click(function () {
-            e && e(i);
-          })
+            v10888 && v10888(v10889);
+          });
         }
         return this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.refresh = function (t, opt, cb) {
+      }, v10886.prototype.getValue = function () {
+        var v10890 = this.target.find("input").val();
+        if (v10890) return v10890.toString();
+      }, v10886.prototype.setValue = function (v10891) {
+        this.target.find("input").val(v10891);
+      }, v10886.prototype.refresh = function (v10892, opt, cb) {
         var that = this;
-        this.setValue(t), this.target.find("input").change();
+        this.setValue(v10892), this.target.find("input").change();
         if (this.el && opt) {
           var img = new Image();
-          img.src = t;
+          img.src = v10892;
           if (img.complete) {
-            that.updateEl(img.width, img.height, opt, cb)
+            that.updateEl(img.width, img.height, opt, cb);
           } else {
             img.onload = function () {
-              that.updateEl(img.width, img.height, opt, cb)
-            }
+              that.updateEl(img.width, img.height, opt, cb);
+            };
           }
         }
-      }, t.prototype.updateEl = function (width, height, opt, cb) {
+      }, v10886.prototype.updateEl = function (width, height, opt, cb) {
         if (opt) {
-          var ratio, w, h;
+          var ratio, v10893, v10894;
           if (opt && opt.auto) {
             if (width >= height) {
               opt.width = true;
@@ -3589,85 +3589,85 @@ var hiprint = function (t) {
           }
           if (opt.width) {
             ratio = height / width;
-            w = this.el.options.width;
-            h = Math.floor(w * ratio * 10) / 10;
-            this.el.options.height = h;
-            this.el.designTarget.css('height', h + "pt");
+            v10893 = this.el.options.width;
+            v10894 = Math.floor(v10893 * ratio * 10) / 10;
+            this.el.options.height = v10894;
+            this.el.designTarget.css('height', v10894 + "pt");
           } else if (opt.height) {
             ratio = width / height;
-            h = this.el.options.height;
-            w = Math.floor(h * ratio * 10) / 10;
-            this.el.options.width = w;
-            this.el.designTarget.css('width', w + "pt");
+            v10894 = this.el.options.height;
+            v10893 = Math.floor(v10894 * ratio * 10) / 10;
+            this.el.options.width = v10893;
+            this.el.designTarget.css('width', v10893 + "pt");
           } else if (opt.real) {
-            w = hinnn.px.toPt(width);
-            h = hinnn.px.toPt(height);
-            this.el.options.width = w;
-            this.el.options.height = h;
-            this.el.designTarget.css('width', w + "pt");
-            this.el.designTarget.css('height', h + "pt");
+            v10893 = hinnn.px.toPt(width);
+            v10894 = hinnn.px.toPt(height);
+            this.el.options.width = v10893;
+            this.el.options.height = v10894;
+            this.el.designTarget.css('width', v10893 + "pt");
+            this.el.designTarget.css('height', v10894 + "pt");
           }
           this.el.designTarget.children('.resize-panel').trigger($.Event('click'));
         }
         cb && cb(this.el, width, height);
-      }, t.prototype.destroy = function () {
+      }, v10886.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10886;
     }(),
     imageFit = function () {
-      function t() {
+      function v10895() {
         this.name = "fit";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.find("img").css("object-fit", e), "object-fit:" + e;
-          t.find("img")[0].style['object-fit'] = "";
+      return v10895.prototype.css = function (v10896, v10897) {
+        if (v10896 && v10896.length) {
+          if (v10897) return v10896.find("img").css("object-fit", v10897), "object-fit:" + v10897;
+          v10896.find("img")[0].style['object-fit'] = "";
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10895.prototype.createTarget = function () {
         this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('图片缩放')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="contain" >${i18n.__('等比')}</option>\n        <option value="cover" >${i18n.__('剪裁')}</option>\n        <option value="fill" >${i18n.__('填充')}</option>\n        <option value="none" >${i18n.__('原始尺寸')}</option>\n                </select>\n        </div>\n    </div>`), this.target;
         return this.target;
-      }, t.prototype.getValue = function () {
+      }, v10895.prototype.getValue = function () {
         return this.target.find("select").val();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10895.prototype.setValue = function (v10898) {
+        this.target.find("select").val(v10898);
+      }, v10895.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10895;
     }(),
-    O = function () {
-      function t() {
+    v10899 = function () {
+      function v10900() {
         this.name = "borderColor";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-color", e), "border-color:" + e;
-          t[0].style.borderColor = "";
+      return v10900.prototype.css = function (v10901, v10902) {
+        if (v10901 && v10901.length) {
+          if (v10902) return v10901.css("border-color", v10902), "border-color:" + v10902;
+          v10901[0].style.borderColor = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function (t) {
-        var name = ['hline', 'vline', 'rect', 'oval'].includes(t.printElementType.type) ? `${i18n.__('颜色')}` : `${i18n.__('边框颜色')}`;
+      }, v10900.prototype.createTarget = function (v10903) {
+        var name = ['hline', 'vline', 'rect', 'oval'].includes(v10903.printElementType.type) ? `${i18n.__('颜色')}` : `${i18n.__('边框颜色')}`;
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${name}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit" />\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
+      }, v10900.prototype.getValue = function () {
+        var v10904 = this.target.find("input").val();
+        if (v10904) return v10904.toString();
+      }, v10900.prototype.setValue = function (v10905) {
         this.target.find("input").minicolors({
-          defaultValue: t || "",
+          defaultValue: v10905 || "",
           theme: "bootstrap"
-        }), this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+        }), this.target.find("input").val(v10905);
+      }, v10900.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10900;
     }(),
     watermarkOptions = function () {
-      function t() {
+      function v10906() {
         this.name = "watermarkOptions";
       }
-      return t.prototype.createTarget = function () {
+      return v10906.prototype.createTarget = function () {
         this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('水印功能')}</div></div>`);
         this.content = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;"><div style="width:25%">${i18n.__('水印内容')}:</div><input style="width:75%" type="text" placeholder="${i18n.__('水印内容')}" class="auto-submit"></div>`);
         this.fillStyle = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: center;margin-top: 4px"><div style="width:25%">${i18n.__('字体颜色')}:</div><input style="width:110%" data-format="rgb" data-opacity="0.3" type="text" placeholder="${i18n.__('字体颜色')}" class="auto-submit"></div>`);
@@ -3677,18 +3677,18 @@ var hiprint = function (t) {
         this.height = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: center;"><div style="width:25%">${i18n.__('垂直密度')}:</div><input style="width:75%" type="range" min="100" max="800" placeholder="${i18n.__('垂直密度')}" class="auto-submit"></div>`);
         this.timestamp = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: center;"><div style="width:25%">${i18n.__('水印时间')}:</div><input style="width:18px;height:18px;margin:0 0 4px 0;" type="checkbox" placeholder="${i18n.__('水印时间')}" class="auto-submit"></div>`);
         let formatlist = [
-          "YYYY-MM-DD HH:mm:ss",
-          "YYYY-MM-DD HH:mm",
-          "YYYY-MM-DD HH",
-          "YYYY-MM-DD",
-          "YYYY-MMMM",
-          "YYYY-MM",
-          "YYYY",
-        ];
+        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm",
+        "YYYY-MM-DD HH",
+        "YYYY-MM-DD",
+        "YYYY-MMMM",
+        "YYYY-MM",
+        "YYYY"];
+
         let timeFormatList = `\n            <option value="" >${i18n.__('默认')}(YYYY-MM-DD HH:mm)</option>`;
-        formatlist.forEach(function (e) {
-          timeFormatList += '\n            <option value="' + e + '">' + e + '</option>';
-        })
+        formatlist.forEach(function (v10907) {
+          timeFormatList += '\n            <option value="' + v10907 + '">' + v10907 + '</option>';
+        });
         this.format = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;"><div style="width:25%">${i18n.__('时间格式')}:</div><select style="width:75%" class="auto-submit"></select></div>`);
         this.format.find(".auto-submit").append($(timeFormatList));
         this.target.append(this.content);
@@ -3700,7 +3700,7 @@ var hiprint = function (t) {
         this.target.append(this.timestamp);
         this.target.append(this.format);
         return this.target;
-      }, t.prototype.getValue = function () {
+      }, v10906.prototype.getValue = function () {
         let opt = {
           content: this.content.find('input').val(),
           fillStyle: this.fillStyle.find('input').val() || "rgba(184, 184, 184, 0.3)",
@@ -3710,803 +3710,803 @@ var hiprint = function (t) {
           height: parseInt(this.height.find('input').val() || "200"),
           timestamp: this.timestamp.find('input').is(':checked'),
           format: this.format.find('select').val() == "" ? "YYYY-MM-DD HH:mm" : this.format.find('select').val()
-        }
+        };
         let options = Object.assign({}, this.options, opt);
         return options;
-      }, t.prototype.setValue = function (t) {
-        this.options = t;
-        this.content.find("input").val(t.content || "");
-        this.fillStyle.find("input").val(t.fillStyle || "rgba(184, 184, 184, 0.3)");
+      }, v10906.prototype.setValue = function (v10908) {
+        this.options = v10908;
+        this.content.find("input").val(v10908.content || "");
+        this.fillStyle.find("input").val(v10908.fillStyle || "rgba(184, 184, 184, 0.3)");
         this.fillStyle.find("input").minicolors({
           format: "rgb",
           opacity: true,
           theme: "bootstrap"
         });
-        const fontSize = parseInt(t.fontSize || "14");
+        const fontSize = parseInt(v10908.fontSize || "14");
         this.fontSize.find("input").val(fontSize);
-        this.rotate.find("input").val(t.rotate || 25);
-        this.width.find("input").val(t.width || 200);
-        this.height.find("input").val(t.height || 200);
-        this.timestamp.find("input").attr("checked", t.timestamp == void 0 ? false : t.timestamp);
-        this.format.find("select").val(t.format || "YYYY-MM-DD HH:mm");
-      }, t.prototype.destroy = function () {
+        this.rotate.find("input").val(v10908.rotate || 25);
+        this.width.find("input").val(v10908.width || 200);
+        this.height.find("input").val(v10908.height || 200);
+        this.timestamp.find("input").attr("checked", v10908.timestamp == void 0 ? false : v10908.timestamp);
+        this.format.find("select").val(v10908.format || "YYYY-MM-DD HH:mm");
+      }, v10906.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10906;
     }(),
-    H = function () {
-      function t() {
+    v10909 = function () {
+      function v10910() {
         this.name = "paperNumberFormat";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10910.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('页码格式')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="\${paperNo}-\${paperCount}" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10910.prototype.getValue = function () {
+        var v10911 = this.target.find("input").val();
+        if (v10911) return v10911.toString();
+      }, v10910.prototype.setValue = function (v10912) {
+        this.target.find("input").val(v10912);
+      }, v10910.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10910;
     }(),
-    D = function () {
-      function t() {
+    v10913 = function () {
+      function v10914() {
         this.name = "paperNumberDisabled";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10914.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('显示页码')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('显示')}</option>\n        <option value="true" >${i18n.__('隐藏')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10914.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v10914.prototype.setValue = function (v10915) {
+        this.target.find("select").val((null == v10915 ? "" : v10915).toString());
+      }, v10914.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10914;
     }(),
     paperNumberContinue = function () {
-      function t() {
+      function v10916() {
         this.name = "paperNumberContinue";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10916.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('页码续排')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="true" >${i18n.__('续排')}</option>\n        <option value="reset" >${i18n.__('重排')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10916.prototype.getValue = function () {
         return "true" == this.target.find("select").val();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((t == void 0 || t ? "true" : "reset").toString());
-      }, t.prototype.destroy = function () {
+      }, v10916.prototype.setValue = function (v10917) {
+        this.target.find("select").val((v10917 == void 0 || v10917 ? "true" : "reset").toString());
+      }, v10916.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10916;
     }(),
-    I = function () {
-      function t() {
+    v10918 = function () {
+      function v10919() {
         this.name = "longTextIndent";
       }
 
-      return t.prototype.css = function (t, e) {
+      return v10919.prototype.css = function (v10920, v10921) {
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10919.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('每行缩进')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        <option value="22.5" >22.5pt</option>\n        <option value="23.25" >23.25pt</option>\n        <option value="24" >24pt</option>\n        <option value="24.75" >24.75pt</option>\n        <option value="25.5" >25.5pt</option>\n        <option value="26.25" >26.25pt</option>\n        <option value="27" >27pt</option>\n        <option value="27.75" >27.75pt</option>\n        <option value="28.5" >28.5pt</option>\n        <option value="29.25" >29.25pt</option>\n        <option value="30" >30pt</option>\n        <option value="30.75" >30.75pt</option>\n        <option value="31.5" >31.5pt</option>\n        <option value="32.25" >32.25pt</option>\n        <option value="33" >33pt</option>\n        <option value="33.75" >33.75pt</option>\n        <option value="34.5" >34.5pt</option>\n        <option value="35.25" >35.25pt</option>\n        <option value="36" >36pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10919.prototype.getValue = function () {
+        var v10922 = this.target.find("select").val();
+        if (v10922) return parseFloat(v10922.toString());
+      }, v10919.prototype.setValue = function (v10923) {
+        v10923 && (this.target.find('option[value="' + v10923 + '"]').length || this.target.find("select").prepend('<option value="' + v10923 + '" >' + v10923 + "</option>"));
+        this.target.find("select").val(v10923);
+      }, v10919.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10919;
     }(),
-    R = function () {
-      function t() {
+    v10924 = function () {
+      function v10925() {
         this.name = "showInPage";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e && 'none' == e) return t.addClass('alwaysHide');
-          t.removeClass('alwaysHide');
+      return v10925.prototype.css = function (v10926, v10927) {
+        if (v10926 && v10926.length) {
+          if (v10927 && 'none' == v10927) return v10926.addClass('alwaysHide');
+          v10926.removeClass('alwaysHide');
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10925.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('显示规则')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="none" >${i18n.__('始终隐藏')}</option>\n            <option value="first" >${i18n.__('首页')}</option>\n            <option value="odd" >${i18n.__('奇数页')}</option>\n            <option value="even" >${i18n.__('偶数页')}</option>\n            <option value="last" >${i18n.__('尾页')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10925.prototype.getValue = function () {
+        var v10928 = this.target.find("select").val();
+        if (v10928) return v10928.toString();
+      }, v10925.prototype.setValue = function (v10929) {
+        this.target.find("select").val(v10929);
+      }, v10925.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10925;
     }(),
     pageBreak = function () {
-      function t() {
+      function v10930() {
         this.name = "pageBreak";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e && 'none' == e) return t.addClass('alwaysHide');
-          t.removeClass('alwaysHide');
+      return v10930.prototype.css = function (v10931, v10932) {
+        if (v10931 && v10931.length) {
+          if (v10932 && 'none' == v10932) return v10931.addClass('alwaysHide');
+          v10931.removeClass('alwaysHide');
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10930.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('强制分页')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="true" >${i18n.__('是')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10930.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v10930.prototype.setValue = function (v10933) {
+        this.target.find("select").val((null == v10933 ? "" : v10933).toString());
+      }, v10930.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10930;
     }(),
-    M = function () {
-      function t() {
+    v10934 = function () {
+      function v10935() {
         this.name = "panelPaperRule";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10935.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('打印规则')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="odd" >${i18n.__('保持奇数')}</option>\n            <option value="even" >${i18n.__('保持偶数')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10935.prototype.getValue = function () {
+        var v10936 = this.target.find("select").val();
+        if (v10936) return v10936.toString();
+      }, v10935.prototype.setValue = function (v10937) {
+        this.target.find("select").val(v10937);
+      }, v10935.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10935;
     }(),
     M2 = function () {
-      function t() {
+      function v10938() {
         this.name = "panelPageRule";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10938.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('分页规则')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="none" >${i18n.__('不分页')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10938.prototype.getValue = function () {
+        var v10939 = this.target.find("select").val();
+        if (v10939) return v10939.toString();
+      }, v10938.prototype.setValue = function (v10940) {
+        this.target.find("select").val(v10940);
+      }, v10938.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10938;
     }(),
-    S = function () {
-      function t() {
+    v10941 = function () {
+      function v10942() {
         this.name = "leftSpaceRemoved";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10942.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('移除段落左侧空白')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="true" >${i18n.__('移除')}</option>\n            <option value="false" >${i18n.__('不移除')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10942.prototype.getValue = function () {
         if ("false" == this.target.find("select").val()) return !1;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v10942.prototype.setValue = function (v10943) {
+        this.target.find("select").val((null == v10943 ? "" : v10943).toString());
+      }, v10942.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10942;
     }(),
-    B = function () {
-      function t() {
+    v10944 = function () {
+      function v10945() {
         this.name = "firstPaperFooter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10945.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('首页页尾')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('首页页尾')}" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10945.prototype.getValue = function () {
+        var v10946 = this.target.find("input").val();
+        if (v10946) return parseFloat(v10946.toString());
+      }, v10945.prototype.setValue = function (v10947) {
+        this.target.find("input").val(v10947);
+      }, v10945.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10945;
     }(),
-    F = function () {
-      function t() {
+    v10948 = function () {
+      function v10949() {
         this.name = "lastPaperFooter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10949.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('尾页页尾')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('尾页页尾')}" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10949.prototype.getValue = function () {
+        var v10950 = this.target.find("input").val();
+        if (v10950) return parseFloat(v10950.toString());
+      }, v10949.prototype.setValue = function (v10951) {
+        this.target.find("input").val(v10951);
+      }, v10949.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10949;
     }(),
-    L = function () {
-      function t() {
+    v10952 = function () {
+      function v10953() {
         this.name = "evenPaperFooter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10953.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('偶数页页尾')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('偶数页页尾')}" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10953.prototype.getValue = function () {
+        var v10954 = this.target.find("input").val();
+        if (v10954) return parseFloat(v10954.toString());
+      }, v10953.prototype.setValue = function (v10955) {
+        this.target.find("input").val(v10955);
+      }, v10953.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10953;
     }(),
-    A = function () {
-      function t() {
+    v10956 = function () {
+      function v10957() {
         this.name = "oddPaperFooter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10957.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('奇数页页尾')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('奇数页页尾')}" class="auto-submit" >\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10957.prototype.getValue = function () {
+        var v10958 = this.target.find("input").val();
+        if (v10958) return parseFloat(v10958.toString());
+      }, v10957.prototype.setValue = function (v10959) {
+        this.target.find("input").val(v10959);
+      }, v10957.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10957;
     }(),
-    z = function () {
-      function t() {
+    v10960 = function () {
+      function v10961() {
         this.name = "fixed";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10961.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('位置固定')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="false" >${i18n.__('否')}</option>\n            <option value="true" >${i18n.__('是')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v10961.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v10961.prototype.setValue = function (v10962) {
+        this.target.find("select").val((null == v10962 ? "" : v10962).toString());
+      }, v10961.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10961;
     }(),
-    k = function () {
-      function t() {
+    v10963 = function () {
+      function v10964() {
         this.name = "axis";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10964.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('拖动方向')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="h" >${i18n.__('横向')}</option>\n        <option value="v" >${i18n.__('竖向')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        return t || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10964.prototype.getValue = function () {
+        var v10965 = this.target.find("select").val();
+        return v10965 || void 0;
+      }, v10964.prototype.setValue = function (v10966) {
+        this.target.find("select").val(v10966);
+      }, v10964.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10964;
     }(),
-    N = function () {
-      function t() {
+    v10967 = function () {
+      function v10968() {
         this.name = "leftOffset";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10968.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('左偏移')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('偏移量')}pt" class="auto-submit" >\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10968.prototype.getValue = function () {
+        var v10969 = this.target.find("input").val();
+        if (v10969) return parseFloat(v10969.toString());
+      }, v10968.prototype.setValue = function (v10970) {
+        this.target.find("input").val(v10970);
+      }, v10968.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10968;
     }(),
-    V = function () {
-      function t() {
+    v10971 = function () {
+      function v10972() {
         this.name = "lHeight";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10972.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('最低高度')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('文本过短或为空时的高度')}" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10972.prototype.getValue = function () {
+        var v10973 = this.target.find("input").val();
+        if (v10973) return parseFloat(v10973.toString());
+      }, v10972.prototype.setValue = function (v10974) {
+        this.target.find("input").val(v10974);
+      }, v10972.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10972;
     }(),
-    W = function () {
-      function t() {
+    v10975 = function () {
+      function v10976() {
         this.name = "unShowInPage";
       }
 
-      return t.prototype.createTarget = function () {
+      return v10976.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('隐藏规则')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="first" >${i18n.__('首页')}</option>\n            <option value="last" >${i18n.__('尾页')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10976.prototype.getValue = function () {
+        var v10977 = this.target.find("select").val();
+        if (v10977) return v10977;
+      }, v10976.prototype.setValue = function (v10978) {
+        this.target.find("select").val(v10978);
+      }, v10976.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10976;
     }(),
-    j = function () {
-      function t() {
+    v10979 = function () {
+      function v10980() {
         this.name = "tableBodyRowBorder";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t.find("tbody tr").length) {
-          if ("border" == e || void 0 == e) return t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-all");
-          "noBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == e ? t.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-tb") : t.find("tbody tr").removeClass();
+      return v10980.prototype.css = function (v10981, v10982) {
+        if (v10981.find("tbody tr").length) {
+          if ("border" == v10982 || void 0 == v10982) return v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-all");
+          "noBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-none") : "leftBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-left") : "rightBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-right") : "leftRightBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-lr") : "topBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-top") : "bottomBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-bottom") : "topBottomBorder" == v10982 ? v10981.find("tbody tr").addClass("hiprint-printElement-tableTarget-border-tb") : v10981.find("tbody tr").removeClass();
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10980.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表体行边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>    \n        <option value="border" >${i18n.__('有边框')}</option>\n        <option value="noBorder" >${i18n.__('无边框')}</option>\n        <option value="leftBorder" >${i18n.__('左边框')}</option>\n        <option value="rightBorder" >${i18n.__('右边框')}</option>\n        <option value="leftRightBorder" >${i18n.__('左右边框')}</option>\n        <option value="topBorder" >${i18n.__('上边框')}</option>\n        <option value="bottomBorder" >${i18n.__('下边框')}</option>\n        <option value="topBottomBorder" >${i18n.__('上下边框')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10980.prototype.getValue = function () {
+        var v10983 = this.target.find("select").val();
+        if (v10983) return v10983.toString();
+      }, v10980.prototype.setValue = function (v10984) {
+        this.target.find("select").val(v10984);
+      }, v10980.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10980;
     }(),
-    U = function () {
-      function t() {
+    v10985 = function () {
+      function v10986() {
         this.name = "transform";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          var n = t.find(".hiprint-printElement-content").parent(".hiprint-printElement");
-          if (!n.length) {
-            n = t;
+      return v10986.prototype.css = function (v10987, v10988) {
+        if (v10987 && v10987.length) {
+          var v10989 = v10987.find(".hiprint-printElement-content").parent(".hiprint-printElement");
+          if (!v10989.length) {
+            v10989 = v10987;
           }
-          if (e) return n.css("transform", "rotate(" + e + "deg)"), n.css("-ms-transform", "rotate(" + e + "deg)"), n.css("-moz-transform", "rotate(" + e + "deg)"), n.css("-webkit-transform", "rotate(" + e + "deg)"), n.css("-o-transform", "rotate(" + e + "deg)"), "transform:rotate(" + e + "deg)";
-          n.length && (n[0].style.transform = "");
+          if (v10988) return v10989.css("transform", "rotate(" + v10988 + "deg)"), v10989.css("-ms-transform", "rotate(" + v10988 + "deg)"), v10989.css("-moz-transform", "rotate(" + v10988 + "deg)"), v10989.css("-webkit-transform", "rotate(" + v10988 + "deg)"), v10989.css("-o-transform", "rotate(" + v10988 + "deg)"), "transform:rotate(" + v10988 + "deg)";
+          v10989.length && (v10989[0].style.transform = "");
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10986.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('旋转角度')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="number" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10986.prototype.getValue = function () {
+        var v10990 = this.target.find("input").val();
+        if (v10990) return parseFloat(v10990.toString());
+      }, v10986.prototype.setValue = function (v10991) {
+        this.target.find("input").val(v10991);
+      }, v10986.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10986;
     }(),
     zIndex = function () {
-      function t() {
+      function v10992() {
         this.name = "zIndex";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css('z-index', e);
+      return v10992.prototype.css = function (v10993, v10994) {
+        if (v10993 && v10993.length) {
+          if (v10994) return v10993.css('z-index', v10994);
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10992.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('元素层级')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="number" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseInt(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10992.prototype.getValue = function () {
+        var v10995 = this.target.find("input").val();
+        if (v10995) return parseInt(v10995.toString());
+      }, v10992.prototype.setValue = function (v10996) {
+        this.target.find("input").val(v10996);
+      }, v10992.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10992;
     }(),
     borderRadius = function () {
-      function t() {
+      function v10997() {
         this.name = "borderRadius";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css('border-raduis', e);
+      return v10997.prototype.css = function (v10998, v10999) {
+        if (v10998 && v10998.length) {
+          if (v10999) return v10998.css('border-raduis', v10999);
         }
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v10997.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('边框圆角')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v10997.prototype.getValue = function () {
+        var v11000 = this.target.find("input").val();
+        if (v11000) return v11000;
+      }, v10997.prototype.setValue = function (v11001) {
+        this.target.find("input").val(v11001);
+      }, v10997.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v10997;
     }(),
-    K = function () {
-      function t() {
+    v11002 = function () {
+      function v11003() {
         this.name = "optionsGroup";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11003.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('边框设置')}\n        </div>\n       \n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-      }, t.prototype.setValue = function (t) {
-      }, t.prototype.destroy = function () {
+      }, v11003.prototype.getValue = function () {
+      }, v11003.prototype.setValue = function (v11004) {
+      }, v11003.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11003;
     }(),
-    G = function () {
-      function t() {
+    v11005 = function () {
+      function v11006() {
         this.name = "borderTop";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-top-style", e), "border-top:1px";
-          t[0].style.borderTopStyle = "", t[0].style.borderTopWidth = "";
+      return v11006.prototype.css = function (v11007, v11008) {
+        if (v11007 && v11007.length) {
+          if (v11008) return v11007.css("border-top-style", v11008), "border-top:1px";
+          v11007[0].style.borderTopStyle = "", v11007[0].style.borderTopWidth = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11006.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('上边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n            <option value="" >${i18n.__('否')}</option>\n            <option value="solid" >${i18n.__('实线')}</option>\n            <option value="dotted" >${i18n.__('虚线')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11006.prototype.getValue = function () {
+        var v11009 = this.target.find("select").val();
+        if (v11009) return v11009;
+      }, v11006.prototype.setValue = function (v11010) {
+        this.target.find("select").val(v11010);
+      }, v11006.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11006;
     }(),
-    q = function () {
-      function t() {
+    v11011 = function () {
+      function v11012() {
         this.name = "borderLeft";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-left-style", e), "border-left:1px";
-          t[0].style.borderLeftStyle = "", t[0].style.borderLeftWidth = "";
+      return v11012.prototype.css = function (v11013, v11014) {
+        if (v11013 && v11013.length) {
+          if (v11014) return v11013.css("border-left-style", v11014), "border-left:1px";
+          v11013[0].style.borderLeftStyle = "", v11013[0].style.borderLeftWidth = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11012.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('左边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('否')}</option>\n        <option value="solid" >${i18n.__('实线')}</option>\n        <option value="dotted" >${i18n.__('虚线')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11012.prototype.getValue = function () {
+        var v11015 = this.target.find("select").val();
+        if (v11015) return v11015;
+      }, v11012.prototype.setValue = function (v11016) {
+        this.target.find("select").val(v11016);
+      }, v11012.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11012;
     }(),
-    X = function () {
-      function t() {
+    v11017 = function () {
+      function v11018() {
         this.name = "borderRight";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-right-style", e), "border-right:1px";
-          t[0].style.borderRightStyle = "", t[0].style.borderRightWidth = "";
+      return v11018.prototype.css = function (v11019, v11020) {
+        if (v11019 && v11019.length) {
+          if (v11020) return v11019.css("border-right-style", v11020), "border-right:1px";
+          v11019[0].style.borderRightStyle = "", v11019[0].style.borderRightWidth = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11018.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('右边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('否')}</option>\n        <option value="solid" >${i18n.__('实线')}</option>\n        <option value="dotted" >${i18n.__('虚线')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11018.prototype.getValue = function () {
+        var v11021 = this.target.find("select").val();
+        if (v11021) return v11021;
+      }, v11018.prototype.setValue = function (v11022) {
+        this.target.find("select").val(v11022);
+      }, v11018.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11018;
     }(),
-    Y = function () {
-      function t() {
+    v11023 = function () {
+      function v11024() {
         this.name = "borderBottom";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-bottom-style", e), "border-bottom-style:1px solid";
-          t[0].style.borderBottomStyle = "", t[0].style.borderBottomWidth = "";
+      return v11024.prototype.css = function (v11025, v11026) {
+        if (v11025 && v11025.length) {
+          if (v11026) return v11025.css("border-bottom-style", v11026), "border-bottom-style:1px solid";
+          v11025[0].style.borderBottomStyle = "", v11025[0].style.borderBottomWidth = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11024.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('下边框')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('否')}</option>\n        <option value="solid" >${i18n.__('实线')}</option>\n        <option value="dotted" >${i18n.__('虚线')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11024.prototype.getValue = function () {
+        var v11027 = this.target.find("select").val();
+        if (v11027) return v11027;
+      }, v11024.prototype.setValue = function (v11028) {
+        this.target.find("select").val(v11028);
+      }, v11024.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11024;
     }(),
-    J = function () {
-      function t() {
+    v11029 = function () {
+      function v11030() {
         this.name = "contentPaddingLeft";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t.find(".hiprint-printElement-content");
+      return v11030.prototype.css = function (v11031, v11032) {
+        var v11033 = v11031.find(".hiprint-printElement-content");
 
-        if (n && n.length) {
-          if (e) return n.css("padding-left", e + "pt"), "padding-left";
-          n[0].style.paddingLeft = "";
+        if (v11033 && v11033.length) {
+          if (v11032) return v11033.css("padding-left", v11032 + "pt"), "padding-left";
+          v11033[0].style.paddingLeft = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11030.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('左内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11030.prototype.getValue = function () {
+        var v11034 = this.target.find("select").val();
+        if (v11034) return parseFloat(v11034.toString());
+      }, v11030.prototype.setValue = function (v11035) {
+        v11035 && (this.target.find('option[value="' + v11035 + '"]').length || this.target.find("select").prepend('<option value="' + v11035 + '" >' + v11035 + "</option>"));
+        this.target.find("select").val(v11035);
+      }, v11030.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11030;
     }(),
-    Q = function () {
-      function t() {
+    v11036 = function () {
+      function v11037() {
         this.name = "contentPaddingTop";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t.find(".hiprint-printElement-content");
+      return v11037.prototype.css = function (v11038, v11039) {
+        var v11040 = v11038.find(".hiprint-printElement-content");
 
-        if (n && n.length) {
-          if (e) return n.css("padding-top", e + "pt"), "padding-top";
-          n[0].style.paddingTop = "";
+        if (v11040 && v11040.length) {
+          if (v11039) return v11040.css("padding-top", v11039 + "pt"), "padding-top";
+          v11040[0].style.paddingTop = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11037.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('上内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11037.prototype.getValue = function () {
+        var v11041 = this.target.find("select").val();
+        if (v11041) return parseFloat(v11041.toString());
+      }, v11037.prototype.setValue = function (v11042) {
+        v11042 && (this.target.find('option[value="' + v11042 + '"]').length || this.target.find("select").prepend('<option value="' + v11042 + '" >' + v11042 + "</option>"));
+        this.target.find("select").val(v11042);
+      }, v11037.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11037;
     }(),
-    Z = function () {
-      function t() {
+    v11043 = function () {
+      function v11044() {
         this.name = "contentPaddingRight";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t.find(".hiprint-printElement-content");
+      return v11044.prototype.css = function (v11045, v11046) {
+        var v11047 = v11045.find(".hiprint-printElement-content");
 
-        if (n && n.length) {
-          if (e) return n.css("padding-right", e + "pt"), "padding-right";
-          n[0].style.paddingRight = "";
+        if (v11047 && v11047.length) {
+          if (v11046) return v11047.css("padding-right", v11046 + "pt"), "padding-right";
+          v11047[0].style.paddingRight = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11044.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('右内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11044.prototype.getValue = function () {
+        var v11048 = this.target.find("select").val();
+        if (v11048) return parseFloat(v11048.toString());
+      }, v11044.prototype.setValue = function (v11049) {
+        v11049 && (this.target.find('option[value="' + v11049 + '"]').length || this.target.find("select").prepend('<option value="' + v11049 + '" >' + v11049 + "</option>"));
+        this.target.find("select").val(v11049);
+      }, v11044.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11044;
     }(),
     tt = function () {
-      function t() {
+      function v11050() {
         this.name = "contentPaddingBottom";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t.find(".hiprint-printElement-content");
+      return v11050.prototype.css = function (v11051, v11052) {
+        var v11053 = v11051.find(".hiprint-printElement-content");
 
-        if (n && n.length) {
-          if (e) return n.css("padding-bottom", e + "pt"), "padding-bottom";
-          n[0].style.paddingBottom = "";
+        if (v11053 && v11053.length) {
+          if (v11052) return v11053.css("padding-bottom", v11052 + "pt"), "padding-bottom";
+          v11053[0].style.paddingBottom = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11050.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('下内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11050.prototype.getValue = function () {
+        var v11054 = this.target.find("select").val();
+        if (v11054) return parseFloat(v11054.toString());
+      }, v11050.prototype.setValue = function (v11055) {
+        v11055 && (this.target.find('option[value="' + v11055 + '"]').length || this.target.find("select").prepend('<option value="' + v11055 + '" >' + v11055 + "</option>"));
+        this.target.find("select").val(v11055);
+      }, v11050.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11050;
     }(),
     et = function () {
-      function t() {
+      function v11056() {
         this.name = "borderStyle";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("border-style", e), "border-style:1px";
-          t[0].style.borderStyle = "";
+      return v11056.prototype.css = function (v11057, v11058) {
+        if (v11057 && v11057.length) {
+          if (v11058) return v11057.css("border-style", v11058), "border-style:1px";
+          v11057[0].style.borderStyle = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function (t) {
-        var name = ['hline', 'vline', 'rect', 'oval'].includes(t.printElementType.type) ? `${i18n.__('样式')}` : `${i18n.__('边框样式')}`;
+      }, v11056.prototype.createTarget = function (v11059) {
+        var name = ['hline', 'vline', 'rect', 'oval'].includes(v11059.printElementType.type) ? `${i18n.__('样式')}` : `${i18n.__('边框样式')}`;
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n       ${name}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="solid" >${i18n.__('实线')}</option>\n            <option value="dashed" >${i18n.__('长虚线')}</option>\n            <option value="dotted" >${i18n.__('短虚线')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11056.prototype.getValue = function () {
+        var v11060 = this.target.find("select").val();
+        if (v11060) return v11060;
+      }, v11056.prototype.setValue = function (v11061) {
+        this.target.find("select").val(v11061);
+      }, v11056.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11056;
     }(),
     nt = function () {
-      function t() {
+      function v11062() {
         this.name = "backgroundColor";
       }
 
-      return t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.css("background-color", e), "background-color:" + e;
-          t[0].style.backgroundColor = "";
+      return v11062.prototype.css = function (v11063, v11064) {
+        if (v11063 && v11063.length) {
+          if (v11064) return v11063.css("background-color", v11064), "background-color:" + v11064;
+          v11063[0].style.backgroundColor = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11062.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('背景颜色')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
+      }, v11062.prototype.getValue = function () {
+        var v11065 = this.target.find("input").val();
+        if (v11065) return v11065.toString();
+      }, v11062.prototype.setValue = function (v11066) {
         this.target.find("input").minicolors({
-          defaultValue: t || "",
+          defaultValue: v11066 || "",
           theme: "bootstrap"
-        }), this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+        }), this.target.find("input").val(v11066);
+      }, v11062.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11062;
     }(),
-      barColor = function () {
-        function t() {
-          this.name = "barColor";
-        }
+    barColor = function () {
+      function v11067() {
+        this.name = "barColor";
+      }
 
-        return t.prototype.css = function (t, e) {
-          if (t && t.length) {
-            // if (e) return t.css("background-color", e), "background-color:" + e;
-            // t[0].style.backgroundColor = "";
-          }
-          return null;
-        }, t.prototype.createTarget = function () {
-          return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('条码颜色')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-        }, t.prototype.getValue = function () {
-          var t = this.target.find("input").val();
-          if (t) return t.toString();
-        }, t.prototype.setValue = function (t) {
-          this.target.find("input").minicolors({
-            defaultValue: t || "",
-            theme: "bootstrap"
-          }), this.target.find("input").val(t);
-        }, t.prototype.destroy = function () {
-          this.target.remove();
-        }, t;
-      }(),
+      return v11067.prototype.css = function (v11068, v11069) {
+        if (v11068 && v11068.length) {
 
-      it = function () {
-      function t() {
+
+          // if (e) return t.css("background-color", e), "background-color:" + e;
+          // t[0].style.backgroundColor = "";
+        }return null;}, v11067.prototype.createTarget = function () {
+        return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('条码颜色')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
+      }, v11067.prototype.getValue = function () {
+        var v11070 = this.target.find("input").val();
+        if (v11070) return v11070.toString();
+      }, v11067.prototype.setValue = function (v11071) {
+        this.target.find("input").minicolors({
+          defaultValue: v11071 || "",
+          theme: "bootstrap"
+        }), this.target.find("input").val(v11071);
+      }, v11067.prototype.destroy = function () {
+        this.target.remove();
+      }, v11067;
+    }(),
+
+    it = function () {
+      function v11072() {
         this.name = "orient";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11072.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('纸张方向(仅自定义纸质有效)')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="1" >${i18n.__('纵向')}</option>\n        <option value="2" >${i18n.__('横向')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11072.prototype.getValue = function () {
+        var v11073 = this.target.find("select").val();
+        if (v11073) return parseFloat(v11073.toString());
+      }, v11072.prototype.setValue = function (v11074) {
+        this.target.find("select").val(v11074);
+      }, v11072.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11072;
     }(),
     ot = function () {
-      function t() {
+      function v11075() {
         this.name = "textContentVerticalAlign";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11075.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('上下对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="middle" >${i18n.__('垂直居中')}</option>\n        <option value="bottom" >${i18n.__('底部')}</option>\n       \n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          t.removeClass("hiprint-text-content-middle"), t.removeClass("hiprint-text-content-bottom");
-          if (e) return "middle" === e && t.addClass("hiprint-text-content-middle"), "bottom" === e && t.addClass("hiprint-text-content-bottom"), "";
+      }, v11075.prototype.css = function (v11076, v11077) {
+        if (v11076 && v11076.length) {
+          v11076.removeClass("hiprint-text-content-middle"), v11076.removeClass("hiprint-text-content-bottom");
+          if (v11077) return "middle" === v11077 && v11076.addClass("hiprint-text-content-middle"), "bottom" === v11077 && v11076.addClass("hiprint-text-content-bottom"), "";
         }
 
         return null;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11075.prototype.getValue = function () {
+        var v11078 = this.target.find("select").val();
+        if (v11078) return v11078.toString();
+      }, v11075.prototype.setValue = function (v11079) {
+        this.target.find("select").val(v11079);
+      }, v11075.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11075;
     }(),
     textWrap = function () {
-      function t() {
+      function v11080() {
         this.name = "textContentWrap";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11080.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('文本换行')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="nowrap" >${i18n.__('不换行')}</option>\n        <option value="clip" >${i18n.__('不换行&隐藏')}</option>\n        <option value="ellipsis" >${i18n.__('不换行&省略')}</option>\n       </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          t.removeClass("hiprint-text-content-wrap");
-          t.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-nowrap");
-          t.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-clip");
-          t.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-ellipsis");
-          if (e) return t.addClass("hiprint-text-content-wrap"),t.find(".hiprint-printElement-text-content").addClass("hiprint-text-content-wrap-" + e), "";
+      }, v11080.prototype.css = function (v11081, v11082) {
+        if (v11081 && v11081.length) {
+          v11081.removeClass("hiprint-text-content-wrap");
+          v11081.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-nowrap");
+          v11081.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-clip");
+          v11081.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-ellipsis");
+          if (v11082) return v11081.addClass("hiprint-text-content-wrap"), v11081.find(".hiprint-printElement-text-content").addClass("hiprint-text-content-wrap-" + v11082), "";
         }
 
         return null;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11080.prototype.getValue = function () {
+        var v11083 = this.target.find("select").val();
+        if (v11083) return v11083.toString();
+      }, v11080.prototype.setValue = function (v11084) {
+        this.target.find("select").val(v11084);
+      }, v11080.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11080;
     }(),
-    rt = n(5),
+    rt = v10695(5),
     at = function () {
-      function t() {
+      function v11085() {
         this.name = "columns";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11085.prototype.createTarget = function () {
         $('<div class="indicator"></div>').appendTo("body");
         return " </ul>\n       </div>\n    </div>", this.target = $(' <div class="hiprint-option-item hiprint-option-item-row">\n       <div>\n            <ul class="hiprint-option-table-selected-columns"> </ul>\n       </div>\n    </div>'), this.target;
-      }, t.prototype.getValue = function () {
+      }, v11085.prototype.getValue = function () {
         return this.buildData();
-      }, t.prototype.setValue = function (t, e, n) {
-        var i = this,
-          o = this;
-        this.value = t, this.options = e, this.printElementType = n;
-        var r = n.columns[0].filter(function (e) {
-          return 0 == t[0].columns.filter(function (t) {
-            return e.columnId == t.columnId;
+      }, v11085.prototype.setValue = function (v11086, v11087, v11088) {
+        var v11089 = this,
+          v11090 = this;
+        this.value = v11086, this.options = v11087, this.printElementType = v11088;
+        var v11091 = v11088.columns[0].filter(function (v11092) {
+          return 0 == v11086[0].columns.filter(function (v11093) {
+            return v11092.columnId == v11093.columnId;
           }).length;
-        }).map(function (t) {
-          var e = new rt.a(t);
-          return e.checked = !1, e;
+        }).map(function (v11094) {
+          var v11095 = new rt.a(v11094);
+          return v11095.checked = !1, v11095;
         });
-        this.allColumns = t[0].columns.concat(r), t && 1 == t.length && (this.target.find("ul").html(this.allColumns.map(function (t, e) {
-          return '<li  class="hiprint-option-table-selected-item"> <div class="hi-pretty p-default">\n                ' + (t.checked ? '<input type="checkbox"   checked column-id="' + (t.id || t.columnId) + '" />' : '<input type="checkbox"  column-id="' + (t.id || t.columnId) + '" />') + '\n                <div class="state">\n                    <label></label>\n                </div>\n            </div><span class="column-title">' + (t.title || t.descTitle || "") + "</span></li>";
-        }).join("")), this.target.find("input").change(function (e) {
-          var checked = e.target.checked, id = e.target.attributes['column-id'].nodeValue || '';
-          var idx = i.allColumns.findIndex(function (e) {
-            return e.field == id || e.id == id;
+        this.allColumns = v11086[0].columns.concat(v11091), v11086 && 1 == v11086.length && (this.target.find("ul").html(this.allColumns.map(function (v11097, v11098) {
+          return '<li  class="hiprint-option-table-selected-item"> <div class="hi-pretty p-default">\n                ' + (v11097.checked ? '<input type="checkbox"   checked column-id="' + (v11097.id || v11097.columnId) + '" />' : '<input type="checkbox"  column-id="' + (v11097.id || v11097.columnId) + '" />') + '\n                <div class="state">\n                    <label></label>\n                </div>\n            </div><span class="column-title">' + (v11097.title || v11097.descTitle || "") + "</span></li>";
+        }).join("")), this.target.find("input").change(function (v11099) {
+          var checked = v11099.target.checked,id = v11099.target.attributes['column-id'].nodeValue || '';
+          var idx = v11089.allColumns.findIndex(function (v11100) {
+            return v11100.field == id || v11100.id == id;
           });
           if (idx >= 0) {
-            i.allColumns[idx]['checked'] = checked
+            v11089.allColumns[idx]['checked'] = checked;
           }
-          i.submit();
+          v11089.submit();
         }), this.printElementType.columnDisplayIndexEditable && this.target.find("li").hidraggable({
           revert: !0,
           handle: ".column-title",
@@ -4514,480 +4514,480 @@ var hiprint = function (t) {
           deltaX: 0,
           deltaY: 0
         }).hidroppable({
-          onDragOver: function onDragOver(t, e) {
+          onDragOver: function onDragOver(v11101, v11102) {
             $(this).css("border-top-color", "red");
           },
-          onDragLeave: function onDragLeave(t, e) {
+          onDragLeave: function onDragLeave(v11103, v11104) {
             $(this).css("border-top-color", "");
           },
-          onDrop: function onDrop(t, e) {
-            $(e).insertBefore(this), $(this).css("border-top-color", ""), o.submit();
+          onDrop: function onDrop(v11105, v11106) {
+            $(v11106).insertBefore(this), $(this).css("border-top-color", ""), v11090.submit();
           }
         }));
-      }, t.prototype.buildData = function () {
-        var t = this, e = [];
-        if (t.options.columns.length > 1) {
+      }, v11085.prototype.buildData = function () {
+        var v11107 = this,v11108 = [];
+        if (v11107.options.columns.length > 1) {
           return this.value;
         }
-        t.printElementType.makeColumnObj(t.allColumns);
-        this.target.find("input").map(function (n, i) {
-          var o = $(i).attr("column-id");
-          var a = t.printElementType.getColumnByColumnId(o);
-          if (a) {
-            var p = new rt.a(a);
-            p.checked = a.checked, e.push(p);
+        v11107.printElementType.makeColumnObj(v11107.allColumns);
+        this.target.find("input").map(function (v11109, v11110) {
+          var v11111 = $(v11110).attr("column-id");
+          var v11112 = v11107.printElementType.getColumnByColumnId(v11111);
+          if (v11112) {
+            var v11113 = new rt.a(v11112);
+            v11113.checked = v11112.checked, v11108.push(v11113);
           }
-        })
-        return this.value[0].columns = e, this.value;
-      }, t.prototype.destroy = function () {
+        });
+        return this.value[0].columns = v11108, this.value;
+      }, v11085.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11085;
     }(),
     pt = function () {
-      function t() {
+      function v11115() {
         this.name = "textType";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11115.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('打印类型')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="" >${i18n.__('文本')}</option>\n        <option value="barcode" >${i18n.__('条形码')}</option>\n        <option value="qrcode" >${i18n.__('二维码')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11115.prototype.getValue = function () {
+        var v11116 = this.target.find("select").val();
+        if (v11116) return v11116;
+      }, v11115.prototype.setValue = function (v11117) {
+        this.target.find("select").val(v11117);
+      }, v11115.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11115;
     }(),
     tablept = function () {
-      function t() {
+      function v11118() {
         this.name = "tableTextType";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11118.prototype.createTarget = function () {
         return this.target = $(
           `<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('字段类型')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认(文本)')}</option>\n        <option value="text" >${i18n.__('文本')}</option>\n <option value="sequence" >${i18n.__('序号')}</option>\n       <option value="barcode" >${i18n.__('条形码')}</option>\n        <option value="qrcode" >${i18n.__('二维码')}</option>\n    <option value="image" >${i18n.__('图片')}</option>\n        </select>\n        </div>\n    </div>`
         ), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11118.prototype.getValue = function () {
+        var v11119 = this.target.find("select").val();
+        if (v11119) return v11119;
+      }, v11118.prototype.setValue = function (v11120) {
+        this.target.find("select").val(v11120);
+      }, v11118.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11118;
     }(),
     tableE = function () {
-      function t() {
+      function v11121() {
         this.name = "tableBarcodeMode";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11121.prototype.createTarget = function () {
         return this.target = $(
           `<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('条形码格式')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n         <option value="" >${i18n.__('默认')}(CODE128A)</option>\n         <option value="CODE128A" >CODE128A</option>\n        <option value="CODE128B" >CODE128B</option>\n        <option value="CODE128C" >CODE128C</option>\n        <option value="CODE39" >CODE39</option>\n        <option value="EAN-13" >EAN-13</option>\n        <option value="EAN-8" >EAN-8</option>\n        <option value="EAN-5" >EAN-5</option>\n        <option value="EAN-2" >EAN-2</option>\n        <option value="UPC（A）" >UPC（A）</option>\n        <option value="ITF" >ITF</option>\n        <option value="ITF-14" >ITF-14</option>\n        <option value="MSI" >MSI</option>\n            <option value="MSI10" >MSI10</option>\n            <option value="MSI11" >MSI11</option>\n            <option value="MSI1010" >MSI1010</option>\n            <option value="MSI1110" >MSI1110</option>\n            <option value="Pharmacode" >Pharmacode</option>\n        </select>\n        </div>\n    </div>`
         ), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        return t || void 0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11121.prototype.getValue = function () {
+        var v11122 = this.target.find("select").val();
+        return v11122 || void 0;
+      }, v11121.prototype.setValue = function (v11123) {
+        this.target.find("select").val(v11123);
+      }, v11121.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11121;
     }(),
     tableQRCodeLevel = function () {
-      function t() {
+      function v11124() {
         this.name = "tableQRCodeLevel";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11124.prototype.createTarget = function () {
         return this.target = $(
           `<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('二维码容错率')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="1" >7% L</option>\n        <option value="0" >15% M</option>\n        <option value="3" >25% Q</option>\n        <option value="2" >30% H</option>\n        </select>\n        </div>\n    </div>`
         ), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        return parseInt(t || 0);
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11124.prototype.getValue = function () {
+        var v11125 = this.target.find("select").val();
+        return parseInt(v11125 || 0);
+      }, v11124.prototype.setValue = function (v11126) {
+        this.target.find("select").val(v11126);
+      }, v11124.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11124;
     }(),
     tableColumnH = function () {
-      function t() {
+      function v11127() {
         this.name = "tableColumnHeight";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11127.prototype.createTarget = function () {
         return this.target = $(
           `<div class="hiprint-option-item ">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格高度')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('条形码、二维码以及图片有效')}" class="auto-submit" >\n        </div>\n    </div>`
         ), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11127.prototype.getValue = function () {
+        var v11128 = this.target.find("input").val();
+        if (v11128) return v11128.toString();
+      }, v11127.prototype.setValue = function (v11129) {
+        this.target.find("input").val(v11129);
+      }, v11127.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11127;
     }(),
     tableSummaryTitle = function () {
-      function t() {
-        this.name = "tableSummaryTitle"
+      function v11130() {
+        this.name = "tableSummaryTitle";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11130.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('底部聚合标题')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('默认')}</option><option value="true">${i18n.__('显示')}</option><option value="false">${i18n.__('隐藏')}</option></select></div></div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v11130.prototype.getValue = function () {
         return !("false" == this.target.find("select").val());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v11130.prototype.setValue = function (v11131) {
+        this.target.find("select").val((null == v11131 ? "" : v11131).toString());
+      }, v11130.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11130;
     }(),
     tableSummaryText = function () {
-      function t() {
+      function v11132() {
         this.name = "tableSummaryText";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11132.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合文本')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('聚合类型')}:" class="auto-submit" >\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11132.prototype.getValue = function () {
+        var v11133 = this.target.find("input").val();
+        if (v11133) return v11133.toString();
+      }, v11132.prototype.setValue = function (v11134) {
+        this.target.find("input").val(v11134);
+      }, v11132.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11132;
     }(),
     tableSummaryColspan = function () {
-      function t() {
+      function v11135() {
         this.name = "tableSummaryColspan";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11135.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合合并列数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="number" min="0" step="1" placeholder="${i18n.__('合并列数')}" class="auto-submit" >\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11135.prototype.getValue = function () {
+        var v11136 = this.target.find("input").val();
+        if (v11136) return v11136.toString();
+      }, v11135.prototype.setValue = function (v11137) {
+        this.target.find("input").val(v11137);
+      }, v11135.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11135;
     }(),
     tableSummaryAlign = function () {
-      function t() {
+      function v11138() {
         this.name = "tableSummaryAlign";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11138.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合类型左右对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="left" >${i18n.__('居左')}</option>\n        <option value="center" >${i18n.__('居中')}</option>\n        <option value="right" >${i18n.__('居右')}</option>\n        <option value="justify" >${i18n.__('两端对齐')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11138.prototype.getValue = function () {
+        var v11139 = this.target.find("select").val();
+        if (v11139) return v11139.toString();
+      }, v11138.prototype.setValue = function (v11140) {
+        this.target.find("select").val(v11140);
+      }, v11138.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11138;
     }(),
     tableSummaryNumFormat = function () {
-      function t() {
+      function v11141() {
         this.name = "tableSummaryNumFormat";
       }
 
-      return t.prototype.createTarget = function () {
-        var list = [{t: `${i18n.__('整数')}`,v: '0'}], num = [1,2,3,4,5,6];
-        num.forEach(function (n) {
-          list.push({t: i18n.__n(`保留%s位`, n), v: '' + n})
-        })
-        var n = `\n            <option value="" >${i18n.__('默认')}</option>`;
-        list.forEach(function (e) {
-          n += '\n            <option value="' + (e.v || "") + '">' + (e.t || "") + '</option>';
-        })
-        this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合小数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit"></select>\n        </div>\n    </div>`)
-        this.target.find(".auto-submit").append($(n));
+      return v11141.prototype.createTarget = function () {
+        var list = [{ t: `${i18n.__('整数')}`, v: '0' }],num = [1, 2, 3, 4, 5, 6];
+        num.forEach(function (v11144) {
+          list.push({ t: i18n.__n(`保留%s位`, v11144), v: '' + v11144 });
+        });
+        var v11147 = `\n            <option value="" >${i18n.__('默认')}</option>`;
+        list.forEach(function (v11148) {
+          v11147 += '\n            <option value="' + (v11148.v || "") + '">' + (v11148.t || "") + '</option>';
+        });
+        this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合小数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit"></select>\n        </div>\n    </div>`);
+        this.target.find(".auto-submit").append($(v11147));
         return this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11141.prototype.getValue = function () {
+        var v11151 = this.target.find("select").val();
+        if (v11151) return v11151.toString();
+      }, v11141.prototype.setValue = function (v11152) {
+        this.target.find("select").val(v11152);
+      }, v11141.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11141;
     }(),
-    showCodeTitle = (function () {
-      function t() {
-        this.name = 'showCodeTitle'
+    showCodeTitle = function () {
+      function v11153() {
+        this.name = 'showCodeTitle';
       }
       return (
-        (t.prototype.createTarget = function () {
+        v11153.prototype.createTarget = function () {
           return (
-            (this.target = $(
+            this.target = $(
               ` <div class="hiprint-option-item" title="条形码底部是否显示内容">\n        <div class="hiprint-option-item-label">\n          ${i18n.__('显示码值')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n            <option value="true" >${i18n.__('显示')}</option>\n            <option value="false" >${i18n.__('隐藏')}</option>\n        </select>\n        </div>\n    </div>`
-            )),
-            this.target
-          )
-        }),
-        (t.prototype.getValue = function () {
-          if ('true' == this.target.find('select').val()) return !0
-        }),
-        (t.prototype.setValue = function (t) {
-          this.target.find('select').val((null == t ? '' : t).toString())
-        }),
-        (t.prototype.destroy = function () {
-          this.target.remove()
-        }),
-        t
-      )
-    })(),
+            ),
+            this.target);
+
+        },
+        v11153.prototype.getValue = function () {
+          if ('true' == this.target.find('select').val()) return !0;
+        },
+        v11153.prototype.setValue = function (v11154) {
+          this.target.find('select').val((null == v11154 ? '' : v11154).toString());
+        },
+        v11153.prototype.destroy = function () {
+          this.target.remove();
+        },
+        v11153);
+
+    }(),
     tableSummaryFormatter = function () {
-      function t() {
+      function v11155() {
         this.name = "tableSummaryFormatter";
       }
-      return t.prototype.createTarget = function () {
+      return v11155.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('底部聚合格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(column,fieldPageData,tableData,options){ return \'<td></td>\'; }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11155.prototype.getValue = function () {
+        var v11156 = this.target.find("textarea").val();
+        if (v11156) return v11156;
+      }, v11155.prototype.setValue = function (v11157) {
+        this.target.find("textarea").val(v11157 ? v11157.toString() : null);
+      }, v11155.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11155;
     }(),
 
     upperCase = function () {
-      function t() {
+      function v11158() {
         this.name = "upperCase";
       }
-      return t.prototype.createTarget = function () {
+      return v11158.prototype.createTarget = function () {
         var list = [
-          { t: "「小写」十点八", v: "0" },
-          { t: "「小写」一十点八", v: "1" },
-          { t: "「大写」拾点捌", v: "2" },
-          { t: "「大写」壹拾点捌", v: "3" },
-          { t: "「金额」人民币拾元捌角", v: "4" },
-          { t: "「金额」人民币壹拾元捌角", v: "5" },
-          { t: "「金额」人民币壹拾元捌角零分", v: "6" },
-          { t: "「金额」壹拾元捌角零分", v: "7" },
-        ];
-        var n = `\n<option value="">${i18n.__('默认')}</option>`;
-        list.forEach((e) => {
-          n += `\n<option value='${e.v}'>${e.t}</option>`;
-        })
+        { t: "「小写」十点八", v: "0" },
+        { t: "「小写」一十点八", v: "1" },
+        { t: "「大写」拾点捌", v: "2" },
+        { t: "「大写」壹拾点捌", v: "3" },
+        { t: "「金额」人民币拾元捌角", v: "4" },
+        { t: "「金额」人民币壹拾元捌角", v: "5" },
+        { t: "「金额」人民币壹拾元捌角零分", v: "6" },
+        { t: "「金额」壹拾元捌角零分", v: "7" }];
+
+        var v11175 = `\n<option value="">${i18n.__('默认')}</option>`;
+        list.forEach((v11176) => {
+          v11175 += `\n<option value='${v11176.v}'>${v11176.t}</option>`;
+        });
         this.target = $(
-			    `<div class="hiprint-option-item hiprint-option-item-row">\n<div class="hiprint-option-item-label">\n${i18n.__('转大小写')}\n</div>\n<div class="hiprint-option-item-field">\n<select class="auto-submit"></select>\n</div>\n</div>`
-		    );
-        this.target.find(".auto-submit").append($(n));
+          `<div class="hiprint-option-item hiprint-option-item-row">\n<div class="hiprint-option-item-label">\n${i18n.__('转大小写')}\n</div>\n<div class="hiprint-option-item-field">\n<select class="auto-submit"></select>\n</div>\n</div>`
+        );
+        this.target.find(".auto-submit").append($(v11175));
         return this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11158.prototype.getValue = function () {
+        var v11179 = this.target.find("select").val();
+        if (v11179) return v11179.toString();
+      }, v11158.prototype.setValue = function (v11180) {
+        this.target.find("select").val(v11180);
+      }, v11158.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11158;
     }(),
 
     // 表格底部合计栏
     tableSummary = function () {
-      function t() {
-        this.name = "tableSummary"
+      function v11181() {
+        this.name = "tableSummary";
       }
-      return t.prototype.createTarget = function () {
+      return v11181.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item"><div class="hiprint-option-item-label">${i18n.__('底部聚合类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"><option value="">${i18n.__('不聚合')}</option><option value="count">${i18n.__('计数')}</option><option value="sum">${i18n.__('合计')}</option><option value="avg">${i18n.__('平均值')}</option><option value="min">${i18n.__('最小值')}</option><option value="max">${i18n.__('最大值')}</option><option value="text">${i18n.__('仅文本')}</option></select></div></div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v11181.prototype.getValue = function () {
         return this.target.find("select").val();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11181.prototype.setValue = function (v11182) {
+        this.target.find("select").val(v11182);
+      }, v11181.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11181;
     }(),
     st = function () {
-      function t() {
+      function v11183() {
         this.name = "topOffset";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11183.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('顶部偏移')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="text" placeholder="${i18n.__('偏移量')}pt" class="auto-submit">\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11183.prototype.getValue = function () {
+        var v11184 = this.target.find("input").val();
+        if (v11184) return parseFloat(v11184.toString());
+      }, v11183.prototype.setValue = function (v11185) {
+        this.target.find("input").val(v11185);
+      }, v11183.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11183;
     }(),
-    panelLayoutOptions = function(){
-      function t() {
+    panelLayoutOptions = function () {
+      function v11186() {
         this.name = "panelLayoutOptions";
       }
-      return t.prototype.createTarget = function () {
+      return v11186.prototype.createTarget = function () {
         this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('面板排列')}</div></div>`);
-        this.layoutType = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;"><div style="width:25%">${i18n.__('排列方式')}:</div><select style="width:75%" class="auto-submit"><option value="column" >${i18n.__('纵向')}</option><option value="row" >${i18n.__('横向')}</option></select></div></div>`)
+        this.layoutType = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;"><div style="width:25%">${i18n.__('排列方式')}:</div><select style="width:75%" class="auto-submit"><option value="column" >${i18n.__('纵向')}</option><option value="row" >${i18n.__('横向')}</option></select></div></div>`);
         this.layoutRowGap = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;margin-top: 4px"><div style="width:25%">${i18n.__('垂直间距')}:</div><input style="width:75%" type="text" placeholder="${i18n.__('垂直间距mm')}" class="auto-submit"></div>`);
         this.layoutColumnGap = $(`<div class="hiprint-option-item-field" style="display: flex;align-items: baseline;margin-top: 4px"><div style="width:25%">${i18n.__('水平间距')}:</div><input style="width:75%" type="text" placeholder="${i18n.__('水平间距mm')}" class="auto-submit"></div>`);
-        this.target.append(this.layoutType)
-        this.target.append(this.layoutRowGap)
-        this.target.append(this.layoutColumnGap)
+        this.target.append(this.layoutType);
+        this.target.append(this.layoutRowGap);
+        this.target.append(this.layoutColumnGap);
         return this.target;
-      }, t.prototype.getValue = function () {
+      }, v11186.prototype.getValue = function () {
         let opt = {
           layoutType: this.layoutType.find("select").val() || 'column',
-          layoutRowGap:parseInt(this.layoutRowGap.find('input').val() || 0),
-          layoutColumnGap:parseInt(this.layoutColumnGap.find('input').val() || 0),
-        }
+          layoutRowGap: parseInt(this.layoutRowGap.find('input').val() || 0),
+          layoutColumnGap: parseInt(this.layoutColumnGap.find('input').val() || 0)
+        };
         let options = Object.assign({}, this.options, opt);
         return options;
-      }, t.prototype.setValue = function (t) {
-        this.options = t;
-        this.layoutType.find("select").val(t.layoutType || 'column');
-        this.layoutRowGap.find("input").val(t.layoutRowGap);
-        this.layoutColumnGap.find("input").val(t.layoutColumnGap);
-      }, t.prototype.destroy = function () {
+      }, v11186.prototype.setValue = function (v11187) {
+        this.options = v11187;
+        this.layoutType.find("select").val(v11187.layoutType || 'column');
+        this.layoutRowGap.find("input").val(v11187.layoutRowGap);
+        this.layoutColumnGap.find("input").val(v11187.layoutColumnGap);
+      }, v11186.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11186;
     }(),
     lt = function () {
-      function t() {
+      function v11188() {
         this.name = "gridColumns";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11188.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('一行多组')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="2" >${i18n.__('一行二列')}</option>\n        <option value="3" >${i18n.__('一行三列')}</option>\n        <option value="4" >${i18n.__('一行四列')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11188.prototype.getValue = function () {
+        var v11189 = this.target.find("select").val();
+        if (v11189) return parseFloat(v11189.toString());
+      }, v11188.prototype.setValue = function (v11190) {
+        v11190 && (this.target.find('option[value="' + v11190 + '"]').length || this.target.find("select").prepend('<option value="' + v11190 + '" >' + v11190 + "</option>"));
+        this.target.find("select").val(v11190);
+      }, v11188.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11188;
     }(),
     ut = function () {
-      function t() {
+      function v11191() {
         this.name = "gridColumnsGutter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11191.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('一行多组间隔')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.25" >7.25pt</option>\n        <option value="8.5" >8.5pt</option>\n        <option value="9" >9pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.css = function (t, e) {
-        if (t && t.length) {
-          if (e) return t.find(".table-grid-row").css("margin-left", "-" + e + "pt").css("margin-right", "-" + e + "pt"), t.find(".tableGridColumnsGutterRow").css("padding-left", e + "pt").css("padding-right", e + "pt"), null;
-          t.find(".table-grid-row").map(function (t, e) {
-            e.style.marginLeft = "", e.style.marginRight = "";
-          }), t.find(".tableGridColumnsGutterRow").map(function (t, e) {
-            e.style.paddingLeft = "", e.style.paddingRight = "";
+      }, v11191.prototype.getValue = function () {
+        var v11192 = this.target.find("select").val();
+        if (v11192) return parseFloat(v11192.toString());
+      }, v11191.prototype.css = function (v11193, v11194) {
+        if (v11193 && v11193.length) {
+          if (v11194) return v11193.find(".table-grid-row").css("margin-left", "-" + v11194 + "pt").css("margin-right", "-" + v11194 + "pt"), v11193.find(".tableGridColumnsGutterRow").css("padding-left", v11194 + "pt").css("padding-right", v11194 + "pt"), null;
+          v11193.find(".table-grid-row").map(function (v11195, v11196) {
+            v11196.style.marginLeft = "", v11196.style.marginRight = "";
+          }), v11193.find(".tableGridColumnsGutterRow").map(function (v11197, v11198) {
+            v11198.style.paddingLeft = "", v11198.style.paddingRight = "";
           });
         }
 
         return null;
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11191.prototype.setValue = function (v11199) {
+        v11199 && (this.target.find('option[value="' + v11199 + '"]').length || this.target.find("select").prepend('<option value="' + v11199 + '" >' + v11199 + "</option>"));
+        this.target.find("select").val(v11199);
+      }, v11191.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11191;
     }(),
     ith = function () {
-      function t() {
+      function v11200() {
         this.name = "tableHeaderRepeat";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11200.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格头显示')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="page" >${i18n.__('每页显示')}</option>\n        <option value="first" >${i18n.__('首页显示')}</option>\n        <option value="none" >${i18n.__('不显示')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11200.prototype.getValue = function () {
+        var v11201 = this.target.find("select").val();
+        if (v11201) return v11201.toString();
+      }, v11200.prototype.setValue = function (v11202) {
+        this.target.find("select").val(v11202);
+      }, v11200.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11200;
     }(),
     dt = function () {
-      function t() {
+      function v11203() {
         this.name = "paddingLeft";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t;
+      return v11203.prototype.css = function (v11204, v11205) {
+        var v11206 = v11204;
 
-        if (n && n.length) {
-          if (e) return n.css("padding-left", e + "pt"), "padding-left";
-          n[0].style.paddingLeft = "";
+        if (v11206 && v11206.length) {
+          if (v11205) return v11206.css("padding-left", v11205 + "pt"), "padding-left";
+          v11206[0].style.paddingLeft = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11203.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('左内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11203.prototype.getValue = function () {
+        var v11207 = this.target.find("select").val();
+        if (v11207) return parseFloat(v11207.toString());
+      }, v11203.prototype.setValue = function (v11208) {
+        v11208 && (this.target.find('option[value="' + v11208 + '"]').length || this.target.find("select").prepend('<option value="' + v11208 + '" >' + v11208 + "</option>"));
+        this.target.find("select").val(v11208);
+      }, v11203.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11203;
     }(),
     ct = function () {
-      function t() {
+      function v11209() {
         this.name = "paddingRight";
       }
 
-      return t.prototype.css = function (t, e) {
-        var n = t;
+      return v11209.prototype.css = function (v11210, v11211) {
+        var v11212 = v11210;
 
-        if (n && n.length) {
-          if (e) return n.css("padding-right", e + "pt"), "padding-right";
-          n[0].style.paddingRight = "";
+        if (v11212 && v11212.length) {
+          if (v11211) return v11212.css("padding-right", v11211 + "pt"), "padding-right";
+          v11212[0].style.paddingRight = "";
         }
 
         return null;
-      }, t.prototype.createTarget = function () {
+      }, v11209.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('右内边距')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="0.75" >0.75pt</option>\n        <option value="1.5" >1.5pt</option>\n        <option value="2.25" >2.25pt</option>\n        <option value="3" >3pt</option>\n        <option value="3.75" >3.75pt</option>\n        <option value="4.5" >4.5pt</option>\n        <option value="5.25" >5.25pt</option>\n        <option value="6" >6pt</option>\n        <option value="6.75" >6.75pt</option>\n        <option value="7.5" >7.5pt</option>\n        <option value="8.25" >8.25pt</option>\n        <option value="9" >9pt</option>\n        <option value="9.75" >9.75pt</option>\n        <option value="10.5" >10.5pt</option>\n        <option value="11.25" >11.25pt</option>\n        <option value="12" >12pt</option>\n        <option value="12.75" >12.75pt</option>\n        <option value="13.5" >13.5pt</option>\n        <option value="14.25" >14.25pt</option>\n        <option value="15" >15pt</option>\n        <option value="15.75" >15.75pt</option>\n        <option value="16.5" >16.5pt</option>\n        <option value="17.25" >17.25pt</option>\n        <option value="18" >18pt</option>\n        <option value="18.75" >18.75pt</option>\n        <option value="19.5" >19.5pt</option>\n        <option value="20.25" >20.25pt</option>\n        <option value="21" >21pt</option>\n        <option value="21.75" >21.75pt</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return parseFloat(t.toString());
-      }, t.prototype.setValue = function (t) {
-        t && (this.target.find('option[value="' + t + '"]').length || this.target.find("select").prepend('<option value="' + t + '" >' + t + "</option>"));
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11209.prototype.getValue = function () {
+        var v11213 = this.target.find("select").val();
+        if (v11213) return parseFloat(v11213.toString());
+      }, v11209.prototype.setValue = function (v11214) {
+        v11214 && (this.target.find('option[value="' + v11214 + '"]').length || this.target.find("select").prepend('<option value="' + v11214 + '" >' + v11214 + "</option>"));
+        this.target.find("select").val(v11214);
+      }, v11209.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11209;
     }(),
     ht = function () {
-      function t() {
+      function v11215() {
         this.name = "dataType";
       }
 
-      return t.prototype.createTarget = function () {
-        var t = this;
+      return v11215.prototype.createTarget = function () {
+        var v11216 = this;
         return this.target = $(`\n        <div class="hiprint-option-item-row">\n        <div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('数据类型')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="hiprint-option-item-datatype">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="datetime" >${i18n.__('日期时间')}</option>\n        <option value="boolean" >${i18n.__('布尔')}</option>\n        </select>\n        </div>\n    </div>\n    <div class="hiprint-option-item ">\n        <div class="hiprint-option-item-label ">\n        ${i18n.__('格式')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select  class="auto-submit hiprint-option-item-datatype-select-format">\n        <option value="" >${i18n.__('默认')}</option>\n        \n        </select>\n        <input class="auto-submit  hiprint-option-item-datatype-input-format" type="text" data-type="boolean" placeholder="true:false">\n        </div>\n    </div>\n        </div>\n`), $(this.target.find(".hiprint-option-item-datatype")).change(function () {
-          var e = $(t.target.find(".hiprint-option-item-datatype")).val();
-          t.loadFormatSelectByDataType(e), t.submit(t.getValue());
+          var v11217 = $(v11216.target.find(".hiprint-option-item-datatype")).val();
+          v11216.loadFormatSelectByDataType(v11217), v11216.submit(v11216.getValue());
         }), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find(".hiprint-option-item-datatype").val();
+      }, v11215.prototype.getValue = function () {
+        var v11218 = this.target.find(".hiprint-option-item-datatype").val();
 
-        if (t) {
-          var e = this.target.find(".hiprint-option-item-datatype-format").val();
+        if (v11218) {
+          var v11219 = this.target.find(".hiprint-option-item-datatype-format").val();
           return {
-            dataType: t,
-            format: e || void 0
+            dataType: v11218,
+            format: v11219 || void 0
           };
         }
 
@@ -4995,571 +4995,571 @@ var hiprint = function (t) {
           dataType: void 0,
           format: void 0
         };
-      }, t.prototype.setValue = function (t, e) {
-        this.target.find(".hiprint-option-item-datatype").val(e.dataType || ""), this.loadFormatSelectByDataType(e.dataType), this.target.find(".hiprint-option-item-datatype-format").val(e.format || "");
-      }, t.prototype.destroy = function () {
+      }, v11215.prototype.setValue = function (v11220, v11221) {
+        this.target.find(".hiprint-option-item-datatype").val(v11221.dataType || ""), this.loadFormatSelectByDataType(v11221.dataType), this.target.find(".hiprint-option-item-datatype-format").val(v11221.format || "");
+      }, v11215.prototype.destroy = function () {
         this.target.remove();
-      }, t.prototype.loadFormatSelectByDataType = function (t) {
-        "boolean" === t ? (this.target.find(".hiprint-option-item-datatype-select-format").removeClass("hiprint-option-item-datatype-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-input-format").addClass("hiprint-option-item-datatype-format").show()) : "datetime" === t ? (this.target.find(".hiprint-option-item-datatype-select-format").addClass("hiprint-option-item-datatype-format").show(), this.target.find(".hiprint-option-item-datatype-input-format").removeClass("hiprint-option-item-datatype-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-select-format").html(`\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="M/d" >M/d</option>\n            <option value="MM/dd" >MM/dd</option>\n            <option value="yy/M/d" >yy/M/d</option>\n            <option value="yy/MM/dd" >yy/MM/dd</option>\n            <option value="yyyy/M/d" >yyyy/M/d</option>\n            <option value="yyyy/MM/dd" >yyyy/MM/dd</option>\n            <option value="yy/M/d H:m" >yy/M/d H:m</option>\n            <option value="yy/M/d H:m:s" >yy/M/d H:m:s</option>\n            <option value="yy/M/d HH:mm" >yy/M/d HH:mm</option>\n            <option value="yy/M/d HH:mm:ss" >yy/M/d HH:mm:ss</option>\n            <option value="yy/MM/dd H:m" >yy/MM/dd H:m</option>\n            <option value="yy/MM/dd H:m:s" >yy/MM/dd H:m:s</option>\n            <option value="yy/MM/dd HH:mm" >yy/MM/dd HH:mm</option>\n            <option value="yy/MM/dd HH:mm:ss" >yy/MM/dd HH:mm:ss</option>\n            <option value="yyyy/M/d H:m" >yyyy/M/dd H:m</option>\n            <option value="yyyy/M/d H:m:s" >yyyy/M/d H:m:s</option>\n            <option value="yyyy/M/d HH:mm" >yyyy/M/d HH:mm</option>\n            <option value="yyyy/M/d HH:mm:ss" >yyyy/M/d HH:mm:ss</option>\n            <option value="yyyy/MM/dd H:m" >yyyy/MM/dd H:m</option>\n            <option value="yyyy/MM/dd H:m:s" >yyyy/MM/dd H:m:s</option>\n            <option value="yyyy/MM/dd HH:mm" >yyyy/MM/dd HH:mm</option>\n            <option value="yyyy/MM/dd HH:mm:ss" >yyyy/MM/dd HH:mm:ss</option>\n\n            <option value="M-d" >M-d</option>\n            <option value="MM-dd" >MM-dd</option>\n            <option value="yy-M-d" >yy-M-d</option>\n            <option value="yy-MM-dd" >yy-MM-dd</option>\n            <option value="yyyy-M-d" >yyyy-M-d</option>\n            <option value="yyyy-MM-dd" >yyyy-MM-dd</option>\n            <option value="yy-M-d H:m" >yy-M-d H:m</option>\n            <option value="yy-M-d H:m:s" >yy-M-d H:m:s</option>\n            <option value="yy-M-d HH:mm" >yy-M-d HH:mm</option>\n            <option value="yy-M-d HH:mm:ss" >yy-M-d HH:mm:ss</option>\n            <option value="yy-MM-dd H:m" >yy-MM-dd H:m</option>\n            <option value="yy-MM-dd H:m:s" >yy-MM-dd H:m:s</option>\n            <option value="yy-MM-dd HH:mm" >yy-MM-dd HH:mm</option>\n            <option value="yy-MM-dd HH:mm:ss" >yy-MM-dd HH:mm:ss</option>\n            <option value="yyyy-M-d H:m" >yyyy-M-d H:m</option>\n            <option value="yyyy-M-d H:m:s" >yyyy-M-d H:m:s</option>\n            <option value="yyyy-M-d HH:mm" >yyyy-M-d HH:mm</option>\n            <option value="yyyy-M-d HH:mm:ss" >yyyy-M-d HH:mm:ss</option>\n            <option value="yyyy-MM-dd H:m" >yyyy-MM-dd H:m</option>\n            <option value="yyyy-MM-dd H:m:s" >yyyy-MM-dd H:m:s</option>\n            <option value="yyyy-MM-dd HH:mm" >yyyy-MM-dd HH:mm</option>\n            <option value="yyyy-MM-dd HH:mm:ss" >yyyy-MM-dd HH:mm:ss</option>\n`)) : (this.target.find(".hiprint-option-item-datatype-select-format").show(), this.target.find(".hiprint-option-item-datatype-input-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-format").html(`\n            <option value="" >${i18n.__('默认')}</option>\n`));
-      }, t;
+      }, v11215.prototype.loadFormatSelectByDataType = function (v11222) {
+        "boolean" === v11222 ? (this.target.find(".hiprint-option-item-datatype-select-format").removeClass("hiprint-option-item-datatype-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-input-format").addClass("hiprint-option-item-datatype-format").show()) : "datetime" === v11222 ? (this.target.find(".hiprint-option-item-datatype-select-format").addClass("hiprint-option-item-datatype-format").show(), this.target.find(".hiprint-option-item-datatype-input-format").removeClass("hiprint-option-item-datatype-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-select-format").html(`\n            <option value="" >${i18n.__('默认')}</option>\n            <option value="M/d" >M/d</option>\n            <option value="MM/dd" >MM/dd</option>\n            <option value="yy/M/d" >yy/M/d</option>\n            <option value="yy/MM/dd" >yy/MM/dd</option>\n            <option value="yyyy/M/d" >yyyy/M/d</option>\n            <option value="yyyy/MM/dd" >yyyy/MM/dd</option>\n            <option value="yy/M/d H:m" >yy/M/d H:m</option>\n            <option value="yy/M/d H:m:s" >yy/M/d H:m:s</option>\n            <option value="yy/M/d HH:mm" >yy/M/d HH:mm</option>\n            <option value="yy/M/d HH:mm:ss" >yy/M/d HH:mm:ss</option>\n            <option value="yy/MM/dd H:m" >yy/MM/dd H:m</option>\n            <option value="yy/MM/dd H:m:s" >yy/MM/dd H:m:s</option>\n            <option value="yy/MM/dd HH:mm" >yy/MM/dd HH:mm</option>\n            <option value="yy/MM/dd HH:mm:ss" >yy/MM/dd HH:mm:ss</option>\n            <option value="yyyy/M/d H:m" >yyyy/M/dd H:m</option>\n            <option value="yyyy/M/d H:m:s" >yyyy/M/d H:m:s</option>\n            <option value="yyyy/M/d HH:mm" >yyyy/M/d HH:mm</option>\n            <option value="yyyy/M/d HH:mm:ss" >yyyy/M/d HH:mm:ss</option>\n            <option value="yyyy/MM/dd H:m" >yyyy/MM/dd H:m</option>\n            <option value="yyyy/MM/dd H:m:s" >yyyy/MM/dd H:m:s</option>\n            <option value="yyyy/MM/dd HH:mm" >yyyy/MM/dd HH:mm</option>\n            <option value="yyyy/MM/dd HH:mm:ss" >yyyy/MM/dd HH:mm:ss</option>\n\n            <option value="M-d" >M-d</option>\n            <option value="MM-dd" >MM-dd</option>\n            <option value="yy-M-d" >yy-M-d</option>\n            <option value="yy-MM-dd" >yy-MM-dd</option>\n            <option value="yyyy-M-d" >yyyy-M-d</option>\n            <option value="yyyy-MM-dd" >yyyy-MM-dd</option>\n            <option value="yy-M-d H:m" >yy-M-d H:m</option>\n            <option value="yy-M-d H:m:s" >yy-M-d H:m:s</option>\n            <option value="yy-M-d HH:mm" >yy-M-d HH:mm</option>\n            <option value="yy-M-d HH:mm:ss" >yy-M-d HH:mm:ss</option>\n            <option value="yy-MM-dd H:m" >yy-MM-dd H:m</option>\n            <option value="yy-MM-dd H:m:s" >yy-MM-dd H:m:s</option>\n            <option value="yy-MM-dd HH:mm" >yy-MM-dd HH:mm</option>\n            <option value="yy-MM-dd HH:mm:ss" >yy-MM-dd HH:mm:ss</option>\n            <option value="yyyy-M-d H:m" >yyyy-M-d H:m</option>\n            <option value="yyyy-M-d H:m:s" >yyyy-M-d H:m:s</option>\n            <option value="yyyy-M-d HH:mm" >yyyy-M-d HH:mm</option>\n            <option value="yyyy-M-d HH:mm:ss" >yyyy-M-d HH:mm:ss</option>\n            <option value="yyyy-MM-dd H:m" >yyyy-MM-dd H:m</option>\n            <option value="yyyy-MM-dd H:m:s" >yyyy-MM-dd H:m:s</option>\n            <option value="yyyy-MM-dd HH:mm" >yyyy-MM-dd HH:mm</option>\n            <option value="yyyy-MM-dd HH:mm:ss" >yyyy-MM-dd HH:mm:ss</option>\n`)) : (this.target.find(".hiprint-option-item-datatype-select-format").show(), this.target.find(".hiprint-option-item-datatype-input-format").hide().val(""), this.target.find(".hiprint-option-item-datatype-format").html(`\n            <option value="" >${i18n.__('默认')}</option>\n`));
+      }, v11215;
     }(),
     ft = function () {
-      function t() {
+      function v11223() {
         this.name = "formatter";
       }
 
-      return t.prototype.createTarget = function () {
-        var t = `<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(title,value,options,templateData,target){}" class="auto-submit"></textarea>\n        </div>\n    </div>`;
-        return this.target = $(t), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      return v11223.prototype.createTarget = function () {
+        var v11224 = `<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(title,value,options,templateData,target){}" class="auto-submit"></textarea>\n        </div>\n    </div>`;
+        return this.target = $(v11224), this.target;
+      }, v11223.prototype.getValue = function () {
+        var v11225 = this.target.find("textarea").val();
+        if (v11225) return v11225;
+      }, v11223.prototype.setValue = function (v11226) {
+        this.target.find("textarea").val(v11226 ? v11226.toString() : null);
+      }, v11223.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11223;
     }(),
     gt = function () {
-      function t() {
+      function v11227() {
         this.name = "styler";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11227.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('样式函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(value, options, target,templateData){}" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11227.prototype.getValue = function () {
+        var v11228 = this.target.find("textarea").val();
+        if (v11228) return v11228;
+      }, v11227.prototype.setValue = function (v11229) {
+        this.target.find("textarea").val(v11229 ? v11229.toString() : null);
+      }, v11227.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11227;
     }(),
     rowcolumns = function () {
-      function t() {
+      function v11230() {
         this.name = "rowsColumnsMerge";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11230.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('行/列合并函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(data, col, colIndex, rowIndex, tableData, printData){ return [1,1] }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11230.prototype.getValue = function () {
+        var v11231 = this.target.find("textarea").val();
+        if (v11231) return v11231;
+      }, v11230.prototype.setValue = function (v11232) {
+        this.target.find("textarea").val(v11232 ? v11232.toString() : null);
+      }, v11230.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11230;
     }(),
     rowsColumnsMergeClean = function () {
-      function t() {
+      function v11233() {
         this.name = "rowsColumnsMergeClean";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11233.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('跨页合并是否清除')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="true" >${i18n.__('是')}</option>\n        <option value="false" >${i18n.__('否')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v11233.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v11233.prototype.setValue = function (v11234) {
+        this.target.find("select").val((null == v11234 ? "" : v11234).toString());
+      }, v11233.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11233;
     }(),
     mt = function () {
-      function t() {
+      function v11235() {
         this.name = "footerFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11235.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格脚函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(options,rows,data,pageData){ return \'<tr></tr>\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11235.prototype.getValue = function () {
+        var v11236 = this.target.find("textarea").val();
+        if (v11236) return v11236;
+      }, v11235.prototype.setValue = function (v11237) {
+        this.target.find("textarea").val(v11237 ? v11237.toString() : null);
+      }, v11235.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11235;
     }(),
     groupFieldsFormatter = function () {
-      function t() {
+      function v11238() {
         this.name = "groupFieldsFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11238.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('分组字段函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(type,options,data){ return [] }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11238.prototype.getValue = function () {
+        var v11239 = this.target.find("textarea").val();
+        if (v11239) return v11239;
+      }, v11238.prototype.setValue = function (v11240) {
+        this.target.find("textarea").val(v11240 ? v11240.toString() : null);
+      }, v11238.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11238;
     }(),
     groupFormatter = function () {
-      function t() {
+      function v11241() {
         this.name = "groupFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11241.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('分组头格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(colTotal,tableData,printData,groupData,options){ return \'${i18n.__('分组头信息')}(html)\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11241.prototype.getValue = function () {
+        var v11242 = this.target.find("textarea").val();
+        if (v11242) return v11242;
+      }, v11241.prototype.setValue = function (v11243) {
+        this.target.find("textarea").val(v11243 ? v11243.toString() : null);
+      }, v11241.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11241;
     }(),
     groupFooterFormatter = function () {
-      function t() {
+      function v11244() {
         this.name = "groupFooterFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11244.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('分组脚格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(colTotal,tableData,printData,groupData,options){ return \'${i18n.__('分组脚信息')}(html)\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11244.prototype.getValue = function () {
+        var v11245 = this.target.find("textarea").val();
+        if (v11245) return v11245;
+      }, v11244.prototype.setValue = function (v11246) {
+        this.target.find("textarea").val(v11246 ? v11246.toString() : null);
+      }, v11244.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11244;
     }(),
     vt = function () {
-      function t() {
+      function v11247() {
         this.name = "gridColumnsFooterFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11247.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('多组表格脚函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(options,rows,data,pageData){ return \'\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11247.prototype.getValue = function () {
+        var v11248 = this.target.find("textarea").val();
+        if (v11248) return v11248;
+      }, v11247.prototype.setValue = function (v11249) {
+        this.target.find("textarea").val(v11249 ? v11249.toString() : null);
+      }, v11247.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11247;
     }(),
     yt = function () {
-      function t() {
+      function v11250() {
         this.name = "rowStyler";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11250.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('行样式函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(value,options){ return \'\' }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11250.prototype.getValue = function () {
+        var v11251 = this.target.find("textarea").val();
+        if (v11251) return v11251;
+      }, v11250.prototype.setValue = function (v11252) {
+        this.target.find("textarea").val(v11252 ? v11252.toString() : null);
+      }, v11250.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11250;
     }(),
     bt = function () {
-      function t() {
+      function v11253() {
         this.name = "align";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11253.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格左右对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="left" >${i18n.__('居左')}</option>\n        <option value="center" >${i18n.__('居中')}</option>\n        <option value="right" >${i18n.__('居右')}</option>\n        <option value="justify" >${i18n.__('两端对齐')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11253.prototype.getValue = function () {
+        var v11254 = this.target.find("select").val();
+        if (v11254) return v11254.toString();
+      }, v11253.prototype.setValue = function (v11255) {
+        this.target.find("select").val(v11255);
+      }, v11253.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11253;
     }(),
     Et = function () {
-      function t() {
+      function v11256() {
         this.name = "vAlign";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11256.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格上下对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="top" >${i18n.__('上')}</option>\n        <option value="middle" >${i18n.__('中')}</option>\n        <option value="bottom" >${i18n.__('下')}</option>\n        \n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11256.prototype.getValue = function () {
+        var v11257 = this.target.find("select").val();
+        if (v11257) return v11257.toString();
+      }, v11256.prototype.setValue = function (v11258) {
+        this.target.find("select").val(v11258);
+      }, v11256.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11256;
     }(),
     Tt = function () {
-      function t() {
+      function v11259() {
         this.name = "halign";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11259.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格头单元格左右对齐')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="left" >${i18n.__('居左')}</option>\n        <option value="center" >${i18n.__('居中')}</option>\n        <option value="right" >${i18n.__('居右')}</option>\n        <option value="justify" >${i18n.__('两端对齐')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11259.prototype.getValue = function () {
+        var v11260 = this.target.find("select").val();
+        if (v11260) return v11260.toString();
+      }, v11259.prototype.setValue = function (v11261) {
+        this.target.find("select").val(v11261);
+      }, v11259.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11259;
     }(),
     Pt = function () {
-      function t() {
+      function v11262() {
         this.name = "styler2";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11262.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格样式函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(value,row,index,options){ return {color:\'red\' }; }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11262.prototype.getValue = function () {
+        var v11263 = this.target.find("textarea").val();
+        if (v11263) return v11263;
+      }, v11262.prototype.setValue = function (v11264) {
+        this.target.find("textarea").val(v11264 ? v11264.toString() : null);
+      }, v11262.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11262;
     }(),
     stylerHeader = function () {
-      function t() {
+      function v11265() {
         this.name = "stylerHeader";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11265.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格头样式函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(options){ return {color:\'red\' }; }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11265.prototype.getValue = function () {
+        var v11266 = this.target.find("textarea").val();
+        if (v11266) return v11266;
+      }, v11265.prototype.setValue = function (v11267) {
+        this.target.find("textarea").val(v11267 ? v11267.toString() : null);
+      }, v11265.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11265;
     }(),
     _t = function () {
-      function t() {
+      function v11268() {
         this.name = "formatter2";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11268.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格格式化函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(value,row,index,options){ return \'\'; }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11268.prototype.getValue = function () {
+        var v11269 = this.target.find("textarea").val();
+        if (v11269) return v11269;
+      }, v11268.prototype.setValue = function (v11270) {
+        this.target.find("textarea").val(v11270 ? v11270.toString() : null);
+      }, v11268.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11268;
     }(),
     renderFormatter = function () {
-      function t() {
+      function v11271() {
         this.name = "renderFormatter";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11271.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('单元格渲染函数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <textarea style="height:80px;" placeholder="function(value,row,colIndex,options,rowIndex){ return \'<td></td>\'; }" class="auto-submit"></textarea>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("textarea").val();
-        if (t) return t;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("textarea").val(t ? t.toString() : null);
-      }, t.prototype.destroy = function () {
+      }, v11271.prototype.getValue = function () {
+        var v11272 = this.target.find("textarea").val();
+        if (v11272) return v11272;
+      }, v11271.prototype.setValue = function (v11273) {
+        this.target.find("textarea").val(v11273 ? v11273.toString() : null);
+      }, v11271.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11271;
     }(),
     wt = function () {
-      function t() {
+      function v11274() {
         this.name = "autoCompletion";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11274.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('自动补全')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="true" >${i18n.__('是')}</option>\n        <option value="false" >${i18n.__('否')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
+      }, v11274.prototype.getValue = function () {
         if ("true" == this.target.find("select").val()) return !0;
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val((null == t ? "" : t).toString());
-      }, t.prototype.destroy = function () {
+      }, v11274.prototype.setValue = function (v11275) {
+        this.target.find("select").val((null == v11275 ? "" : v11275).toString());
+      }, v11274.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11274;
     }(),
     maxRows = function () {
-      function t() {
+      function v11276() {
         this.name = "maxRows";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11276.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('每页最大行数')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <input type="number" value="1" step="1" min="1" class="auto-submit"/>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("input").val();
-        if (t) return parseInt(t.toString());
-      }, t.prototype.setValue = function (t) {
-        this.target.find("input").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11276.prototype.getValue = function () {
+        var v11277 = this.target.find("input").val();
+        if (v11277) return parseInt(v11277.toString());
+      }, v11276.prototype.setValue = function (v11278) {
+        this.target.find("input").val(v11278);
+      }, v11276.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11276;
     }(),
     xt = function () {
-      function t() {
+      function v11279() {
         this.name = "tableFooterRepeat";
       }
 
-      return t.prototype.createTarget = function () {
+      return v11279.prototype.createTarget = function () {
         return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('表格脚显示')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="no" >${i18n.__('不显示')}</option>\n        <option value="page" >${i18n.__('每页显示')}</option>\n        <option value="last" >${i18n.__('最后显示')}</option>\n        </select>\n        </div>\n    </div>`), this.target;
-      }, t.prototype.getValue = function () {
-        var t = this.target.find("select").val();
-        if (t) return t.toString();
-      }, t.prototype.setValue = function (t) {
-        this.target.find("select").val(t);
-      }, t.prototype.destroy = function () {
+      }, v11279.prototype.getValue = function () {
+        var v11280 = this.target.find("select").val();
+        if (v11280) return v11280.toString();
+      }, v11279.prototype.setValue = function (v11281) {
+        this.target.find("select").val(v11281);
+      }, v11279.prototype.destroy = function () {
         this.target.remove();
-      }, t;
+      }, v11279;
     }();
 
-  n.d(e, "a", function () {
+  v10695.d(v10694, "a", function () {
     return Ct;
   });
 
   var Ct = function () {
-    function t() {
+    function v11283() {
     }
 
-    return t.init = function () {
-      t.printElementOptionItems || (t.printElementOptionItems = {}, t._printElementOptionItems.forEach(function (e) {
-        t.printElementOptionItems[e.name] = e;
+    return v11283.init = function () {
+      v11283.printElementOptionItems || (v11283.printElementOptionItems = {}, v11283._printElementOptionItems.forEach(function (v11284) {
+        v11283.printElementOptionItems[v11284.name] = v11284;
       }));
-    }, t.registerItem = function (e) {
-      if (!e.name) throw new Error("styleItem must have name");
-      t.init(), t.printElementOptionItems[e.name] = e;
-    }, t.getItem = function (e) {
-      return t.init(), t.printElementOptionItems[e];
-    }, t._printElementOptionItems = [new fontFamily(), new r(), new a(), new p(), new i(), new s(), new l(), new pt(), new u(), new d(), new c(), new h(), new f(), new g(), new m(), new d2(), new c2(), new v(), new y(), new b(), new E(), new qrCodeLevel(), new T(), new P(), new _(), new w(), new x(), new coordinate(), new widthHeight(), new C(), new imageFit(), new O(), new H(), new D(), new paperNumberContinue(), new watermarkOptions(), new I(), new R(), new pageBreak(), new M(), new M2(), new S(), new B(), new F(), new L(), new A(), new z(), new k(), new st(), new N(), new V(), new W(), new j(), new U(), new borderRadius(), new zIndex(), new K(), new G(), new q(), new X(), new Y(), new Q(), new J(), new Z(), new tt(), new et(), new nt(), new it(), new ot(),new textWrap(), new at(), new lt(), new panelLayoutOptions(), new ut(), new ith(), new dt(), new ct(), new ht(), new ft(), new gt(), new mt(), new rowcolumns(), new rowsColumnsMergeClean(), new groupFieldsFormatter(), new groupFormatter(), new groupFooterFormatter(), new vt(), new yt(), new bt(), new Tt(), new Et(), new Pt(), new stylerHeader(), new renderFormatter(), new _t(), new wt(), new maxRows(), new xt(), new tableColumnH(), new tableE(), new tableQRCodeLevel(), new tablept(), new tableSummaryTitle(), new tableSummaryText(), new tableSummaryColspan(), new tableSummary(), new tableSummaryAlign(), new tableSummaryNumFormat(), new tableSummaryFormatter(),new showCodeTitle(), new upperCase(), new barcodeType(), new qrcodeType(), new barColor(), new barWidth(), new barAutoWidth()], t;
+    }, v11283.registerItem = function (v11285) {
+      if (!v11285.name) throw new Error("styleItem must have name");
+      v11283.init(), v11283.printElementOptionItems[v11285.name] = v11285;
+    }, v11283.getItem = function (v11286) {
+      return v11283.init(), v11283.printElementOptionItems[v11286];
+    }, v11283._printElementOptionItems = [new fontFamily(), new v10712(), new v10718(), new v10724(), new v10696(), new v10730(), new v10736(), new pt(), new v10739(), new v10745(), new v10751(), new v10767(), new v10775(), new v10783(), new v10791(), new d2(), new c2(), new v10797(), new v10805(), new v10813(), new v10820(), new qrCodeLevel(), new v10837(), new v10843(), new v10849(), new v10857(), new v10861(), new coordinate(), new widthHeight(), new v10885(), new imageFit(), new v10899(), new v10909(), new v10913(), new paperNumberContinue(), new watermarkOptions(), new v10918(), new v10924(), new pageBreak(), new v10934(), new M2(), new v10941(), new v10944(), new v10948(), new v10952(), new v10956(), new v10960(), new v10963(), new st(), new v10967(), new v10971(), new v10975(), new v10979(), new v10985(), new borderRadius(), new zIndex(), new v11002(), new v11005(), new v11011(), new v11017(), new v11023(), new v11036(), new v11029(), new v11043(), new tt(), new et(), new nt(), new it(), new ot(), new textWrap(), new at(), new lt(), new panelLayoutOptions(), new ut(), new ith(), new dt(), new ct(), new ht(), new ft(), new gt(), new mt(), new rowcolumns(), new rowsColumnsMergeClean(), new groupFieldsFormatter(), new groupFormatter(), new groupFooterFormatter(), new vt(), new yt(), new bt(), new Tt(), new Et(), new Pt(), new stylerHeader(), new renderFormatter(), new _t(), new wt(), new maxRows(), new xt(), new tableColumnH(), new tableE(), new tableQRCodeLevel(), new tablept(), new tableSummaryTitle(), new tableSummaryText(), new tableSummaryColspan(), new tableSummary(), new tableSummaryAlign(), new tableSummaryNumFormat(), new tableSummaryFormatter(), new showCodeTitle(), new upperCase(), new barcodeType(), new qrcodeType(), new barColor(), new barWidth(), new barAutoWidth()], v11283;
   }();
-}, function (t, e, n) {
+}, function (v11287, v11288, v11289) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return o;
-  }), n.d(e, "b", function () {
-    return r;
+  v11289.d(v11288, "a", function () {
+    return v11291;
+  }), v11289.d(v11288, "b", function () {
+    return v11293;
   });
 
-  var i = n(14),
-    o = function () {
-      function t(t, e) {
-        this.selectedCells = [], this.rows = t, this.tableTatget = e;
+  var v11294 = v11289(14),
+    v11291 = function () {
+      function v11297(v11295, v11296) {
+        this.selectedCells = [], this.rows = v11295, this.tableTatget = v11296;
       }
 
-      return t.prototype.clear = function () {
+      return v11297.prototype.clear = function () {
         this.tableTatget.find("td").removeClass("selected");
-      }, t.prototype.setSingleSelect = function (t) {
-        this.startCell = t, this.selectedCells = [];
-      }, t.prototype.getSingleSelect = function () {
+      }, v11297.prototype.setSingleSelect = function (v11298) {
+        this.startCell = v11298, this.selectedCells = [];
+      }, v11297.prototype.getSingleSelect = function () {
         if (this.selectedCells.length) {
           if (1 == this.selectedCells.length) return 1 == this.selectedCells[0].length ? this.selectedCells[0][0] : void 0;
           if (this.selectedCells.length > 1) return;
         }
 
         return this.startCell;
-      }, t.prototype.singleSelectByXY = function (t, e) {
-        var n = this.getCellByXY(t, e);
-        n && (this.clear(), n && (n.cell.select(), this.startCell = n, this.selectedCells = []));
-      }, t.prototype.multipleSelectByXY = function (t, e) {
+      }, v11297.prototype.singleSelectByXY = function (v11299, v11300) {
+        var v11301 = this.getCellByXY(v11299, v11300);
+        v11301 && (this.clear(), v11301 && (v11301.cell.select(), this.startCell = v11301, this.selectedCells = []));
+      }, v11297.prototype.multipleSelectByXY = function (v11302, v11303) {
         this.clear();
-        var n = [];
+        var v11304 = [];
 
         if (this.startCell) {
-          var o = this.getCellByXY(t, e);
+          var v11305 = this.getCellByXY(v11302, v11303);
 
-          if (o) {
-            var r = i.a.mergeRect(this.startCell.cell.getTableRect(), o.cell.getTableRect());
-            this.selectByRect(new a(r), n);
+          if (v11305) {
+            var v11306 = v11294.a.mergeRect(this.startCell.cell.getTableRect(), v11305.cell.getTableRect());
+            this.selectByRect(new v11307(v11306), v11304);
           }
         }
 
-        this.selectedCells = n;
-      }, t.prototype.selectByRect = function (t, e) {
-        this.rows.forEach(function (n, i) {
-          var o = [];
-          n.columns.forEach(function (e) {
-            e.isInRect(t) && (o.push(new p(i, e)), e.select());
-          }), o.length && e.push(o);
-        }), t.changed && (t.changed = !1, e.splice(0, e.length), this.selectByRect(t, e));
-      }, t.prototype.getSelectedCells = function () {
+        this.selectedCells = v11304;
+      }, v11297.prototype.selectByRect = function (v11308, v11309) {
+        this.rows.forEach(function (v11310, v11311) {
+          var v11312 = [];
+          v11310.columns.forEach(function (v11313) {
+            v11313.isInRect(v11308) && (v11312.push(new v11314(v11311, v11313)), v11313.select());
+          }), v11312.length && v11309.push(v11312);
+        }), v11308.changed && (v11308.changed = !1, v11309.splice(0, v11309.length), this.selectByRect(v11308, v11309));
+      }, v11297.prototype.getSelectedCells = function () {
         return this.selectedCells;
-      }, t.prototype.getCellByXY = function (t, e) {
-        var n;
-        return this.rows.forEach(function (i, o) {
-          var r = (i.columns || []).filter(function (column) {return column.checked}).filter(function (n) {
-            return n.isXYinCell(t, e);
+      }, v11297.prototype.getCellByXY = function (v11315, v11316) {
+        var v11317;
+        return this.rows.forEach(function (v11318, v11319) {
+          var v11320 = (v11318.columns || []).filter(function (column) {return column.checked;}).filter(function (v11321) {
+            return v11321.isXYinCell(v11315, v11316);
           });
-          r.length && (n = new p(o, r[0]));
-        }), n;
-      }, t;
+          v11320.length && (v11317 = new v11314(v11319, v11320[0]));
+        }), v11317;
+      }, v11297;
     }(),
-    r = function () {
-      return function (t) {
-        this.x = t.x, this.y = t.y, this.height = t.height, this.width = t.width;
+    v11293 = function () {
+      return function (v11322) {
+        this.x = v11322.x, this.y = v11322.y, this.height = v11322.height, this.width = v11322.width;
       };
     }(),
-    a = function () {
-      return function (t) {
-        this.rect = t;
+    v11307 = function () {
+      return function (v11327) {
+        this.rect = v11327;
       };
     }(),
-    p = function () {
-      return function (t, e) {
-        this.rowIndex = t, this.cell = e;
+    v11314 = function () {
+      return function (v11328, v11329) {
+        this.rowIndex = v11328, this.cell = v11329;
       };
     }();
-}, function (t, e, n) {
+}, function (v11330, v11331, v11332) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v11332.d(v11331, "a", function () {
+    return v11334;
   });
 
-  var i = function () {
-    function t() {
+  var v11334 = function () {
+    function v11335() {
     }
 
-    return t.createId = function () {
+    return v11335.createId = function () {
       return this.id += 1, this.id;
-    }, t.id = 1, t;
+    }, v11335.id = 1, v11335;
   }();
-}, function (t, e, n) {
+}, function (v11336, v11337, v11338) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return p;
+  v11338.d(v11337, "a", function () {
+    return v11340;
   });
 
   var _i,
-    o = n(5),
-    r = n(13),
-    a = (_i = function i(t, e) {
+    v11341 = v11338(5),
+    v11342 = v11338(13),
+    v11343 = (_i = function v11344(v11345, v11346) {
       return (_i = Object.setPrototypeOf || _instanceof({
         __proto__: []
-      }, Array) && function (t, e) {
-        t.__proto__ = e;
-      } || function (t, e) {
-        for (var n in e) {
-          e.hasOwnProperty(n) && (t[n] = e[n]);
+      }, Array) && function (v11347, v11348) {
+        v11347.__proto__ = v11348;
+      } || function (v11349, v11350) {
+        for (var v11351 in v11350) {
+          v11350.hasOwnProperty(v11351) && (v11349[v11351] = v11350[v11351]);
         }
-      })(t, e);
-    }, function (t, e) {
-      function n() {
-        this.constructor = t;
+      })(v11345, v11346);
+    }, function (v11352, v11353) {
+      function v11354() {
+        this.constructor = v11352;
       }
 
-      _i(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+      _i(v11352, v11353), v11352.prototype = null === v11353 ? Object.create(v11353) : (v11354.prototype = v11353.prototype, new v11354());
     }),
-    p = function (t) {
-      function e(e) {
-        var n = t.call(this) || this;
-        (n.columns = [], e && e.constructor === Array) ? (e || []).forEach(function (t) {
-          n.columns.push(new o.a(t));
-        }) : e.columns && (e.columns || []).forEach(function (t) {
-          n.columns.push(new o.a(t));
+    v11340 = function (v11355) {
+      function v11362(v11356) {
+        var v11357 = v11355.call(this) || this;
+        (v11357.columns = [], v11356 && v11356.constructor === Array) ? (v11356 || []).forEach(function (v11358) {
+          v11357.columns.push(new v11341.a(v11358));
+        }) : v11356.columns && (v11356.columns || []).forEach(function (v11360) {
+          v11357.columns.push(new v11341.a(v11360));
         });
-        return n;
+        return v11357;
       }
 
-      return a(e, t), e.prototype.getPrintElementOptionEntity = function () {
-        var t = [];
-        var all = this.allColumns ? this.allColumns.filter(function (c) {return !c.checked}) : [];
-        return [...this.columns, ...all].forEach(function (e) {
-          t.push(e.getEntity());
-        }), t;
-      }, e;
-    }(r.a);
-}, function (t, e, n) {
+      return v11343(v11362, v11355), v11362.prototype.getPrintElementOptionEntity = function () {
+        var v11363 = [];
+        var all = this.allColumns ? this.allColumns.filter(function (v11364) {return !v11364.checked;}) : [];
+        return [...this.columns, ...all].forEach(function (v11365) {
+          v11363.push(v11365.getEntity());
+        }), v11363;
+      }, v11362;
+    }(v11342.a);
+}, function (v11367, v11368, v11369) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return r;
+  v11369.d(v11368, "a", function () {
+    return v11371;
   });
 
-  var i = n(11),
-    o = n(5),
-    r = function () {
-      function t() {
-        this.id = i.a.createId();
+  var v11372 = v11369(11),
+    v11373 = v11369(5),
+    v11371 = function () {
+      function v11374() {
+        this.id = v11372.a.createId();
       }
 
-      return t.prototype.init = function (t, e, n) {
-        this.isHead = n, this.target = e || $("<tr></tr>"), this.tableOptions = t,
-          this.allColumns = (this.columns || []),
-          this.initCells((this.columns || []).filter(function (column) {return column.checked}));
-      }, t.prototype.getTarget = function () {
+      return v11374.prototype.init = function (v11376, v11377, v11378) {
+        this.isHead = v11378, this.target = v11377 || $("<tr></tr>"), this.tableOptions = v11376,
+        this.allColumns = this.columns || [],
+        this.initCells((this.columns || []).filter(function (column) {return column.checked;}));
+      }, v11374.prototype.getTarget = function () {
         return this.target;
-      }, t.prototype.initCells = function (t) {
-        var e = this;
-        t ? (this.columns = t, t.forEach(function (t, n) {
-          t.init(e.target.find("td:eq(" + n + ")"), e.tableOptions, e.id, e.isHead);
-        })) : (this.columns = [], this.target.find("td").map(function (t, n) {
-          var i = new o.a();
-          i.init($(n), e.tableOptions, e.id, e.isHead), e.columns.push(i);
+      }, v11374.prototype.initCells = function (v11379) {
+        var v11380 = this;
+        v11379 ? (this.columns = v11379, v11379.forEach(function (v11381, v11382) {
+          v11381.init(v11380.target.find("td:eq(" + v11382 + ")"), v11380.tableOptions, v11380.id, v11380.isHead);
+        })) : (this.columns = [], this.target.find("td").map(function (v11383, v11384) {
+          var v11385 = new v11373.a();
+          v11385.init($(v11384), v11380.tableOptions, v11380.id, v11380.isHead), v11380.columns.push(v11385);
         }));
-      }, t.prototype.removeCell = function (t) {
-        var e = this.columns.indexOf(t);
-        this.columns[e].getTarget().remove(), this.columns.splice(e, 1);
-      }, t.prototype.createTableCell = function (t, e) {
-        var n = new o.a();
-        return n.init($("<td></td>"), this.tableOptions, this.id, this.isHead), t > 1 && (n.getTarget().attr("rowspan", t), n.rowspan = t), e > 1 && (n.getTarget().attr("colspan", e), n.colspan = e), n;
-      }, t.prototype.insertToTargetCellLeft = function (t, e) {
-        var n = this.columns.indexOf(t);
-        t.getTarget().before(e.getTarget()), this.columns.splice(n, 0, e);
-      }, t.prototype.insertToTargetCellRight = function (t, e) {
-        var n = this.columns.indexOf(t);
-        this.columns[n].getTarget().after(e.getTarget()), this.columns.splice(n + 1, 0, e);
-      }, t.prototype.insertCellToFirst = function (t) {
-        this.target.prepend(t.getTarget()), this.columns.splice(0, 0, t);
-      }, t.prototype.insertCellToLast = function (t) {
-        this.columns.push(t), this.target.append(t.getTarget());
-      }, t.prototype.getPrintElementOptionEntity = function () {
-        var t = [];
-        return [...this.columns, ...this.allColumns.filter(function (c) {return !c.checked})].forEach(function (e) {
-          t.push(e.getEntity());
-        }), t;
-      }, t;
+      }, v11374.prototype.removeCell = function (v11387) {
+        var v11388 = this.columns.indexOf(v11387);
+        this.columns[v11388].getTarget().remove(), this.columns.splice(v11388, 1);
+      }, v11374.prototype.createTableCell = function (v11389, v11390) {
+        var v11391 = new v11373.a();
+        return v11391.init($("<td></td>"), this.tableOptions, this.id, this.isHead), v11389 > 1 && (v11391.getTarget().attr("rowspan", v11389), v11391.rowspan = v11389), v11390 > 1 && (v11391.getTarget().attr("colspan", v11390), v11391.colspan = v11390), v11391;
+      }, v11374.prototype.insertToTargetCellLeft = function (v11393, v11394) {
+        var v11395 = this.columns.indexOf(v11393);
+        v11393.getTarget().before(v11394.getTarget()), this.columns.splice(v11395, 0, v11394);
+      }, v11374.prototype.insertToTargetCellRight = function (v11396, v11397) {
+        var v11398 = this.columns.indexOf(v11396);
+        this.columns[v11398].getTarget().after(v11397.getTarget()), this.columns.splice(v11398 + 1, 0, v11397);
+      }, v11374.prototype.insertCellToFirst = function (v11399) {
+        this.target.prepend(v11399.getTarget()), this.columns.splice(0, 0, v11399);
+      }, v11374.prototype.insertCellToLast = function (v11400) {
+        this.columns.push(v11400), this.target.append(v11400.getTarget());
+      }, v11374.prototype.getPrintElementOptionEntity = function () {
+        var v11401 = [];
+        return [...this.columns, ...this.allColumns.filter(function (v11402) {return !v11402.checked;})].forEach(function (v11403) {
+          v11401.push(v11403.getEntity());
+        }), v11401;
+      }, v11374;
     }();
-}, function (t, e, n) {
+}, function (v11404, v11405, v11406) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return o;
+  v11406.d(v11405, "a", function () {
+    return v11408;
   });
 
-  var i = n(10),
-    o = function () {
-      function t() {
+  var v11409 = v11406(10),
+    v11408 = function () {
+      function v11410() {
       }
 
-      return t.mergeRect = function (t, e) {
-        var n = Math.min(t.x, e.x),
-          o = Math.min(t.y, e.y);
-        return new i.b({
-          x: n,
-          y: o,
-          height: Math.max(t.y + t.height, e.y + e.height) - o,
-          width: Math.max(t.x + t.width, e.x + e.width) - n
+      return v11410.mergeRect = function (v11411, v11412) {
+        var v11413 = Math.min(v11411.x, v11412.x),
+          v11416 = Math.min(v11411.y, v11412.y);
+        return new v11409.b({
+          x: v11413,
+          y: v11416,
+          height: Math.max(v11411.y + v11411.height, v11412.y + v11412.height) - v11416,
+          width: Math.max(v11411.x + v11411.width, v11412.x + v11412.width) - v11413
         });
-      }, t.Rect = function (t, e, n, i) {
+      }, v11410.Rect = function (v11426, v11427, v11428, v11429) {
         return {
-          minX: t < n ? t : n,
-          minY: e < i ? e : i,
-          maxX: t < n ? n : t,
-          maxY: e < i ? i : e
+          minX: v11426 < v11428 ? v11426 : v11428,
+          minY: v11427 < v11429 ? v11427 : v11429,
+          maxX: v11426 < v11428 ? v11428 : v11426,
+          maxY: v11427 < v11429 ? v11429 : v11427
         };
-      }, t;
+      }, v11410;
     }();
 }, function (module, __webpack_exports__, __webpack_require__) {
   "use strict";
@@ -5578,368 +5578,368 @@ var hiprint = function (t) {
     _hitable_HiTale__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16),
     _table_GridColumnsStructure__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(20),
     _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(2),
-    __extends = (_extendStatics = function extendStatics(t, e) {
+    __extends = (_extendStatics = function extendStatics(v11431, v11432) {
       return (_extendStatics = Object.setPrototypeOf || _instanceof({
         __proto__: []
-      }, Array) && function (t, e) {
-        t.__proto__ = e;
-      } || function (t, e) {
-        for (var n in e) {
-          e.hasOwnProperty(n) && (t[n] = e[n]);
+      }, Array) && function (v11433, v11434) {
+        v11433.__proto__ = v11434;
+      } || function (v11435, v11436) {
+        for (var v11437 in v11436) {
+          v11436.hasOwnProperty(v11437) && (v11435[v11437] = v11436[v11437]);
         }
-      })(t, e);
-    }, function (t, e) {
-      function n() {
-        this.constructor = t;
+      })(v11431, v11432);
+    }, function (v11438, v11439) {
+      function v11440() {
+        this.constructor = v11438;
       }
 
-      _extendStatics(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+      _extendStatics(v11438, v11439), v11438.prototype = null === v11439 ? Object.create(v11439) : (v11440.prototype = v11439.prototype, new v11440());
     }),
     _extendStatics,
     TablePrintElement = function (_super) {
-      function TablePrintElement(t, e) {
-        var n = _super.call(this, t) || this;
-        return n.gridColumnsFooterCss = "hiprint-gridColumnsFooter", n.tableGridRowCss = "table-grid-row", n.options = new _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__.a(e, n.printElementType), n.options.setDefault(new _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__.a(_HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.table.default).getPrintElementOptionEntity()), n;
+      function TablePrintElement(v11441, v11442) {
+        var v11443 = _super.call(this, v11441) || this;
+        return v11443.gridColumnsFooterCss = "hiprint-gridColumnsFooter", v11443.tableGridRowCss = "table-grid-row", v11443.options = new _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__.a(v11442, v11443.printElementType), v11443.options.setDefault(new _option_TablePrintElementOption__WEBPACK_IMPORTED_MODULE_5__.a(_HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.table.default).getPrintElementOptionEntity()), v11443;
       }
 
       return __extends(TablePrintElement, _super), TablePrintElement.prototype.getColumns = function () {
         return this.options.columns;
-      }, TablePrintElement.prototype.getColumnByColumnId = function (t) {
-        return this.options.getColumnByColumnId(t);
+      }, TablePrintElement.prototype.getColumnByColumnId = function (v11447) {
+        return this.options.getColumnByColumnId(v11447);
       }, TablePrintElement.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.designTarget.find(".hiprint-printElement-table-content"),
-            e = this.getHtml(this.designPaper);
-          t.html(""), t.append(e[0].target.find(".table-grid-row")), this.printElementType.editable && this.setHitable(), this.setColumnsOptions();
+          var v11448 = this.designTarget.find(".hiprint-printElement-table-content"),
+            v11449 = this.getHtml(this.designPaper);
+          v11448.html(""), v11448.append(v11449[0].target.find(".table-grid-row")), this.printElementType.editable && this.setHitable(), this.setColumnsOptions();
           // 渲染完再处理样式 ==> fix 表脚边框参数设置问题
           this.css(this.designTarget, this.getData());
         }
-      }, TablePrintElement.prototype.css = function (t, e) {
-        if ((this.getField() || !this.options.content) && !this.printElementType.formatter) return _super.prototype.css.call(this, t, e);
-      }, TablePrintElement.prototype.getDesignTarget = function (t) {
-        return this.designTarget = this.getHtml(t)[0].target, this.css(this.designTarget, this.getData()), this.designPaper = t, this.designTarget.find("td").hidroppable({
+      }, TablePrintElement.prototype.css = function (v11450, v11451) {
+        if ((this.getField() || !this.options.content) && !this.printElementType.formatter) return _super.prototype.css.call(this, v11450, v11451);
+      }, TablePrintElement.prototype.getDesignTarget = function (v11452) {
+        return this.designTarget = this.getHtml(v11452)[0].target, this.css(this.designTarget, this.getData()), this.designPaper = v11452, this.designTarget.find("td").hidroppable({
           accept: ".rn-draggable-item",
-          onDrop: function onDrop(t, e) {
+          onDrop: function onDrop(v11453, v11454) {
           },
-          onDragEnter: function onDragEnter(t, e) {
-            $(e).removeClass("rn-draggable-item");
+          onDragEnter: function onDragEnter(v11455, v11456) {
+            $(v11456).removeClass("rn-draggable-item");
           },
-          onDragLeave: function onDragLeave(t, e) {
-            $(e).addClass("rn-draggable-item");
+          onDragLeave: function onDragLeave(v11457, v11458) {
+            $(v11458).addClass("rn-draggable-item");
           }
         }), this.designTarget;
       }, TablePrintElement.prototype.getConfigOptions = function () {
         return _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.table;
-      }, TablePrintElement.prototype.createTarget = function (t, e, n) {
-        for (var i = $('<div class="hiprint-printElement hiprint-printElement-table" style="position: absolute;"><div class="hiprint-printElement-table-handle"></div><div class="hiprint-printElement-table-content" style="height:100%;width:100%"></span></div>'), o = this.createGridColumnsStructure(n), r = 0; r < o.gridColumns; r++) {
-          o.getByIndex(r).append(this.getTableHtml(e, n));
+      }, TablePrintElement.prototype.createTarget = function (v11460, v11461, v11462) {
+        for (var v11463 = $('<div class="hiprint-printElement hiprint-printElement-table" style="position: absolute;"><div class="hiprint-printElement-table-handle"></div><div class="hiprint-printElement-table-content" style="height:100%;width:100%"></span></div>'), v11464 = this.createGridColumnsStructure(v11462), v11465 = 0; v11465 < v11464.gridColumns; v11465++) {
+          v11464.getByIndex(v11465).append(this.getTableHtml(v11461, v11462));
         }
 
-        return i.find(".hiprint-printElement-table-content").append(o.target), i;
-      }, TablePrintElement.prototype.createGridColumnsStructure = function (t) {
-        for (var e = $('<div class="hi-grid-row table-grid-row"></div>'), n = 0; n < this.options.getGridColumns(); n++) {
-          var i = $('<div class="tableGridColumnsGutterRow hi-grid-col" style="width:' + 100 / this.options.getGridColumns() + '%;"></div>');
-          e.append(i);
+        return v11463.find(".hiprint-printElement-table-content").append(v11464.target), v11463;
+      }, TablePrintElement.prototype.createGridColumnsStructure = function (v11466) {
+        for (var v11467 = $('<div class="hi-grid-row table-grid-row"></div>'), v11468 = 0; v11468 < this.options.getGridColumns(); v11468++) {
+          var v11469 = $('<div class="tableGridColumnsGutterRow hi-grid-col" style="width:' + 100 / this.options.getGridColumns() + '%;"></div>');
+          v11467.append(v11469);
         }
 
-        var o = this.getGridColumnsFooterFormatter();
+        var v11470 = this.getGridColumnsFooterFormatter();
 
-        if (o) {
-          var r = $('<div class="hiprint-gridColumnsFooter"></div>');
-          r.append(o(this.options, this.getData(t), t, [])), e.append(r);
+        if (v11470) {
+          var v11471 = $('<div class="hiprint-gridColumnsFooter"></div>');
+          v11471.append(v11470(this.options, this.getData(v11466), v11466, [])), v11467.append(v11471);
         }
 
-        return new _table_GridColumnsStructure__WEBPACK_IMPORTED_MODULE_8__.a(this.options.getGridColumns(), e);
-      }, TablePrintElement.prototype.createtempEmptyRowsTargetStructure = function (t) {
+        return new _table_GridColumnsStructure__WEBPACK_IMPORTED_MODULE_8__.a(this.options.getGridColumns(), v11467);
+      }, TablePrintElement.prototype.createtempEmptyRowsTargetStructure = function (v11473) {
         if (this.getField()) return this.createTarget(this.printElementType.title, []);
-        var e = this.createTarget(this.printElementType.title, []).clone();
-        return e.find(".hiprint-printElement-tableTarget tbody tr").remove(), e;
-      }, TablePrintElement.prototype.getTableHtml = function (t, e) {
-        var n, i;
-        if (!this.getField() && this.options.content) return (n = $("<div></div>")).append(this.options.content), (i = n.find("table")).addClass("hiprint-printElement-tableTarget"), i;
-        if (this.printElementType.formatter) return (n = $("<div></div>")).append(this.printElementType.formatter(t)), (i = n.find("table")).addClass("hiprint-printElement-tableTarget"), i;
-        var o = $('<table class="hiprint-printElement-tableTarget" style="border-collapse: collapse;"></table>');
+        var v11474 = this.createTarget(this.printElementType.title, []).clone();
+        return v11474.find(".hiprint-printElement-tableTarget tbody tr").remove(), v11474;
+      }, TablePrintElement.prototype.getTableHtml = function (v11475, v11476) {
+        var v11477, v11478;
+        if (!this.getField() && this.options.content) return (v11477 = $("<div></div>")).append(this.options.content), (v11478 = v11477.find("table")).addClass("hiprint-printElement-tableTarget"), v11478;
+        if (this.printElementType.formatter) return (v11477 = $("<div></div>")).append(this.printElementType.formatter(v11475)), (v11478 = v11477.find("table")).addClass("hiprint-printElement-tableTarget"), v11478;
+        var v11479 = $('<table class="hiprint-printElement-tableTarget" style="border-collapse: collapse;"></table>');
         let headerList = _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableHead(this.getColumns(), this.options.getWidth() / this.options.getGridColumns());
-        return this.isNotDesign ? o.append(headerList) : o.append(headerList[0]), o.append(_table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableRow(this.getColumns(), t, e, this.options, this.printElementType)), "no" == this.options.tableFooterRepeat || _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, t, this.options, this.printElementType, e, t).insertBefore(o.find("tbody")), o;
+        return this.isNotDesign ? v11479.append(headerList) : v11479.append(headerList[0]), v11479.append(_table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableRow(this.getColumns(), v11475, v11476, this.options, this.printElementType)), "no" == this.options.tableFooterRepeat || _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, v11475, this.options, this.printElementType, v11476, v11475).insertBefore(v11479.find("tbody")), v11479;
       }, TablePrintElement.prototype.getEmptyRowTarget = function () {
         return _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createEmptyRowTarget(this.getColumns(), this);
-      }, TablePrintElement.prototype.getHtml = function (t, e) {
+      }, TablePrintElement.prototype.getHtml = function (v11484, v11485) {
         this.createTempContainer();
-        this.isNotDesign = e != void 0;
-        var n = this.getPaperHtmlResult(t, e);
-        return this.removeTempContainer(), n;
-      }, TablePrintElement.prototype.getPaperHtmlResult = function (t, e) {
-        var n = [],
-          i = this.getData(e),
-          o = this.getTableHtml(i, e),
-          r = this.createtempEmptyRowsTargetStructure(e);
-        e ? this.updateTargetWidth(r) : this.updateTargetSize(r), this.css(r, i), this.css(o, i), this.getTempContainer().html(""), this.getTempContainer().append(r);
+        this.isNotDesign = v11485 != void 0;
+        var v11486 = this.getPaperHtmlResult(v11484, v11485);
+        return this.removeTempContainer(), v11486;
+      }, TablePrintElement.prototype.getPaperHtmlResult = function (v11487, v11488) {
+        var v11489 = [],
+          v11490 = this.getData(v11488),
+          v11491 = this.getTableHtml(v11490, v11488),
+          v11492 = this.createtempEmptyRowsTargetStructure(v11488);
+        v11488 ? this.updateTargetWidth(v11492) : this.updateTargetSize(v11492), this.css(v11492, v11490), this.css(v11491, v11490), this.getTempContainer().html(""), this.getTempContainer().append(v11492);
         // 页脚导致 分页高度的问题, -> 获取到表格脚高度后移除避免重复
-        var tfh = r.find('tfoot').outerHeight() || 0;
-        r.find('tfoot').remove();
-        for (var a, p = this.getBeginPrintTopInPaperByReferenceElement(t), s = 0, l = !1; !l;) {
-          var u = 0,
-            d = t.getPaperFooter(s);
-          0 == s && p > d && "none" != t.panelPageRule && (p = p - d + t.paperHeader, n.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__.a({
+        var tfh = v11492.find('tfoot').outerHeight() || 0;
+        v11492.find('tfoot').remove();
+        for (var v11493, v11494 = this.getBeginPrintTopInPaperByReferenceElement(v11487), v11495 = 0, v11496 = !1; !v11496;) {
+          var v11497 = 0,
+            v11498 = v11487.getPaperFooter(v11495);
+          0 == v11495 && v11494 > v11498 && "none" != v11487.panelPageRule && (v11494 = v11494 - v11498 + v11487.paperHeader, v11489.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__.a({
             target: void 0,
             printLine: void 0
-          })), u = t.getContentHeight(s) - (p - t.paperHeader), s++ , d = t.getPaperFooter(s));
-          var c = n.length > 0 ? n[n.length - 1].target : void 0,
-            h = this.getRowsInSpecificHeight(e, u > 0 ? u : 0 == s ? d - p : t.getContentHeight(s), r, o, s, c, tfh);
-          l = h.isEnd;
-          if (u < 0) {
-            n[0].target = $(`<div style="position:absolute;background: red;color: white;padding: 0px 4px;">${i18n.__('没有足够空间进行表格分页，请调整页眉/页脚线')}</div>`)
-            n[0].printLine = p;
-            n[0].referenceElement = new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_4__.a({
+          })), v11497 = v11487.getContentHeight(v11495) - (v11494 - v11487.paperHeader), v11495++, v11498 = v11487.getPaperFooter(v11495));
+          var v11500 = v11489.length > 0 ? v11489[v11489.length - 1].target : void 0,
+            v11501 = this.getRowsInSpecificHeight(v11488, v11497 > 0 ? v11497 : 0 == v11495 ? v11498 - v11494 : v11487.getContentHeight(v11495), v11492, v11491, v11495, v11500, tfh);
+          v11496 = v11501.isEnd;
+          if (v11497 < 0) {
+            v11489[0].target = $(`<div style="position:absolute;background: red;color: white;padding: 0px 4px;">${i18n.__('没有足够空间进行表格分页，请调整页眉/页脚线')}</div>`);
+            v11489[0].printLine = v11494;
+            v11489[0].referenceElement = new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_4__.a({
               top: this.options.getTop(),
               left: this.options.getLeft(),
               height: this.options.getHeight(),
               width: this.options.getWidth(),
-              beginPrintPaperIndex: t.index,
-              bottomInLastPaper: p + this.options.lHeight,
-              printTopInPaper: p
+              beginPrintPaperIndex: v11487.index,
+              bottomInLastPaper: v11494 + this.options.lHeight,
+              printTopInPaper: v11494
             });
-            n[0].target.css("top", p + "pt");
-            n[0].target.css("left", this.options.displayLeft())
+            v11489[0].target.css("top", v11494 + "pt");
+            v11489[0].target.css("left", this.options.displayLeft());
             break;
           }
-          var f = void 0;
-          h.target && (h.target.css("left", this.options.displayLeft()), h.target[0].height = "");
-          if (0 == s || u > 0) {
-            (h.target && (a = p, h.target.css("top", p + "pt")),
-            f = l && null != this.options.lHeight ? p + (h.height > this.options.lHeight ? h.height : this.options.lHeight) : p + h.height)
+          var v11503 = void 0;
+          v11501.target && (v11501.target.css("left", this.options.displayLeft()), v11501.target[0].height = "");
+          if (0 == v11495 || v11497 > 0) {
+            v11501.target && (v11493 = v11494, v11501.target.css("top", v11494 + "pt")),
+            v11503 = v11496 && null != this.options.lHeight ? v11494 + (v11501.height > this.options.lHeight ? v11501.height : this.options.lHeight) : v11494 + v11501.height;
           } else {
-            (h.target && (a = t.paperHeader, h.target.css("top", t.paperHeader + "pt")), f = t.paperHeader + h.height)
+            v11501.target && (v11493 = v11487.paperHeader, v11501.target.css("top", v11487.paperHeader + "pt")), v11503 = v11487.paperHeader + v11501.height;
           }
-          n.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__.a({
-            target: h.target,
-            printLine: f,
+          v11489.push(new _dto_PaperHtmlResult__WEBPACK_IMPORTED_MODULE_2__.a({
+            target: v11501.target,
+            printLine: v11503,
             referenceElement: new _PrintReferenceElement__WEBPACK_IMPORTED_MODULE_4__.a({
               top: this.options.getTop(),
               left: this.options.getLeft(),
               height: this.options.getHeight(),
               width: this.options.getWidth(),
-              beginPrintPaperIndex: t.index,
-              bottomInLastPaper: f,
-              printTopInPaper: a
+              beginPrintPaperIndex: v11487.index,
+              bottomInLastPaper: v11503,
+              printTopInPaper: v11493
             })
-          })), s++;
-          e && this.updatePanelHeight(f + this.options.getHeight(), t);
+          })), v11495++;
+          v11488 && this.updatePanelHeight(v11503 + this.options.getHeight(), v11487);
         }
 
-        return n;
-      }, TablePrintElement.prototype.getRowsInSpecificHeight = function (t, e, n, i, o, r, tfh) {
+        return v11489;
+      }, TablePrintElement.prototype.getRowsInSpecificHeight = function (v11506, v11507, v11508, v11509, v11510, v11511, tfh) {
         var that = this;
-        var a = i.find("tbody"),
-          p = _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.pt.toPx(e);
+        var v11512 = v11509.find("tbody"),
+          v11513 = _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.pt.toPx(v11507);
 
-        n.find(".hiprint-printElement-tableTarget tbody").html("");
+        v11508.find(".hiprint-printElement-tableTarget tbody").html("");
         // 不是最后显示页脚
         if ("last" != this.options.tableFooterRepeat) {
-          n.find(".hiprint-printElement-tableTarget tfoot").remove();
+          v11508.find(".hiprint-printElement-tableTarget tfoot").remove();
         }
         // 仅首页显示表头
-        if ("first" == this.options.tableHeaderRepeat && o > 0) {
-          n.find(".hiprint-printElement-tableTarget thead").remove();
+        if ("first" == this.options.tableHeaderRepeat && v11510 > 0) {
+          v11508.find(".hiprint-printElement-tableTarget thead").remove();
         } else if ("none" == this.options.tableHeaderRepeat) {
           // 有数据（不是design）
-          if (t) {
-            n.find(".hiprint-printElement-tableTarget thead").remove();
+          if (v11506) {
+            v11508.find(".hiprint-printElement-tableTarget thead").remove();
           } else {
-            n.find(".hiprint-printElement-tableTarget thead").css("background", "firebrick");
-            n.find(".hiprint-printElement-tableTarget thead tr").css("background", "firebrick");
+            v11508.find(".hiprint-printElement-tableTarget thead").css("background", "firebrick");
+            v11508.find(".hiprint-printElement-tableTarget thead tr").css("background", "firebrick");
           }
         }
         var noPaging = "none" == this.panel.panelPageRule;
         // 不分页, 且不是设计时, 移除 thead
         var headTr;
-        if (t && noPaging) {
-          var headStyle = n.find(".hiprint-printElement-tableTarget thead").attr("style");
-          headTr = n.find(".hiprint-printElement-tableTarget thead tr").clone();
+        if (v11506 && noPaging) {
+          var headStyle = v11508.find(".hiprint-printElement-tableTarget thead").attr("style");
+          headTr = v11508.find(".hiprint-printElement-tableTarget thead tr").clone();
           if (headStyle) {
             headTr.attr("style", headStyle);
           } else {
-            headTr.css({"background": "#e8e8e8"});
+            headTr.css({ "background": "#e8e8e8" });
           }
-          n.find(".hiprint-printElement-tableTarget thead").remove();
+          v11508.find(".hiprint-printElement-tableTarget thead").remove();
         }
-        var s = n.outerHeight();
-        if (!noPaging && s > p) return {
+        var v11515 = v11508.outerHeight();
+        if (!noPaging && v11515 > v11513) return {
           target: void 0,
           length: 0,
           height: 0,
           isEnd: !1
         };
         var getGridColumns = this.options.getGridColumns();
-        for (var l = [], u = 0; u < getGridColumns; u++) {
-          for (var d = n.find(".hiprint-printElement-tableTarget:eq(" + u + ")"), c = void 0, h = []; ;) {
+        for (var v11516 = [], v11517 = 0; v11517 < getGridColumns; v11517++) {
+          for (var v11518 = v11508.find(".hiprint-printElement-tableTarget:eq(" + v11517 + ")"), v11519 = void 0, v11520 = [];;) {
             // 不分页处理
             if (noPaging) {
-              var trLen = a.find("tr").length;
-              if (0 == trLen) c = {
-                height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+              var trLen = v11512.find("tr").length;
+              if (0 == trLen) v11519 = {
+                height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
                 isEnd: !0
-              }, t && this.options.autoCompletion && (this.autoCompletion(p, d, tfh), s = n.outerHeight()); else {
-                var f = a.find("tr:lt(1)");
-                if (h.length == 0 && headTr) {
-                  d.find("tbody").append(headTr);
+              }, v11506 && this.options.autoCompletion && (this.autoCompletion(v11513, v11518, tfh), v11515 = v11508.outerHeight());else {
+                var v11522 = v11512.find("tr:lt(1)");
+                if (v11520.length == 0 && headTr) {
+                  v11518.find("tbody").append(headTr);
                 }
-                d.find("tbody").append(f);
-                var g = f.data("rowData");
-                l.push(g), h.push(g), s = n.outerHeight();
-                0 == trLen && (a.prepend(f), l.pop(), h.pop(), c = {
-                  height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+                v11518.find("tbody").append(v11522);
+                var v11523 = v11522.data("rowData");
+                v11516.push(v11523), v11520.push(v11523), v11515 = v11508.outerHeight();
+                0 == trLen && (v11512.prepend(v11522), v11516.pop(), v11520.pop(), v11519 = {
+                  height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
                   isEnd: !1
-                })
+                });
               }
             } else {
-              if (s <= p) if (0 == a.find("tr").length) c = {
-                height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+              if (v11515 <= v11513) if (0 == v11512.find("tr").length) v11519 = {
+                height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
                 isEnd: !0
-              }, t && this.options.autoCompletion && (this.autoCompletion(p, d, tfh), s = d.outerHeight()); else {
-                var f = a.find("tr:lt(1)");
-                if (that.options.rowsColumnsMerge && (o > 0 || u > 0) && h.length == 0) {
-                  f = that.fixMergeSpan(f, a);
+              }, v11506 && this.options.autoCompletion && (this.autoCompletion(v11513, v11518, tfh), v11515 = v11518.outerHeight());else {
+                var v11522 = v11512.find("tr:lt(1)");
+                if (that.options.rowsColumnsMerge && (v11510 > 0 || v11517 > 0) && v11520.length == 0) {
+                  v11522 = that.fixMergeSpan(v11522, v11512);
                 }
-                d.find("tbody").append(f);
-                var g = f.data("rowData");
-                l.push(g), h.push(g), (((s = d.outerHeight(), "last" == this.options.tableFooterRepeat ? s : s += tfh) > p) || (this.options.maxRows && h.length > +this.options.maxRows)) && (a.prepend(f), l.pop(), h.pop(), s = d.outerHeight(), c = {
-                  height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+                v11518.find("tbody").append(v11522);
+                var v11523 = v11522.data("rowData");
+                v11516.push(v11523), v11520.push(v11523), ((v11515 = v11518.outerHeight(), "last" == this.options.tableFooterRepeat ? v11515 : v11515 += tfh) > v11513 || this.options.maxRows && v11520.length > +this.options.maxRows) && (v11512.prepend(v11522), v11516.pop(), v11520.pop(), v11515 = v11518.outerHeight(), v11519 = {
+                  height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
                   isEnd: !1
                 });
               }
             }
 
-            if (c) {
+            if (v11519) {
               // 这里是table 没有tfoot, 后面再看什么原因...
-              if ("last" == this.options.tableFooterRepeat && !c.isEnd) break;
+              if ("last" == this.options.tableFooterRepeat && !v11519.isEnd) break;
               if ("no" !== this.options.tableFooterRepeat) {
                 if (noPaging) {
-                  d.find("tbody").append(_table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, this.getData(t), this.options, this.printElementType, t, h).children())
+                  v11518.find("tbody").append(_table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, this.getData(v11506), this.options, this.printElementType, v11506, v11520).children());
                 } else {
-                  _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, this.getData(t), this.options, this.printElementType, t, h).insertBefore(d.find("tbody"));
+                  _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.createTableFooter(this.printElementType.columns, this.getData(v11506), this.options, this.printElementType, v11506, v11520).insertBefore(v11518.find("tbody"));
                 }
-                that.css(d, t);
+                that.css(v11518, v11506);
               }
               break;
             }
           }
         }
 
-        var m = n.find(".hiprint-printElement-tableTarget tbody tr").length,
-          v = this.getGridColumnsFooterFormatter();
-        v && n.find(this.gridColumnsFooterCss).html(v(this.options, this.getData(t), t, l));
-        s = n.outerHeight();
+        var v11529 = v11508.find(".hiprint-printElement-tableTarget tbody tr").length,
+          v11530 = this.getGridColumnsFooterFormatter();
+        v11530 && v11508.find(this.gridColumnsFooterCss).html(v11530(this.options, this.getData(v11506), v11506, v11516));
+        v11515 = v11508.outerHeight();
         // 当每一页数据,都无法容纳表格行内容时:
-        let curRow = a.find("tr:lt(1)");
-        if (m == 0 && curRow.length && g == curRow.data("rowData")) {
-          d.find("tbody").append(curRow);
-          let height = d.find("tbody tr").outerHeight();
-          a.prepend(curRow);
+        let curRow = v11512.find("tr:lt(1)");
+        if (v11529 == 0 && curRow.length && v11523 == curRow.data("rowData")) {
+          v11518.find("tbody").append(curRow);
+          let height = v11518.find("tbody tr").outerHeight();
+          v11512.prepend(curRow);
           return {
-            target: $(`<div style="position:absolute;background: red;color: white;padding: 0px 4px;">${i18n.__('没有足够空间,显示下方内容, 可分页高度')}: `+ p +`px < ${i18n.__('当前需要高度')}: `+ height +'px</div>').append(curRow.css("background", "blue")),
-            length: m,
-            height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+            target: $(`<div style="position:absolute;background: red;color: white;padding: 0px 4px;">${i18n.__('没有足够空间,显示下方内容, 可分页高度')}: ` + v11513 + `px < ${i18n.__('当前需要高度')}: ` + height + 'px</div>').append(curRow.css("background", "blue")),
+            length: v11529,
+            height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
             isEnd: !1
-          }
+          };
         }
         // 方便调试看 值...
-        var zz = 0 == a.find("tr").length ? 0 == m && r ? {
+        var zz = 0 == v11512.find("tr").length ? 0 == v11529 && v11511 ? {
           target: void 0,
           length: 0,
           height: 0,
           isEnd: !0
         } : {
-          target: n.clone(),
-          length: m,
-          height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+          target: v11508.clone(),
+          length: v11529,
+          height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
           isEnd: !0
         } : {
-          target: n.clone(),
-          length: m,
-          height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(s),
+          target: v11508.clone(),
+          length: v11529,
+          height: _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.px.toPt(v11515),
           isEnd: !1
         };
         return zz;
       }, TablePrintElement.prototype.fixMergeSpan = function (tr, tbody) {
         const nextRowMap = new Map();
-        tr.children().each((_, td) => {
+        tr.children().each((v11534, td) => {
           var field = $(td).attr('field');
           nextRowMap.set(field, {
             rowSpan: 1,
             rowEnd: false
-          })
-          tr.nextAll().each((_, nextTr) => {
+          });
+          tr.nextAll().each((v11535, nextTr) => {
             if ($(nextTr).has(`td[field=${field}][rowspan=0]`).length && !nextRowMap.get(field).rowEnd) {
-              nextRowMap.set(field, { rowSpan: ++nextRowMap.get(field).rowSpan, rowEnd: false })
+              nextRowMap.set(field, { rowSpan: ++nextRowMap.get(field).rowSpan, rowEnd: false });
             } else {
-              nextRowMap.set(field, { ...nextRowMap.get(field), rowEnd: true })
+              nextRowMap.set(field, { ...nextRowMap.get(field), rowEnd: true });
             }
-          })
+          });
 
           if ($(td).attr("rowspan") < 1) {
             $(td).attr("rowspan", nextRowMap.get(field).rowSpan);
             $(td).css("display", "");
             if (this.options.rowsColumnsMergeClean) {
-              $(td).text("")
+              $(td).text("");
             }
           }
-        })
+        });
         return tr;
-      }, TablePrintElement.prototype.autoCompletion = function (t, e, tfh) {
+      }, TablePrintElement.prototype.autoCompletion = function (v11536, v11537, tfh) {
         var that = this;
-        for (var n, i = this.getEmptyRowTarget(), o = e.outerHeight() + tfh; t > o;) {
-          n = i.clone(), e.find("tbody").append(n), o = e.outerHeight() + tfh;
-          if (that.options.maxRows && e.find("tbody").children().length > that.options.maxRows) {
+        for (var v11538, v11539 = this.getEmptyRowTarget(), v11540 = v11537.outerHeight() + tfh; v11536 > v11540;) {
+          v11538 = v11539.clone(), v11537.find("tbody").append(v11538), v11540 = v11537.outerHeight() + tfh;
+          if (that.options.maxRows && v11537.find("tbody").children().length > that.options.maxRows) {
             break;
           }
         }
 
-        n && n.remove();
-      }, TablePrintElement.prototype.getData = function (t) {
-        if (!t) {
+        v11538 && v11538.remove();
+      }, TablePrintElement.prototype.getData = function (v11541) {
+        if (!v11541) {
           // 设计时表格 测试数据
           try {
             let testData = this.options.testData || '[{}]';
             return JSON.parse(testData);
-          } catch (e) {
-            console.log('table testData parse error', e);
+          } catch (v11542) {
+            console.log('table testData parse error', v11542);
             return [{}];
           }
         };
-        var f = this.getField();
-        var e = f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "";
-        return e ? JSON.parse(JSON.stringify(e)) : [];
-      }, TablePrintElement.prototype.onResize = function (t, e, n, i, o) {
-        _super.prototype.updateSizeAndPositionOptions.call(this, o, i, n, e), _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.resizeTableCellWidth(this.designTarget, this.getColumns(), this.options.getWidth());
+        var v11543 = this.getField();
+        var v11544 = v11543 ? v11543.split('.').reduce((v11545, v11546) => v11545 ? v11545[v11546] : v11541 ? v11541[v11546] : "", !1) || "" : "";
+        return v11544 ? JSON.parse(JSON.stringify(v11544)) : [];
+      }, TablePrintElement.prototype.onResize = function (v11547, v11548, v11549, v11550, v11551) {
+        _super.prototype.updateSizeAndPositionOptions.call(this, v11551, v11550, v11549, v11548), _table_TableExcelHelper__WEBPACK_IMPORTED_MODULE_6__.a.resizeTableCellWidth(this.designTarget, this.getColumns(), this.options.getWidth());
       }, TablePrintElement.prototype.getReizeableShowPoints = function () {
         return ["s", "e"];
-      }, TablePrintElement.prototype.design = function (t, e) {
-        var n = this;
+      }, TablePrintElement.prototype.design = function (v11553, v11554) {
+        var v11555 = this;
         this.designTarget.hidraggable({
           handle: this.designTarget.find(".hiprint-printElement-table-handle"),
-          axis: n.options.axis ? n.options.axis : void 0,
-          designTarget: n,
-          onDrag: function onDrag(t, i, o) {
-            n.updateSizeAndPositionOptions(i, o), n.createLineOfPosition(e);
+          axis: v11555.options.axis ? v11555.options.axis : void 0,
+          designTarget: v11555,
+          onDrag: function onDrag(v11556, v11557, v11558) {
+            v11555.updateSizeAndPositionOptions(v11557, v11558), v11555.createLineOfPosition(v11554);
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.changed = !0;
           },
           moveUnit: "pt",
           minMove: _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.movingDistance,
-          onBeforeDrag: function onBeforeDrag(t) {
-            _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !0, n.createLineOfPosition(e);
+          onBeforeDrag: function onBeforeDrag(v11561) {
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !0, v11555.createLineOfPosition(v11554);
           },
           getScale: function getScale() {
-            return n.designPaper.scale || 1;
+            return v11555.designPaper.scale || 1;
           },
-          onStopDrag: function onStopDrag(t) {
-            if (_HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.changed) _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "移动");
+          onStopDrag: function onStopDrag(v11563) {
+            if (_HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.changed) _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + v11555.templateId, "移动");
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !1,
-              _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.changed = !1,
-              n.removeLineOfPosition();
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.changed = !1,
+            v11555.removeLineOfPosition();
           }
         }), this.printElementType.editable && this.setHitable(), this.setColumnsOptions(), this.designTarget.hireizeable({
-          showPoints: n.getReizeableShowPoints(),
+          showPoints: v11555.getReizeableShowPoints(),
           // 是否显示宽高box
           showSizeBox: _HiPrintConfig__WEBPACK_IMPORTED_MODULE_1__.a.instance.showSizeBox,
           noContainer: !0,
@@ -5947,20 +5947,20 @@ var hiprint = function (t) {
             _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !0;
           },
           getScale: function getScale() {
-            return n.designPaper.scale || 1
+            return v11555.designPaper.scale || 1;
           },
-          onResize: function onResize(t, i, o, r, a) {
-            n.onResize(t, i, o, r, a), n.hitable && n.hitable.updateColumnGrips(), n.createLineOfPosition(e);
+          onResize: function onResize(v11570, v11571, v11572, v11573, v11574) {
+            v11555.onResize(v11570, v11571, v11572, v11573, v11574), v11555.hitable && v11555.hitable.updateColumnGrips(), v11555.createLineOfPosition(v11554);
           },
-          onStopResize: function onStopResize(r) {
-            _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + n.templateId, r ? "旋转" : "大小");
-            _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !1, n.removeLineOfPosition();
+          onStopResize: function onStopResize(v11575) {
+            _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + v11555.templateId, v11575 ? "旋转" : "大小");
+            _HiPrintlib__WEBPACK_IMPORTED_MODULE_9__.a.instance.draging = !1, v11555.removeLineOfPosition();
           }
-        }), this.bingKeyboardMoveEvent(this.designTarget, e);
+        }), this.bingKeyboardMoveEvent(this.designTarget, v11554);
       }, TablePrintElement.prototype.setHitable = function () {
-        var t = this;
+        var v11578 = this;
         this.hitable = new _hitable_HiTale__WEBPACK_IMPORTED_MODULE_7__.a({
-          templateId: t.templateId,
+          templateId: v11578.templateId,
           table: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)"),
           rows: this.getColumns(),
           resizeRow: !1,
@@ -5982,592 +5982,592 @@ var hiprint = function (t) {
           isEnableDeleteColumn: this.printElementType.isEnableDeleteColumn != undefined ? this.printElementType.isEnableDeleteColumn : !0,
           isEnableMergeCell: this.printElementType.isEnableMergeCell != undefined ? this.printElementType.isEnableMergeCell : !0
         }), _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.on("updateTable" + this.hitable.id, function () {
-          t.updateDesignViewFromOptions();
-          _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + t.templateId, "调整表头");
+          v11578.updateDesignViewFromOptions();
+          _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger("hiprintTemplateDataChanged_" + v11578.templateId, "调整表头");
         });
       }, TablePrintElement.prototype.setColumnsOptions = function () {
-        var t = this;
-        this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead td").bind("click.hiprint", function (e) {
-          var n = $(e.target).attr("id") || $(e.target).attr("column-id"),
-            i = t.getColumnByColumnId(n);
+        var v11582 = this;
+        this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead td").bind("click.hiprint", function (v11583) {
+          var v11584 = $(v11583.target).attr("id") || $(v11583.target).attr("column-id"),
+            v11585 = v11582.getColumnByColumnId(v11584);
 
-          if (i) {
-            var o = t.getPrintElementOptionItemsByName("tableColumn");
+          if (v11585) {
+            var v11586 = v11582.getPrintElementOptionItemsByName("tableColumn");
 
-            _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger(t.getPrintElementSelectEventKey(), {
-              printElement: t,
+            _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger(v11582.getPrintElementSelectEventKey(), {
+              printElement: v11582,
               customOptionsInput: [{
-                title: (i.title || `${i.id}(id)`) + `-${i18n.__('列属性')}`,
-                optionItems: o,
-                options: i,
-                callback: function callback(t) {
-                  o.forEach(function (t) {
-                    var e = t.getValue();
-                    if ("title" == t.name && e && !e.trim().endsWith("#") && !e.trim().startsWith("#")) {
-                      var n = e ? e.split("#") : "";
-                      i.title = n[0], n.length > 1 && (i.columnId = i.field = n[1]);
-                      i.columnId && i.target.attr("column-id", i.columnId);
-                      t.target.find("textarea").val(n[0]);
+                title: (v11585.title || `${v11585.id}(id)`) + `-${i18n.__('列属性')}`,
+                optionItems: v11586,
+                options: v11585,
+                callback: function callback(v11588) {
+                  v11586.forEach(function (v11589) {
+                    var v11590 = v11589.getValue();
+                    if ("title" == v11589.name && v11590 && !v11590.trim().endsWith("#") && !v11590.trim().startsWith("#")) {
+                      var v11591 = v11590 ? v11590.split("#") : "";
+                      v11585.title = v11591[0], v11591.length > 1 && (v11585.columnId = v11585.field = v11591[1]);
+                      v11585.columnId && v11585.target.attr("column-id", v11585.columnId);
+                      v11589.target.find("textarea").val(v11591[0]);
                       return;
                     }
-                    i[t.name] = e;
+                    v11585[v11589.name] = v11590;
                   });
                 }
               }]
             });
-          } else _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger(t.getPrintElementSelectEventKey(), {
-            printElement: t
+          } else _assets_plugins_hinnn__WEBPACK_IMPORTED_MODULE_3__.a.event.trigger(v11582.getPrintElementSelectEventKey(), {
+            printElement: v11582
           });
         });
-      }, TablePrintElement.prototype.filterOptionItems = function (t) {
-        var e = _super.prototype.filterOptionItems.call(this, t);
+      }, TablePrintElement.prototype.filterOptionItems = function (v11593) {
+        var v11594 = _super.prototype.filterOptionItems.call(this, v11593);
 
-        return this.printElementType.editable && 1 == this.options.columns.length ? e : t.filter(function (t) {
-          return "columns" != t.name;
+        return this.printElementType.editable && 1 == this.options.columns.length ? v11594 : v11593.filter(function (v11595) {
+          return "columns" != v11595.name;
         });
       }, TablePrintElement.prototype.getFooterFormatter = function () {
         var footerFormatter = void 0;
         if (this.printElementType.footerFormatter && (footerFormatter = this.printElementType.footerFormatter), this.options.footerFormatter) try {
-          var s = "footerFormatter=" + this.options.footerFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v11596 = "footerFormatter=" + this.options.footerFormatter;
+          eval(v11596);
+        } catch (v11597) {
+          console.log(v11597);
         }
         return footerFormatter;
       }, TablePrintElement.prototype.getGridColumnsFooterFormatter = function () {
         var gridColumnsFooterFormatter = void 0;
         if (this.printElementType.gridColumnsFooterFormatter && (gridColumnsFooterFormatter = this.printElementType.gridColumnsFooterFormatter), this.options.gridColumnsFooterFormatter) try {
-          var s = "gridColumnsFooterFormatter=" + this.options.gridColumnsFooterFormatter;
-          eval(s);
-        } catch (t) {
-          console.log(t);
+          var v11598 = "gridColumnsFooterFormatter=" + this.options.gridColumnsFooterFormatter;
+          eval(v11598);
+        } catch (v11599) {
+          console.log(v11599);
         }
         return gridColumnsFooterFormatter;
       }, TablePrintElement;
     }(_BasePrintElement__WEBPACK_IMPORTED_MODULE_0__.a);
-}, function (t, e, n) {
+}, function (v11601, v11602, v11603) {
   "use strict";
 
-  var i = function () {
-      return function (t) {
-        this.table = t.table, this.templateId = t.templateId, this.fields = t.fields, this.isEnableEdit = t.isEnableEdit, this.trs = t.trs, this.resizeRow = t.resizeRow, this.resizeColumn = t.resizeColumn, this.isEnableEditField = t.isEnableEditField, this.isEnableContextMenu = t.isEnableContextMenu, this.isEnableEditField = t.isEnableEditField, this.isEnableInsertRow = t.isEnableInsertRow, this.isEnableDeleteRow = t.isEnableDeleteRow, this.isEnableInsertColumn = t.isEnableInsertColumn, this.isEnableDeleteColumn = t.isEnableDeleteColumn, this.isEnableMergeCell = t.isEnableMergeCell, this.columnResizable = t.columnResizable, this.columnAlignEditable = t.columnAlignEditable;
+  var v11604 = function () {
+      return function (v11605) {
+        this.table = v11605.table, this.templateId = v11605.templateId, this.fields = v11605.fields, this.isEnableEdit = v11605.isEnableEdit, this.trs = v11605.trs, this.resizeRow = v11605.resizeRow, this.resizeColumn = v11605.resizeColumn, this.isEnableEditField = v11605.isEnableEditField, this.isEnableContextMenu = v11605.isEnableContextMenu, this.isEnableEditField = v11605.isEnableEditField, this.isEnableInsertRow = v11605.isEnableInsertRow, this.isEnableDeleteRow = v11605.isEnableDeleteRow, this.isEnableInsertColumn = v11605.isEnableInsertColumn, this.isEnableDeleteColumn = v11605.isEnableDeleteColumn, this.isEnableMergeCell = v11605.isEnableMergeCell, this.columnResizable = v11605.columnResizable, this.columnAlignEditable = v11605.columnAlignEditable;
       };
     }(),
-    o = function () {
-      function t(t) {
-        this.options = new i(t);
+    v11606 = function () {
+      function v11608(v11607) {
+        this.options = new v11604(v11607);
       }
 
-      return t.prototype.enableEidt = function () {
+      return v11608.prototype.enableEidt = function () {
         this.options.isEnableEdit;
-      }, t.prototype.disableEdit = function () {
+      }, v11608.prototype.disableEdit = function () {
         this.options.isEnableEdit;
-      }, t.prototype.isEnableEdit = function () {
+      }, v11608.prototype.isEnableEdit = function () {
         return this.options.isEnableEdit;
-      }, t;
+      }, v11608;
     }(),
-    r = n(0),
-    a = function () {
-      return function (t) {
-        this.cell = t.cell, this.link = t.link, this.linkType = t.linkType, this.bottom = t.bottom, this.rightMost = t.rightMost, this.rowLevel = t.rowLevel, this.columnLevel = t.columnLevel, this.indexInTableGridRow = t.indexInTableGridRow, this.indexInTableGridColumn = t.indexInTableGridColumn;
+    v11609 = v11603(0),
+    v11610 = function () {
+      return function (v11611) {
+        this.cell = v11611.cell, this.link = v11611.link, this.linkType = v11611.linkType, this.bottom = v11611.bottom, this.rightMost = v11611.rightMost, this.rowLevel = v11611.rowLevel, this.columnLevel = v11611.columnLevel, this.indexInTableGridRow = v11611.indexInTableGridRow, this.indexInTableGridColumn = v11611.indexInTableGridColumn;
       };
     }(),
-    p = n(10),
-    s = function () {
-      function t() {
+    v11612 = v11603(10),
+    v11613 = function () {
+      function v11614() {
       }
 
-      return t.getLeftTableCell = function (t, e) {
-        var n;
-        return t.forEach(function (t, i) {
-          t.cell && i < e && (n = t.cell);
-        }), n;
-      }, t.getIndex = function (t, e) {
-        var n;
-        return t.forEach(function (t, i) {
-          t.cell && t.cell.id == e && (n = i);
-        }), n;
-      }, t;
+      return v11614.getLeftTableCell = function (v11615, v11616) {
+        var v11617;
+        return v11615.forEach(function (v11618, v11619) {
+          v11618.cell && v11619 < v11616 && (v11617 = v11618.cell);
+        }), v11617;
+      }, v11614.getIndex = function (v11620, v11621) {
+        var v11622;
+        return v11620.forEach(function (v11623, v11624) {
+          v11623.cell && v11623.cell.id == v11621 && (v11622 = v11624);
+        }), v11622;
+      }, v11614;
     }(),
-    l = n(13),
-    u = n(11),
-    d = function () {
-      return function (t, e) {
-        this.target = t, this.grips = e;
+    v11625 = v11603(13),
+    v11626 = v11603(11),
+    v11627 = function () {
+      return function (v11628, v11629) {
+        this.target = v11628, this.grips = v11629;
       };
     }(),
-    c = function () {
-      return function (t) {
-        this.target = t;
+    v11630 = function () {
+      return function (v11631) {
+        this.target = v11631;
       };
     }(),
-    h = function () {
+    v11632 = function () {
       return function () {
         this.rowColumns = [];
       };
     }(),
-    f = function () {
-      function t() {
+    v11633 = function () {
+      function v11634() {
       }
 
-      return t.getColumnsWidth = function (e, n) {
-        var i = {},
-          o = t.allAutoWidth(e);
-        return e.rowColumns.forEach(function (t) {
-          var e = n - 0,
-            r = t.width / o * (e > 0 ? e : 0);
-          i[t.id] = r;
-        }), i;
-      }, t.resizeTableCellWeight = function (t) {
-        t.forEach(function (t) {
-          t.columns.forEach(function (t) {
-            t.hasWidth && $(t.getTarget()).css("width", t.width + "pt");
+      return v11634.getColumnsWidth = function (v11635, v11636) {
+        var v11637 = {},
+          v11638 = v11634.allAutoWidth(v11635);
+        return v11635.rowColumns.forEach(function (v11639) {
+          var v11640 = v11636 - 0,
+            v11641 = v11639.width / v11638 * (v11640 > 0 ? v11640 : 0);
+          v11637[v11639.id] = v11641;
+        }), v11637;
+      }, v11634.resizeTableCellWeight = function (v11642) {
+        v11642.forEach(function (v11643) {
+          v11643.columns.forEach(function (v11644) {
+            v11644.hasWidth && $(v11644.getTarget()).css("width", v11644.width + "pt");
           });
         });
-      }, t.allAutoWidth = function (t) {
-        var e = 0;
-        return t.rowColumns.forEach(function (t) {
-          e += t.width;
-        }), e;
-      }, t.reconsitutionTableColumnTree = function (t, e, n) {
-        for (var i = e || new h(), o = function o(e) {
-          i.totalLayer = e + 1, i[e] = t[e].columns, i.rowColumns = i.rowColumns.concat(i[e].filter(function (n) {
-            return n.rowspan == t.length - e;
-          }));
-        }, r = 0; r < t.length; r++) {
-          o(r);
+      }, v11634.allAutoWidth = function (v11645) {
+        var v11646 = 0;
+        return v11645.rowColumns.forEach(function (v11647) {
+          v11646 += v11647.width;
+        }), v11646;
+      }, v11634.reconsitutionTableColumnTree = function (v11648, v11649, v11650) {
+        for (var v11651 = v11649 || new v11632(), v11652 = function v11653(v11654) {
+            v11651.totalLayer = v11654 + 1, v11651[v11654] = v11648[v11654].columns, v11651.rowColumns = v11651.rowColumns.concat(v11651[v11654].filter(function (v11655) {
+              return v11655.rowspan == v11648.length - v11654;
+            }));
+          }, v11656 = 0; v11656 < v11648.length; v11656++) {
+          v11652(v11656);
         }
 
-        return i;
-      }, t;
+        return v11651;
+      }, v11634;
     }(),
-    g = n(2),
-    m = function () {
-      function t(t) {
-        this.signature = "HiTresizer", this.hitable = t, this.rows = t.rows, this.target = t.target;
+    v11657 = v11603(2),
+    v11658 = function () {
+      function v11660(v11659) {
+        this.signature = "HiTresizer", this.hitable = v11659, this.rows = v11659.rows, this.target = v11659.target;
       }
 
-      return t.prototype.init = function () {
+      return v11660.prototype.init = function () {
         this.addResizeRowAndColumn(), this.hitable.optionsCoat.options.resizeColumn && this.createColumnGrips(), this.hitable.optionsCoat.options.resizeRow && this.createRowGrips();
-      }, t.prototype.resizeTableCellWidth = function () {
-        f.resizeTableCellWeight(this.rows);
-      }, t.prototype.addResizeRowAndColumn = function () {
-      }, t.prototype.createColumnGrips = function () {
-        var t = this,
-          e = this,
-          n = [],
-          i = $('<div class="columngrips"/>');
-        i.width(this.target.width()), this.rows.forEach(function (o) {
-          (o.columns || []).filter(function (column) {return column.checked}).forEach(function (o, a) {
-            if (o.getTarget().attr("haswidth")) {
-              var p = $('<div class="columngrip"><div class="gripResizer"></div></div>');
-              i.append(p);
-              var s = new c(p);
-              n.length > 0 && (n[n.length - 1].nextGrip = s), n.push(s), t.syncGrips(o, s), $(p).hidraggable({
+      }, v11660.prototype.resizeTableCellWidth = function () {
+        v11633.resizeTableCellWeight(this.rows);
+      }, v11660.prototype.addResizeRowAndColumn = function () {
+      }, v11660.prototype.createColumnGrips = function () {
+        var v11661 = this,
+          v11662 = this,
+          v11663 = [],
+          v11664 = $('<div class="columngrips"/>');
+        v11664.width(this.target.width()), this.rows.forEach(function (v11665) {
+          (v11665.columns || []).filter(function (column) {return column.checked;}).forEach(function (v11666, v11667) {
+            if (v11666.getTarget().attr("haswidth")) {
+              var v11668 = $('<div class="columngrip"><div class="gripResizer"></div></div>');
+              v11664.append(v11668);
+              var v11669 = new v11630(v11668);
+              v11663.length > 0 && (v11663[v11663.length - 1].nextGrip = v11669), v11663.push(v11669), v11661.syncGrips(v11666, v11669), $(v11668).hidraggable({
                 axis: "h",
-                onDrag: function onDrag(t, e, n) {
+                onDrag: function onDrag(v11670, v11671, v11672) {
                 },
                 moveUnit: "pt",
                 minMove: 1,
                 getScale: function getScale() {
-                  return ($('.hiprint-printPaper')[0].style.transform && parseFloat($('.hiprint-printPaper')[0].style.transform.slice(6, -1))) || 1;
+                  return $('.hiprint-printPaper')[0].style.transform && parseFloat($('.hiprint-printPaper')[0].style.transform.slice(6, -1)) || 1;
                 },
-                onBeforeDrag: function onBeforeDrag(t) {
-                  if (g.a.instance.draging = !0, !s.nextGrip) return !1;
-                  e.dragingGrip = s, e.dragingGrip.left = parseFloat(e.dragingGrip.target.css("left").replace("px", "")), s.target.addClass("columngripDraging");
+                onBeforeDrag: function onBeforeDrag(v11673) {
+                  if (v11657.a.instance.draging = !0, !v11669.nextGrip) return !1;
+                  v11662.dragingGrip = v11669, v11662.dragingGrip.left = parseFloat(v11662.dragingGrip.target.css("left").replace("px", "")), v11669.target.addClass("columngripDraging");
                 },
-                onStopDrag: function onStopDrag(n) {
-                  g.a.instance.draging = !1;
-                  var i = parseFloat(e.dragingGrip.target.css("left").replace("px", "")),
-                    o = r.a.px.toPt(i - e.dragingGrip.left);
+                onStopDrag: function onStopDrag(v11675) {
+                  v11657.a.instance.draging = !1;
+                  var v11677 = parseFloat(v11662.dragingGrip.target.css("left").replace("px", "")),
+                    v11678 = v11609.a.px.toPt(v11677 - v11662.dragingGrip.left);
                   // 表格列宽限制 最小宽度为10pt
-                  if (s.cell.width + o < 10) {
-                    o = 10 - s.cell.width
-                  } else if (s.nextGrip.cell.width - o < 10) {
-                    o = s.nextGrip.cell.width - 10
+                  if (v11669.cell.width + v11678 < 10) {
+                    v11678 = 10 - v11669.cell.width;
+                  } else if (v11669.nextGrip.cell.width - v11678 < 10) {
+                    v11678 = v11669.nextGrip.cell.width - 10;
                   }
-                  s.cell.width = s.cell.width + o, s.nextGrip.cell.width = s.nextGrip.cell.width - o, t.resizeTableCellWidth(), s.target.removeClass("columngripDraging"), e.updateColumnGrips();
+                  v11669.cell.width = v11669.cell.width + v11678, v11669.nextGrip.cell.width = v11669.nextGrip.cell.width - v11678, v11661.resizeTableCellWidth(), v11669.target.removeClass("columngripDraging"), v11662.updateColumnGrips();
                 }
               });
             }
           });
-        }), this.target.before(i), this.cgripContariner = new d(i, n);
-      }, t.prototype.updateColumnGrips = function () {
+        }), this.target.before(v11664), this.cgripContariner = new v11627(v11664, v11663);
+      }, v11660.prototype.updateColumnGrips = function () {
         this.cgripContariner && (this.cgripContariner.target.remove(), this.createColumnGrips());
-      }, t.prototype.updateRowGrips = function () {
+      }, v11660.prototype.updateRowGrips = function () {
         this.rgripContariner && (this.rgripContariner.target.remove(), this.createRowGrips());
-      }, t.prototype.createRowGrips = function () {
-        var t = this,
-          e = this,
-          n = [],
-          i = $('<div class="rowgrips"/>');
-        this.rows.forEach(function (o, a) {
-          var p = $('<div class="rowgrip"><div class="gripResizer"></div></div>');
-          i.append(p);
-          var s = new c(p);
-          n.push(s), a > 0 && a < t.rows.length && $(p).hidraggable({
+      }, v11660.prototype.createRowGrips = function () {
+        var v11680 = this,
+          v11681 = this,
+          v11682 = [],
+          v11683 = $('<div class="rowgrips"/>');
+        this.rows.forEach(function (v11684, v11685) {
+          var v11686 = $('<div class="rowgrip"><div class="gripResizer"></div></div>');
+          v11683.append(v11686);
+          var v11687 = new v11630(v11686);
+          v11682.push(v11687), v11685 > 0 && v11685 < v11680.rows.length && $(v11686).hidraggable({
             axis: "v",
-            onDrag: function onDrag(t, e, n) {
+            onDrag: function onDrag(v11688, v11689, v11690) {
             },
             moveUnit: "pt",
             minMove: 1,
-            onBeforeDrag: function onBeforeDrag(t) {
-              e.dragingGrip = s, e.dragingGrip.top = parseFloat(e.dragingGrip.target.css("top").replace("px", "")), s.target.addClass("rowgripDraging");
+            onBeforeDrag: function onBeforeDrag(v11691) {
+              v11681.dragingGrip = v11687, v11681.dragingGrip.top = parseFloat(v11681.dragingGrip.target.css("top").replace("px", "")), v11687.target.addClass("rowgripDraging");
             },
-            onStopDrag: function onStopDrag(t) {
-              var n = parseFloat(e.dragingGrip.target.css("top").replace("px", "")),
-                i = r.a.px.toPt(n - e.dragingGrip.top + e.rows[a].columns[0].getTarget().height());
-              e.rows[a].columns[0].getTarget().css("height", i + "pt"), e.syncRowGrips(), s.target.removeClass("rowgripDraging");
+            onStopDrag: function onStopDrag(v11692) {
+              var v11693 = parseFloat(v11681.dragingGrip.target.css("top").replace("px", "")),
+                v11694 = v11609.a.px.toPt(v11693 - v11681.dragingGrip.top + v11681.rows[v11685].columns[0].getTarget().height());
+              v11681.rows[v11685].columns[0].getTarget().css("height", v11694 + "pt"), v11681.syncRowGrips(), v11687.target.removeClass("rowgripDraging");
             }
           });
-        }), this.target.before(i), this.rgripContariner = new d(i, n), this.syncRowGrips();
-      }, t.prototype.syncGrips = function (t, e) {
-        var n = t.getTarget();
-        e.cell = t, e.target.css({
-          left: n.offset().left - this.target.offset().left + n.outerWidth(!1),
+        }), this.target.before(v11683), this.rgripContariner = new v11627(v11683, v11682), this.syncRowGrips();
+      }, v11660.prototype.syncGrips = function (v11696, v11697) {
+        var v11698 = v11696.getTarget();
+        v11697.cell = v11696, v11697.target.css({
+          left: v11698.offset().left - this.target.offset().left + v11698.outerWidth(!1),
           height: 30
         });
-      }, t.prototype.syncRowGrips = function () {
-        var t = this;
-        this.rgripContariner.target.height(this.target.height()), this.rows.forEach(function (e, n) {
-          var i = e.columns[0].getTarget();
-          t.rgripContariner.grips[n].target.css({
-            top: i.offset().top - t.target.offset().top + i.outerHeight(!1),
+      }, v11660.prototype.syncRowGrips = function () {
+        var v11699 = this;
+        this.rgripContariner.target.height(this.target.height()), this.rows.forEach(function (v11700, v11701) {
+          var v11702 = v11700.columns[0].getTarget();
+          v11699.rgripContariner.grips[v11701].target.css({
+            top: v11702.offset().top - v11699.target.offset().top + v11702.outerHeight(!1),
             width: 30
           });
         });
-      }, t.prototype.addResizerHeadRow = function () {
+      }, v11660.prototype.addResizerHeadRow = function () {
         this.target.find("thead").prepend();
-      }, t;
+      }, v11660;
     }(),
-    v = function () {
-      function t() {
+    v11703 = function () {
+      function v11704() {
       }
 
-      return t.prototype.init = function () {
-      }, t.prototype.updateRowGrips = function () {
-      }, t.prototype.updateColumnGrips = function () {
-      }, t;
+      return v11704.prototype.init = function () {
+      }, v11704.prototype.updateRowGrips = function () {
+      }, v11704.prototype.updateColumnGrips = function () {
+      }, v11704;
     }();
 
-  n.d(e, "a", function () {
-    return y;
+  v11603.d(v11602, "a", function () {
+    return v11706;
   });
 
-  var y = function () {
-    function t(t) {
-      this.id = u.a.createId(), this.optionsCoat = new o(t), this.handle = t.handle, this.target = t.table, this.initRows(t.rows), this.init(t), this.tableCellSelector = new p.a(this.rows, this.target), this.resizer = this.optionsCoat.options.columnResizable ? new m(this) : new v(), this.resizer.init();
+  var v11706 = function () {
+    function v11710(v11707) {
+      this.id = v11626.a.createId(), this.optionsCoat = new v11606(v11707), this.handle = v11707.handle, this.target = v11707.table, this.initRows(v11707.rows), this.init(v11707), this.tableCellSelector = new v11612.a(this.rows, this.target), this.resizer = this.optionsCoat.options.columnResizable ? new v11658(this) : new v11703(), this.resizer.init();
     }
 
-    return t.prototype.insertRow = function (t, e, n) {
-      var i = e || this.tableCellSelector.getSingleSelect(),
-        o = i.cell,
-        a = this.rows[i.rowIndex],
-        p = i.rowIndex,
-        s = this.getCellGrid(),
-        u = new l.a();
-      if (u.init(this.optionsCoat, void 0, a.isHead), n && u.getTarget().addClass(n), "above" == t) s[p].forEach(function (t) {
-        var e = t.link ? t.link : t.cell,
-          n = e.width / e.colspan;
+    return v11710.prototype.insertRow = function (v11711, v11712, v11713) {
+      var v11714 = v11712 || this.tableCellSelector.getSingleSelect(),
+        v11715 = v11714.cell,
+        v11716 = this.rows[v11714.rowIndex],
+        v11717 = v11714.rowIndex,
+        v11718 = this.getCellGrid(),
+        v11719 = new v11625.a();
+      if (v11719.init(this.optionsCoat, void 0, v11716.isHead), v11713 && v11719.getTarget().addClass(v11713), "above" == v11711) v11718[v11717].forEach(function (v11721) {
+        var v11722 = v11721.link ? v11721.link : v11721.cell,
+          v11723 = v11722.width / v11722.colspan;
 
-        if (0 == t.columnLevel) {
-          var i = u.createTableCell();
-          i.width = n, u.insertCellToLast(i);
+        if (0 == v11721.columnLevel) {
+          var v11724 = v11719.createTableCell();
+          v11724.width = v11723, v11719.insertCellToLast(v11724);
         } else {
-          if ("column" == t.linkType) {
-            var o = t.link.getTarget();
-            t.link.rowspan += 1, o.attr("rowspan", t.link.rowspan);
+          if ("column" == v11721.linkType) {
+            var v11725 = v11721.link.getTarget();
+            v11721.link.rowspan += 1, v11725.attr("rowspan", v11721.link.rowspan);
           }
 
-          t.linkType;
+          v11721.linkType;
         }
-      }), this.rows.splice(p, 0, u), a.getTarget().before(u.getTarget()), r.a.event.trigger("newRow" + this.id, u); else {
-        var d = p + o.rowspan - 1;
-        s[d].forEach(function (t) {
-          var e = t.link ? t.link : t.cell,
-            n = e.width / e.colspan;
+      }), this.rows.splice(v11717, 0, v11719), v11716.getTarget().before(v11719.getTarget()), v11609.a.event.trigger("newRow" + this.id, v11719);else {
+        var v11727 = v11717 + v11715.rowspan - 1;
+        v11718[v11727].forEach(function (v11728) {
+          var v11729 = v11728.link ? v11728.link : v11728.cell,
+            v11730 = v11729.width / v11729.colspan;
 
-          if (t.bottom) {
-            var i = u.createTableCell();
-            i.width = n, u.insertCellToLast(i);
+          if (v11728.bottom) {
+            var v11731 = v11719.createTableCell();
+            v11731.width = v11730, v11719.insertCellToLast(v11731);
           } else {
-            if (t.cell) {
-              var o = t.cell.getTarget();
-              t.cell.rowspan += 1, o.attr("rowspan", t.cell.rowspan);
+            if (v11728.cell) {
+              var v11732 = v11728.cell.getTarget();
+              v11728.cell.rowspan += 1, v11732.attr("rowspan", v11728.cell.rowspan);
             }
 
-            if ("column" == t.linkType) {
-              o = t.link.getTarget();
-              t.link.rowspan += 1, o.attr("rowspan", t.link.rowspan);
+            if ("column" == v11728.linkType) {
+              v11732 = v11728.link.getTarget();
+              v11728.link.rowspan += 1, v11732.attr("rowspan", v11728.link.rowspan);
             }
           }
-        }), this.rows.splice(d + 1, 0, u), this.rows[d].getTarget().after(u.getTarget()), r.a.event.trigger("newRow" + this.id, u);
+        }), this.rows.splice(v11727 + 1, 0, v11719), this.rows[v11727].getTarget().after(v11719.getTarget()), v11609.a.event.trigger("newRow" + this.id, v11719);
       }
-    }, t.prototype.insertColumn = function (t, e, n, i) {
-      var o = this,
-        a = this.rows.concat(this.trRows),
-        p = e || this.tableCellSelector.getSingleSelect(),
-        s = p.cell,
-        l = p.rowIndex,
-        u = this.getCellGrid(a),
-        d = u[l].filter(function (t) {
-          return t.cell && t.cell.id == s.id || t.link && t.link.id == s.id;
+    }, v11710.prototype.insertColumn = function (v11734, v11735, v11736, v11737) {
+      var v11738 = this,
+        v11739 = this.rows.concat(this.trRows),
+        v11740 = v11735 || this.tableCellSelector.getSingleSelect(),
+        v11741 = v11740.cell,
+        v11742 = v11740.rowIndex,
+        v11743 = this.getCellGrid(v11739),
+        v11744 = v11743[v11742].filter(function (v11745) {
+          return v11745.cell && v11745.cell.id == v11741.id || v11745.link && v11745.link.id == v11741.id;
         });
 
-      if ("left" == t) {
-        var c = d[0].indexInTableGridRow;
-        u.forEach(function (t, e) {
-          var p = t[c],
-            s = t.filter(function (t, e) {
-              return e >= c && t.cell;
+      if ("left" == v11734) {
+        var v11746 = v11744[0].indexInTableGridRow;
+        v11743.forEach(function (v11747, v11748) {
+          var v11749 = v11747[v11746],
+            v11750 = v11747.filter(function (v11751, v11752) {
+              return v11752 >= v11746 && v11751.cell;
             });
 
-          if (0 == p.rowLevel) {
-            var l = a[e],
-              u = a[e].createTableCell();
-            n && u.getTarget().addClass(n), null != i && (u.width = i), s.length ? l.insertToTargetCellLeft(s[0].cell, u) : l.insertCellToLast(u), r.a.event.trigger("newCell" + o.id, u);
-          } else if ("row" == p.linkType) {
-            var d = p.link.getTarget();
-            p.link.colspan += 1, d.attr("colspan", p.link.colspan);
+          if (0 == v11749.rowLevel) {
+            var v11753 = v11739[v11748],
+              v11754 = v11739[v11748].createTableCell();
+            v11736 && v11754.getTarget().addClass(v11736), null != v11737 && (v11754.width = v11737), v11750.length ? v11753.insertToTargetCellLeft(v11750[0].cell, v11754) : v11753.insertCellToLast(v11754), v11609.a.event.trigger("newCell" + v11738.id, v11754);
+          } else if ("row" == v11749.linkType) {
+            var v11756 = v11749.link.getTarget();
+            v11749.link.colspan += 1, v11756.attr("colspan", v11749.link.colspan);
           }
         });
       } else {
-        var h = d[d.length - 1].indexInTableGridRow;
-        u.forEach(function (t, e) {
-          var p = t[h],
-            s = t.filter(function (t, e) {
-              return e <= h && t.cell;
+        var v11757 = v11744[v11744.length - 1].indexInTableGridRow;
+        v11743.forEach(function (v11758, v11759) {
+          var v11760 = v11758[v11757],
+            v11761 = v11758.filter(function (v11762, v11763) {
+              return v11763 <= v11757 && v11762.cell;
             });
 
-          if (p.rightMost) {
-            var l = a[e],
-              u = l.createTableCell();
-            n && u.getTarget().addClass(n), null != i && (u.width = i), s.length ? l.insertToTargetCellRight(s[s.length - 1].cell, u) : l.insertCellToFirst(u), r.a.event.trigger("newCell" + o.id, u);
+          if (v11760.rightMost) {
+            var v11764 = v11739[v11759],
+              v11765 = v11764.createTableCell();
+            v11736 && v11765.getTarget().addClass(v11736), null != v11737 && (v11765.width = v11737), v11761.length ? v11764.insertToTargetCellRight(v11761[v11761.length - 1].cell, v11765) : v11764.insertCellToFirst(v11765), v11609.a.event.trigger("newCell" + v11738.id, v11765);
           } else {
-            var d = p.link || p.cell;
+            var v11767 = v11760.link || v11760.cell;
 
-            if ("row" == p.linkType) {
-              var c = d.getTarget();
-              d.colspan += 1, c.attr("colspan", d.colspan);
+            if ("row" == v11760.linkType) {
+              var v11768 = v11767.getTarget();
+              v11767.colspan += 1, v11768.attr("colspan", v11767.colspan);
             }
 
-            if (p.cell) {
-              c = d.getTarget();
-              d.colspan += 1, c.attr("colspan", d.colspan);
+            if (v11760.cell) {
+              v11768 = v11767.getTarget();
+              v11767.colspan += 1, v11768.attr("colspan", v11767.colspan);
             }
           }
         });
       }
-    }, t.prototype.deleteRow = function () {
-      var t = this,
-        e = this.tableCellSelector.getSingleSelect(),
-        n = (e.cell, this.rows[e.rowIndex], e.rowIndex),
-        i = this.getCellGrid(),
-        o = this.rows[n];
-      i[n].forEach(function (e, r) {
-        if (e.cell) {
-          if (1 == e.cell.rowspan) o.removeCell(e.cell); else {
-            o.removeCell(e.cell);
-            var a = i[n + 1].filter(function (t, e) {
-                return t.cell && e > r;
+    }, v11710.prototype.deleteRow = function () {
+      var v11769 = this,
+        v11770 = this.tableCellSelector.getSingleSelect(),
+        v11771 = (v11770.cell, this.rows[v11770.rowIndex], v11770.rowIndex),
+        v11772 = this.getCellGrid(),
+        v11773 = this.rows[v11771];
+      v11772[v11771].forEach(function (v11774, v11775) {
+        if (v11774.cell) {
+          if (1 == v11774.cell.rowspan) v11773.removeCell(v11774.cell);else {
+            v11773.removeCell(v11774.cell);
+            var v11776 = v11772[v11771 + 1].filter(function (v11777, v11778) {
+                return v11777.cell && v11778 > v11775;
               }),
-              p = t.rows[n + 1],
-              s = p.createTableCell(e.cell.rowspan - 1, e.cell.colspan);
-            a.length ? p.insertToTargetCellLeft(a[0].cell, s) : p.insertCellToLast(s);
+              v11779 = v11769.rows[v11771 + 1],
+              v11780 = v11779.createTableCell(v11774.cell.rowspan - 1, v11774.cell.colspan);
+            v11776.length ? v11779.insertToTargetCellLeft(v11776[0].cell, v11780) : v11779.insertCellToLast(v11780);
           }
-        } else if ("column" == e.linkType) {
-          var l = e.link;
-          l.rowspan -= 1, l.getTarget().attr("rowspan", l.rowspan);
+        } else if ("column" == v11774.linkType) {
+          var v11781 = v11774.link;
+          v11781.rowspan -= 1, v11781.getTarget().attr("rowspan", v11781.rowspan);
         }
-      }), o.getTarget().remove(), this.rows.splice(n, 1);
-    }, t.prototype.deleteColums = function () {
-      var t = this.rows.concat(this.trRows),
-        e = this.tableCellSelector.getSingleSelect(),
-        n = e.cell,
-        i = e.rowIndex,
-        o = this.getCellGrid(t),
-        r = o[i].filter(function (t) {
-          return t.cell && t.cell.id == n.id || t.link && t.link.id == n.id;
+      }), v11773.getTarget().remove(), this.rows.splice(v11771, 1);
+    }, v11710.prototype.deleteColums = function () {
+      var v11782 = this.rows.concat(this.trRows),
+        v11783 = this.tableCellSelector.getSingleSelect(),
+        v11784 = v11783.cell,
+        v11785 = v11783.rowIndex,
+        v11786 = this.getCellGrid(v11782),
+        v11787 = v11786[v11785].filter(function (v11788) {
+          return v11788.cell && v11788.cell.id == v11784.id || v11788.link && v11788.link.id == v11784.id;
         })[0].indexInTableGridRow;
-      o.forEach(function (e, n) {
-        var i = e[r];
-        i.cell ? 1 == i.cell.colspan ? t[n].removeCell(i.cell) : (i.cell.colspan -= 1, i.cell.getTarget().attr("colspan", i.cell.colspan)) : "row" == i.linkType && (i.link.colspan -= 1, i.link.getTarget().attr("colspan", i.link.colspan));
+      v11786.forEach(function (v11789, v11790) {
+        var v11791 = v11789[v11787];
+        v11791.cell ? 1 == v11791.cell.colspan ? v11782[v11790].removeCell(v11791.cell) : (v11791.cell.colspan -= 1, v11791.cell.getTarget().attr("colspan", v11791.cell.colspan)) : "row" == v11791.linkType && (v11791.link.colspan -= 1, v11791.link.getTarget().attr("colspan", v11791.link.colspan));
       });
-    }, t.prototype.mergeCell = function () {
-      var t = this,
-        e = this.tableCellSelector.getSelectedCells();
+    }, v11710.prototype.mergeCell = function () {
+      var v11792 = this,
+        v11793 = this.tableCellSelector.getSelectedCells();
 
-      if (0 != e.length) {
-        var n = e[0][0].cell;
-        e.forEach(function (i, o) {
-          i.forEach(function (i, r) {
-            0 == o ? 0 != r && (n.colspan += i.cell.colspan, t.rows[i.rowIndex].removeCell(i.cell)) : t.rows[i.rowIndex].removeCell(i.cell), 0 == r && e[0][0].rowIndex + n.rowspan - 1 < i.rowIndex && (n.rowspan += i.cell.rowspan);
+      if (0 != v11793.length) {
+        var v11794 = v11793[0][0].cell;
+        v11793.forEach(function (v11795, v11796) {
+          v11795.forEach(function (v11797, v11798) {
+            0 == v11796 ? 0 != v11798 && (v11794.colspan += v11797.cell.colspan, v11792.rows[v11797.rowIndex].removeCell(v11797.cell)) : v11792.rows[v11797.rowIndex].removeCell(v11797.cell), 0 == v11798 && v11793[0][0].rowIndex + v11794.rowspan - 1 < v11797.rowIndex && (v11794.rowspan += v11797.cell.rowspan);
           });
-        }), n.getTarget().attr("colspan", n.colspan), n.getTarget().attr("rowspan", n.rowspan), this.tableCellSelector.setSingleSelect(e[0][0]);
+        }), v11794.getTarget().attr("colspan", v11794.colspan), v11794.getTarget().attr("rowspan", v11794.rowspan), this.tableCellSelector.setSingleSelect(v11793[0][0]);
       }
-    }, t.prototype.splitCell = function () {
-      var t = this.tableCellSelector.getSingleSelect(),
-        e = this.getCellGrid(),
-        n = s.getIndex(e[t.rowIndex], t.cell.id);
+    }, v11710.prototype.splitCell = function () {
+      var v11799 = this.tableCellSelector.getSingleSelect(),
+        v11800 = this.getCellGrid(),
+        v11801 = v11613.getIndex(v11800[v11799.rowIndex], v11799.cell.id);
 
-      if (t) {
-        for (var i = t.rowIndex; i < t.rowIndex + t.cell.rowspan; i++) {
-          for (var o = this.rows[i], r = i == t.rowIndex ? t.cell : s.getLeftTableCell(e[i], n), a = 0; a < t.cell.colspan; a++) {
-            i == t.rowIndex && 0 == a || (r ? o.insertToTargetCellRight(r, o.createTableCell()) : o.insertCellToFirst(o.createTableCell()));
+      if (v11799) {
+        for (var v11802 = v11799.rowIndex; v11802 < v11799.rowIndex + v11799.cell.rowspan; v11802++) {
+          for (var v11803 = this.rows[v11802], v11804 = v11802 == v11799.rowIndex ? v11799.cell : v11613.getLeftTableCell(v11800[v11802], v11801), v11805 = 0; v11805 < v11799.cell.colspan; v11805++) {
+            v11802 == v11799.rowIndex && 0 == v11805 || (v11804 ? v11803.insertToTargetCellRight(v11804, v11803.createTableCell()) : v11803.insertCellToFirst(v11803.createTableCell()));
           }
         }
 
-        t.cell.rowspan = 1, t.cell.colspan = 1, t.cell.getTarget().attr("colspan", t.cell.colspan), t.cell.getTarget().attr("rowspan", t.cell.rowspan);
+        v11799.cell.rowspan = 1, v11799.cell.colspan = 1, v11799.cell.getTarget().attr("colspan", v11799.cell.colspan), v11799.cell.getTarget().attr("rowspan", v11799.cell.rowspan);
       }
-    }, t.prototype.init = function (t) {
-      var e = this;
-      $(this.target).addClass("hitable"), this.optionsCoat.onBeforEdit = function (n) {
-        if (e.optionsCoat.options.onBeforEdit && !1 === t.onBeforEdit(n)) return !1;
-        return e.optionsCoat.editingCell && e.optionsCoat.editingCell.endEdit(), !0;
-      }, $(this.target).mousedown(function (t) {
-        e.optionsCoat.isLeftMouseButtonDown = !0;
-      }), $(this.target).mouseup(function (t) {
-        e.optionsCoat.isLeftMouseButtonDown = !1;
-      }), this.initContext(), this.target.on("mousemove", function (t) {
-        1 === t.buttons && e.tableCellSelector.multipleSelectByXY(t.pageX, t.pageY);
-      }).on("mousedown", function (t) {
-        1 === t.buttons && e.tableCellSelector.singleSelectByXY(t.pageX, t.pageY);
+    }, v11710.prototype.init = function (v11806) {
+      var v11807 = this;
+      $(this.target).addClass("hitable"), this.optionsCoat.onBeforEdit = function (v11808) {
+        if (v11807.optionsCoat.options.onBeforEdit && !1 === v11806.onBeforEdit(v11808)) return !1;
+        return v11807.optionsCoat.editingCell && v11807.optionsCoat.editingCell.endEdit(), !0;
+      }, $(this.target).mousedown(function (v11809) {
+        v11807.optionsCoat.isLeftMouseButtonDown = !0;
+      }), $(this.target).mouseup(function (v11810) {
+        v11807.optionsCoat.isLeftMouseButtonDown = !1;
+      }), this.initContext(), this.target.on("mousemove", function (v11811) {
+        1 === v11811.buttons && v11807.tableCellSelector.multipleSelectByXY(v11811.pageX, v11811.pageY);
+      }).on("mousedown", function (v11812) {
+        1 === v11812.buttons && v11807.tableCellSelector.singleSelectByXY(v11812.pageX, v11812.pageY);
       });
-    }, t.prototype.initRows = function (t) {
-      var e = this;
+    }, v11710.prototype.initRows = function (v11813) {
+      var v11814 = this;
 
-      if (this.trRows = [], t) {
-        this.rows = t, t.forEach(function (t, n) {
-          t.init(e.optionsCoat, e.target.find("tr:eq(" + n + ")"), !0);
+      if (this.trRows = [], v11813) {
+        this.rows = v11813, v11813.forEach(function (v11815, v11816) {
+          v11815.init(v11814.optionsCoat, v11814.target.find("tr:eq(" + v11816 + ")"), !0);
         });
-        var n = this.optionsCoat.options.trs;
-        n && this.initRowsByTrs(n).forEach(function (t) {
-          e.trRows.push(t);
+        var v11817 = this.optionsCoat.options.trs;
+        v11817 && this.initRowsByTrs(v11817).forEach(function (v11818) {
+          v11814.trRows.push(v11818);
         });
       } else this.rows = this.initRowsByTrs(this.target.find("tr"));
-    }, t.prototype.initRowsByTrs = function (t) {
-      var e = this;
-      return t.map(function (t, n) {
-        var i = new l.a();
-        return i.init(e.optionsCoat, $(n)), i;
+    }, v11710.prototype.initRowsByTrs = function (v11819) {
+      var v11820 = this;
+      return v11819.map(function (v11821, v11822) {
+        var v11823 = new v11625.a();
+        return v11823.init(v11820.optionsCoat, $(v11822)), v11823;
       }).get();
-    }, t.prototype.enableEidt = function () {
+    }, v11710.prototype.enableEidt = function () {
       this.optionsCoat.enableEidt();
-    }, t.prototype.disableEdit = function () {
+    }, v11710.prototype.disableEdit = function () {
       this.optionsCoat.disableEdit();
-    }, t.prototype.getCellGrid = function (t) {
-      var e = t || this.rows,
-        n = this.getColumnStep(),
-        i = new Array();
-      return e.forEach(function (t, e) {
-        t.columns.forEach(function (t, o) {
-          for (var r = 0; r < t.colspan; r++) {
-            for (var p = 0, s = !1; p < n && !s;) {
-              if (i[e] = i[e] || [], i[e][p]) ; else {
-                i[e][p] = new a({
-                  cell: 0 == r ? t : void 0,
-                  link: 0 != r ? t : void 0,
-                  linkType: r > 0 ? "row" : void 0,
-                  rightMost: r == t.colspan - 1 || void 0,
-                  bottom: 0 == t.rowspan - 1,
-                  rowLevel: r,
+    }, v11710.prototype.getCellGrid = function (v11825) {
+      var v11826 = v11825 || this.rows,
+        v11827 = this.getColumnStep(),
+        v11828 = new Array();
+      return v11826.forEach(function (v11829, v11830) {
+        v11829.columns.forEach(function (v11831, v11832) {
+          for (var v11833 = 0; v11833 < v11831.colspan; v11833++) {
+            for (var v11834 = 0, v11835 = !1; v11834 < v11827 && !v11835;) {
+              if (v11828[v11830] = v11828[v11830] || [], v11828[v11830][v11834]) ;else {
+                v11828[v11830][v11834] = new v11610({
+                  cell: 0 == v11833 ? v11831 : void 0,
+                  link: 0 != v11833 ? v11831 : void 0,
+                  linkType: v11833 > 0 ? "row" : void 0,
+                  rightMost: v11833 == v11831.colspan - 1 || void 0,
+                  bottom: 0 == v11831.rowspan - 1,
+                  rowLevel: v11833,
                   columnLevel: 0,
-                  indexInTableGridRow: p,
-                  indexInTableGridColumn: e
+                  indexInTableGridRow: v11834,
+                  indexInTableGridColumn: v11830
                 });
 
-                for (var l = e + 1, u = 1; u < t.rowspan; u++) {
-                  i[l] = i[l] || [], i[l][p] = new a({
+                for (var v11836 = v11830 + 1, v11837 = 1; v11837 < v11831.rowspan; v11837++) {
+                  v11828[v11836] = v11828[v11836] || [], v11828[v11836][v11834] = new v11610({
                     cell: void 0,
-                    link: t,
-                    linkType: r > 0 ? "rowColumn" : "column",
-                    rightMost: r == t.colspan - 1 || void 0,
-                    bottom: u == t.rowspan - 1,
-                    rowLevel: r,
-                    columnLevel: u,
-                    indexInTableGridRow: p,
-                    indexInTableGridColumn: l
-                  }), l += 1;
+                    link: v11831,
+                    linkType: v11833 > 0 ? "rowColumn" : "column",
+                    rightMost: v11833 == v11831.colspan - 1 || void 0,
+                    bottom: v11837 == v11831.rowspan - 1,
+                    rowLevel: v11833,
+                    columnLevel: v11837,
+                    indexInTableGridRow: v11834,
+                    indexInTableGridColumn: v11836
+                  }), v11836 += 1;
                 }
 
-                s = !0;
+                v11835 = !0;
               }
-              p++;
+              v11834++;
             }
           }
         });
-      }), i;
-    }, t.prototype.setAlign = function (t) {
-      var e = this.tableCellSelector.getSingleSelect();
-      e && e.cell.setAlign(t);
-    }, t.prototype.setVAlign = function (t) {
-      var e = this.tableCellSelector.getSingleSelect();
-      e && e.cell.setVAlign(t);
-    }, t.prototype.getColumnStep = function (t) {
-      var e = 0;
-      return this.rows.length && this.rows[t || 0].columns.forEach(function (t) {
-        e += t.colspan;
-      }), e;
-    }, t.prototype.initContext = function () {
-      var t = this;
+      }), v11828;
+    }, v11710.prototype.setAlign = function (v11838) {
+      var v11839 = this.tableCellSelector.getSingleSelect();
+      v11839 && v11839.cell.setAlign(v11838);
+    }, v11710.prototype.setVAlign = function (v11840) {
+      var v11841 = this.tableCellSelector.getSingleSelect();
+      v11841 && v11841.cell.setVAlign(v11840);
+    }, v11710.prototype.getColumnStep = function (v11842) {
+      var v11843 = 0;
+      return this.rows.length && this.rows[v11842 || 0].columns.forEach(function (v11844) {
+        v11843 += v11844.colspan;
+      }), v11843;
+    }, v11710.prototype.initContext = function () {
+      var v11845 = this;
       if (!this.optionsCoat.options.isEnableContextMenu) return !1;
       $(this.handle).hicontextMenu({
         menus: [{
           text: `${i18n.__('在上方插入行')}`,
           enabled: this.optionsCoat.options.isEnableInsertRow,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect();
+            return !v11845.tableCellSelector.getSingleSelect();
           },
           callback: function callback() {
-            t.insertRow("above"), t.resizer.updateRowGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.insertRow("above"), v11845.resizer.updateRowGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('在下方插入行')}`,
           borderBottom: !0,
           enabled: this.optionsCoat.options.isEnableInsertRow,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect();
+            return !v11845.tableCellSelector.getSingleSelect();
           },
           callback: function callback() {
-            t.insertRow("below"), t.resizer.updateRowGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.insertRow("below"), v11845.resizer.updateRowGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('向左方插入列')}`,
           enabled: this.optionsCoat.options.isEnableInsertColumn,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect();
+            return !v11845.tableCellSelector.getSingleSelect();
           },
           callback: function callback() {
-            t.insertColumn("left"), t.resizer.updateColumnGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.insertColumn("left"), v11845.resizer.updateColumnGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('向右方插入列')}`,
           enabled: this.optionsCoat.options.isEnableInsertColumn,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect();
+            return !v11845.tableCellSelector.getSingleSelect();
           },
           borderBottom: !0,
           callback: function callback() {
-            t.insertColumn("right"), t.resizer.updateColumnGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.insertColumn("right"), v11845.resizer.updateColumnGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('删除行')}`,
           enabled: this.optionsCoat.options.isEnableDeleteRow,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect() || t.rows.length <= 1;
+            return !v11845.tableCellSelector.getSingleSelect() || v11845.rows.length <= 1;
           },
           callback: function callback() {
-            t.deleteRow(), t.resizer.updateRowGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.deleteRow(), v11845.resizer.updateRowGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('删除列')}`,
           borderBottom: !0,
           enabled: this.optionsCoat.options.isEnableDeleteColumn,
           disable: function disable() {
-            return !t.tableCellSelector.getSingleSelect() || (t.rows.length > 0 && t.rows[0].columns.length <= 1);
+            return !v11845.tableCellSelector.getSingleSelect() || v11845.rows.length > 0 && v11845.rows[0].columns.length <= 1;
           },
           callback: function callback() {
-            t.deleteColums(), t.resizer.updateColumnGrips(), r.a.event.trigger("updateTable" + t.id);
+            v11845.deleteColums(), v11845.resizer.updateColumnGrips(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('对齐')}`,
@@ -6576,240 +6576,240 @@ var hiprint = function (t) {
           menus: [{
             text: `${i18n.__('左')}`,
             callback: function callback() {
-              t.setAlign("left");
+              v11845.setAlign("left");
             }
           }, {
             text: `${i18n.__('左右居中')}`,
             callback: function callback() {
-              t.setAlign("center");
+              v11845.setAlign("center");
             }
           }, {
             text: `${i18n.__('右')}`,
             callback: function callback() {
-              t.setAlign("right");
+              v11845.setAlign("right");
             }
           }, {
             text: `${i18n.__('默认')}`,
             borderBottom: !0,
             callback: function callback() {
-              t.setAlign("");
+              v11845.setAlign("");
             }
           }, {
             text: `${i18n.__('上')}`,
             callback: function callback() {
-              t.setVAlign("top");
+              v11845.setVAlign("top");
             }
           }, {
             text: `${i18n.__('垂直居中')}`,
             callback: function callback() {
-              t.setVAlign("middle");
+              v11845.setVAlign("middle");
             }
           }, {
             text: `${i18n.__('下')}`,
             callback: function callback() {
-              t.setVAlign("bottom");
+              v11845.setVAlign("bottom");
             }
           }, {
             text: `${i18n.__('默认')}`,
             callback: function callback() {
-              t.setVAlign("");
+              v11845.setVAlign("");
             }
           }]
         }, {
           text: `${i18n.__('合并单元格')}`,
           enabled: this.optionsCoat.options.isEnableMergeCell,
           disable: function disable() {
-            return t.tableCellSelector.getSingleSelect();
+            return v11845.tableCellSelector.getSingleSelect();
           },
           callback: function callback() {
-            t.mergeCell(), r.a.event.trigger("updateTable" + t.id);
+            v11845.mergeCell(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
         }, {
           text: `${i18n.__('解开单元格')}`,
           enabled: this.optionsCoat.options.isEnableMergeCell,
           disable: function disable() {
-            var e = t.tableCellSelector.getSingleSelect();
-            return !e || 1 == e.cell.rowspan && 1 == e.cell.colspan;
+            var v11853 = v11845.tableCellSelector.getSingleSelect();
+            return !v11853 || 1 == v11853.cell.rowspan && 1 == v11853.cell.colspan;
           },
           callback: function callback() {
-            t.splitCell(), r.a.event.trigger("updateTable" + t.id);
+            v11845.splitCell(), v11609.a.event.trigger("updateTable" + v11845.id);
           }
-        }].filter(function (t) {
-          return t.enabled;
+        }].filter(function (v11855) {
+          return v11855.enabled;
         })
       });
-    }, t.prototype.getTableWidth = function () {
-      return r.a.px.toPt(this.target.outerWidth(!1));
-    }, t.prototype.updateColumnGrips = function () {
+    }, v11710.prototype.getTableWidth = function () {
+      return v11609.a.px.toPt(this.target.outerWidth(!1));
+    }, v11710.prototype.updateColumnGrips = function () {
       this.resizer.updateColumnGrips();
-    }, t.prototype.updateRowGrips = function () {
+    }, v11710.prototype.updateRowGrips = function () {
       this.resizer.updateRowGrips();
-    }, t;
+    }, v11710;
   }();
-}, function (t, e, n) {
+}, function (v11857, v11858, v11859) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v11859.d(v11858, "a", function () {
+    return v11861;
   });
 
-  var i = function () {
-    return function (t, e, n) {
-      this.tid = t, this.options = e, this.printElementType = n;
+  var v11861 = function () {
+    return function (v11862, v11863, v11864) {
+      this.tid = v11862, this.options = v11863, this.printElementType = v11864;
     };
   }();
-}, function (t, e, n) {
+}, function (v11865, v11866, v11867) {
   "use strict";
 
-  var i = n(3),
-    o = n(12),
-    r = (function () {
+  var v11868 = v11867(3),
+    v11869 = v11867(12),
+    v11870 = (function () {
     }(), function () {
-      return function (t) {
-        this.width = t.width, this.title = t.title, this.field = t.field, this.checked = t.checked, this.columnId = t.columnId, this.fixed = !1, this.rowspan = t.rowspan || 1, this.colspan = t.colspan || 1, this.align = t.align, this.halign = t.halign, this.vAlign = t.vAlign, this.renderFormatter = t.renderFormatter, this.formatter2 = t.formatter2, this.styler2 = t.styler2, this.stylerHeader = t.stylerHeader, this.tableColumnHeight = t.tableColumnHeight, this.tableTextType = t.tableTextType, this.tableBarcodeMode = t.tableBarcodeMode, this.tableQRCodeLevel = t.tableQRCodeLevel, this.tableSummaryTitle = t.tableSummaryTitle, this.tableSummaryText = t.tableSummaryText, this.tableSummaryColspan = t.tableSummaryColspan, this.tableSummary = t.tableSummary, this.tableSummaryAlign = t.tableSummaryAlign, this.tableSummaryNumFormat = t.tableSummaryNumFormat, this.tableSummaryFormatter = t.tableSummaryFormatter, this.showCodeTitle = t.showCodeTitle, this.upperCase = t.upperCase;
+      return function (v11871) {
+        this.width = v11871.width, this.title = v11871.title, this.field = v11871.field, this.checked = v11871.checked, this.columnId = v11871.columnId, this.fixed = !1, this.rowspan = v11871.rowspan || 1, this.colspan = v11871.colspan || 1, this.align = v11871.align, this.halign = v11871.halign, this.vAlign = v11871.vAlign, this.renderFormatter = v11871.renderFormatter, this.formatter2 = v11871.formatter2, this.styler2 = v11871.styler2, this.stylerHeader = v11871.stylerHeader, this.tableColumnHeight = v11871.tableColumnHeight, this.tableTextType = v11871.tableTextType, this.tableBarcodeMode = v11871.tableBarcodeMode, this.tableQRCodeLevel = v11871.tableQRCodeLevel, this.tableSummaryTitle = v11871.tableSummaryTitle, this.tableSummaryText = v11871.tableSummaryText, this.tableSummaryColspan = v11871.tableSummaryColspan, this.tableSummary = v11871.tableSummary, this.tableSummaryAlign = v11871.tableSummaryAlign, this.tableSummaryNumFormat = v11871.tableSummaryNumFormat, this.tableSummaryFormatter = v11871.tableSummaryFormatter, this.showCodeTitle = v11871.showCodeTitle, this.upperCase = v11871.upperCase;
       };
     }()),
-    a = n(5);
-  n.d(e, "a", function () {
-    return l;
+    v11872 = v11867(5);
+  v11867.d(v11866, "a", function () {
+    return v11874;
   });
 
   var _p,
-    s = (_p = function p(t, e) {
+    v11875 = (_p = function v11876(v11877, v11878) {
       return (_p = Object.setPrototypeOf || _instanceof({
         __proto__: []
-      }, Array) && function (t, e) {
-        t.__proto__ = e;
-      } || function (t, e) {
-        for (var n in e) {
-          e.hasOwnProperty(n) && (t[n] = e[n]);
+      }, Array) && function (v11879, v11880) {
+        v11879.__proto__ = v11880;
+      } || function (v11881, v11882) {
+        for (var v11883 in v11882) {
+          v11882.hasOwnProperty(v11883) && (v11881[v11883] = v11882[v11883]);
         }
-      })(t, e);
-    }, function (t, e) {
-      function n() {
-        this.constructor = t;
+      })(v11877, v11878);
+    }, function (v11884, v11885) {
+      function v11886() {
+        this.constructor = v11884;
       }
 
-      _p(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+      _p(v11884, v11885), v11884.prototype = null === v11885 ? Object.create(v11885) : (v11886.prototype = v11885.prototype, new v11886());
     }),
-    l = function (t) {
-      function e(e, n) {
-        var i = this;
-        (e = e || {}, (i = t.call(this, e) || this).lHeight = e.lHeight, i.autoCompletion = e.autoCompletion, i.tableFooterRepeat = e.tableFooterRepeat, n) && (i.columns = [], n.editable && e.columns && e.columns.length ? e.columns.forEach(function (t) {
-          var e = [];
-          t.forEach(function (t) {
-            var i = new r(t),
-              o = n.getColumnByColumnId(i.columnId),
-              p = o ? $.extend(o, i) : new a.a(i);
-            e.push(p);
-          }), i.columns.push(new o.a(e));
-        }) : n.columns.forEach(function (t) {
-          i.columns.push(new o.a(t));
+    v11874 = function (v11887) {
+      function v11901(v11888, v11889) {
+        var v11890 = this;
+        (v11888 = v11888 || {}, (v11890 = v11887.call(this, v11888) || this).lHeight = v11888.lHeight, v11890.autoCompletion = v11888.autoCompletion, v11890.tableFooterRepeat = v11888.tableFooterRepeat, v11889) && (v11890.columns = [], v11889.editable && v11888.columns && v11888.columns.length ? v11888.columns.forEach(function (v11891) {
+          var v11892 = [];
+          v11891.forEach(function (v11893) {
+            var v11894 = new v11870(v11893),
+              v11895 = v11889.getColumnByColumnId(v11894.columnId),
+              v11896 = v11895 ? $.extend(v11895, v11894) : new v11872.a(v11894);
+            v11892.push(v11896);
+          }), v11890.columns.push(new v11869.a(v11892));
+        }) : v11889.columns.forEach(function (v11899) {
+          v11890.columns.push(new v11869.a(v11899));
         }));
-        return i;
+        return v11890;
       }
 
-      return s(e, t), e.prototype.getColumnByColumnId = function (t) {
-        return this.makeColumnObj()[t];
-      }, e.prototype.makeColumnObj = function () {
-        var t = {};
-        return this.columns && this.columns.forEach(function (e) {
-          e.columns.forEach(function (e) {
-            (e.id || e.columnId) && (t[e.id || e.columnId] = e);
+      return v11875(v11901, v11887), v11901.prototype.getColumnByColumnId = function (v11902) {
+        return this.makeColumnObj()[v11902];
+      }, v11901.prototype.makeColumnObj = function () {
+        var v11903 = {};
+        return this.columns && this.columns.forEach(function (v11904) {
+          v11904.columns.forEach(function (v11905) {
+            (v11905.id || v11905.columnId) && (v11903[v11905.id || v11905.columnId] = v11905);
           });
-        }), t;
-      }, e.prototype.getGridColumns = function () {
+        }), v11903;
+      }, v11901.prototype.getGridColumns = function () {
         return this.gridColumns || 1;
-      }, e.prototype.getPrintElementOptionEntity = function () {
-        var e = t.prototype.getPrintElementOptionEntity.call(this);
-        e.fields = this.fields;
-        return this.columns && (e.columns = [], this.columns.forEach(function (t) {
-          var n = t.getPrintElementOptionEntity().map(function (t) {
-            return new r(t);
+      }, v11901.prototype.getPrintElementOptionEntity = function () {
+        var v11906 = v11887.prototype.getPrintElementOptionEntity.call(this);
+        v11906.fields = this.fields;
+        return this.columns && (v11906.columns = [], this.columns.forEach(function (v11907) {
+          var v11908 = v11907.getPrintElementOptionEntity().map(function (v11909) {
+            return new v11870(v11909);
           });
-          e.columns.push(n);
-        })), e;
-      }, e;
-    }(i.a);
-}, function (t, e, n) {
+          v11906.columns.push(v11908);
+        })), v11906;
+      }, v11901;
+    }(v11868.a);
+}, function (v11911, v11912, v11913) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v11913.d(v11912, "a", function () {
+    return v11915;
   });
 
-  var i = function () {
+  var v11915 = function () {
     return function () {
       this.rowColumns = [];
     };
   }();
-}, function (t, e, n) {
+}, function (v11916, v11917, v11918) {
   "use strict";
 
-  n.d(e, "a", function () {
-    return i;
+  v11918.d(v11917, "a", function () {
+    return v11920;
   });
 
-  var i = function () {
-    function t(t, e) {
-      this.gridColumns = t, this.target = e;
+  var v11920 = function () {
+    function v11923(v11921, v11922) {
+      this.gridColumns = v11921, this.target = v11922;
     }
 
-    return t.prototype.getByIndex = function (t) {
-      return this.target.find(".hi-grid-col:eq(" + t + ")");
-    }, t;
+    return v11923.prototype.getByIndex = function (v11924) {
+      return this.target.find(".hi-grid-col:eq(" + v11924 + ")");
+    }, v11923;
   }();
-}, function (t, e, n) {
-  t.exports = n(33);
-}, function (t, e) {
-  !function (t) {
-    function e(e) {
-      var n = t.data(e.data.target, "hidraggable"),
-        i = n.options,
-        o = n.proxy,
-        r = e.data,
-        a = r.startLeft + (e.pageX - r.startX) / (n.options.getScale() || 1),
-        p = r.startTop + (e.pageY - r.startY) / (n.options.getScale() || 1);
-      o && (o.parent()[0] == document.body ? (a = null != i.deltaX && null != i.deltaX ? e.pageX + i.deltaX : e.pageX - e.data.offsetWidth, p = null != i.deltaY && null != i.deltaY ? e.pageY + i.deltaY : e.pageY - e.data.offsetHeight) : (null != i.deltaX && null != i.deltaX && (a += e.data.offsetWidth + i.deltaX), null != i.deltaY && null != i.deltaY && (p += e.data.offsetHeight + i.deltaY))),
-      e.data.parent != document.body && (a += t(e.data.parent).scrollLeft(), p += t(e.data.parent).scrollTop()),
-        "h" == i.axis ? r.left = a : "v" == i.axis ? r.top = p : (e.shiftKey && e.altKey ? r.top = p : e.shiftKey ? r.left = a : (r.left = a, r.top = p));
+}, function (v11925, v11926, v11927) {
+  v11925.exports = v11927(33);
+}, function (v11928, v11929) {
+  !function (v11930) {
+    function v11948(v11931) {
+      var v11932 = v11930.data(v11931.data.target, "hidraggable"),
+        v11933 = v11932.options,
+        v11934 = v11932.proxy,
+        v11935 = v11931.data,
+        v11936 = v11935.startLeft + (v11931.pageX - v11935.startX) / (v11932.options.getScale() || 1),
+        v11937 = v11935.startTop + (v11931.pageY - v11935.startY) / (v11932.options.getScale() || 1);
+      v11934 && (v11934.parent()[0] == document.body ? (v11936 = null != v11933.deltaX && null != v11933.deltaX ? v11931.pageX + v11933.deltaX : v11931.pageX - v11931.data.offsetWidth, v11937 = null != v11933.deltaY && null != v11933.deltaY ? v11931.pageY + v11933.deltaY : v11931.pageY - v11931.data.offsetHeight) : (null != v11933.deltaX && null != v11933.deltaX && (v11936 += v11931.data.offsetWidth + v11933.deltaX), null != v11933.deltaY && null != v11933.deltaY && (v11937 += v11931.data.offsetHeight + v11933.deltaY))),
+      v11931.data.parent != document.body && (v11936 += v11930(v11931.data.parent).scrollLeft(), v11937 += v11930(v11931.data.parent).scrollTop()),
+      "h" == v11933.axis ? v11935.left = v11936 : "v" == v11933.axis ? v11935.top = v11937 : v11931.shiftKey && v11931.altKey ? v11935.top = v11937 : v11931.shiftKey ? v11935.left = v11936 : (v11935.left = v11936, v11935.top = v11937);
     }
 
-    function n(e) {
-      var n = t.data(e.data.target, "hidraggable"),
-        i = n.options,
-        o = n.proxy;
-      o || (o = t(e.data.target)), o.css({
-        left: t.fn.dragLengthC(e.data.left, i),
-        top: t.fn.dragLengthC(e.data.top, i)
-      }), t("body").css("cursor", i.cursor);
+    function v11949(v11939) {
+      var v11938 = v11930.data(v11939.data.target, "hidraggable"),
+        v11940 = v11938.options,
+        v11941 = v11938.proxy;
+      v11941 || (v11941 = v11930(v11939.data.target)), v11941.css({
+        left: v11930.fn.dragLengthC(v11939.data.left, v11940),
+        top: v11930.fn.dragLengthC(v11939.data.top, v11940)
+      }), v11930("body").css("cursor", v11940.cursor);
     }
 
-    function i(i) {
-      t.fn.hidraggable.isDragging = !0;
-      var o = t.data(i.data.target, "hidraggable"),
-        r = o.options,
-        a = t(".hidroppable").filter(function () {
-          return i.data.target != this;
+    function v12019(v11942) {
+      v11930.fn.hidraggable.isDragging = !0;
+      var v11943 = v11930.data(v11942.data.target, "hidraggable"),
+        v11944 = v11943.options,
+        v11945 = v11930(".hidroppable").filter(function () {
+          return v11942.data.target != this;
         }).filter(function () {
-          var e = t.data(this, "hidroppable").options.accept;
-          return !e || t(e).filter(function () {
-            return this == i.data.target;
+          var v11946 = v11930.data(this, "hidroppable").options.accept;
+          return !v11946 || v11930(v11946).filter(function () {
+            return this == v11942.data.target;
           }).length > 0;
         });
-      o.hidroppables = a;
-      var p = o.proxy;
-      return p || (r.proxy ? (p = "clone" == r.proxy ? t(i.data.target).clone().insertAfter(i.data.target) : r.proxy.call(i.data.target, i.data.target), o.proxy = p) : p = t(i.data.target)), p.css("position", "absolute"), e(i), n(i), r.onStartDrag.call(i.data.target, i), !1;
+      v11943.hidroppables = v11945;
+      var v11947 = v11943.proxy;
+      return v11947 || (v11944.proxy ? (v11947 = "clone" == v11944.proxy ? v11930(v11942.data.target).clone().insertAfter(v11942.data.target) : v11944.proxy.call(v11942.data.target, v11942.data.target), v11943.proxy = v11947) : v11947 = v11930(v11942.data.target)), v11947.css("position", "absolute"), v11948(v11942), v11949(v11942), v11944.onStartDrag.call(v11942.data.target, v11942), !1;
     }
 
-    function createVerLine(op, cp, t, tt, h, pc) {
-      if (Math.abs(op[t] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
+    function createVerLine(op, cp, v11950, tt, v11951, pc) {
+      if (Math.abs(op[v11950] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
         if (op.v.length) {
-          op.v.css("left", op[t] + "pt");
+          op.v.css("left", op[v11950] + "pt");
         } else {
-          op.v = $("<div class='verLine id-" + op.id + "'></div>")
-          op.v.css("height", h + "pt");
-          op.v.css("left", op[t] + "pt");
+          op.v = $("<div class='verLine id-" + op.id + "'></div>");
+          op.v.css("height", v11951 + "pt");
+          op.v.css("left", op[v11950] + "pt");
           pc.append(op.v);
         }
       } else {
@@ -6822,14 +6822,14 @@ var hiprint = function (t) {
       $(".verLine").remove();
     }
 
-    function createHorLine(op, cp, t, tt, w, pc) {
-      if (Math.abs(op[t] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
+    function createHorLine(op, cp, v11962, tt, v11963, pc) {
+      if (Math.abs(op[v11962] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
         if (op.h.length) {
-          op.h.css("top", op[t] + "pt");
+          op.h.css("top", op[v11962] + "pt");
         } else {
-          op.h = $("<div class='horLine id-" + op.id + "'></div>")
-          op.h.css("width", w + "pt");
-          op.h.css("top", op[t] + "pt");
+          op.h = $("<div class='horLine id-" + op.id + "'></div>");
+          op.h.css("width", v11963 + "pt");
+          op.h.css("top", op[v11962] + "pt");
           pc.append(op.h);
         }
       } else {
@@ -6842,18 +6842,18 @@ var hiprint = function (t) {
       $(".horLine").remove();
     }
 
-    function o(i) {
+    function v12020(v11975) {
       // 移动开始动作
-      var o = t.data(i.data.target, "hidraggable");
-      e(i);
-      if (!(i.ctrlKey || i.metaKey) && (i.data.target.className.startsWith('resize-panel') || "2" == i.data.target.style.zIndex || i.data.target.className.startsWith('hiprint-printElement'))) {
-        var data = i.data
-        if (t(".mouseRect").length == 0 && o.options.designTarget && o.options.designTarget.panel.printElements.filter(function (el) {
+      var v11974 = v11930.data(v11975.data.target, "hidraggable");
+      v11948(v11975);
+      if (!(v11975.ctrlKey || v11975.metaKey) && (v11975.data.target.className.startsWith('resize-panel') || "2" == v11975.data.target.style.zIndex || v11975.data.target.className.startsWith('hiprint-printElement'))) {
+        var data = v11975.data;
+        if (v11930(".mouseRect").length == 0 && v11974.options.designTarget && v11974.options.designTarget.panel.printElements.filter(function (el) {
           return "block" == el.designTarget.children().last().css("display") && !el.printElementType.type.includes("table");
         }).length <= 1) {
           let left = window.hinnn.px.toPt(data.left);
           let top = window.hinnn.px.toPt(data.top);
-          let cPosition = o.options.designTarget.options;
+          let cPosition = v11974.options.designTarget.options;
           cPosition.left = left;
           cPosition.top = top;
           cPosition.right = left + cPosition.width;
@@ -6861,10 +6861,10 @@ var hiprint = function (t) {
           cPosition.vCenter = left + cPosition.width / 2;
           cPosition.hCenter = top + cPosition.height / 2;
           (() => {
-            let oPositions = o.options.designTarget.panel.printElements.filter(el => el.id != o.options.designTarget.id).map(el => {
-              let {left, top, width, height} = el.options;
-              let right = left + width, vCenter = left + width / 2, hCenter = top + height / 2;
-              let cVCenter = cPosition.left + cPosition.width / 2, cHCenter = cPosition.top + cPosition.height / 2,
+            let oPositions = v11974.options.designTarget.panel.printElements.filter((el) => el.id != v11974.options.designTarget.id).map((el) => {
+              let { left, top, width, height } = el.options;
+              let right = left + width,vCenter = left + width / 2,hCenter = top + height / 2;
+              let cVCenter = cPosition.left + cPosition.width / 2,cHCenter = cPosition.top + cPosition.height / 2,
                 cRight = cPosition.left + cPosition.width;
               let distance, d1, d2, d3;
               d1 = Math.sqrt(Math.pow(left - cPosition.left, 2) + Math.pow(hCenter - cHCenter, 2));
@@ -6880,13 +6880,13 @@ var hiprint = function (t) {
                 right: left + width,
                 vCenter,
                 hCenter
-              }
-            }).sort((a, b) => a.distance - b.distance).slice(0,1)
-            let paper = o.options.designTarget.designPaper;
+              };
+            }).sort((v11978, v11979) => v11978.distance - v11979.distance).slice(0, 1);
+            let paper = v11974.options.designTarget.designPaper;
             let paperContent = paper.target.find(".hiprint-printPaper-content");
-            let paperW = paper.width, paperH = paper.height;
-            let showAline = HIPRINT_CONFIG.showAdsorbLine, aMin = HIPRINT_CONFIG.adsorbMin, aLMin = HIPRINT_CONFIG.adsorbLineMin;
-            oPositions.forEach((item,idx) => {
+            let paperW = paper.width,paperH = paper.height;
+            let showAline = HIPRINT_CONFIG.showAdsorbLine,aMin = HIPRINT_CONFIG.adsorbMin,aLMin = HIPRINT_CONFIG.adsorbLineMin;
+            oPositions.forEach((item, idx) => {
               // 元素左边线
               if (Math.abs(oPositions[idx].left - cPosition.left) <= aMin) {
                 cPosition.left = oPositions[idx].left;
@@ -6955,37 +6955,37 @@ var hiprint = function (t) {
               }
 
               if (showAline) {
-                if (Math.abs(oPositions[idx].left - cPosition.left) > aMin && Math.abs(oPositions[idx].left - cPosition.left) <= aLMin) { // 左
+                if (Math.abs(oPositions[idx].left - cPosition.left) > aMin && Math.abs(oPositions[idx].left - cPosition.left) <= aLMin) {// 左
                   createVerLine(oPositions[idx], cPosition, "left", "left", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].vCenter - cPosition.left) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.left) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "vCenter", "left", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].right - cPosition.left) > aMin && Math.abs(oPositions[idx].right - cPosition.left) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "right", "left", paperH, paperContent);
-                } else if (Math.abs(oPositions[idx].left - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].left - cPosition.vCenter) <= aLMin) { // 中
+                } else if (Math.abs(oPositions[idx].left - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].left - cPosition.vCenter) <= aLMin) {// 中
                   createVerLine(oPositions[idx], cPosition, "left", "vCenter", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].vCenter - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.vCenter) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "vCenter", "vCenter", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].right - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].right - cPosition.vCenter) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "right", "vCenter", paperH, paperContent);
-                } else if (Math.abs(oPositions[idx].left - cPosition.right) > aMin && Math.abs(oPositions[idx].left - cPosition.right) <= aLMin) { // 右
+                } else if (Math.abs(oPositions[idx].left - cPosition.right) > aMin && Math.abs(oPositions[idx].left - cPosition.right) <= aLMin) {// 右
                   createVerLine(oPositions[idx], cPosition, "left", "right", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].vCenter - cPosition.right) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.right) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "vCenter", "right", paperH, paperContent);
                 } else if (Math.abs(oPositions[idx].right - cPosition.right) > aMin && Math.abs(oPositions[idx].right - cPosition.right) <= aLMin) {
                   createVerLine(oPositions[idx], cPosition, "right", "right", paperH, paperContent);
-                } else if (Math.abs(oPositions[idx].top - cPosition.top) > aMin && Math.abs(oPositions[idx].top - cPosition.top) <= aLMin) { // 上
+                } else if (Math.abs(oPositions[idx].top - cPosition.top) > aMin && Math.abs(oPositions[idx].top - cPosition.top) <= aLMin) {// 上
                   createHorLine(oPositions[idx], cPosition, "top", "top", paperW, paperContent);
                 } else if (Math.abs(oPositions[idx].hCenter - cPosition.top) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.top) <= aLMin) {
                   createHorLine(oPositions[idx], cPosition, "hCenter", "top", paperW, paperContent);
                 } else if (Math.abs(oPositions[idx].bottom - cPosition.top) > aMin && Math.abs(oPositions[idx].bottom - cPosition.top) <= aLMin) {
                   createHorLine(oPositions[idx], cPosition, "bottom", "top", paperW, paperContent);
-                } else if (Math.abs(oPositions[idx].top - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].top - cPosition.hCenter) <= aLMin) { // 中
+                } else if (Math.abs(oPositions[idx].top - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].top - cPosition.hCenter) <= aLMin) {// 中
                   createHorLine(oPositions[idx], cPosition, "top", "hCenter", paperW, paperContent);
                 } else if (Math.abs(oPositions[idx].hCenter - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.hCenter) <= aLMin) {
                   createHorLine(oPositions[idx], cPosition, "hCenter", "hCenter", paperW, paperContent);
                 } else if (Math.abs(oPositions[idx].bottom - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].bottom - cPosition.hCenter) <= aLMin) {
                   createHorLine(oPositions[idx], cPosition, "bottom", "hCenter", paperW, paperContent);
-                } else if (Math.abs(oPositions[idx].top - cPosition.bottom) > aMin && Math.abs(oPositions[idx].top - cPosition.bottom) <= aLMin) { // 下
+                } else if (Math.abs(oPositions[idx].top - cPosition.bottom) > aMin && Math.abs(oPositions[idx].top - cPosition.bottom) <= aLMin) {// 下
                   createHorLine(oPositions[idx], cPosition, "top", "bottom", paperW, paperContent);
                 } else if (Math.abs(oPositions[idx].hCenter - cPosition.bottom) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.bottom) <= aLMin) {
                   createHorLine(oPositions[idx], cPosition, "hCenter", "bottom", paperW, paperContent);
@@ -6996,239 +6996,239 @@ var hiprint = function (t) {
                   removeHorLine(oPositions[idx]);
                 }
               }
-            })
-          })()
-          i.data.left = window.hinnn.pt.toPx(cPosition.left);
-          i.data.top = window.hinnn.pt.toPx(cPosition.top);
+            });
+          })();
+          v11975.data.left = window.hinnn.pt.toPx(cPosition.left);
+          v11975.data.top = window.hinnn.pt.toPx(cPosition.top);
         }
         // 当前纸张宽高
         var parent = data.parent.className.endsWith('design') ? data.parent : data.parent.offsetParent;
-        var paperW = parent.clientWidth, paperH = parent.clientHeight;
+        var paperW = parent.clientWidth,paperH = parent.clientHeight;
         // 当前元素宽高
-        var elementW = data.target.clientWidth, elementH = data.target.clientHeight,
-          diffLeft = 0, diffTop = 0;
-        if (o.options.designTarget && o.options.designTarget.options.transform) {
-          var info = o.options.designTarget.options.getRectInfo();
+        var elementW = data.target.clientWidth,elementH = data.target.clientHeight,
+          diffLeft = 0,diffTop = 0;
+        if (v11974.options.designTarget && v11974.options.designTarget.options.transform) {
+          var info = v11974.options.designTarget.options.getRectInfo();
           diffLeft = window.hinnn.pt.toPx(info.diffW), diffTop = window.hinnn.pt.toPx(info.diffH);
         }
         // 左右
         if (data.left < 0 - diffLeft) {
-          data.left = 0 - diffLeft
+          data.left = 0 - diffLeft;
         } else if (data.left >= paperW - elementW + diffLeft) {
-          data.left = paperW - elementW + diffLeft
+          data.left = paperW - elementW + diffLeft;
         }
         // 上下
         if (data.top < 0 - diffTop) {
-          data.top = 0 - diffTop
+          data.top = 0 - diffTop;
         } else if (data.top >= paperH - elementH + diffTop) {
-          data.top = paperH - elementH + diffTop
+          data.top = paperH - elementH + diffTop;
         }
-        i.data = data
+        v11975.data = data;
       }
-      0 != o.options.onDrag.call(i.data.target, i, t.fn.dragLengthCNum(i.data.left, o.options), t.fn.dragLengthCNum(i.data.top, o.options)) && n(i);
-      var r = i.data.target;
-      return o.hidroppables.each(function () {
-        var e = t(this);
+      0 != v11974.options.onDrag.call(v11975.data.target, v11975, v11930.fn.dragLengthCNum(v11975.data.left, v11974.options), v11930.fn.dragLengthCNum(v11975.data.top, v11974.options)) && v11949(v11975);
+      var v11980 = v11975.data.target;
+      return v11974.hidroppables.each(function () {
+        var v11981 = v11930(this);
 
-        if (!e.hidroppable("options").disabled) {
-          var n = e.offset();
-          i.pageX > n.left && i.pageX < n.left + e.outerWidth() && i.pageY > n.top && i.pageY < n.top + e.outerHeight() ? (this.entered || (t(this).trigger("_dragenter", [r]), this.entered = !0), t(this).trigger("_dragover", [r])) : this.entered && (t(this).trigger("_dragleave", [r]), this.entered = !1);
+        if (!v11981.hidroppable("options").disabled) {
+          var v11982 = v11981.offset();
+          v11975.pageX > v11982.left && v11975.pageX < v11982.left + v11981.outerWidth() && v11975.pageY > v11982.top && v11975.pageY < v11982.top + v11981.outerHeight() ? (this.entered || (v11930(this).trigger("_dragenter", [v11980]), this.entered = !0), v11930(this).trigger("_dragover", [v11980])) : this.entered && (v11930(this).trigger("_dragleave", [v11980]), this.entered = !1);
         }
       }), !1;
     }
 
-    function r(e) {
+    function v12021(v11984) {
       // 这里原 mouseup时, 回调了 o(e) ==> onDrag
-      t.fn.hidraggable.isDragging = !1;
+      v11930.fn.hidraggable.isDragging = !1;
       removeVerLine(), removeHorLine();
-      var n,
-        i,
-        r = t.data(e.data.target, "hidraggable"),
-        a = r.proxy,
-        p = r.options;
-      p.revert ? 1 == l() ? t(e.data.target).css({
-        position: e.data.startPosition,
-        left: e.data.startLeft,
-        top: e.data.startTop
-      }) : a ? (a.parent()[0] == document.body ? (n = e.data.startX - e.data.offsetWidth, i = e.data.startY - e.data.offsetHeight) : (n = e.data.startLeft, i = e.data.startTop), a.animate({
-        left: n,
-        top: i
+      var v11985,
+        v11986,
+        v11983 = v11930.data(v11984.data.target, "hidraggable"),
+        v11987 = v11983.proxy,
+        v11988 = v11983.options;
+      v11988.revert ? 1 == v11989() ? v11930(v11984.data.target).css({
+        position: v11984.data.startPosition,
+        left: v11984.data.startLeft,
+        top: v11984.data.startTop
+      }) : v11987 ? (v11987.parent()[0] == document.body ? (v11985 = v11984.data.startX - v11984.data.offsetWidth, v11986 = v11984.data.startY - v11984.data.offsetHeight) : (v11985 = v11984.data.startLeft, v11986 = v11984.data.startTop), v11987.animate({
+        left: v11985,
+        top: v11986
       }, function () {
-        s();
-      })) : t(e.data.target).animate({
-        left: e.data.startLeft,
-        top: e.data.startTop
+        v11990();
+      })) : v11930(v11984.data.target).animate({
+        left: v11984.data.startLeft,
+        top: v11984.data.startTop
       }, function () {
-        t(e.data.target).css("position", e.data.startPosition);
-      }) : (t(e.data.target).css({
+        v11930(v11984.data.target).css("position", v11984.data.startPosition);
+      }) : (v11930(v11984.data.target).css({
         position: "absolute",
-        left: t.fn.dragLengthC(e.data.left, p),
-        top: t.fn.dragLengthC(e.data.top, p)
-      }), l());
+        left: v11930.fn.dragLengthC(v11984.data.left, v11988),
+        top: v11930.fn.dragLengthC(v11984.data.top, v11988)
+      }), v11989());
 
-      function s() {
-        a && a.remove(), r.proxy = null;
+      function v11990() {
+        v11987 && v11987.remove(), v11983.proxy = null;
       }
 
-      function l() {
-        var n = !1;
-        return r.hidroppables.each(function () {
-          var i = t(this);
+      function v11989() {
+        var v11991 = !1;
+        return v11983.hidroppables.each(function () {
+          var v11992 = v11930(this);
 
-          if (!i.hidroppable("options").disabled) {
-            var o = i.offset();
-            var ptr = (this.style.transform && parseFloat(this.style.transform.slice(6, -1))) || 1;
-            return e.pageX > o.left && e.pageX < o.left + (i.outerWidth() * ptr) && e.pageY > o.top && e.pageY < o.top + (i.outerHeight() * ptr) ? (p.revert && t(e.data.target).css({
-              position: e.data.startPosition,
-              left: e.data.startLeft,
-              top: e.data.startTop
-            }), t(this).trigger("_drop", [e.data.target]), s(), n = !0, this.entered = !1, !1) : void 0;
+          if (!v11992.hidroppable("options").disabled) {
+            var v11993 = v11992.offset();
+            var ptr = this.style.transform && parseFloat(this.style.transform.slice(6, -1)) || 1;
+            return v11984.pageX > v11993.left && v11984.pageX < v11993.left + v11992.outerWidth() * ptr && v11984.pageY > v11993.top && v11984.pageY < v11993.top + v11992.outerHeight() * ptr ? (v11988.revert && v11930(v11984.data.target).css({
+              position: v11984.data.startPosition,
+              left: v11984.data.startLeft,
+              top: v11984.data.startTop
+            }), v11930(this).trigger("_drop", [v11984.data.target]), v11990(), v11991 = !0, this.entered = !1, !1) : void 0;
           }
-        }), n || p.revert || s(), n;
+        }), v11991 || v11988.revert || v11990(), v11991;
       }
 
-      return p.onStopDrag.call(e.data.target, e), t(document).unbind(".hidraggable"), setTimeout(function () {
-        t("body").css("cursor", "");
+      return v11988.onStopDrag.call(v11984.data.target, v11984), v11930(document).unbind(".hidraggable"), setTimeout(function () {
+        v11930("body").css("cursor", "");
       }, 100), !1;
     }
 
-    t.fn.hidraggable = function (e, n) {
-      return "string" == typeof e ? t.fn.hidraggable.methods[e](this, n) : this.each(function () {
-        var n,
-          a = t.data(this, "hidraggable");
-        a ? (a.handle.unbind(".hidraggable"), n = t.extend(a.options, e)) : n = t.extend({}, t.fn.hidraggable.defaults, t.fn.hidraggable.parseOptions(this), e || {});
-        var p = n.handle ? "string" == typeof n.handle ? t(n.handle, this) : n.handle : t(this);
+    v11930.fn.hidraggable = function (v11994, v11995) {
+      return "string" == typeof v11994 ? v11930.fn.hidraggable.methods[v11994](this, v11995) : this.each(function () {
+        var v11996,
+          v11997 = v11930.data(this, "hidraggable");
+        v11997 ? (v11997.handle.unbind(".hidraggable"), v11996 = v11930.extend(v11997.options, v11994)) : v11996 = v11930.extend({}, v11930.fn.hidraggable.defaults, v11930.fn.hidraggable.parseOptions(this), v11994 || {});
+        var v11998 = v11996.handle ? "string" == typeof v11996.handle ? v11930(v11996.handle, this) : v11996.handle : v11930(this);
 
-        function s(e) {
-          var n = t.data(e.data.target, "hidraggable"),
-            i = n.handle,
-            o = t(i).offset(),
-            tr = t(i)[0].style.transform && parseInt(t(i)[0].style.transform.slice(7, -1)),
-            ptr = n.options.getScale(),
-            r = t(i).outerWidth();
-          var a = t(i).outerHeight();
+        function v12011(v12000) {
+          var v12001 = v11930.data(v12000.data.target, "hidraggable"),
+            v12002 = v12001.handle,
+            v12003 = v11930(v12002).offset(),
+            tr = v11930(v12002)[0].style.transform && parseInt(v11930(v12002)[0].style.transform.slice(7, -1)),
+            ptr = v12001.options.getScale(),
+            v12004 = v11930(v12002).outerWidth();
+          var v12005 = v11930(v12002).outerHeight();
           if (tr) {
             var rad = tr * Math.PI / 180,
-              width = t(i).outerWidth(),
-              height = t(i).outerHeight(),
+              width = v11930(v12002).outerWidth(),
+              height = v11930(v12002).outerHeight(),
               sin = Math.sin(rad),
               cos = Math.cos(rad);
-            r = Math.abs(width * cos) + Math.abs(height * sin),
-              a = Math.abs(width * sin) + Math.abs(height * cos)
+            v12004 = Math.abs(width * cos) + Math.abs(height * sin),
+            v12005 = Math.abs(width * sin) + Math.abs(height * cos);
           }
           if (ptr) {
-            r *= ptr, a *= ptr;
+            v12004 *= ptr, v12005 *= ptr;
           }
-          var p = e.pageY - o.top,
-            s = o.left + r - e.pageX,
-            l = o.top + a - e.pageY,
-            u = e.pageX - o.left;
-          return Math.min(p, s, l, u) > n.options.edge;
+          var v12006 = v12000.pageY - v12003.top,
+            v11999 = v12003.left + v12004 - v12000.pageX,
+            v12007 = v12003.top + v12005 - v12000.pageY,
+            v12008 = v12000.pageX - v12003.left;
+          return Math.min(v12006, v11999, v12007, v12008) > v12001.options.edge;
         }
 
-        t.data(this, "hidraggable", {
-          options: n,
-          handle: p
-        }), n.disabled ? t(this).css("cursor", "") : p.unbind(".hidraggable").bind("mousemove.hidraggable", {
+        v11930.data(this, "hidraggable", {
+          options: v11996,
+          handle: v11998
+        }), v11996.disabled ? v11930(this).css("cursor", "") : v11998.unbind(".hidraggable").bind("mousemove.hidraggable", {
           target: this
-        }, function (e) {
-          if (!t.fn.hidraggable.isDragging) {
-            var n = t.data(e.data.target, "hidraggable").options;
-            s(e) ? t(this).css("cursor", n.cursor) : t(this).css("cursor", "");
+        }, function (v12009) {
+          if (!v11930.fn.hidraggable.isDragging) {
+            var v12010 = v11930.data(v12009.data.target, "hidraggable").options;
+            v12011(v12009) ? v11930(this).css("cursor", v12010.cursor) : v11930(this).css("cursor", "");
           }
         }).bind("mouseleave.hidraggable", {
           target: this
-        }, function (e) {
-          t(this).css("cursor", "");
+        }, function (v12012) {
+          v11930(this).css("cursor", "");
         }).bind("mousedown.hidraggable", {
           target: this
-        }, function (e) {
-          if (0 != s(e)) {
-            t(this).css("cursor", "");
-            var n = t(e.data.target).position(),
-              a = t(e.data.target).offset(),
-              p = {
-                startPosition: t(e.data.target).css("position"),
-                startLeft: n.left,
-                startTop: n.top,
-                left: n.left,
-                top: n.top,
-                startX: e.pageX,
-                startY: e.pageY,
-                offsetWidth: e.pageX - a.left,
-                offsetHeight: e.pageY - a.top,
-                target: e.data.target,
-                parent: t(e.data.target).parent()[0]
+        }, function (v12013) {
+          if (0 != v12011(v12013)) {
+            v11930(this).css("cursor", "");
+            var v12014 = v11930(v12013.data.target).position(),
+              v12015 = v11930(v12013.data.target).offset(),
+              v12016 = {
+                startPosition: v11930(v12013.data.target).css("position"),
+                startLeft: v12014.left,
+                startTop: v12014.top,
+                left: v12014.left,
+                top: v12014.top,
+                startX: v12013.pageX,
+                startY: v12013.pageY,
+                offsetWidth: v12013.pageX - v12015.left,
+                offsetHeight: v12013.pageY - v12015.top,
+                target: v12013.data.target,
+                parent: v11930(v12013.data.target).parent()[0]
               };
-            var ops = t.data(e.data.target, "hidraggable");
+            var ops = v11930.data(v12013.data.target, "hidraggable");
             // item禁止移动
             if (ops.options.draggable === false) {
               return;
             }
             // 旋转时不允许移动
-            if ('r resizebtn' == e.target.className) {
+            if ('r resizebtn' == v12013.target.className) {
               return;
             }
-            var ptr = ops.options.getScale()
+            var ptr = ops.options.getScale();
             if (ptr) {
-              p.left /= ptr, p.top /= ptr, p.startLeft /= ptr, p.startTop /= ptr;
+              v12016.left /= ptr, v12016.top /= ptr, v12016.startLeft /= ptr, v12016.startTop /= ptr;
             }
-            var tr = p.target.style.transform && parseInt(p.target.style.transform.slice(7, -1));
+            var tr = v12016.target.style.transform && parseInt(v12016.target.style.transform.slice(7, -1));
             if (tr) {
               var rad = tr * Math.PI / 180,
-                width = t(e.data.target).outerWidth(),
-                height = t(e.data.target).outerHeight(),
+                width = v11930(v12013.data.target).outerWidth(),
+                height = v11930(v12013.data.target).outerHeight(),
                 sin = Math.sin(rad),
                 cos = Math.cos(rad);
-              var w = Math.abs(width * cos) + Math.abs(height * sin),
-                h = Math.abs(width * sin) + Math.abs(height * cos);
-              var diffW = (w - width) / 2, diffH = (h - height) / 2;
-              p.left += diffW, p.top += diffH, p.startLeft += diffW, p.startTop += diffH;
+              var v12017 = Math.abs(width * cos) + Math.abs(height * sin),
+                v12018 = Math.abs(width * sin) + Math.abs(height * cos);
+              var diffW = (v12017 - width) / 2,diffH = (v12018 - height) / 2;
+              v12016.left += diffW, v12016.top += diffH, v12016.startLeft += diffW, v12016.startTop += diffH;
             }
-            t.extend(e.data, p);
-            0 != t.data(e.data.target, "hidraggable").options.onBeforeDrag.call(e.data.target, e) && (t(document).bind("mousedown.hidraggable", e.data, i), t(document).bind("mousemove.hidraggable", e.data, o), t(document).bind("mouseup.hidraggable", e.data, r));
+            v11930.extend(v12013.data, v12016);
+            0 != v11930.data(v12013.data.target, "hidraggable").options.onBeforeDrag.call(v12013.data.target, v12013) && (v11930(document).bind("mousedown.hidraggable", v12013.data, v12019), v11930(document).bind("mousemove.hidraggable", v12013.data, v12020), v11930(document).bind("mouseup.hidraggable", v12013.data, v12021));
           }
         });
       });
-    }, t.fn.hidraggable.methods = {
-      options: function options(e) {
-        return t.data(e[0], "hidraggable").options;
+    }, v11930.fn.hidraggable.methods = {
+      options: function options(v12022) {
+        return v11930.data(v12022[0], "hidraggable").options;
       },
-      update: function update(e, n) {
-        if (n && "object" == typeof n) {
-          t.data(e[0], "hidraggable") && Object.keys(n).forEach(function (k) {
-            t.data(e[0], "hidraggable").options[k] = n[k]
-          })
+      update: function update(v12023, v12024) {
+        if (v12024 && "object" == typeof v12024) {
+          v11930.data(v12023[0], "hidraggable") && Object.keys(v12024).forEach(function (v12025) {
+            v11930.data(v12023[0], "hidraggable").options[v12025] = v12024[v12025];
+          });
         }
       },
-      proxy: function proxy(e) {
-        return t.data(e[0], "hidraggable").proxy;
+      proxy: function proxy(v12026) {
+        return v11930.data(v12026[0], "hidraggable").proxy;
       },
-      enable: function enable(e) {
-        return e.each(function () {
-          t(this).hidraggable({
+      enable: function enable(v12027) {
+        return v12027.each(function () {
+          v11930(this).hidraggable({
             disabled: !1
           });
         });
       },
-      disable: function disable(e) {
-        return e.each(function () {
-          t(this).hidraggable({
+      disable: function disable(v12028) {
+        return v12028.each(function () {
+          v11930(this).hidraggable({
             disabled: !0
           });
         });
       }
-    }, t.fn.hidraggable.parseOptions = function (e) {
-      var n = t(e);
-      return t.extend({}, t.hiprintparser.parseOptions(e, ["cursor", "handle", "axis", {
+    }, v11930.fn.hidraggable.parseOptions = function (v12029) {
+      var v12030 = v11930(v12029);
+      return v11930.extend({}, v11930.hiprintparser.parseOptions(v12029, ["cursor", "handle", "axis", {
         revert: "boolean",
         deltaX: "number",
         deltaY: "number",
         edge: "number"
       }]), {
-        disabled: !!n.attr("disabled") || void 0
+        disabled: !!v12030.attr("disabled") || void 0
       });
-    }, t.fn.hidraggable.defaults = {
+    }, v11930.fn.hidraggable.defaults = {
       proxy: null,
       revert: !1,
       cursor: "move",
@@ -7238,128 +7238,128 @@ var hiprint = function (t) {
       disabled: !1,
       edge: 0,
       axis: null,
-      getScale: function getScale(t) {},
-      onBeforeDrag: function onBeforeDrag(t) {
+      getScale: function getScale(v12031) {},
+      onBeforeDrag: function onBeforeDrag(v12032) {
       },
-      onStartDrag: function onStartDrag(t) {
+      onStartDrag: function onStartDrag(v12033) {
       },
-      onDrag: function onDrag(t) {
+      onDrag: function onDrag(v12034) {
       },
-      onStopDrag: function onStopDrag(t) {
+      onStopDrag: function onStopDrag(v12035) {
       }
-    }, t.fn.hidraggable.isDragging = !1;
+    }, v11930.fn.hidraggable.isDragging = !1;
   }(jQuery);
-}, function (t, e) {
-  !function (t) {
-    t.fn.hidroppable = function (e, n) {
-      return "string" == typeof e ? t.fn.hidroppable.methods[e](this, n) : (e = e || {}, this.each(function () {
-        var n,
-          i = t.data(this, "hidroppable");
-        i ? t.extend(i.options, e) : (t(n = this).addClass("hidroppable"), t(n).bind("_dragenter", function (e, i) {
-          t.data(n, "hidroppable").options.onDragEnter.apply(n, [e, i]);
-        }), t(n).bind("_dragleave", function (e, i) {
-          t.data(n, "hidroppable").options.onDragLeave.apply(n, [e, i]);
-        }), t(n).bind("_dragover", function (e, i) {
-          t.data(n, "hidroppable").options.onDragOver.apply(n, [e, i]);
-        }), t(n).bind("_drop", function (e, i) {
-          t.data(n, "hidroppable").options.onDrop.apply(n, [e, i]);
-        }), t.data(this, "hidroppable", {
-          options: t.extend({}, t.fn.hidroppable.defaults, t.fn.hidroppable.parseOptions(this), e)
+}, function (v12036, v12037) {
+  !function (v12038) {
+    v12038.fn.hidroppable = function (v12039, v12040) {
+      return "string" == typeof v12039 ? v12038.fn.hidroppable.methods[v12039](this, v12040) : (v12039 = v12039 || {}, this.each(function () {
+        var v12041,
+          v12042 = v12038.data(this, "hidroppable");
+        v12042 ? v12038.extend(v12042.options, v12039) : (v12038(v12041 = this).addClass("hidroppable"), v12038(v12041).bind("_dragenter", function (v12043, v12044) {
+          v12038.data(v12041, "hidroppable").options.onDragEnter.apply(v12041, [v12043, v12044]);
+        }), v12038(v12041).bind("_dragleave", function (v12045, v12046) {
+          v12038.data(v12041, "hidroppable").options.onDragLeave.apply(v12041, [v12045, v12046]);
+        }), v12038(v12041).bind("_dragover", function (v12047, v12048) {
+          v12038.data(v12041, "hidroppable").options.onDragOver.apply(v12041, [v12047, v12048]);
+        }), v12038(v12041).bind("_drop", function (v12049, v12050) {
+          v12038.data(v12041, "hidroppable").options.onDrop.apply(v12041, [v12049, v12050]);
+        }), v12038.data(this, "hidroppable", {
+          options: v12038.extend({}, v12038.fn.hidroppable.defaults, v12038.fn.hidroppable.parseOptions(this), v12039)
         }));
       }));
-    }, t.fn.hidroppable.methods = {
-      options: function options(e) {
-        return t.data(e[0], "hidroppable").options;
+    }, v12038.fn.hidroppable.methods = {
+      options: function options(v12051) {
+        return v12038.data(v12051[0], "hidroppable").options;
       },
-      enable: function enable(e) {
-        return e.each(function () {
-          t(this).hidroppable({
+      enable: function enable(v12052) {
+        return v12052.each(function () {
+          v12038(this).hidroppable({
             disabled: !1
           });
         });
       },
-      disable: function disable(e) {
-        return e.each(function () {
-          t(this).hidroppable({
+      disable: function disable(v12053) {
+        return v12053.each(function () {
+          v12038(this).hidroppable({
             disabled: !0
           });
         });
       }
-    }, t.fn.hidroppable.parseOptions = function (e) {
-      var n = t(e);
-      return t.extend({}, t.hiprintparser.parseOptions(e, ["accept"]), {
-        disabled: !!n.attr("disabled") || void 0
+    }, v12038.fn.hidroppable.parseOptions = function (v12054) {
+      var v12055 = v12038(v12054);
+      return v12038.extend({}, v12038.hiprintparser.parseOptions(v12054, ["accept"]), {
+        disabled: !!v12055.attr("disabled") || void 0
       });
-    }, t.fn.hidroppable.defaults = {
+    }, v12038.fn.hidroppable.defaults = {
       accept: null,
       disabled: !1,
-      onDragEnter: function onDragEnter(t, e) {
+      onDragEnter: function onDragEnter(v12056, v12057) {
       },
-      onDragOver: function onDragOver(t, e) {
+      onDragOver: function onDragOver(v12058, v12059) {
       },
-      onDragLeave: function onDragLeave(t, e) {
+      onDragLeave: function onDragLeave(v12060, v12061) {
       },
-      onDrop: function onDrop(t, e) {
+      onDrop: function onDrop(v12062, v12063) {
       }
     };
   }(jQuery);
-}, function (t, e) {
-  var n;
-  (n = jQuery).hiprintparser = {
-    parseOptions: function parseOptions(t, e) {
-      var i = n(t),
-        o = {},
-        r = n.trim(i.attr("data-options"));
+}, function (v12064, v12065) {
+  var v12066;
+  (v12066 = jQuery).hiprintparser = {
+    parseOptions: function parseOptions(v12067, v12068) {
+      var v12069 = v12066(v12067),
+        v12070 = {},
+        v12071 = v12066.trim(v12069.attr("data-options"));
 
-      if (r && ("{" != r.substring(0, 1) && (r = "{" + r + "}"), o = new Function("return " + r)()), e) {
-        for (var a = {}, p = 0; p < e.length; p++) {
-          var s = e[p];
-          if ("string" == typeof s) a[s] = "width" == s || "height" == s || "left" == s || "top" == s ? parseInt(t.style[s]) || void 0 : i.attr(s); else for (var l in s) {
-            var u = s[l];
-            "boolean" == u ? a[l] = i.attr(l) ? "true" == i.attr(l) : void 0 : "number" == u && (a[l] = "0" == i.attr(l) ? 0 : parseFloat(i.attr(l)) || void 0);
+      if (v12071 && ("{" != v12071.substring(0, 1) && (v12071 = "{" + v12071 + "}"), v12070 = new Function("return " + v12071)()), v12068) {
+        for (var v12072 = {}, v12073 = 0; v12073 < v12068.length; v12073++) {
+          var v12074 = v12068[v12073];
+          if ("string" == typeof v12074) v12072[v12074] = "width" == v12074 || "height" == v12074 || "left" == v12074 || "top" == v12074 ? parseInt(v12067.style[v12074]) || void 0 : v12069.attr(v12074);else for (var v12075 in v12074) {
+            var v12076 = v12074[v12075];
+            "boolean" == v12076 ? v12072[v12075] = v12069.attr(v12075) ? "true" == v12069.attr(v12075) : void 0 : "number" == v12076 && (v12072[v12075] = "0" == v12069.attr(v12075) ? 0 : parseFloat(v12069.attr(v12075)) || void 0);
           }
         }
 
-        n.extend(o, a);
+        v12066.extend(v12070, v12072);
       }
 
-      return o;
+      return v12070;
     }
-  }, n.fn.dragLengthC = function (t, e) {
-    return "pt" == e.moveUnit ? n.fn.dragLengthCNum(t, e) + "pt" : n.fn.dragLengthCNum(t, e);
-  }, n.fn.dragLengthCNum = function (t, e) {
-    var n = 3;
+  }, v12066.fn.dragLengthC = function (v12077, v12078) {
+    return "pt" == v12078.moveUnit ? v12066.fn.dragLengthCNum(v12077, v12078) + "pt" : v12066.fn.dragLengthCNum(v12077, v12078);
+  }, v12066.fn.dragLengthCNum = function (v12079, v12080) {
+    var v12081 = 3;
 
-    if ("pt" == e.moveUnit) {
-      var i = .75 * t;
-      return e.minMove && (n = e.minMove), Math.round(i / n) * n;
+    if ("pt" == v12080.moveUnit) {
+      var v12082 = .75 * v12079;
+      return v12080.minMove && (v12081 = v12080.minMove), Math.round(v12082 / v12081) * v12081;
     }
 
-    return Math.round(i / n) * n;
+    return Math.round(v12082 / v12081) * v12081;
   };
-}, function (t, e) {
-  var n, i, o;
-  n = jQuery, i = {
+}, function (v12083, v12084) {
+  var v12085, v12086, v12087;
+  v12085 = jQuery, v12086 = {
     maxPanelIndex: 0
-  }, (o = function o(t) {
-    this.options = n.data(t.target, "hireizeable").options, this.init(t.target);
+  }, (v12087 = function v12088(v12089) {
+    this.options = v12085.data(v12089.target, "hireizeable").options, this.init(v12089.target);
   }).prototype = {
-    numHandlerText: function numHandlerText(t) {
-      return this.numHandler(t) + "pt";
+    numHandlerText: function numHandlerText(v12090) {
+      return this.numHandler(v12090) + "pt";
     },
-    numHandler: function numHandler(t) {
-      var e = 1.5,
-        n = .75 * t;
-      return this.options.minResize && (e = this.options.minResize), Math.round(n / e) * e;
+    numHandler: function numHandler(v12091) {
+      var v12092 = 1.5,
+        v12093 = .75 * v12091;
+      return this.options.minResize && (v12092 = this.options.minResize), Math.round(v12093 / v12092) * v12092;
     },
-    init: function init(t) {
-      this.initResizeBox(t);
+    init: function init(v12094) {
+      this.initResizeBox(v12094);
     },
-    initResizeBox: function initResizeBox(t) {
-      var e = this;
-      n(t).each(function () {
-        var o;
-        i.maxPanelIndex += 1, e.options.noContainer ? o = n(t) : (o = n("<div panelIndex=" + i.maxPanelIndex + ' class="resize-panel"></div>')).css({
+    initResizeBox: function initResizeBox(v12095) {
+      var v12096 = this;
+      v12085(v12095).each(function () {
+        var v12097;
+        v12086.maxPanelIndex += 1, v12096.options.noContainer ? v12097 = v12085(v12095) : (v12097 = v12085("<div panelIndex=" + v12086.maxPanelIndex + ' class="resize-panel"></div>')).css({
           width: "100%",
           height: "100%",
           top: 0,
@@ -7368,74 +7368,74 @@ var hiprint = function (t) {
           "background-color": "rgba(0,0,0,0.5)",
           cursor: "move",
           display: "none"
-        }), e.appendHandler(o, n(this));
+        }), v12096.appendHandler(v12097, v12085(this));
 
-        var r = {
+        var v12098 = {
             name: "n",
-            target: n('<div class="n resizebtn" style="cursor: n-resize;top: -12px;margin-left: -4px;left: 50%;"></div>')
+            target: v12085('<div class="n resizebtn" style="cursor: n-resize;top: -12px;margin-left: -4px;left: 50%;"></div>')
           },
-          a = {
+          v12099 = {
             name: "s",
-            target: n('<div class="s resizebtn" style="cursor: s-resize;bottom: -12px;margin-left: -4px;left: 50%;"></div>')
+            target: v12085('<div class="s resizebtn" style="cursor: s-resize;bottom: -12px;margin-left: -4px;left: 50%;"></div>')
           },
-          p = {
+          v12100 = {
             name: "w",
-            target: n('<div class="w resizebtn" style="cursor: w-resize;left: -12px;margin-top: -4px;top: 50%;"></div>')
+            target: v12085('<div class="w resizebtn" style="cursor: w-resize;left: -12px;margin-top: -4px;top: 50%;"></div>')
           },
-          s = {
+          v12101 = {
             name: "e",
-            target: n('<div class="e resizebtn" style="cursor: e-resize; top: 50%; margin-top:-4px;right: -12px;"></div>')
+            target: v12085('<div class="e resizebtn" style="cursor: e-resize; top: 50%; margin-top:-4px;right: -12px;"></div>')
           },
-          l = {
+          v12102 = {
             name: "ne",
-            target: n('<div class="ne resizebtn" style="cursor: ne-resize;top: -12px;right: -12px;"></div>')
+            target: v12085('<div class="ne resizebtn" style="cursor: ne-resize;top: -12px;right: -12px;"></div>')
           },
-          u = {
+          v12103 = {
             name: "nw",
-            target: n('<div class="nw resizebtn" style=" cursor: nw-resize;top: -12px;left:-12px;"></div>')
+            target: v12085('<div class="nw resizebtn" style=" cursor: nw-resize;top: -12px;left:-12px;"></div>')
           },
-          d = {
+          v12104 = {
             name: "se",
-            target: n('<div class="se resizebtn" style="cursor: se-resize;bottom:-12px;right: -12px;"></div>')
+            target: v12085('<div class="se resizebtn" style="cursor: se-resize;bottom:-12px;right: -12px;"></div>')
           },
-          c = {
+          v12105 = {
             name: "sw",
-            target: n('<div class="sw resizebtn" style="cursor: sw-resize;bottom: -12px;left: -12px;"></div>')
+            target: v12085('<div class="sw resizebtn" style="cursor: sw-resize;bottom: -12px;left: -12px;"></div>')
           },
-          r = {
+          v12098 = {
             name: "r",
-            target: n('<div class="r resizebtn" style="cursor:url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABvUExURUdwTP///9XV1R0dHf///3Nzc////////////////1ZWVq+vr/T09PX19QQEBP///////8XFxf///////////wYGBv///+jo6P///4aGhqioqMzMzP///2BgYP///////////zExMf///wAAAP///xLps0AAAAAjdFJOUwCxxOdixRDmzSDMv8/Z+tz5wWpXWPk3zALCv8KnyXZVMNuNPnv3CwAAAJ1JREFUKM/NkckOwyAMRFkDBMhC9qWr+//fWCIV1WlzrjoXS36yxmMT8hdqqKoUvRAjMtw22kvecem1GjTuK1vApmI+wQMBbQFy5li+QQRaX4AtRX+vbntAJeRl9HTTx4TiwESs61DXNUPmVQeujzVrQwh43TTxpeRBslVfMUhbiXKWyiAwvnIsMcdyJkfJYdpNvG/ltDm+bjP+8KFP8ggL+zQLGxwAAAAASUVORK5CYII=\') 14 14,alias;top: -16px;margin-left: -4px;left: 50%;"></div>')
+            target: v12085('<div class="r resizebtn" style="cursor:url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABvUExURUdwTP///9XV1R0dHf///3Nzc////////////////1ZWVq+vr/T09PX19QQEBP///////8XFxf///////////wYGBv///+jo6P///4aGhqioqMzMzP///2BgYP///////////zExMf///wAAAP///xLps0AAAAAjdFJOUwCxxOdixRDmzSDMv8/Z+tz5wWpXWPk3zALCv8KnyXZVMNuNPnv3CwAAAJ1JREFUKM/NkckOwyAMRFkDBMhC9qWr+//fWCIV1WlzrjoXS36yxmMT8hdqqKoUvRAjMtw22kvecem1GjTuK1vApmI+wQMBbQFy5li+QQRaX4AtRX+vbntAJeRl9HTTx4TiwESs61DXNUPmVQeujzVrQwh43TTxpeRBslVfMUhbiXKWyiAwvnIsMcdyJkfJYdpNvG/ltDm+bjP+8KFP8ggL+zQLGxwAAAAASUVORK5CYII=\') 14 14,alias;top: -16px;margin-left: -4px;left: 50%;"></div>')
           },
-          sizeBox = n('<div class="size-box" style="position: absolute;left:-2px;"></div>'),
-          deleteBtn = n('<div class="del-btn">✕</div>'),
-          h = function h() {
-            var t = [],
-              i = e.options.showPoints;
-            return n.each([r, a, p, s, l, u, d, c], function (e, o) {
-              n.inArray(o.name, i) > -1 && t.push(o.target);
-            }), t;
+          sizeBox = v12085('<div class="size-box" style="position: absolute;left:-2px;"></div>'),
+          deleteBtn = v12085('<div class="del-btn">✕</div>'),
+          v12106 = function v12107() {
+            var v12108 = [],
+              v12109 = v12096.options.showPoints;
+            return v12085.each([v12098, v12099, v12100, v12101, v12102, v12103, v12104, v12105], function (v12110, v12111) {
+              v12085.inArray(v12111.name, v12109) > -1 && v12108.push(v12111.target);
+            }), v12108;
           };
-        e.refreshSizeBox(void 0, sizeBox, o);
+        v12096.refreshSizeBox(void 0, sizeBox, v12097);
         // draggable 为 false 时不显示 resizebox 右上角删除按钮
-        if (e.options.draggable != false) {
-          o.append(deleteBtn);
-          o.on("mousedown", ".del-btn", () => {
+        if (v12096.options.draggable != false) {
+          v12097.append(deleteBtn);
+          v12097.on("mousedown", ".del-btn", () => {
             var keyboardEvent = new KeyboardEvent("keydown", { bubbles: true, keyCode: 46 });
-            t.dispatchEvent(keyboardEvent);
+            v12095.dispatchEvent(keyboardEvent);
           });
-		    }
-        e.addHandlerCss(h()), e.appendHandler(h(), o), e.bindResizeEvent(o, n(this));
-        var f = n(this);
-        n(o).on("mousedown", ".resizebtn", function () {
-          f.addClass("resizeing");
-        }), n(".easyui-droppable").on("mouseup", function () {
-          f.removeClass("resizeing");
-        }), e.bindTrigger(n(this));
-      }), e.bindHidePanel();
+        }
+        v12096.addHandlerCss(v12106()), v12096.appendHandler(v12106(), v12097), v12096.bindResizeEvent(v12097, v12085(this));
+        var v12112 = v12085(this);
+        v12085(v12097).on("mousedown", ".resizebtn", function () {
+          v12112.addClass("resizeing");
+        }), v12085(".easyui-droppable").on("mouseup", function () {
+          v12112.removeClass("resizeing");
+        }), v12096.bindTrigger(v12085(this));
+      }), v12096.bindHidePanel();
     },
-    addHandlerCss: function addHandlerCss(t) {
-      for (var e = 0; e < t.length; e++) {
-        t[e].css({
+    addHandlerCss: function addHandlerCss(v12113) {
+      for (var v12114 = 0; v12114 < v12113.length; v12114++) {
+        v12113[v12114].css({
           position: "absolute",
           width: "8px",
           height: "8px",
@@ -7444,258 +7444,258 @@ var hiprint = function (t) {
         });
       }
     },
-    appendHandler: function appendHandler(t, e) {
-      e.find(".resize-panel").remove()
-      for (var n = 0; n < t.length; n++) {
-        e.append(t[n]);
+    appendHandler: function appendHandler(v12115, v12116) {
+      v12116.find(".resize-panel").remove();
+      for (var v12117 = 0; v12117 < v12115.length; v12117++) {
+        v12116.append(v12115[v12117]);
       }
     },
-    refreshSizeBox: function refreshSizeBox(t, box, o) {
+    refreshSizeBox: function refreshSizeBox(v12118, box, v12119) {
       if (!this.options.showSizeBox) return;
       if (box) {
-        o.append(box);
+        v12119.append(box);
       }
       var style, sizeBox;
-      if (t && t.length) {
-        style = t[0].style;
-        sizeBox = t.children("div[panelindex]").find(".size-box");
-      } else if (o && o.parent()) {
-        var t = o.parent();
-        if (t.hasClass("hiprint-printPaper-content")) return;
-        style = t[0].style;
+      if (v12118 && v12118.length) {
+        style = v12118[0].style;
+        sizeBox = v12118.children("div[panelindex]").find(".size-box");
+      } else if (v12119 && v12119.parent()) {
+        var v12118 = v12119.parent();
+        if (v12118.hasClass("hiprint-printPaper-content")) return;
+        style = v12118[0].style;
         if (!style.width) {
-          style.width = hinnn.px.toPt(t[0].offsetWidth) + "pt";
+          style.width = hinnn.px.toPt(v12118[0].offsetWidth) + "pt";
         }
         if (!style.height) {
-          style.height = hinnn.px.toPt(t[0].offsetHeight) + "pt";
+          style.height = hinnn.px.toPt(v12118[0].offsetHeight) + "pt";
         }
-        sizeBox = t.children("div[panelindex]").find(".size-box");
+        sizeBox = v12118.children("div[panelindex]").find(".size-box");
       }
       if (sizeBox) {
         sizeBox.text(style.width + ' x ' + style.height);
         sizeBox.css('top', -(sizeBox.outerHeight() || 20));
       }
     },
-    triggerResize: function triggerResize(t, n) {
+    triggerResize: function triggerResize(v12120, v12121) {
       // 处理按住 ctrl / command 点击元素 多选
-      if (!(n.ctrlKey || n.metaKey)) {
-        t.siblings().children("div[panelindex]").removeClass('selected')
-        t.siblings().children("div[panelindex]").css({
+      if (!(v12121.ctrlKey || v12121.metaKey)) {
+        v12120.siblings().children("div[panelindex]").removeClass('selected');
+        v12120.siblings().children("div[panelindex]").css({
           display: "none"
-        })
+        });
       }
-      t.children("div[panelindex]").addClass('selected')
-      t.children("div[panelindex]").css({
+      v12120.children("div[panelindex]").addClass('selected');
+      v12120.children("div[panelindex]").css({
         display: "block"
       });
-      this.refreshSizeBox(t)
+      this.refreshSizeBox(v12120);
     },
-    bindResizeEvent: function bindResizeEvent(t, e) {
-      var i = this,
-        o = 0,
-        r = 0,
-        a = t.width(),
-        p = t.height(),
-        s = t.offset().left,
-        l = t.offset().top,
-        u = i.options.noContainer ? n(e) : t.parent(),
-        d = !1; // 右
-      t.on("mousedown", ".e", function (e) {
-        o = e.pageX, a = t.width(), d = !0;
+    bindResizeEvent: function bindResizeEvent(v12122, v12123) {
+      var v12124 = this,
+        v12125 = 0,
+        v12126 = 0,
+        v12127 = v12122.width(),
+        v12128 = v12122.height(),
+        v12129 = v12122.offset().left,
+        v12130 = v12122.offset().top,
+        v12131 = v12124.options.noContainer ? v12085(v12123) : v12122.parent(),
+        v12132 = !1; // 右
+      v12122.on("mousedown", ".e", function (v12133) {
+        v12125 = v12133.pageX, v12127 = v12122.width(), v12132 = !0;
       });
-      var c = !1; // 下
-      t.on("mousedown", ".s", function (e) {
-        r = e.pageY, p = t.height(), c = !0;
+      var v12134 = !1; // 下
+      v12122.on("mousedown", ".s", function (v12135) {
+        v12126 = v12135.pageY, v12128 = v12122.height(), v12134 = !0;
       });
-      var h = !1; // 左
-      t.on("mousedown", ".w", function (e) {
-        o = e.pageX, a = t.width(), h = !0, s = u.offset().left;
+      var v12136 = !1; // 左
+      v12122.on("mousedown", ".w", function (v12137) {
+        v12125 = v12137.pageX, v12127 = v12122.width(), v12136 = !0, v12129 = v12131.offset().left;
       });
-      var f = !1; // 上
-      t.on("mousedown", ".n", function (e) {
-        r = e.pageY, p = t.height(), f = !0, l = u.offset().top;
+      var v12138 = !1; // 上
+      v12122.on("mousedown", ".n", function (v12139) {
+        v12126 = v12139.pageY, v12128 = v12122.height(), v12138 = !0, v12130 = v12131.offset().top;
       });
-      var g = !1; // 右上
-      t.on("mousedown", ".ne", function (e) {
-        o = e.pageX, r = e.pageY, a = t.width(), p = t.height(), g = !0, l = u.offset().top;
+      var v12140 = !1; // 右上
+      v12122.on("mousedown", ".ne", function (v12141) {
+        v12125 = v12141.pageX, v12126 = v12141.pageY, v12127 = v12122.width(), v12128 = v12122.height(), v12140 = !0, v12130 = v12131.offset().top;
       });
-      var m = !1; // 左上
-      t.on("mousedown", ".nw", function (e) {
-        o = e.pageX, r = e.pageY, a = t.width(), p = t.height(), l = u.offset().top, s = u.offset().left, m = !0;
+      var v12142 = !1; // 左上
+      v12122.on("mousedown", ".nw", function (v12143) {
+        v12125 = v12143.pageX, v12126 = v12143.pageY, v12127 = v12122.width(), v12128 = v12122.height(), v12130 = v12131.offset().top, v12129 = v12131.offset().left, v12142 = !0;
       });
-      var v = !1; // 右下
-      t.on("mousedown", ".se", function (e) {
-        o = e.pageX, r = e.pageY, a = t.width(), p = t.height(), v = !0;
+      var v12144 = !1; // 右下
+      v12122.on("mousedown", ".se", function (v12145) {
+        v12125 = v12145.pageX, v12126 = v12145.pageY, v12127 = v12122.width(), v12128 = v12122.height(), v12144 = !0;
       });
-      var y = !1; // 左下
-      t.on("mousedown", ".sw", function (e) {
-        o = e.pageX, r = e.pageY, a = t.width(), p = t.height(), y = !0, s = u.offset().left;
+      var v12146 = !1; // 左下
+      v12122.on("mousedown", ".sw", function (v12147) {
+        v12125 = v12147.pageX, v12126 = v12147.pageY, v12127 = v12122.width(), v12128 = v12122.height(), v12146 = !0, v12129 = v12131.offset().left;
       });
       var rt = !1; // 旋转
-      t.on("mousedown", ".r", function (e) {
-        o = e.pageX, r = e.pageY, a = t.width(), p = t.height(), rt = !0, s = a / 2 + u.offset().left, l = p / 2 + u.offset().top;
+      v12122.on("mousedown", ".r", function (v12148) {
+        v12125 = v12148.pageX, v12126 = v12148.pageY, v12127 = v12122.width(), v12128 = v12122.height(), rt = !0, v12129 = v12127 / 2 + v12131.offset().left, v12130 = v12128 / 2 + v12131.offset().top;
       });
-      t.on("dblclick", ".r", function (e) {
-        u.css({transform: "rotate(" + 0 + "deg)"});
-        i.options.onResize(e, void 0, void 0, void 0, void 0, 0);
+      v12122.on("dblclick", ".r", function (v12149) {
+        v12131.css({ transform: "rotate(" + 0 + "deg)" });
+        v12124.options.onResize(v12149, void 0, void 0, void 0, void 0, 0);
       });
-      var b = !1;
-      t.on("mousedown", function (t) {
-        i.options.onBeforeResize(), o = t.pageX, r = t.pageY, l = u.offset().top, s = u.offset().left, b = !1;
-      }), n(i.options.stage).on("mousemove", function (e) {
-        if (d) { // 右
-          var n = (e.pageX - o) / i.options.getScale();
-          t.css({
+      var v12150 = !1;
+      v12122.on("mousedown", function (v12151) {
+        v12124.options.onBeforeResize(), v12125 = v12151.pageX, v12126 = v12151.pageY, v12130 = v12131.offset().top, v12129 = v12131.offset().left, v12150 = !1;
+      }), v12085(v12124.options.stage).on("mousemove", function (v12152) {
+        if (v12132) {// 右
+          var v12153 = (v12152.pageX - v12125) / v12124.options.getScale();
+          v12122.css({
             width: "100%"
-          }), u.css({
-            width: i.numHandlerText(a + n)
-          }), i.options.onResize(e, void 0, i.numHandler(a + n), void 0, void 0);
-        } else if (c) { // 下
-          var E = (e.pageY - r) / i.options.getScale();
-          t.css({
+          }), v12131.css({
+            width: v12124.numHandlerText(v12127 + v12153)
+          }), v12124.options.onResize(v12152, void 0, v12124.numHandler(v12127 + v12153), void 0, void 0);
+        } else if (v12134) {// 下
+          var v12154 = (v12152.pageY - v12126) / v12124.options.getScale();
+          v12122.css({
             height: "100%"
-          }), u.css({
-            height: i.numHandlerText(p + E)
-          }), i.options.onResize(e, i.numHandler(p + E), void 0, void 0, void 0);
-        } else if (rt) { // 旋转
-          t.css({height: "100%"});
-          var eo = e.pageX, er = e.pageY;
-          var direct = (eo - o) * 360 / 100;
-          o = e.pageX
-          var lastAngle = (u[0].style.transform && parseInt(u[0].style.transform.slice(7, -1))) || 0;
-          var R = lastAngle + direct;
-          if (Math.abs(R) > 360) {
-            R = R % 360
+          }), v12131.css({
+            height: v12124.numHandlerText(v12128 + v12154)
+          }), v12124.options.onResize(v12152, v12124.numHandler(v12128 + v12154), void 0, void 0, void 0);
+        } else if (rt) {// 旋转
+          v12122.css({ height: "100%" });
+          var eo = v12152.pageX,er = v12152.pageY;
+          var direct = (eo - v12125) * 360 / 100;
+          v12125 = v12152.pageX;
+          var lastAngle = v12131[0].style.transform && parseInt(v12131[0].style.transform.slice(7, -1)) || 0;
+          var v12155 = lastAngle + direct;
+          if (Math.abs(v12155) > 360) {
+            v12155 = v12155 % 360;
           }
-          u.css({transform: "rotate(" + R + "deg)"});
-          i.options.onResize(e, void 0, void 0, void 0, void 0, R);
-        } else if (h) { // 左
-          (n = (e.pageX - o) / i.options.getScale(), t.css({
+          v12131.css({ transform: "rotate(" + v12155 + "deg)" });
+          v12124.options.onResize(v12152, void 0, void 0, void 0, void 0, v12155);
+        } else if (v12136) {// 左
+          v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12122.css({
             width: "100%"
-          }), u.css({
-            width: i.numHandlerText(a - n),
-            left: i.numHandlerText(i.options.noDrag ? void 0 : i.numHandler(s + n))
-          }), i.options.onResize(e, void 0, i.numHandler(a - n), void 0, i.options.noDrag ? void 0 : i.numHandler(s + n)))
-        } else if (f) { // 上
-          (E = (e.pageY - r) / i.options.getScale(), t.css({
+          }), v12131.css({
+            width: v12124.numHandlerText(v12127 - v12153),
+            left: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12124.numHandler(v12129 + v12153))
+          }), v12124.options.onResize(v12152, void 0, v12124.numHandler(v12127 - v12153), void 0, v12124.options.noDrag ? void 0 : v12124.numHandler(v12129 + v12153));
+        } else if (v12138) {// 上
+          v12154 = (v12152.pageY - v12126) / v12124.options.getScale(), v12122.css({
             height: "100%"
-          }), u.css({
-            height: i.numHandlerText(p - E),
-            top: i.numHandlerText(i.options.noDrag ? void 0 : l + E)
-          }), i.options.onResize(e, i.numHandler(p - E), void 0, i.options.noDrag ? void 0 : i.numHandler(l + E), void 0))
-        } else if (g) { // 右上
-          (n = (e.pageX - o) / i.options.getScale(), E = (e.pageY - r) / i.options.getScale(), t.css({
+          }), v12131.css({
+            height: v12124.numHandlerText(v12128 - v12154),
+            top: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12130 + v12154)
+          }), v12124.options.onResize(v12152, v12124.numHandler(v12128 - v12154), void 0, v12124.options.noDrag ? void 0 : v12124.numHandler(v12130 + v12154), void 0);
+        } else if (v12140) {// 右上
+          v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12154 = (v12152.pageY - v12126) / v12124.options.getScale(), v12122.css({
             height: "100%",
             width: "100%"
-          }), u.css({
-            height: i.numHandlerText(p - E),
-            top: i.numHandlerText(i.options.noDrag ? void 0 : l + E),
-            width: i.numHandlerText(a + n)
-          }), i.options.onResize(e, i.numHandler(p - E), i.numHandler(a + n), i.options.noDrag ? void 0 : i.numHandler(l + E), void 0))
-        } else if (m) { // 左上
-          (n = (e.pageX - o) / i.options.getScale(), E = (e.pageY - r) / i.options.getScale(), t.css({
+          }), v12131.css({
+            height: v12124.numHandlerText(v12128 - v12154),
+            top: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12130 + v12154),
+            width: v12124.numHandlerText(v12127 + v12153)
+          }), v12124.options.onResize(v12152, v12124.numHandler(v12128 - v12154), v12124.numHandler(v12127 + v12153), v12124.options.noDrag ? void 0 : v12124.numHandler(v12130 + v12154), void 0);
+        } else if (v12142) {// 左上
+          v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12154 = (v12152.pageY - v12126) / v12124.options.getScale(), v12122.css({
             height: "100%",
             width: "100%"
-          }), u.css({
-            height: i.numHandlerText(p - E),
-            top: i.numHandlerText(i.options.noDrag ? void 0 : l + E),
-            width: i.numHandlerText(a - n),
-            left: i.numHandlerText(i.options.noDrag ? void 0 : s + n)
-          }), i.options.onResize(e, i.numHandler(p - E), i.numHandler(a - n), i.options.noDrag ? void 0 : i.numHandler(l + E), i.options.noDrag ? void 0 : i.numHandler(s + n)))
-        } else if (v) { // 右下
-          (n = (e.pageX - o) / i.options.getScale(), E = (e.pageY - r) / i.options.getScale()),
-            t.css({width: "100%", height: "100%"});
-          if (e.shiftKey) {
-            u.css({width: i.numHandlerText(a + n), height: i.numHandlerText(p + E)});
-            i.options.onResize(e, i.numHandler(p + E), i.numHandler(a + n), void 0, void 0);
+          }), v12131.css({
+            height: v12124.numHandlerText(v12128 - v12154),
+            top: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12130 + v12154),
+            width: v12124.numHandlerText(v12127 - v12153),
+            left: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12129 + v12153)
+          }), v12124.options.onResize(v12152, v12124.numHandler(v12128 - v12154), v12124.numHandler(v12127 - v12153), v12124.options.noDrag ? void 0 : v12124.numHandler(v12130 + v12154), v12124.options.noDrag ? void 0 : v12124.numHandler(v12129 + v12153));
+        } else if (v12144) {// 右下
+          (v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12154 = (v12152.pageY - v12126) / v12124.options.getScale()),
+          v12122.css({ width: "100%", height: "100%" });
+          if (v12152.shiftKey) {
+            v12131.css({ width: v12124.numHandlerText(v12127 + v12153), height: v12124.numHandlerText(v12128 + v12154) });
+            v12124.options.onResize(v12152, v12124.numHandler(v12128 + v12154), v12124.numHandler(v12127 + v12153), void 0, void 0);
           } else {
             // 宽高比
-            var ratio = p / a;
-            var width = a + n, height = p + E;
+            var ratio = v12128 / v12127;
+            var width = v12127 + v12153,height = v12128 + v12154;
             height = width * ratio;
-            u.css({width: i.numHandlerText(width), height: i.numHandlerText(height)});
-            i.options.onResize(e, i.numHandler(height), i.numHandler(width), void 0, void 0);
+            v12131.css({ width: v12124.numHandlerText(width), height: v12124.numHandlerText(height) });
+            v12124.options.onResize(v12152, v12124.numHandler(height), v12124.numHandler(width), void 0, void 0);
           }
-        } else if (y) { // 左下
-          (n = (e.pageX - o) / i.options.getScale(), E = (e.pageY - r) / i.options.getScale(), t.css({
+        } else if (v12146) {// 左下
+          v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12154 = (v12152.pageY - v12126) / v12124.options.getScale(), v12122.css({
             width: "100%",
             height: "100%"
-          }), u.css({
-            width: i.numHandlerText(a - n),
-            left: i.numHandlerText(i.options.noDrag ? void 0 : s + n),
-            height: i.numHandlerText(p + E)
-          }), i.options.onResize(e, i.numHandler(p + E), i.numHandler(a - n), i.numHandler(otundefinedop), i.options.noDrag ? void 0 : i.numHandler(s + n)))
-        } else { // 按下
-          b && (n = (e.pageX - o) / i.options.getScale(), E = (e.pageY - r) / i.options.getScale(), u.css({
-            left: i.numHandlerText(i.options.noDrag ? void 0 : s + n),
-            top: i.numHandlerText(i.options.noDrag ? void 0 : l + E)
-          }), i.options.onResize(e, void 0, void 0, i.options.noDrag ? void 0 : i.numHandler(l + E), i.options.noDrag ? void 0 : i.numHandler(s + n)))
+          }), v12131.css({
+            width: v12124.numHandlerText(v12127 - v12153),
+            left: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12129 + v12153),
+            height: v12124.numHandlerText(v12128 + v12154)
+          }), v12124.options.onResize(v12152, v12124.numHandler(v12128 + v12154), v12124.numHandler(v12127 - v12153), v12124.numHandler(otundefinedop), v12124.options.noDrag ? void 0 : v12124.numHandler(v12129 + v12153));
+        } else {// 按下
+          v12150 && (v12153 = (v12152.pageX - v12125) / v12124.options.getScale(), v12154 = (v12152.pageY - v12126) / v12124.options.getScale(), v12131.css({
+            left: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12129 + v12153),
+            top: v12124.numHandlerText(v12124.options.noDrag ? void 0 : v12130 + v12154)
+          }), v12124.options.onResize(v12152, void 0, void 0, v12124.options.noDrag ? void 0 : v12124.numHandler(v12130 + v12154), v12124.options.noDrag ? void 0 : v12124.numHandler(v12129 + v12153)));
         }
         ;
-      }).on("mouseup", function (t) {
+      }).on("mouseup", function (v12156) {
         // i.options.onStopResize(rt);
         // 当某个 '控制点' 按下时 (每个'控制点'按下状态是独立的)
-        if ((d || c || h || f || g || m || y || v || b || rt)) {
-          i.options.onStopResize(rt);
+        if (v12132 || v12134 || v12136 || v12138 || v12140 || v12142 || v12146 || v12144 || v12150 || rt) {
+          v12124.options.onStopResize(rt);
         }
-        d = !1, c = !1, h = !1, f = !1, g = !1, m = !1, y = !1, v = !1, b = !1, rt = !1;
+        v12132 = !1, v12134 = !1, v12136 = !1, v12138 = !1, v12140 = !1, v12142 = !1, v12146 = !1, v12144 = !1, v12150 = !1, rt = !1;
       });
     },
-    bindTrigger: function bindTrigger(t) {
-      var e = this;
-      t.on("click", function (_n) {
-        _n.stopPropagation(), e.triggerResize(t, _n), n(".mouseRect").remove();
+    bindTrigger: function bindTrigger(v12157) {
+      var v12158 = this;
+      v12157.on("click", function (_n) {
+        _n.stopPropagation(), v12158.triggerResize(v12157, _n), v12085(".mouseRect").remove();
       });
     },
-    bindHidePanel: function bindHidePanel(t) {
-      if (i.maxPanelIndex < 2) {
-        var e = this.options.stage;
-        n(e).bind("click", function (t) {
+    bindHidePanel: function bindHidePanel(v12159) {
+      if (v12086.maxPanelIndex < 2) {
+        var v12160 = this.options.stage;
+        v12085(v12160).bind("click", function (v12161) {
           // 仅点击设计面板时清除多选元素
-          if (t.target.className && _typeof(t.target.className) == "string" && t.target.className.includes("design")) {
-            t.stopPropagation(), n("div[panelindex]").css({
+          if (v12161.target.className && _typeof(v12161.target.className) == "string" && v12161.target.className.includes("design")) {
+            v12161.stopPropagation(), v12085("div[panelindex]").css({
               display: "none"
             });
-            n("div[panelindex]").removeClass("selected");
+            v12085("div[panelindex]").removeClass("selected");
           }
         });
       }
     }
-  }, n.fn.extend({
-    hireizeable: function hireizeable(t) {
+  }, v12085.fn.extend({
+    hireizeable: function hireizeable(v12162) {
       return this.each(function () {
-        var e,
-          i = n.data(this, "hireizeable");
-        e = i ? n.extend({}, i.options, t || {}) : n.extend({}, n.fn.hireizeable.defaults, t || {});
-        n.data(this, "hireizeable", {
-          options: e
-        }), new o({
+        var v12163,
+          v12164 = v12085.data(this, "hireizeable");
+        v12163 = v12164 ? v12085.extend({}, v12164.options, v12162 || {}) : v12085.extend({}, v12085.fn.hireizeable.defaults, v12162 || {});
+        v12085.data(this, "hireizeable", {
+          options: v12163
+        }), new v12087({
           target: this,
-          onResize: function onResize(t, e, n, i, o) {
+          onResize: function onResize(v12165, v12166, v12167, v12168, v12169) {
           },
-          onStopResize: function onStopResize(t, e, n, i, o) {
+          onStopResize: function onStopResize(v12170, v12171, v12172, v12173, v12174) {
           }
         });
       });
     }
-  }), n.fn.hireizeable.defaults = {
+  }), v12085.fn.hireizeable.defaults = {
     stage: document,
     reizeUnit: "pt",
     minResize: 1.5,
     showSizeBox: !0,
     showPoints: ["s", "e"],
     noContainer: !1,
-    onBeforeResize: function onBeforeResize(t, e, n, i, o) {
+    onBeforeResize: function onBeforeResize(v12175, v12176, v12177, v12178, v12179) {
     },
-    onResize: function onResize(t, e, n, i, o) {
+    onResize: function onResize(v12180, v12181, v12182, v12183, v12184) {
     },
-    onStopResize: function onStopResize(t, e, n, i, o) {
+    onStopResize: function onStopResize(v12185, v12186, v12187, v12188, v12189) {
     },
     noDrag: !1
   };
-}, function (t, e) {
-  var n, i;
-  jQuery, n = "connected", i = "reconnecting", window.hiwebSocket = {
+}, function (v12190, v12191) {
+  var v12192, v12193;
+  jQuery, v12192 = "connected", v12193 = "reconnecting", window.hiwebSocket = {
     opened: !1,
     name: "webSockets",
     host: "http://localhost:17521",
@@ -7706,14 +7706,14 @@ var hiprint = function (t) {
     supportsKeepAlive: function supportsKeepAlive() {
       return !0;
     },
-    hasIo: function hasIo(t) {
+    hasIo: function hasIo(v12194) {
       return window.io;
     },
-    send: function send(t) {
+    send: function send(v12195) {
       try {
-        this.socket.emit("news", t);
-      } catch (e) {
-        console.log("send data error:" + (t || "") + JSON.stringify(e));
+        this.socket.emit("news", v12195);
+      } catch (v12196) {
+        console.log("send data error:" + (v12195 || "") + JSON.stringify(v12196));
       }
     },
     getPrinterList: function getPrinterList() {
@@ -7722,414 +7722,414 @@ var hiprint = function (t) {
     refreshPrinterList: function refreshPrinterList() {
       try {
         this.socket.emit("refreshPrinterList");
-      } catch (e) {
-        console.log("refreshPrinterList error:" + JSON.stringify(e));
+      } catch (v12197) {
+        console.log("refreshPrinterList error:" + JSON.stringify(v12197));
       }
     },
     getPaperSizeInfo: function getPaperSizeInfo(printer) {
       try {
-        console.warn("getPaperSizeInfo 是一个测试功能，仅win客户端支持该api！")
+        console.warn("getPaperSizeInfo 是一个测试功能，仅win客户端支持该api！");
         this.socket.emit("getPaperSizeInfo", printer);
-      } catch (e) {
-        console.log("getPaperSizeInfo error:" + JSON.stringify(e))
+      } catch (v12198) {
+        console.log("getPaperSizeInfo error:" + JSON.stringify(v12198));
       }
     },
     getClients: function getClients() {
       try {
         this.socket.emit("getClients");
-      } catch (e) {
-        console.log("getClients error:" + JSON.stringify(e));
+      } catch (v12199) {
+        console.log("getClients error:" + JSON.stringify(v12199));
       }
     },
     getClientInfo: function getClientInfo() {
       try {
         this.socket.emit("getClientInfo");
-      } catch (e) {
-        console.log("getClientInfo error:" + JSON.stringify(e))
+      } catch (v12200) {
+        console.log("getClientInfo error:" + JSON.stringify(v12200));
       }
     },
     getAddress: function getAddress(type, ...args) {
       try {
         this.socket.emit("address", type, ...args);
-      } catch (e) {
-        console.log("getAddress error:" + JSON.stringify(e));
+      } catch (v12201) {
+        console.log("getAddress error:" + JSON.stringify(v12201));
       }
     },
     ippPrint: function ippPrint(options) {
       try {
         this.socket.emit("ippPrint", options);
-      } catch (e) {
-        console.log("ippPrint error:" + JSON.stringify(e));
+      } catch (v12202) {
+        console.log("ippPrint error:" + JSON.stringify(v12202));
       }
     },
     ippRequest: function ippRequest(options) {
       try {
         this.socket.emit("ippRequest", options);
-      } catch (e) {
-        console.log("ippRequest error:" + JSON.stringify(e));
+      } catch (v12203) {
+        console.log("ippRequest error:" + JSON.stringify(v12203));
       }
     },
     setHost: function (host, token, cb) {
       if (typeof token === "function") {
-        cb = token
-        token = undefined
+        cb = token;
+        token = undefined;
       }
-      this.host = host
-      this.token = token
-      this.stop()
-      this.start(cb)
+      this.host = host;
+      this.token = token;
+      this.stop();
+      this.start(cb);
     },
     start: function start(cb) {
       var _this = this;
 
-      var t = this;
+      var v12204 = this;
       window.WebSocket ? this.socket || (this.socket = window.io(this.host, {
         transports: ['websocket'],
         reconnectionAttempts: 5,
         auth: {
           token: this.token
         }
-      }), this.socket.on("connect", function (e) {
-        t.opened = !0, console.log("Websocket opened."), _this.socket.on("successs", function (t) {
-          hinnn.event.trigger("printSuccess_" + t.templateId, t);
-        }), _this.socket.on("error", function (t) {
-          hinnn.event.trigger("printError_" + t.templateId, t);
-        }), _this.socket.on("clients", function(clients) {
-          t.clients = clients;
-          hinnn.event.trigger("clients", clients)
-        }), _this.socket.on("clientInfo", function(clientInfo) {
-          t.clientInfo = clientInfo
-          hinnn.event.trigger("clientInfo", clientInfo)
-        }), _this.socket.on("printerList", function (e) {
-          t.printerList = e;
-          hinnn.event.trigger("printerList", e);
-        }), _this.socket.on("paperSizeInfo", function(e) {
-          t.paperSize = Array.isArray(e)?e:[e]
-          hinnn.event.trigger("paperSizeInfo", t.paperSize);
-        }), _this.socket.on("address", function (type, addr, e) {
-          hinnn.event.trigger("address_" + type, {'addr': addr, 'e': e});
+      }), this.socket.on("connect", function (v12205) {
+        v12204.opened = !0, console.log("Websocket opened."), _this.socket.on("successs", function (v12206) {
+          hinnn.event.trigger("printSuccess_" + v12206.templateId, v12206);
+        }), _this.socket.on("error", function (v12207) {
+          hinnn.event.trigger("printError_" + v12207.templateId, v12207);
+        }), _this.socket.on("clients", function (clients) {
+          v12204.clients = clients;
+          hinnn.event.trigger("clients", clients);
+        }), _this.socket.on("clientInfo", function (clientInfo) {
+          v12204.clientInfo = clientInfo;
+          hinnn.event.trigger("clientInfo", clientInfo);
+        }), _this.socket.on("printerList", function (v12208) {
+          v12204.printerList = v12208;
+          hinnn.event.trigger("printerList", v12208);
+        }), _this.socket.on("paperSizeInfo", function (v12209) {
+          v12204.paperSize = Array.isArray(v12209) ? v12209 : [v12209];
+          hinnn.event.trigger("paperSizeInfo", v12204.paperSize);
+        }), _this.socket.on("address", function (type, addr, v12210) {
+          hinnn.event.trigger("address_" + type, { 'addr': addr, 'e': v12210 });
         }), _this.socket.on("ippPrinterConnected", function (printer) {
           hinnn.event.trigger("ippPrinterConnected", printer);
         }), _this.socket.on("ippPrinterCallback", function (err, res) {
-          hinnn.event.trigger("ippPrinterCallback", {'err': err, 'res': res});
+          hinnn.event.trigger("ippPrinterCallback", { 'err': err, 'res': res });
         }), _this.socket.on("ippRequestCallback", function (err, res) {
-          hinnn.event.trigger("ippRequestCallback", {'err': err, 'res': res});
-        }), t.state = n;
-        cb && cb(true, e);
-      }), this.socket.on("connect_error", function (e) {
-        console.error(e)
-        hinnn.event.trigger("connect_error", e)
+          hinnn.event.trigger("ippRequestCallback", { 'err': err, 'res': res });
+        }), v12204.state = v12192;
+        cb && cb(true, v12205);
+      }), this.socket.on("connect_error", function (v12211) {
+        console.error(v12211);
+        hinnn.event.trigger("connect_error", v12211);
       }), this.socket.on("disconnect", function () {
-        t.opened = !1;
+        v12204.opened = !1;
         cb && cb(false);
       })) : console.log("WebSocket start fail"), cb && cb(false);
     },
     reconnect: function reconnect() {
-      this.state !== n && this.state !== i || (this.stop(), this.ensureReconnectingState() && (console.log("Websocket reconnecting."), this.start()));
+      this.state !== v12192 && this.state !== v12193 || (this.stop(), this.ensureReconnectingState() && (console.log("Websocket reconnecting."), this.start()));
     },
     stop: function stop() {
       this.socket && (console.log("Closing the Websocket."), this.socket.close(), this.socket = null, this.printerList = []);
     },
     ensureReconnectingState: function ensureReconnectingState() {
-      return this.state = i, this.state === i;
+      return this.state = v12193, this.state === v12193;
     }
   };
-}, function (t, e, n) {
-  var i = n(28);
-  "string" == typeof i && (i = [[t.i, i, ""]]);
-  var o = {
+}, function (v12212, v12213, v12214) {
+  var v12215 = v12214(28);
+  "string" == typeof v12215 && (v12215 = [[v12212.i, v12215, ""]]);
+  var v12217 = {
     hmr: !0,
     transform: void 0,
     insertInto: void 0
   };
-  n(30)(i, o);
-  i.locals && (t.exports = i.locals);
-}, function (t, e, n) {
-  (t.exports = n(29)(!1)).push([t.i, ".hicontextmenu {\r\n\tposition: absolute;\r\n\tdisplay: inline-block;\r\n\twidth: 215px;\r\n\tpadding: 0 0;\r\n\tmargin: 0;\r\n\tfont-family: inherit;\r\n\tfont-size: inherit;\r\n\tlist-style-type: none;\r\n\tlist-style: none;\r\n\tbackground: #fff;\r\n\tborder: 1px solid #bebebe;\r\n\tborder-radius: 2px;\r\n\tfont-size: 13px;\r\n}\r\n\r\n.hicontextmenuroot .hicontextmenuitem {\r\n\tposition: relative;\r\n\t-webkit-box-sizing: content-box;\r\n\t-moz-box-sizing: content-box;\r\n\tbox-sizing: content-box;\r\n\tpadding: .2em 12px;\r\n\tcolor: #2f2f2f;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\ttext-decoration: none;\r\n\r\n\tuser-select: none;\r\n\tbackground-color: #fff;\r\n\r\n}\r\n\r\n.hicontextmenuroot>.hicontextmenuitem:hover,\r\n.hicontextmenuroot .hicontextmenuitem > a:hover {\r\n\tbackground-color: #f3f3f3;\r\n}\r\n\r\n.hicontextmenuroot .hicontextmenuitem>a {\r\n\ttext-decoration: none;\r\n\tcolor: #363636;\r\n\tline-height: 22px;\r\n\r\n}\r\n\r\n.hicontextmenuroot .hicontextsubmenu>ul {\r\n\tdisplay: none;\r\n\tposition: absolute;\r\n\r\n}\r\n\r\n.hicontextmenuroot .hicontextsubmenu:hover>ul {\r\n\tdisplay: block;\r\n\tleft: 100%;\r\n\ttop: -1px;\r\n\tmargin-left: 0px;\r\n}\r\n\r\n.hicontextmenuroot .borderBottom {\r\n\tborder-bottom: 1px solid #efe6e6;\r\n}\r\n\r\n.hicontextmenuroot .disable> a {\r\n  \r\n    color: #ccc;\r\n   \r\n}\r\n.hicontextmenuroot>.disable:hover,\r\n.hicontextmenuroot .disable> a:hover {\r\n\tbackground-color:#fff;\r\n}", ""]);
-}, function (t, e, n) {
+  v12214(30)(v12215, v12217);
+  v12215.locals && (v12212.exports = v12215.locals);
+}, function (v12218, v12219, v12220) {
+  (v12218.exports = v12220(29)(!1)).push([v12218.i, ".hicontextmenu {\r\n\tposition: absolute;\r\n\tdisplay: inline-block;\r\n\twidth: 215px;\r\n\tpadding: 0 0;\r\n\tmargin: 0;\r\n\tfont-family: inherit;\r\n\tfont-size: inherit;\r\n\tlist-style-type: none;\r\n\tlist-style: none;\r\n\tbackground: #fff;\r\n\tborder: 1px solid #bebebe;\r\n\tborder-radius: 2px;\r\n\tfont-size: 13px;\r\n}\r\n\r\n.hicontextmenuroot .hicontextmenuitem {\r\n\tposition: relative;\r\n\t-webkit-box-sizing: content-box;\r\n\t-moz-box-sizing: content-box;\r\n\tbox-sizing: content-box;\r\n\tpadding: .2em 12px;\r\n\tcolor: #2f2f2f;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\ttext-decoration: none;\r\n\r\n\tuser-select: none;\r\n\tbackground-color: #fff;\r\n\r\n}\r\n\r\n.hicontextmenuroot>.hicontextmenuitem:hover,\r\n.hicontextmenuroot .hicontextmenuitem > a:hover {\r\n\tbackground-color: #f3f3f3;\r\n}\r\n\r\n.hicontextmenuroot .hicontextmenuitem>a {\r\n\ttext-decoration: none;\r\n\tcolor: #363636;\r\n\tline-height: 22px;\r\n\r\n}\r\n\r\n.hicontextmenuroot .hicontextsubmenu>ul {\r\n\tdisplay: none;\r\n\tposition: absolute;\r\n\r\n}\r\n\r\n.hicontextmenuroot .hicontextsubmenu:hover>ul {\r\n\tdisplay: block;\r\n\tleft: 100%;\r\n\ttop: -1px;\r\n\tmargin-left: 0px;\r\n}\r\n\r\n.hicontextmenuroot .borderBottom {\r\n\tborder-bottom: 1px solid #efe6e6;\r\n}\r\n\r\n.hicontextmenuroot .disable> a {\r\n  \r\n    color: #ccc;\r\n   \r\n}\r\n.hicontextmenuroot>.disable:hover,\r\n.hicontextmenuroot .disable> a:hover {\r\n\tbackground-color:#fff;\r\n}", ""]);
+}, function (v12222, v12223, v12224) {
   "use strict";
 
-  t.exports = function (t) {
-    var e = [];
-    return e.toString = function () {
-      return this.map(function (e) {
-        var n = function (t, e) {
-          var n = t[1] || "",
-            i = t[3];
-          if (!i) return n;
+  v12222.exports = function (v12225) {
+    var v12226 = [];
+    return v12226.toString = function () {
+      return this.map(function (v12227) {
+        var v12228 = function (v12229, v12230) {
+          var v12231 = v12229[1] || "",
+            v12232 = v12229[3];
+          if (!v12232) return v12231;
 
-          if (e && "function" == typeof btoa) {
-            var o = (a = i, "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(a)))) + " */"),
-              r = i.sources.map(function (t) {
-                return "/*# sourceURL=" + i.sourceRoot + t + " */";
+          if (v12230 && "function" == typeof btoa) {
+            var v12233 = (v12234 = v12232, "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(v12234)))) + " */"),
+              v12235 = v12232.sources.map(function (v12236) {
+                return "/*# sourceURL=" + v12232.sourceRoot + v12236 + " */";
               });
-            return [n].concat(r).concat([o]).join("\n");
+            return [v12231].concat(v12235).concat([v12233]).join("\n");
           }
 
-          var a;
-          return [n].join("\n");
-        }(e, t);
+          var v12234;
+          return [v12231].join("\n");
+        }(v12227, v12225);
 
-        return e[2] ? "@media " + e[2] + "{" + n + "}" : n;
+        return v12227[2] ? "@media " + v12227[2] + "{" + v12228 + "}" : v12228;
       }).join("");
-    }, e.i = function (t, n) {
-      "string" == typeof t && (t = [[null, t, ""]]);
+    }, v12226.i = function (v12238, v12239) {
+      "string" == typeof v12238 && (v12238 = [[null, v12238, ""]]);
 
-      for (var i = {}, o = 0; o < this.length; o++) {
-        var r = this[o][0];
-        null != r && (i[r] = !0);
+      for (var v12240 = {}, v12241 = 0; v12241 < this.length; v12241++) {
+        var v12242 = this[v12241][0];
+        null != v12242 && (v12240[v12242] = !0);
       }
 
-      for (o = 0; o < t.length; o++) {
-        var a = t[o];
-        null != a[0] && i[a[0]] || (n && !a[2] ? a[2] = n : n && (a[2] = "(" + a[2] + ") and (" + n + ")"), e.push(a));
+      for (v12241 = 0; v12241 < v12238.length; v12241++) {
+        var v12243 = v12238[v12241];
+        null != v12243[0] && v12240[v12243[0]] || (v12239 && !v12243[2] ? v12243[2] = v12239 : v12239 && (v12243[2] = "(" + v12243[2] + ") and (" + v12239 + ")"), v12226.push(v12243));
       }
-    }, e;
+    }, v12226;
   };
-}, function (t, e, n) {
-  var i,
-    o,
-    r = {},
-    a = (i = function i() {
+}, function (v12244, v12245, v12246) {
+  var v12247,
+    v12248,
+    v12249 = {},
+    v12250 = (v12247 = function v12251() {
       return window && document && document.all && !window.atob;
     }, function () {
-      return void 0 === o && (o = i.apply(this, arguments)), o;
+      return void 0 === v12248 && (v12248 = v12247.apply(this, arguments)), v12248;
     }),
-    p = function (t) {
-      var e = {};
-      return function (t, n) {
-        if ("function" == typeof t) return t();
+    v12252 = function (v12253) {
+      var v12254 = {};
+      return function (v12255, v12256) {
+        if ("function" == typeof v12255) return v12255();
 
-        if (void 0 === e[t]) {
-          var i = function (t, e) {
-            return e ? e.querySelector(t) : document.querySelector(t);
-          }.call(this, t, n);
+        if (void 0 === v12254[v12255]) {
+          var v12257 = function (v12258, v12259) {
+            return v12259 ? v12259.querySelector(v12258) : document.querySelector(v12258);
+          }.call(this, v12255, v12256);
 
-          if (window.HTMLIFrameElement && _instanceof(i, window.HTMLIFrameElement)) try {
-            i = i.contentDocument.head;
-          } catch (t) {
-            i = null;
+          if (window.HTMLIFrameElement && _instanceof(v12257, window.HTMLIFrameElement)) try {
+            v12257 = v12257.contentDocument.head;
+          } catch (v12260) {
+            v12257 = null;
           }
-          e[t] = i;
+          v12254[v12255] = v12257;
         }
 
-        return e[t];
+        return v12254[v12255];
       };
     }(),
-    s = null,
-    l = 0,
-    u = [],
-    d = n(31);
+    v12261 = null,
+    v12262 = 0,
+    v12263 = [],
+    v12264 = v12246(31);
 
-  function c(t, e) {
-    for (var n = 0; n < t.length; n++) {
-      var i = t[n],
-        o = r[i.id];
+  function v12265(v12266, v12267) {
+    for (var v12268 = 0; v12268 < v12266.length; v12268++) {
+      var v12269 = v12266[v12268],
+        v12270 = v12249[v12269.id];
 
-      if (o) {
-        o.refs++;
+      if (v12270) {
+        v12270.refs++;
 
-        for (var a = 0; a < o.parts.length; a++) {
-          o.parts[a](i.parts[a]);
+        for (var v12271 = 0; v12271 < v12270.parts.length; v12271++) {
+          v12270.parts[v12271](v12269.parts[v12271]);
         }
 
-        for (; a < i.parts.length; a++) {
-          o.parts.push(y(i.parts[a], e));
+        for (; v12271 < v12269.parts.length; v12271++) {
+          v12270.parts.push(v12272(v12269.parts[v12271], v12267));
         }
       } else {
-        var p = [];
+        var v12273 = [];
 
-        for (a = 0; a < i.parts.length; a++) {
-          p.push(y(i.parts[a], e));
+        for (v12271 = 0; v12271 < v12269.parts.length; v12271++) {
+          v12273.push(v12272(v12269.parts[v12271], v12267));
         }
 
-        r[i.id] = {
-          id: i.id,
+        v12249[v12269.id] = {
+          id: v12269.id,
           refs: 1,
-          parts: p
+          parts: v12273
         };
       }
     }
   }
 
-  function h(t, e) {
-    for (var n = [], i = {}, o = 0; o < t.length; o++) {
-      var r = t[o],
-        a = e.base ? r[0] + e.base : r[0],
-        p = {
-          css: r[1],
-          media: r[2],
-          sourceMap: r[3]
+  function v12274(v12275, v12276) {
+    for (var v12277 = [], v12278 = {}, v12279 = 0; v12279 < v12275.length; v12279++) {
+      var v12280 = v12275[v12279],
+        v12281 = v12276.base ? v12280[0] + v12276.base : v12280[0],
+        v12282 = {
+          css: v12280[1],
+          media: v12280[2],
+          sourceMap: v12280[3]
         };
-      i[a] ? i[a].parts.push(p) : n.push(i[a] = {
-        id: a,
-        parts: [p]
+      v12278[v12281] ? v12278[v12281].parts.push(v12282) : v12277.push(v12278[v12281] = {
+        id: v12281,
+        parts: [v12282]
       });
     }
 
-    return n;
+    return v12277;
   }
 
-  function f(t, e) {
-    var n = p(t.insertInto);
-    if (!n) throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-    var i = u[u.length - 1];
-    if ("top" === t.insertAt) i ? i.nextSibling ? n.insertBefore(e, i.nextSibling) : n.appendChild(e) : n.insertBefore(e, n.firstChild), u.push(e); else if ("bottom" === t.insertAt) n.appendChild(e); else {
-      if ("object" != _typeof(t.insertAt) || !t.insertAt.before) throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-      var o = p(t.insertAt.before, n);
-      n.insertBefore(e, o);
+  function v12283(v12284, v12285) {
+    var v12286 = v12252(v12284.insertInto);
+    if (!v12286) throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+    var v12287 = v12263[v12263.length - 1];
+    if ("top" === v12284.insertAt) v12287 ? v12287.nextSibling ? v12286.insertBefore(v12285, v12287.nextSibling) : v12286.appendChild(v12285) : v12286.insertBefore(v12285, v12286.firstChild), v12263.push(v12285);else if ("bottom" === v12284.insertAt) v12286.appendChild(v12285);else {
+      if ("object" != _typeof(v12284.insertAt) || !v12284.insertAt.before) throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+      var v12288 = v12252(v12284.insertAt.before, v12286);
+      v12286.insertBefore(v12285, v12288);
     }
   }
 
-  function g(t) {
-    if (null === t.parentNode) return !1;
-    t.parentNode.removeChild(t);
-    var e = u.indexOf(t);
-    e >= 0 && u.splice(e, 1);
+  function v12289(v12290) {
+    if (null === v12290.parentNode) return !1;
+    v12290.parentNode.removeChild(v12290);
+    var v12291 = v12263.indexOf(v12290);
+    v12291 >= 0 && v12263.splice(v12291, 1);
   }
 
-  function m(t) {
-    var e = document.createElement("style");
+  function v12292(v12293) {
+    var v12294 = document.createElement("style");
 
-    if (void 0 === t.attrs.type && (t.attrs.type = "text/css"), void 0 === t.attrs.nonce) {
-      var i = function () {
+    if (void 0 === v12293.attrs.type && (v12293.attrs.type = "text/css"), void 0 === v12293.attrs.nonce) {
+      var v12295 = function () {
         0;
-        return n.nc;
+        return v12246.nc;
       }();
 
-      i && (t.attrs.nonce = i);
+      v12295 && (v12293.attrs.nonce = v12295);
     }
 
-    return v(e, t.attrs), f(t, e), e;
+    return v12296(v12294, v12293.attrs), v12283(v12293, v12294), v12294;
   }
 
-  function v(t, e) {
-    Object.keys(e).forEach(function (n) {
-      t.setAttribute(n, e[n]);
+  function v12296(v12297, v12298) {
+    Object.keys(v12298).forEach(function (v12299) {
+      v12297.setAttribute(v12299, v12298[v12299]);
     });
   }
 
-  function y(t, e) {
-    var n, i, o, r;
+  function v12272(v12300, v12301) {
+    var v12302, v12303, v12304, v12305;
 
-    if (e.transform && t.css) {
-      if (!(r = "function" == typeof e.transform ? e.transform(t.css) : e.transform.default(t.css))) return function () {
+    if (v12301.transform && v12300.css) {
+      if (!(v12305 = "function" == typeof v12301.transform ? v12301.transform(v12300.css) : v12301.transform.default(v12300.css))) return function () {
       };
-      t.css = r;
+      v12300.css = v12305;
     }
 
-    if (e.singleton) {
-      var a = l++;
-      n = s || (s = m(e)), i = T.bind(null, n, a, !1), o = T.bind(null, n, a, !0);
-    } else t.sourceMap && "function" == typeof URL && "function" == typeof URL.createObjectURL && "function" == typeof URL.revokeObjectURL && "function" == typeof Blob && "function" == typeof btoa ? (n = function (t) {
-      var e = document.createElement("link");
-      return void 0 === t.attrs.type && (t.attrs.type = "text/css"), t.attrs.rel = "stylesheet", v(e, t.attrs), f(t, e), e;
-    }(e), i = function (t, e, n) {
-      var i = n.css,
-        o = n.sourceMap,
-        r = void 0 === e.convertToAbsoluteUrls && o;
-      (e.convertToAbsoluteUrls || r) && (i = d(i));
-      o && (i += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(o)))) + " */");
-      var a = new Blob([i], {
+    if (v12301.singleton) {
+      var v12306 = v12262++;
+      v12302 = v12261 || (v12261 = v12292(v12301)), v12303 = v12307.bind(null, v12302, v12306, !1), v12304 = v12307.bind(null, v12302, v12306, !0);
+    } else v12300.sourceMap && "function" == typeof URL && "function" == typeof URL.createObjectURL && "function" == typeof URL.revokeObjectURL && "function" == typeof Blob && "function" == typeof btoa ? (v12302 = function (v12308) {
+      var v12309 = document.createElement("link");
+      return void 0 === v12308.attrs.type && (v12308.attrs.type = "text/css"), v12308.attrs.rel = "stylesheet", v12296(v12309, v12308.attrs), v12283(v12308, v12309), v12309;
+    }(v12301), v12303 = function (v12310, v12311, v12312) {
+      var v12313 = v12312.css,
+        v12314 = v12312.sourceMap,
+        v12315 = void 0 === v12311.convertToAbsoluteUrls && v12314;
+      (v12311.convertToAbsoluteUrls || v12315) && (v12313 = v12264(v12313));
+      v12314 && (v12313 += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(v12314)))) + " */");
+      var v12316 = new Blob([v12313], {
           type: "text/css"
         }),
-        p = t.href;
-      t.href = URL.createObjectURL(a), p && URL.revokeObjectURL(p);
-    }.bind(null, n, e), o = function o() {
-      g(n), n.href && URL.revokeObjectURL(n.href);
-    }) : (n = m(e), i = function (t, e) {
-      var n = e.css,
-        i = e.media;
-      i && t.setAttribute("media", i);
-      if (t.styleSheet) t.styleSheet.cssText = n; else {
-        for (; t.firstChild;) {
-          t.removeChild(t.firstChild);
+        v12317 = v12310.href;
+      v12310.href = URL.createObjectURL(v12316), v12317 && URL.revokeObjectURL(v12317);
+    }.bind(null, v12302, v12301), v12304 = function v12318() {
+      v12289(v12302), v12302.href && URL.revokeObjectURL(v12302.href);
+    }) : (v12302 = v12292(v12301), v12303 = function (v12319, v12320) {
+      var v12321 = v12320.css,
+        v12322 = v12320.media;
+      v12322 && v12319.setAttribute("media", v12322);
+      if (v12319.styleSheet) v12319.styleSheet.cssText = v12321;else {
+        for (; v12319.firstChild;) {
+          v12319.removeChild(v12319.firstChild);
         }
 
-        t.appendChild(document.createTextNode(n));
+        v12319.appendChild(document.createTextNode(v12321));
       }
-    }.bind(null, n), o = function o() {
-      g(n);
+    }.bind(null, v12302), v12304 = function v12323() {
+      v12289(v12302);
     });
 
-    return i(t), function (e) {
-      if (e) {
-        if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;
-        i(t = e);
-      } else o();
+    return v12303(v12300), function (v12324) {
+      if (v12324) {
+        if (v12324.css === v12300.css && v12324.media === v12300.media && v12324.sourceMap === v12300.sourceMap) return;
+        v12303(v12300 = v12324);
+      } else v12304();
     };
   }
 
-  t.exports = function (t, e) {
+  v12244.exports = function (v12325, v12326) {
     if ("undefined" != typeof DEBUG && DEBUG && "object" != (typeof document === "undefined" ? "undefined" : _typeof(document))) throw new Error("The style-loader cannot be used in a non-browser environment");
-    (e = e || {}).attrs = "object" == _typeof(e.attrs) ? e.attrs : {}, e.singleton || "boolean" == typeof e.singleton || (e.singleton = a()), e.insertInto || (e.insertInto = "head"), e.insertAt || (e.insertAt = "bottom");
-    var n = h(t, e);
-    return c(n, e), function (t) {
-      for (var i = [], o = 0; o < n.length; o++) {
-        var a = n[o];
-        (p = r[a.id]).refs-- , i.push(p);
+    (v12326 = v12326 || {}).attrs = "object" == _typeof(v12326.attrs) ? v12326.attrs : {}, v12326.singleton || "boolean" == typeof v12326.singleton || (v12326.singleton = v12250()), v12326.insertInto || (v12326.insertInto = "head"), v12326.insertAt || (v12326.insertAt = "bottom");
+    var v12327 = v12274(v12325, v12326);
+    return v12265(v12327, v12326), function (v12328) {
+      for (var v12329 = [], v12330 = 0; v12330 < v12327.length; v12330++) {
+        var v12331 = v12327[v12330];
+        (v12332 = v12249[v12331.id]).refs--, v12329.push(v12332);
       }
 
-      t && c(h(t, e), e);
+      v12328 && v12265(v12274(v12328, v12326), v12326);
 
-      for (o = 0; o < i.length; o++) {
-        var p;
+      for (v12330 = 0; v12330 < v12329.length; v12330++) {
+        var v12332;
 
-        if (0 === (p = i[o]).refs) {
-          for (var s = 0; s < p.parts.length; s++) {
-            p.parts[s]();
+        if (0 === (v12332 = v12329[v12330]).refs) {
+          for (var v12333 = 0; v12333 < v12332.parts.length; v12333++) {
+            v12332.parts[v12333]();
           }
 
-          delete r[p.id];
+          delete v12249[v12332.id];
         }
       }
     };
   };
 
-  var b,
-    E = (b = [], function (t, e) {
-      return b[t] = e, b.filter(Boolean).join("\n");
+  var v12334,
+    v12335 = (v12334 = [], function (v12336, v12337) {
+      return v12334[v12336] = v12337, v12334.filter(Boolean).join("\n");
     });
 
-  function T(t, e, n, i) {
-    var o = n ? "" : i.css;
-    if (t.styleSheet) t.styleSheet.cssText = E(e, o); else {
-      var r = document.createTextNode(o),
-        a = t.childNodes;
-      a[e] && t.removeChild(a[e]), a.length ? t.insertBefore(r, a[e]) : t.appendChild(r);
+  function v12307(v12338, v12339, v12340, v12341) {
+    var v12342 = v12340 ? "" : v12341.css;
+    if (v12338.styleSheet) v12338.styleSheet.cssText = v12335(v12339, v12342);else {
+      var v12343 = document.createTextNode(v12342),
+        v12344 = v12338.childNodes;
+      v12344[v12339] && v12338.removeChild(v12344[v12339]), v12344.length ? v12338.insertBefore(v12343, v12344[v12339]) : v12338.appendChild(v12343);
     }
   }
-}, function (t, e) {
-  t.exports = function (t) {
-    var e = "undefined" != typeof window && window.location;
-    if (!e) throw new Error("fixUrls requires window.location");
-    if (!t || "string" != typeof t) return t;
-    var n = e.protocol + "//" + e.host,
-      i = n + e.pathname.replace(/\/[^\/]*$/, "/");
-    return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function (t, e) {
-      var o,
-        r = e.trim().replace(/^"(.*)"$/, function (t, e) {
-          return e;
-        }).replace(/^'(.*)'$/, function (t, e) {
-          return e;
+}, function (v12345, v12346) {
+  v12345.exports = function (v12347) {
+    var v12348 = "undefined" != typeof window && window.location;
+    if (!v12348) throw new Error("fixUrls requires window.location");
+    if (!v12347 || "string" != typeof v12347) return v12347;
+    var v12349 = v12348.protocol + "//" + v12348.host,
+      v12350 = v12349 + v12348.pathname.replace(/\/[^\/]*$/, "/");
+    return v12347.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function (v12351, v12352) {
+      var v12353,
+        v12354 = v12352.trim().replace(/^"(.*)"$/, function (v12355, v12356) {
+          return v12356;
+        }).replace(/^'(.*)'$/, function (v12357, v12358) {
+          return v12358;
         });
-      return /^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(r) ? t : (o = 0 === r.indexOf("//") ? r : 0 === r.indexOf("/") ? n + r : i + r.replace(/^\.\//, ""), "url(" + JSON.stringify(o) + ")");
+      return /^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(v12354) ? v12351 : (v12353 = 0 === v12354.indexOf("//") ? v12354 : 0 === v12354.indexOf("/") ? v12349 + v12354 : v12350 + v12354.replace(/^\.\//, ""), "url(" + JSON.stringify(v12353) + ")");
     });
   };
-}, function (t, e) {
-  var n, i;
-  window, document, n = jQuery, (i = function i(t, e) {
-    this.init(t, e);
+}, function (v12359, v12360) {
+  var v12361, v12362;
+  window, document, v12361 = jQuery, (v12362 = function v12363(v12364, v12365) {
+    this.init(v12364, v12365);
   }).prototype = {
-    init: function init(t, e) {
-      this.ele = t, this.defaults = {
+    init: function init(v12366, v12367) {
+      this.ele = v12366, this.defaults = {
         menu: [{
           text: "text",
           menus: [{}, {}],
           callback: function callback() {
           }
         }],
-        target: function target(t) {
+        target: function target(v12368) {
         },
         width: 100,
         itemHeight: 28,
@@ -8137,164 +8137,164 @@ var hiprint = function (t) {
         color: "#333",
         fontSize: 14,
         hoverBgColor: "#f5f5f5"
-      }, this.opts = n.extend(!0, {}, this.defaults, e), this.random = new Date().getTime() + parseInt(1e3 * Math.random()), this.eventBind();
+      }, this.opts = v12361.extend(!0, {}, this.defaults, v12367), this.random = new Date().getTime() + parseInt(1e3 * Math.random()), this.eventBind();
     },
-    renderMenu: function renderMenu(t, e) {
-      var n = this,
-        i = e;
+    renderMenu: function renderMenu(v12369, v12370) {
+      var v12371 = this,
+        v12372 = v12370;
 
-      if (t && t.length) {
-        var o = $('<ul class="hicontextmenu" style="z-index: 9999;"></ul>');
-        i || (i = o).addClass("hicontextmenuroot"), $.each(t, function (t, e) {
-          var i = !!e.disable && e.disable(),
-            r = $('<li class="hicontextmenuitem"><a href="javascript:void(0);"><span>' + (e.text || "") + "</span></a></li>");
-          i && r.addClass("disable"), e.borderBottom && r.addClass("borderBottom"), e.menus && (r.addClass("hicontextsubmenu"), n.renderMenu(e.menus, r)), e.callback && r.click(function (t) {
-            $(this).hasClass("disable") ? t.stopPropagation() : ($(".hicontextmenuroot").remove(), e.callback(), t.stopPropagation());
-          }), o.append(r);
-        }), e && e.append(o);
+      if (v12369 && v12369.length) {
+        var v12373 = $('<ul class="hicontextmenu" style="z-index: 9999;"></ul>');
+        v12372 || (v12372 = v12373).addClass("hicontextmenuroot"), $.each(v12369, function (v12374, v12375) {
+          var v12376 = !!v12375.disable && v12375.disable(),
+            v12377 = $('<li class="hicontextmenuitem"><a href="javascript:void(0);"><span>' + (v12375.text || "") + "</span></a></li>");
+          v12376 && v12377.addClass("disable"), v12375.borderBottom && v12377.addClass("borderBottom"), v12375.menus && (v12377.addClass("hicontextsubmenu"), v12371.renderMenu(v12375.menus, v12377)), v12375.callback && v12377.click(function (v12378) {
+            $(this).hasClass("disable") ? v12378.stopPropagation() : ($(".hicontextmenuroot").remove(), v12375.callback(), v12378.stopPropagation());
+          }), v12373.append(v12377);
+        }), v12370 && v12370.append(v12373);
       }
 
-      e || $("body").append(i).find(".hicontextmenuroot").hide();
+      v12370 || $("body").append(v12372).find(".hicontextmenuroot").hide();
     },
-    setPosition: function setPosition(t) {
+    setPosition: function setPosition(v12379) {
       $(".hicontextmenuroot").css({
-        left: t.pageX + 2,
-        top: t.pageY + 2
+        left: v12379.pageX + 2,
+        top: v12379.pageY + 2
       }).show();
     },
     eventBind: function eventBind() {
-      var t = this;
-      this.ele.on("contextmenu", function (e) {
-        $(".hicontextmenuroot").remove(), e.preventDefault(), t.renderMenu(t.opts.menus), t.setPosition(e), t.opts.target && "function" == typeof t.opts.target && t.opts.target(n(this));
-      }), n("body").on("click", function () {
-        n(".hicontextmenuroot").remove();
+      var v12380 = this;
+      this.ele.on("contextmenu", function (v12381) {
+        $(".hicontextmenuroot").remove(), v12381.preventDefault(), v12380.renderMenu(v12380.opts.menus), v12380.setPosition(v12381), v12380.opts.target && "function" == typeof v12380.opts.target && v12380.opts.target(v12361(this));
+      }), v12361("body").on("click", function () {
+        v12361(".hicontextmenuroot").remove();
       });
     }
-  }, n.fn.hicontextMenu = function (t) {
-    return new i(this, t), this;
+  }, v12361.fn.hicontextMenu = function (v12382) {
+    return new v12362(this, v12382), this;
   };
-}, function (t, e, n) {
+}, function (v12383, v12384, v12385) {
   "use strict";
 
-  n.r(e);
-  n(22), n(23), n(24), n(25);
-  var i,
-    o = n(0);
-  n(26);
-  window.hiLocalStorage = (i = window.localStorage || null, {
-    saveLocalData: function saveLocalData(t, e) {
-      return !(!i || !e || (i.setItem(t, e), 0));
+  v12385.r(v12384);
+  v12385(22), v12385(23), v12385(24), v12385(25);
+  var v12387,
+    v12388 = v12385(0);
+  v12385(26);
+  window.hiLocalStorage = (v12387 = window.localStorage || null, {
+    saveLocalData: function saveLocalData(v12389, v12390) {
+      return !(!v12387 || !v12390 || (v12387.setItem(v12389, v12390), 0));
     },
-    getLocalData: function getLocalData(t) {
-      return i ? i.getItem(t) : null;
+    getLocalData: function getLocalData(v12391) {
+      return v12387 ? v12387.getItem(v12391) : null;
     },
-    removeItem: function removeItem(t) {
-      i && i.removeItem(t);
+    removeItem: function removeItem(v12392) {
+      v12387 && v12387.removeItem(v12392);
     }
   });
-  n(27), n(32);
+  v12385(27), v12385(32);
 
   var _r,
-    a = function () {
-      function t() {
+    v12393 = function () {
+      function v12394() {
         this.allElementTypes = [];
       }
 
-      return Object.defineProperty(t, "instance", {
+      return Object.defineProperty(v12394, "instance", {
         get: function get() {
-          return t._instance || (t._instance = new t()), t._instance;
+          return v12394._instance || (v12394._instance = new v12394()), v12394._instance;
         },
         enumerable: !0,
         configurable: !0
-      }), t.prototype.addPrintElementTypes = function (t, e) {
-        var n = this;
-        this[t] ? this[t] = this[t].concat(e) : this[t] = e, e.forEach(function (t) {
-          n.allElementTypes = n.allElementTypes.concat(t.printElementTypes);
+      }), v12394.prototype.addPrintElementTypes = function (v12395, v12396) {
+        var v12397 = this;
+        this[v12395] ? this[v12395] = this[v12395].concat(v12396) : this[v12395] = v12396, v12396.forEach(function (v12398) {
+          v12397.allElementTypes = v12397.allElementTypes.concat(v12398.printElementTypes);
         });
-      }, t.prototype.removePrintElementTypes = function (t) {
-        var n = this;
-        delete n[t], n.allElementTypes = n.allElementTypes.filter(function (e) {
-          return !e.tid.startsWith(t)
+      }, v12394.prototype.removePrintElementTypes = function (v12399) {
+        var v12400 = this;
+        delete v12400[v12399], v12400.allElementTypes = v12400.allElementTypes.filter(function (v12401) {
+          return !v12401.tid.startsWith(v12399);
         });
-      }, t.prototype.getElementTypeGroups = function (t) {
-        return this[this.formatterModule(t)] || [];
-      }, t.prototype.getElementType = function (t) {
-        var e = this.allElementTypes.filter(function (e) {
-          return e.tid == t;
+      }, v12394.prototype.getElementTypeGroups = function (v12402) {
+        return this[this.formatterModule(v12402)] || [];
+      }, v12394.prototype.getElementType = function (v12403) {
+        var v12404 = this.allElementTypes.filter(function (v12405) {
+          return v12405.tid == v12403;
         });
-        if (e.length > 0) return e[0];
-      }, t.prototype.updateElementType = function (t, c) {
-        var type = this.getElementType(t);
-        if (c) {
-          var newType = c(type);
-          var idx = this.allElementTypes.findIndex(function (e) {
-            return e.tid == t;
-          })
+        if (v12404.length > 0) return v12404[0];
+      }, v12394.prototype.updateElementType = function (v12406, v12407) {
+        var type = this.getElementType(v12406);
+        if (v12407) {
+          var newType = v12407(type);
+          var idx = this.allElementTypes.findIndex(function (v12408) {
+            return v12408.tid == v12406;
+          });
           if (idx >= 0) {
             this.allElementTypes.splice(idx, 1, newType);
             return newType;
           }
         }
         return type;
-      }, t.prototype.formatterModule = function (t) {
-        return t || "_default";
-      }, t;
+      }, v12394.prototype.formatterModule = function (v12409) {
+        return v12409 || "_default";
+      }, v12394;
     }(),
-    p = n(1),
-    s = n(2),
-    l = function () {
-      function t() {
+    v12410 = v12385(1),
+    v12411 = v12385(2),
+    v12412 = function () {
+      function v12413() {
       }
 
-      return t.prototype.createPrintElementTypeHtml = function (t, e) {
-        var n = $('<ul class="hiprint-printElement-type"></ul>');
-        return e.forEach(function (t) {
-          var e = $("<li></li>");
-          e.append('<span class="title">' + t.name + "</span>");
-          var i = $("<ul></ul>");
-          e.append(i), t.printElementTypes.forEach(function (t) {
-            i.append('<li><a class="ep-draggable-item" tid="' + t.tid + '">  ' + t.getText() + " </a></li>");
-          }), n.append(e);
-        }), $(t).append(n), n.find(".ep-draggable-item");
-      }, t;
+      return v12413.prototype.createPrintElementTypeHtml = function (v12414, v12415) {
+        var v12416 = $('<ul class="hiprint-printElement-type"></ul>');
+        return v12415.forEach(function (v12417) {
+          var v12418 = $("<li></li>");
+          v12418.append('<span class="title">' + v12417.name + "</span>");
+          var v12419 = $("<ul></ul>");
+          v12418.append(v12419), v12417.printElementTypes.forEach(function (v12420) {
+            v12419.append('<li><a class="ep-draggable-item" tid="' + v12420.tid + '">  ' + v12420.getText() + " </a></li>");
+          }), v12416.append(v12418);
+        }), $(v12414).append(v12416), v12416.find(".ep-draggable-item");
+      }, v12413;
     }(),
-    u = n(5),
-    d = n(15),
-    c = function () {
-      return function (t) {
-        this.title = t.title, this.type = t.type;
+    v12421 = v12385(5),
+    v12422 = v12385(15),
+    v12423 = function () {
+      return function (v12424) {
+        this.title = v12424.title, this.type = v12424.type;
       };
     }(),
     ctable = function () {
-      return function (t) {
-        this.title = t.title, this.type = t.type, this.editable = t.editable, this.columnDisplayEditable = t.columnDisplayEditable, this.columnDisplayIndexEditable = t.columnDisplayIndexEditable, this.columnTitleEditable = t.columnTitleEditable, this.columnResizable = t.columnResizable, this.columnAlignEditable = t.columnAlignEditable,
-          this.isEnableEditField = t.isEnableEditField, this.isEnableContextMenu = t.isEnableContextMenu, this.isEnableInsertRow = t.isEnableInsertRow, this.isEnableDeleteRow = t.isEnableDeleteRow, this.isEnableInsertColumn = t.isEnableInsertColumn, this.isEnableDeleteColumn = t.isEnableDeleteColumn, this.isEnableMergeCell = t.isEnableMergeCell;
+      return function (v12425) {
+        this.title = v12425.title, this.type = v12425.type, this.editable = v12425.editable, this.columnDisplayEditable = v12425.columnDisplayEditable, this.columnDisplayIndexEditable = v12425.columnDisplayIndexEditable, this.columnTitleEditable = v12425.columnTitleEditable, this.columnResizable = v12425.columnResizable, this.columnAlignEditable = v12425.columnAlignEditable,
+        this.isEnableEditField = v12425.isEnableEditField, this.isEnableContextMenu = v12425.isEnableContextMenu, this.isEnableInsertRow = v12425.isEnableInsertRow, this.isEnableDeleteRow = v12425.isEnableDeleteRow, this.isEnableInsertColumn = v12425.isEnableInsertColumn, this.isEnableDeleteColumn = v12425.isEnableDeleteColumn, this.isEnableMergeCell = v12425.isEnableMergeCell;
       };
     }(),
-    h = function () {
-      function t(t) {
-        var e = this;
-        this.text = t.text, this.field = t.field, this.fields = t.fields, this.title = t.title, this.tid = t.tid, this.data = t.data, this.styler = t.styler, this.formatter = t.formatter, this.type = t.type, this.options = t.options, this.editable = t.editable != void 0 ? t.editable : !0, this.columnDisplayEditable = t.columnDisplayEditable != void 0 ? t.columnDisplayEditable : !0, this.columnDisplayIndexEditable = t.columnDisplayIndexEditable != void 0 ? t.columnDisplayIndexEditable : !0, this.columnTitleEditable = t.columnTitleEditable != void 0 ? t.columnTitleEditable : !0, this.columnResizable = t.columnResizable != void 0 ? t.columnResizable : !0, this.columnAlignEditable = t.columnAlignEditable != void 0 ? t.columnAlignEditable : !0, this.columns = [], (t.columns || []).forEach(function (t, n) {
-          e.columns.push(e.createTableColumnArray(t));
-        }), this.rowStyler = t.rowStyler, this.striped = t.striped, this.groupFields = t.groupFields || [], this.groupFormatter = t.groupFormatter, this.groupFooterFormatter = t.groupFooterFormatter, this.footerFormatter = t.footerFormatter, this.rowsColumnsMerge = t.rowsColumnsMerge, this.rowsColumnsMergeClean = t.rowsColumnsMergeClean,  this.gridColumnsFooterFormatter = t.gridColumnsFooterFormatter,
-          this.isEnableEditField = t.isEnableEditField != void 0 ? t.isEnableEditField : !0, this.isEnableContextMenu = t.isEnableContextMenu != void 0 ? t.isEnableContextMenu : !0, this.isEnableInsertRow = t.isEnableInsertRow != void 0 ? t.isEnableInsertRow : !0, this.isEnableDeleteRow = t.isEnableDeleteRow != void 0 ? t.isEnableDeleteRow : !0, this.isEnableInsertColumn = t.isEnableInsertColumn != void 0 ? t.isEnableInsertColumn : !0, this.isEnableDeleteColumn = t.isEnableDeleteColumn != void 0 ? t.isEnableDeleteColumn : !0, this.isEnableMergeCell = t.isEnableMergeCell != void 0 ? t.isEnableMergeCell : !0, this.columnObj = this.makeColumnObj();
+    v12426 = function () {
+      function v12431(v12427) {
+        var v12428 = this;
+        this.text = v12427.text, this.field = v12427.field, this.fields = v12427.fields, this.title = v12427.title, this.tid = v12427.tid, this.data = v12427.data, this.styler = v12427.styler, this.formatter = v12427.formatter, this.type = v12427.type, this.options = v12427.options, this.editable = v12427.editable != void 0 ? v12427.editable : !0, this.columnDisplayEditable = v12427.columnDisplayEditable != void 0 ? v12427.columnDisplayEditable : !0, this.columnDisplayIndexEditable = v12427.columnDisplayIndexEditable != void 0 ? v12427.columnDisplayIndexEditable : !0, this.columnTitleEditable = v12427.columnTitleEditable != void 0 ? v12427.columnTitleEditable : !0, this.columnResizable = v12427.columnResizable != void 0 ? v12427.columnResizable : !0, this.columnAlignEditable = v12427.columnAlignEditable != void 0 ? v12427.columnAlignEditable : !0, this.columns = [], (v12427.columns || []).forEach(function (v12429, v12430) {
+          v12428.columns.push(v12428.createTableColumnArray(v12429));
+        }), this.rowStyler = v12427.rowStyler, this.striped = v12427.striped, this.groupFields = v12427.groupFields || [], this.groupFormatter = v12427.groupFormatter, this.groupFooterFormatter = v12427.groupFooterFormatter, this.footerFormatter = v12427.footerFormatter, this.rowsColumnsMerge = v12427.rowsColumnsMerge, this.rowsColumnsMergeClean = v12427.rowsColumnsMergeClean, this.gridColumnsFooterFormatter = v12427.gridColumnsFooterFormatter,
+        this.isEnableEditField = v12427.isEnableEditField != void 0 ? v12427.isEnableEditField : !0, this.isEnableContextMenu = v12427.isEnableContextMenu != void 0 ? v12427.isEnableContextMenu : !0, this.isEnableInsertRow = v12427.isEnableInsertRow != void 0 ? v12427.isEnableInsertRow : !0, this.isEnableDeleteRow = v12427.isEnableDeleteRow != void 0 ? v12427.isEnableDeleteRow : !0, this.isEnableInsertColumn = v12427.isEnableInsertColumn != void 0 ? v12427.isEnableInsertColumn : !0, this.isEnableDeleteColumn = v12427.isEnableDeleteColumn != void 0 ? v12427.isEnableDeleteColumn : !0, this.isEnableMergeCell = v12427.isEnableMergeCell != void 0 ? v12427.isEnableMergeCell : !0, this.columnObj = this.makeColumnObj();
       }
 
-      return t.prototype.getText = function () {
+      return v12431.prototype.getText = function () {
         return this.text || this.title || "";
-      }, t.prototype.createPrintElement = function (t) {
-        var e = this;
-        return this.columns && 0 == this.columns.length && (t.columns || []).forEach(function (t, n) {
-          e.columns.push(e.createTableColumnArray(t));
-        }), new d.a(this, t);
-      }, t.prototype.getData = function () {
+      }, v12431.prototype.createPrintElement = function (v12432) {
+        var v12433 = this;
+        return this.columns && 0 == this.columns.length && (v12432.columns || []).forEach(function (v12434, v12435) {
+          v12433.columns.push(v12433.createTableColumnArray(v12434));
+        }), new v12422.a(this, v12432);
+      }, v12431.prototype.getData = function () {
         return [{}];
-      }, t.prototype.createTableColumnArray = function (t) {
-        var e = [];
-        return t.forEach(function (t, n) {
-          e.push(new u.a(t));
-        }), e;
-      }, t.prototype.getPrintElementTypeEntity = function () {
+      }, v12431.prototype.createTableColumnArray = function (v12437) {
+        var v12438 = [];
+        return v12437.forEach(function (v12439, v12440) {
+          v12438.push(new v12421.a(v12439));
+        }), v12438;
+      }, v12431.prototype.getPrintElementTypeEntity = function () {
         if ('table' == this.type) {
           return new ctable({
             title: this.title,
@@ -8314,115 +8314,115 @@ var hiprint = function (t) {
             isEnableMergeCell: this.isEnableMergeCell
           });
         }
-        return new c({
+        return new v12423({
           title: this.title,
           type: this.type
         });
-      }, t.prototype.getFields = function () {
+      }, v12431.prototype.getFields = function () {
         return this.fields;
-      }, t.prototype.getOptions = function () {
+      }, v12431.prototype.getOptions = function () {
         return this.options || {};
-      }, t.prototype.getColumnByColumnId = function (t) {
-        return this.columnObj[t];
-      }, t.prototype.makeColumnObj = function (columns) {
-        var t = {};
-        return columns ? columns.forEach(function (e) {
-          (e.id || e.columnId) && (t[e.id || e.columnId] = e);
-        }) : this.columns && this.columns.forEach(function (e) {
-          e.forEach(function (e) {
-            (e.id || e.columnId) && (t[e.id || e.columnId] = e);
+      }, v12431.prototype.getColumnByColumnId = function (v12442) {
+        return this.columnObj[v12442];
+      }, v12431.prototype.makeColumnObj = function (columns) {
+        var v12443 = {};
+        return columns ? columns.forEach(function (v12444) {
+          (v12444.id || v12444.columnId) && (v12443[v12444.id || v12444.columnId] = v12444);
+        }) : this.columns && this.columns.forEach(function (v12445) {
+          v12445.forEach(function (v12446) {
+            (v12446.id || v12446.columnId) && (v12443[v12446.id || v12446.columnId] = v12446);
           });
-        }), this.columnObj = t, t;
-      }, t;
+        }), this.columnObj = v12443, v12443;
+      }, v12431;
     }(),
-    f = n(4),
-    g = n(3),
-    m = (_r = function r(t, e) {
+    v12447 = v12385(4),
+    v12448 = v12385(3),
+    v12449 = (_r = function v12450(v12451, v12452) {
       return (_r = Object.setPrototypeOf || _instanceof({
         __proto__: []
-      }, Array) && function (t, e) {
-        t.__proto__ = e;
-      } || function (t, e) {
-        for (var n in e) {
-          e.hasOwnProperty(n) && (t[n] = e[n]);
+      }, Array) && function (v12453, v12454) {
+        v12453.__proto__ = v12454;
+      } || function (v12455, v12456) {
+        for (var v12457 in v12456) {
+          v12456.hasOwnProperty(v12457) && (v12455[v12457] = v12456[v12457]);
         }
-      })(t, e);
-    }, function (t, e) {
-      function n() {
-        this.constructor = t;
+      })(v12451, v12452);
+    }, function (v12458, v12459) {
+      function v12460() {
+        this.constructor = v12458;
       }
 
-      _r(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n());
+      _r(v12458, v12459), v12458.prototype = null === v12459 ? Object.create(v12459) : (v12460.prototype = v12459.prototype, new v12460());
     }),
-    v = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.image.default).getPrintElementOptionEntity()), i;
+    v12461 = function (v12462) {
+      function v12469(v12463, v12464) {
+        var v12465 = v12462.call(this, v12463) || this;
+        return v12465.options = new v12448.a(v12464), v12465.options.setDefault(new v12448.a(v12410.a.instance.image.default).getPrintElementOptionEntity()), v12465;
       }
 
-      return m(e, t), e.prototype.getReizeableShowPoints = function () {
-        return ["s","e","se","r"];
-      }, e.prototype.getData = function (t) {
-        var e = "", f = this.getField();
-        t ? e = f ? f.split('.').reduce((a, c) => a ? a[c] : t[c], !1) || "" : this.options.src || this.printElementType.getData() : e = this.options.src || this.printElementType.getData();
-        var n = this.getFormatter();
-        return n && (e = n(e, this.options, this._currenttemplateData)), e || "";
-      }, e.prototype.createTarget = function (t, e) {
-        var n = $('<div  class="hiprint-printElement hiprint-printElement-image" style="position: absolute;"><div class="hiprint-printElement-image-content" style="height:100%;width:100%"></div></div>');
-        return this.updateTargetImage(n, t, e), n;
-      }, e.prototype.initSizeByHtml = function (e) {
-        t.prototype.initSizeByHtml.call(this, e), this.css(e, this.getData());
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.image;
-      }, e.prototype.updateDesignViewFromOptions = function () {
+      return v12449(v12469, v12462), v12469.prototype.getReizeableShowPoints = function () {
+        return ["s", "e", "se", "r"];
+      }, v12469.prototype.getData = function (v12470) {
+        var v12471 = "",v12472 = this.getField();
+        v12470 ? v12471 = v12472 ? v12472.split('.').reduce((v12473, v12474) => v12473 ? v12473[v12474] : v12470[v12474], !1) || "" : this.options.src || this.printElementType.getData() : v12471 = this.options.src || this.printElementType.getData();
+        var v12475 = this.getFormatter();
+        return v12475 && (v12471 = v12475(v12471, this.options, this._currenttemplateData)), v12471 || "";
+      }, v12469.prototype.createTarget = function (v12476, v12477) {
+        var v12478 = $('<div  class="hiprint-printElement hiprint-printElement-image" style="position: absolute;"><div class="hiprint-printElement-image-content" style="height:100%;width:100%"></div></div>');
+        return this.updateTargetImage(v12478, v12476, v12477), v12478;
+      }, v12469.prototype.initSizeByHtml = function (v12479) {
+        v12462.prototype.initSizeByHtml.call(this, v12479), this.css(v12479, this.getData());
+      }, v12469.prototype.getConfigOptions = function () {
+        return v12410.a.instance.image;
+      }, v12469.prototype.updateDesignViewFromOptions = function () {
         this.designTarget && (this.css(this.designTarget, this.getData()), this.updateTargetImage(this.designTarget, this.getTitle(), this.getData()));
-      }, e.prototype.updateTargetImage = function (t, e, n) {
-        var i = t.find(".hiprint-printElement-image-content");
-        i.find("img").length ? i.find("img").attr("src", n) : i.html('<img style="width:100%;height:100%;" src="' + n + '">');
-        if (n.length) i.find("img").css('cssText', `width:100%;height:100%;content:url("${n}")!important`)
-        else i.find("img").css('cssText', 'width:100%;height:100%;')
-        if (this.options.fit) i.find("img").css("object-fit", this.options.fit);
-        if (this.options.borderRadius) i.find("img").css("border-radius", this.options.borderRadius);
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    y = function () {
-      var _t4 = function t(e, n) {
+      }, v12469.prototype.updateTargetImage = function (v12481, v12482, v12483) {
+        var v12484 = v12481.find(".hiprint-printElement-image-content");
+        v12484.find("img").length ? v12484.find("img").attr("src", v12483) : v12484.html('<img style="width:100%;height:100%;" src="' + v12483 + '">');
+        if (v12483.length) v12484.find("img").css('cssText', `width:100%;height:100%;content:url("${v12483}")!important`);else
+        v12484.find("img").css('cssText', 'width:100%;height:100%;');
+        if (this.options.fit) v12484.find("img").css("object-fit", this.options.fit);
+        if (this.options.borderRadius) v12484.find("img").css("border-radius", this.options.borderRadius);
+      }, v12469.prototype.getHtml = function (v12485, v12486, v12487) {
+        return this.getHtml2(v12485, v12486, v12487);
+      }, v12469;
+    }(v12447.a),
+    v12489 = function () {
+      var _t4 = function v12490(v12491, v12492) {
         return (_t4 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12493, v12494) {
+          v12493.__proto__ = v12494;
+        } || function (v12495, v12496) {
+          for (var v12497 in v12496) {
+            v12496.hasOwnProperty(v12497) && (v12495[v12497] = v12496[v12497]);
           }
-        })(e, n);
+        })(v12491, v12492);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12498, v12499) {
+        function v12500() {
+          this.constructor = v12498;
         }
 
-        _t4(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t4(v12498, v12499), v12498.prototype = null === v12499 ? Object.create(v12499) : (v12500.prototype = v12499.prototype, new v12500());
       };
     }(),
-    b = function (t) {
-      function e(e) {
-        var n = this;
-        return e = e || {}, (n = t.call(this, e) || this).leftSpaceRemoved = e.leftSpaceRemoved, n;
+    v12501 = function (v12502) {
+      function v12505(v12503) {
+        var v12504 = this;
+        return v12503 = v12503 || {}, (v12504 = v12502.call(this, v12503) || this).leftSpaceRemoved = v12503.leftSpaceRemoved, v12504;
       }
 
-      return y(e, t), e.prototype.getHideTitle = function () {
+      return v12489(v12505, v12502), v12505.prototype.getHideTitle = function () {
         return null == this.hideTitle ? this.defaultOptions.hideTitle : this.hideTitle;
-      }, e;
-    }(g.a),
-    E = n(8),
-    T = function () {
-      function t(t, idx, watermarkOptions, pr, scl, e, n, i, r, a, p, s, s1, l, u, d) {
+      }, v12505;
+    }(v12448.a),
+    v12507 = v12385(8),
+    v12508 = function () {
+      function v12523(v12509, idx, watermarkOptions, pr, scl, v12510, v12511, v12512, v12513, v12514, v12515, v12516, s1, v12517, v12518, v12519) {
         this.panelPageRule = pr, this.scale = scl, this.watermarkOptions = watermarkOptions,
-          this.defaultPaperNumberFormat = "${paperNo}-${paperCount}", this.printLine = 0, this.templateId = t, this.panelIdx = idx, this.width = o.a.mm.toPt(e), this.height = o.a.mm.toPt(n), this.mmwidth = e, this.mmheight = n, this.paperHeader = i >= 0 ? i : 0, this.paperFooter = r, this.contentHeight = r - i, this.createTarget(), this.index = u, this.paperNumberLeft = a || parseInt((this.width - 30).toString()), this.paperNumberTop = p || parseInt((this.height - 22).toString()), this.paperNumberDisabled = s, this.paperNumberContinue = s1, this.paperNumberFormat = l, this.referenceElement = d ? $.extend({}, d) : new E.a({
+        this.defaultPaperNumberFormat = "${paperNo}-${paperCount}", this.printLine = 0, this.templateId = v12509, this.panelIdx = idx, this.width = v12388.a.mm.toPt(v12510), this.height = v12388.a.mm.toPt(v12511), this.mmwidth = v12510, this.mmheight = v12511, this.paperHeader = v12512 >= 0 ? v12512 : 0, this.paperFooter = v12513, this.contentHeight = v12513 - v12512, this.createTarget(), this.index = v12518, this.paperNumberLeft = v12514 || parseInt((this.width - 30).toString()), this.paperNumberTop = v12515 || parseInt((this.height - 22).toString()), this.paperNumberDisabled = v12516, this.paperNumberContinue = s1, this.paperNumberFormat = v12517, this.referenceElement = v12519 ? $.extend({}, v12519) : new v12507.a({
           top: 0,
           left: 0,
           height: 0,
@@ -8434,9 +8434,9 @@ var hiprint = function (t) {
         });
       }
 
-      return t.prototype.subscribePaperBaseInfoChanged = function (t) {
-        this.onPaperBaseInfoChanged = t;
-      }, t.prototype.triggerOnPaperBaseInfoChanged = function (t) {
+      return v12523.prototype.subscribePaperBaseInfoChanged = function (v12524) {
+        this.onPaperBaseInfoChanged = v12524;
+      }, v12523.prototype.triggerOnPaperBaseInfoChanged = function (v12525) {
         this.onPaperBaseInfoChanged && this.onPaperBaseInfoChanged({
           panelPageRule: this.panelPageRule,
           scale: this.scale,
@@ -8448,425 +8448,425 @@ var hiprint = function (t) {
           paperNumberContinue: this.paperNumberContinue,
           paperNumberFormat: this.paperNumberFormat
         });
-        o.a.event.trigger("hiprintTemplateDataChanged_" + this.templateId, t || "模板调整");
-      }, t.prototype.setFooter = function (t, e, n, i) {
-        this.firstPaperFooter = t, this.evenPaperFooter = e, this.oddPaperFooter = n, this.lastPaperFooter = i;
-      }, t.prototype.setOffset = function (t, e) {
-        this.setLeftOffset(t), this.setTopOffset(e);
-      }, t.prototype.setLeftOffset = function (t) {
-        t ? this.paperContentTarget.css("left", t + "pt") : this.paperContentTarget[0].style.left = "";
-      }, t.prototype.setTopOffset = function (t) {
-        t ? this.paperContentTarget.css("top", t + "pt") : this.paperContentTarget[0].style.top = "";
-      }, t.prototype.createTarget = function () {
-        this.target = $('<div class="hiprint-printPaper"><div class="hiprint-printPaper-content"></div></div>'), this.paperContentTarget = this.target.find(".hiprint-printPaper-content"), this.target.css("width", this.mmwidth + "mm"), this.target.css("height", this.mmheight - p.a.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight), this.zoom(this.scale);
-      }, t.prototype.createHeaderLine = function () {
-        var t = this;
-        this.headerLinetarget = $('<div class="hiprint-headerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.headerLinetarget.css("top", (this.paperHeader || -1) + "pt"), 0 == this.paperHeader && this.headerLinetarget.addClass("hideheaderLinetarget"), this.paperContentTarget.append(this.headerLinetarget), this.dragHeadLineOrFootLine(this.headerLinetarget, function (e, n) {
-          if (n >= t.paperFooter) {
-            n = t.paperFooter - 10;
+        v12388.a.event.trigger("hiprintTemplateDataChanged_" + this.templateId, v12525 || "模板调整");
+      }, v12523.prototype.setFooter = function (v12527, v12528, v12529, v12530) {
+        this.firstPaperFooter = v12527, this.evenPaperFooter = v12528, this.oddPaperFooter = v12529, this.lastPaperFooter = v12530;
+      }, v12523.prototype.setOffset = function (v12531, v12532) {
+        this.setLeftOffset(v12531), this.setTopOffset(v12532);
+      }, v12523.prototype.setLeftOffset = function (v12533) {
+        v12533 ? this.paperContentTarget.css("left", v12533 + "pt") : this.paperContentTarget[0].style.left = "";
+      }, v12523.prototype.setTopOffset = function (v12534) {
+        v12534 ? this.paperContentTarget.css("top", v12534 + "pt") : this.paperContentTarget[0].style.top = "";
+      }, v12523.prototype.createTarget = function () {
+        this.target = $('<div class="hiprint-printPaper"><div class="hiprint-printPaper-content"></div></div>'), this.paperContentTarget = this.target.find(".hiprint-printPaper-content"), this.target.css("width", this.mmwidth + "mm"), this.target.css("height", this.mmheight - v12410.a.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight), this.zoom(this.scale);
+      }, v12523.prototype.createHeaderLine = function () {
+        var v12536 = this;
+        this.headerLinetarget = $('<div class="hiprint-headerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.headerLinetarget.css("top", (this.paperHeader || -1) + "pt"), 0 == this.paperHeader && this.headerLinetarget.addClass("hideheaderLinetarget"), this.paperContentTarget.append(this.headerLinetarget), this.dragHeadLineOrFootLine(this.headerLinetarget, function (v12537, v12538) {
+          if (v12538 >= v12536.paperFooter) {
+            v12538 = v12536.paperFooter - 10;
           }
-          t.paperHeader = n >= 0 ? n : 0, t.triggerOnPaperBaseInfoChanged();
+          v12536.paperHeader = v12538 >= 0 ? v12538 : 0, v12536.triggerOnPaperBaseInfoChanged();
         });
-      }, t.prototype.createFooterLine = function () {
-        var t = this;
-        this.footerLinetarget = $('<div class="hiprint-footerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.footerLinetarget.css("top", parseInt(this.paperFooter.toString()) + "pt"), this.paperFooter == this.height && (this.footerLinetarget.css("top", this.mmheight - p.a.instance.paperHeightTrim + "mm"), this.footerLinetarget.addClass("hidefooterLinetarget")), this.paperContentTarget.append(this.footerLinetarget), this.dragHeadLineOrFootLine(this.footerLinetarget, function (e, n) {
-          if (n <= t.paperHeader) {
-            n = t.paperHeader + 10;
+      }, v12523.prototype.createFooterLine = function () {
+        var v12539 = this;
+        this.footerLinetarget = $('<div class="hiprint-footerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.footerLinetarget.css("top", parseInt(this.paperFooter.toString()) + "pt"), this.paperFooter == this.height && (this.footerLinetarget.css("top", this.mmheight - v12410.a.instance.paperHeightTrim + "mm"), this.footerLinetarget.addClass("hidefooterLinetarget")), this.paperContentTarget.append(this.footerLinetarget), this.dragHeadLineOrFootLine(this.footerLinetarget, function (v12541, v12542) {
+          if (v12542 <= v12539.paperHeader) {
+            v12542 = v12539.paperHeader + 10;
           }
-          t.paperFooter = n, t.triggerOnPaperBaseInfoChanged();
+          v12539.paperFooter = v12542, v12539.triggerOnPaperBaseInfoChanged();
         });
-      }, t.prototype.createPaperNumber = function (t, d) {
-        var e = this,
-          n = this.target.find(".hiprint-paperNumber");
-        if (n.length) return n.html(t), n;
-        var i = $('<span class="hiprint-paperNumber"  style="position: absolute">' + t + "</span>");
-        return i.css("top", this.paperNumberTop + "pt"), i.css("left", this.paperNumberLeft + "pt"), this.paperContentTarget.append(i), d && this.dragHeadLineOrFootLine(i, function (t, n) {
-          e.paperNumberTop = n, e.paperNumberLeft = t, e.triggerOnPaperBaseInfoChanged();
-        }, !0), i;
-      }, t.prototype.getTarget = function () {
+      }, v12523.prototype.createPaperNumber = function (v12543, v12544) {
+        var v12545 = this,
+          v12546 = this.target.find(".hiprint-paperNumber");
+        if (v12546.length) return v12546.html(v12543), v12546;
+        var v12547 = $('<span class="hiprint-paperNumber"  style="position: absolute">' + v12543 + "</span>");
+        return v12547.css("top", this.paperNumberTop + "pt"), v12547.css("left", this.paperNumberLeft + "pt"), this.paperContentTarget.append(v12547), v12544 && this.dragHeadLineOrFootLine(v12547, function (v12548, v12549) {
+          v12545.paperNumberTop = v12549, v12545.paperNumberLeft = v12548, v12545.triggerOnPaperBaseInfoChanged();
+        }, !0), v12547;
+      }, v12523.prototype.getTarget = function () {
         return this.target;
-      }, t.prototype.append = function (t) {
-        this.paperContentTarget.append(t);
-      }, t.prototype.updateReferenceElement = function (t) {
-        t && (this.referenceElement = t);
-      }, t.prototype.updatePrintLine = function (t) {
-        t >= this.printLine && (this.printLine = t);
-      }, t.prototype.design = function (t) {
-        var e = this;
-        this.createHeaderLine(), this.createFooterLine(), this.target.addClass("design"), t && t.grid && this.target.addClass("grid"), this.paperNumberTarget = this.createPaperNumber(this.formatPaperNumber(1, 1), true), this.createRuler(), this.createWaterMark(true, this.panelIdx, this.watermarkOptions), this.resetPaperNumber(this.paperNumberTarget), $(this.paperNumberTarget).bind("dblclick.hiprint", function () {
-          null == e.paperNumberDisabled && (e.paperNumberDisabled = !1), e.paperNumberDisabled = !e.paperNumberDisabled, e.resetPaperNumber(e.paperNumberTarget), e.triggerOnPaperBaseInfoChanged("初始");
+      }, v12523.prototype.append = function (v12550) {
+        this.paperContentTarget.append(v12550);
+      }, v12523.prototype.updateReferenceElement = function (v12551) {
+        v12551 && (this.referenceElement = v12551);
+      }, v12523.prototype.updatePrintLine = function (v12552) {
+        v12552 >= this.printLine && (this.printLine = v12552);
+      }, v12523.prototype.design = function (v12553) {
+        var v12554 = this;
+        this.createHeaderLine(), this.createFooterLine(), this.target.addClass("design"), v12553 && v12553.grid && this.target.addClass("grid"), this.paperNumberTarget = this.createPaperNumber(this.formatPaperNumber(1, 1), true), this.createRuler(), this.createWaterMark(true, this.panelIdx, this.watermarkOptions), this.resetPaperNumber(this.paperNumberTarget), $(this.paperNumberTarget).bind("dblclick.hiprint", function () {
+          null == v12554.paperNumberDisabled && (v12554.paperNumberDisabled = !1), v12554.paperNumberDisabled = !v12554.paperNumberDisabled, v12554.resetPaperNumber(v12554.paperNumberTarget), v12554.triggerOnPaperBaseInfoChanged("初始");
         }), $(this.paperNumberTarget).bind("click.hiprint", function () {
-          o.a.event.trigger("BuildCustomOptionSettingEventKey_" + e.templateId, {
+          v12388.a.event.trigger("BuildCustomOptionSettingEventKey_" + v12554.templateId, {
             options: {
-              paperNumberFormat: e.paperNumberFormat,
-              paperNumberDisabled: e.paperNumberDisabled,
-              paperNumberContinue: e.paperNumberContinue
+              paperNumberFormat: v12554.paperNumberFormat,
+              paperNumberDisabled: v12554.paperNumberDisabled,
+              paperNumberContinue: v12554.paperNumberContinue
             },
-            callback: function callback(t) {
-              e.paperNumberDisabled = !!t.paperNumberDisabled || void 0, e.paperNumberContinue = t.paperNumberContinue, e.paperNumberFormat = t.paperNumberFormat ? t.paperNumberFormat : void 0, e.createPaperNumber(e.formatPaperNumber(1, 1), true), e.resetPaperNumber(e.paperNumberTarget), e.triggerOnPaperBaseInfoChanged();
+            callback: function callback(v12556) {
+              v12554.paperNumberDisabled = !!v12556.paperNumberDisabled || void 0, v12554.paperNumberContinue = v12556.paperNumberContinue, v12554.paperNumberFormat = v12556.paperNumberFormat ? v12556.paperNumberFormat : void 0, v12554.createPaperNumber(v12554.formatPaperNumber(1, 1), true), v12554.resetPaperNumber(v12554.paperNumberTarget), v12554.triggerOnPaperBaseInfoChanged();
             }
           });
         });
-      }, t.prototype.resetPaperNumber = function (t) {
-        this.paperNumberDisabled ? t.addClass("hiprint-paperNumber-disabled") : t.removeClass("hiprint-paperNumber-disabled");
-      }, t.prototype.updatePaperNumber = function (t, e, n) {
-        var i = this.createPaperNumber(this.formatPaperNumber(t, e));
-        this.paperNumberDisabled ? i.hide() : n && this.index % 2 == 1 && (i[0].style.left = "", i.css("right", this.paperNumberLeft + "pt"));
-      }, t.prototype.formatPaperNumber = function (t, e) {
-        this.createWaterMark(false, t, this.watermarkOptions);
-        return eval("`" + (this.paperNumberFormat ? this.paperNumberFormat : this.defaultPaperNumberFormat).replace("paperNo",t).replace("paperCount",e) + "`");
-      }, t.prototype.dragHeadLineOrFootLine = function (t, e, n) {
-        var i = this;
-        t.hidraggable({
-          axis: n ? void 0 : "v",
-          onDrag: function onDrag(t, n, i) {
-            e(n, i);
+      }, v12523.prototype.resetPaperNumber = function (v12557) {
+        this.paperNumberDisabled ? v12557.addClass("hiprint-paperNumber-disabled") : v12557.removeClass("hiprint-paperNumber-disabled");
+      }, v12523.prototype.updatePaperNumber = function (v12558, v12559, v12560) {
+        var v12561 = this.createPaperNumber(this.formatPaperNumber(v12558, v12559));
+        this.paperNumberDisabled ? v12561.hide() : v12560 && this.index % 2 == 1 && (v12561[0].style.left = "", v12561.css("right", this.paperNumberLeft + "pt"));
+      }, v12523.prototype.formatPaperNumber = function (v12562, v12563) {
+        this.createWaterMark(false, v12562, this.watermarkOptions);
+        return eval("`" + (this.paperNumberFormat ? this.paperNumberFormat : this.defaultPaperNumberFormat).replace("paperNo", v12562).replace("paperCount", v12563) + "`");
+      }, v12523.prototype.dragHeadLineOrFootLine = function (v12564, v12565, v12566) {
+        var v12567 = this;
+        v12564.hidraggable({
+          axis: v12566 ? void 0 : "v",
+          onDrag: function onDrag(v12568, v12569, v12570) {
+            v12565(v12569, v12570);
           },
           moveUnit: "pt",
-          minMove: p.a.instance.movingDistance,
-          onBeforeDrag: function onBeforeDrag(t) {
-            s.a.instance.draging = !0;
+          minMove: v12410.a.instance.movingDistance,
+          onBeforeDrag: function onBeforeDrag(v12572) {
+            v12411.a.instance.draging = !0;
           },
           getScale: function getScale() {
-            return i.scale || 1;
+            return v12567.scale || 1;
           },
-          onStopDrag: function onStopDrag(t) {
-            i.headerLinetarget.css("top", i.paperHeader + "pt");
-            i.footerLinetarget.css("top", i.paperFooter + "pt");
-            s.a.instance.draging = !1, i.footerLinetarget.removeClass("hidefooterLinetarget"), i.headerLinetarget.removeClass("hideheaderLinetarget");
+          onStopDrag: function onStopDrag(v12574) {
+            v12567.headerLinetarget.css("top", v12567.paperHeader + "pt");
+            v12567.footerLinetarget.css("top", v12567.paperFooter + "pt");
+            v12411.a.instance.draging = !1, v12567.footerLinetarget.removeClass("hidefooterLinetarget"), v12567.headerLinetarget.removeClass("hideheaderLinetarget");
           }
         });
-      }, t.prototype.resize = function (t, e) {
+      }, v12523.prototype.resize = function (v12576, v12577) {
         // 获取页脚高度比例
         var parperFooterRatio = this.paperFooter / this.height;
-        this.width = o.a.mm.toPt(t), this.height = o.a.mm.toPt(e), this.mmwidth = t, this.mmheight = e, this.target.css("width", t + "mm"), this.target.css("height", e - p.a.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight);
+        this.width = v12388.a.mm.toPt(v12576), this.height = v12388.a.mm.toPt(v12577), this.mmwidth = v12576, this.mmheight = v12577, this.target.css("width", v12576 + "mm"), this.target.css("height", v12577 - v12410.a.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight);
         // 按比例计算页脚高度
         var paperFooter = this.height * parperFooterRatio;
         this.paperFooter = paperFooter || this.height, this.footerLinetarget.css("top", paperFooter + "pt"),
-          this.contentHeight = this.paperFooter - this.paperHeader,
-          // 设置纸张后, 页码位置重置问题
-          this.paperNumberLeft = this.paperNumberLeft > this.width ? parseInt((this.width - 30).toString()) : this.paperNumberLeft;
+        this.contentHeight = this.paperFooter - this.paperHeader,
+        // 设置纸张后, 页码位置重置问题
+        this.paperNumberLeft = this.paperNumberLeft > this.width ? parseInt((this.width - 30).toString()) : this.paperNumberLeft;
         this.paperNumberTop = this.paperNumberTop > this.height ? this.paperNumberTop = parseInt((this.height - 22).toString()) : this.paperNumberTop;
         this.paperNumberTarget.css("top", this.paperNumberTop + "pt"),
-          this.paperNumberTarget.css("left", this.paperNumberLeft + "pt"),
-          this.triggerOnPaperBaseInfoChanged("调整大小");
-      }, t.prototype.zoom = function (s) {
-        if (s) {
-          this.scale = s, this.target.css("transform", "scale(" + s + ")");
-          if (s > 1) {
-            this.target.css("transform-origin", "-" + s + "% -" + s + "%");
+        this.paperNumberTarget.css("left", this.paperNumberLeft + "pt"),
+        this.triggerOnPaperBaseInfoChanged("调整大小");
+      }, v12523.prototype.zoom = function (v12581) {
+        if (v12581) {
+          this.scale = v12581, this.target.css("transform", "scale(" + v12581 + ")");
+          if (v12581 > 1) {
+            this.target.css("transform-origin", "-" + v12581 + "% -" + v12581 + "%");
           } else {
             this.target.css("transform-origin", "0 0");
           }
           this.triggerOnPaperBaseInfoChanged("缩放");
         }
-      }, t.prototype.getPaperFooter = function (t) {
-        var e = this.index + t;
-        return 0 == e ? this.firstPaperFooter ? this.firstPaperFooter : this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : e % 2 == 0 ? this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : e % 2 == 1 ? this.evenPaperFooter ? this.evenPaperFooter : this.paperFooter : void 0;
-      }, t.prototype.getContentHeight = function (t) {
-        return this.getPaperFooter(t) - this.paperHeader;
-      }, t.prototype.createRuler = function () {
+      }, v12523.prototype.getPaperFooter = function (v12582) {
+        var v12583 = this.index + v12582;
+        return 0 == v12583 ? this.firstPaperFooter ? this.firstPaperFooter : this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : v12583 % 2 == 0 ? this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : v12583 % 2 == 1 ? this.evenPaperFooter ? this.evenPaperFooter : this.paperFooter : void 0;
+      }, v12523.prototype.getContentHeight = function (v12584) {
+        return this.getPaperFooter(v12584) - this.paperHeader;
+      }, v12523.prototype.createRuler = function () {
         this.target.append('<div class="hiprint_rul_wrapper">\n                     <img class="h_img" src="' + lImg + '" />\n                     <img class="v_img" src="' + vImg + '" />\n                    </div>');
-      }, t.prototype.createWaterMark = function (watch, idx, opts) {
-        var e = this;
+      }, v12523.prototype.createWaterMark = function (watch, idx, opts) {
+        var v12585 = this;
         var options = Object.assign({}, opts || {}, {
-          id: `${e.templateId}_${e.panelIdx}_${idx || 1}_${watch ? 'design' : e.index}`,
+          id: `${v12585.templateId}_${v12585.panelIdx}_${idx || 1}_${watch ? 'design' : v12585.index}`,
           watch: watch,
-          container: e.target[0],
+          container: v12585.target[0]
         });
         if (!options.container) return;
         if (options.content) {
           if (watch) {
             watermark.destroyWatermark(Object.assign({}, options, {
-              id: `${e.templateId}_${e.panelIdx}_${idx || 1}_${e.index}`,
+              id: `${v12585.templateId}_${v12585.panelIdx}_${idx || 1}_${v12585.index}`
             }));
           }
           watermark.createWatermark(options);
         } else {
           watermark.destroyWatermark(options);
         }
-      }, t.prototype.displayHeight = function () {
-        return this.mmheight - p.a.instance.paperHeightTrim + "mm";
-      }, t.prototype.displayWidth = function () {
+      }, v12523.prototype.displayHeight = function () {
+        return this.mmheight - v12410.a.instance.paperHeightTrim + "mm";
+      }, v12523.prototype.displayWidth = function () {
         return this.mmwidth + "mm";
-      }, t.prototype.getPanelTarget = function () {
+      }, v12523.prototype.getPanelTarget = function () {
         return this.target.parent(".hiprint-printPanel ");
-      }, t;
+      }, v12523;
     }(),
-    P = n(6),
-    _ = function () {
-      var _t5 = function t(e, n) {
+    v12587 = v12385(6),
+    v12588 = function () {
+      var _t5 = function v12589(v12590, v12591) {
         return (_t5 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12592, v12593) {
+          v12592.__proto__ = v12593;
+        } || function (v12594, v12595) {
+          for (var v12596 in v12595) {
+            v12595.hasOwnProperty(v12596) && (v12594[v12596] = v12595[v12596]);
           }
-        })(e, n);
+        })(v12590, v12591);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12597, v12598) {
+        function v12599() {
+          this.constructor = v12597;
         }
 
-        _t5(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t5(v12597, v12598), v12597.prototype = null === v12598 ? Object.create(v12598) : (v12599.prototype = v12598.prototype, new v12599());
       };
     }(),
-    w = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new b(n), i.options.setDefault(new b(p.a.instance.longText.default).getPrintElementOptionEntity()), i;
+    v12600 = function (v12601) {
+      function v12606(v12602, v12603) {
+        var v12604 = v12601.call(this, v12602) || this;
+        return v12604.options = new v12501(v12603), v12604.options.setDefault(new v12501(v12410.a.instance.longText.default).getPrintElementOptionEntity()), v12604;
       }
 
-      return _(e, t), e.prototype.getDesignTarget = function (e) {
-        var n = t.prototype.getDesignTarget.call(this, e);
-        return n.find(".hiprint-printElement-longText-content").css("border", "1px dashed #cebcbc"), n;
-      }, e.prototype.getProxyTarget = function (t) {
-        t && this.SetProxyTargetOption(t);
-        var e = this.getData(),
-          n = this.createTarget(this.printElementType.getText(!0), e);
-        return this.updateTargetSize(n), this.css(n, e), n;
-      }, e.prototype.updateDesignViewFromOptions = function () {
+      return v12588(v12606, v12601), v12606.prototype.getDesignTarget = function (v12607) {
+        var v12608 = v12601.prototype.getDesignTarget.call(this, v12607);
+        return v12608.find(".hiprint-printElement-longText-content").css("border", "1px dashed #cebcbc"), v12608;
+      }, v12606.prototype.getProxyTarget = function (v12609) {
+        v12609 && this.SetProxyTargetOption(v12609);
+        var v12610 = this.getData(),
+          v12611 = this.createTarget(this.printElementType.getText(!0), v12610);
+        return this.updateTargetSize(v12611), this.css(v12611, v12610), v12611;
+      }, v12606.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData(),
-            e = this.getHtml(this.designPaper)[0].target;
-          this.designTarget.find(".hiprint-printElement-longText-content").html(e.find(".hiprint-printElement-longText-content").html()), this.css(this.designTarget, t);
+          var v12612 = this.getData(),
+            v12613 = this.getHtml(this.designPaper)[0].target;
+          this.designTarget.find(".hiprint-printElement-longText-content").html(v12613.find(".hiprint-printElement-longText-content").html()), this.css(this.designTarget, v12612);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.longText;
-      }, e.prototype.getTitle = function () {
+      }, v12606.prototype.getConfigOptions = function () {
+        return v12410.a.instance.longText;
+      }, v12606.prototype.getTitle = function () {
         return this.options.title || this.printElementType.title;
-      }, e.prototype.getData = function (t) {
-        var f = this.getField();
-        var e = f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "";
-        return t ? e || "" : this.options.testData || this.printElementType.getData() || "";
-      }, e.prototype.updateTargetText = function (t, e, n) {
-        var i = t.find(".hiprint-printElement-longText-content"),
-          o = this.getText(e, n);
-        i.html(o);
-      }, e.prototype.createTarget = function (t, e) {
-        var n = $('<div  class="hiprint-printElement hiprint-printElement-longText" style="position: absolute;"><div class="hiprint-printElement-longText-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
-        return this.updateTargetText(n, t, e), n;
-      }, e.prototype.getText = function (t, e) {
-        var n = this.getFormatter();
-        e && (e = 0 != this.options.leftSpaceRemoved ? e.toString().replace(/^\s*/, "") : e);
-        return (this.getField() ? (this.options.getHideTitle() ? "" : t ? t + "：" : "") + (n ? n(t, e, this.options, this._currenttemplateData) : e) : n ? n(t, t, this.options, this._currenttemplateData) : t || "") || "";
-      }, e.prototype.getHtml = function (t, e) {
-        this.setCurrenttemplateData(e), this.createTempContainer();
-        var n = this.getPaperHtmlResult(t, e);
-        return this.removeTempContainer(), n;
-      }, e.prototype.getHeightByData = function (t) {
+      }, v12606.prototype.getData = function (v12615) {
+        var v12616 = this.getField();
+        var v12617 = v12616 ? v12616.split('.').reduce((v12618, v12619) => v12618 ? v12618[v12619] : v12615 ? v12615[v12619] : "", !1) || "" : "";
+        return v12615 ? v12617 || "" : this.options.testData || this.printElementType.getData() || "";
+      }, v12606.prototype.updateTargetText = function (v12620, v12621, v12622) {
+        var v12623 = v12620.find(".hiprint-printElement-longText-content"),
+          v12624 = this.getText(v12621, v12622);
+        v12623.html(v12624);
+      }, v12606.prototype.createTarget = function (v12625, v12626) {
+        var v12627 = $('<div  class="hiprint-printElement hiprint-printElement-longText" style="position: absolute;"><div class="hiprint-printElement-longText-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
+        return this.updateTargetText(v12627, v12625, v12626), v12627;
+      }, v12606.prototype.getText = function (v12628, v12629) {
+        var v12630 = this.getFormatter();
+        v12629 && (v12629 = 0 != this.options.leftSpaceRemoved ? v12629.toString().replace(/^\s*/, "") : v12629);
+        return (this.getField() ? (this.options.getHideTitle() ? "" : v12628 ? v12628 + "：" : "") + (v12630 ? v12630(v12628, v12629, this.options, this._currenttemplateData) : v12629) : v12630 ? v12630(v12628, v12628, this.options, this._currenttemplateData) : v12628 || "") || "";
+      }, v12606.prototype.getHtml = function (v12631, v12632) {
+        this.setCurrenttemplateData(v12632), this.createTempContainer();
+        var v12633 = this.getPaperHtmlResult(v12631, v12632);
+        return this.removeTempContainer(), v12633;
+      }, v12606.prototype.getHeightByData = function (v12634) {
         this.createTempContainer();
-        var e = this.getPaperHtmlResult(new T("", "", void 0, 1e3, 1e3, 0, 25e3, 0, 0, !0, !0, void 0, 0, void 0), {}, t);
-        return this.removeTempContainer(), e[0].referenceElement.bottomInLastPaper - e[0].referenceElement.printTopInPaper;
-      }, e.prototype.getLongTextIndent = function () {
+        var v12635 = this.getPaperHtmlResult(new v12508("", "", void 0, 1e3, 1e3, 0, 25e3, 0, 0, !0, !0, void 0, 0, void 0), {}, v12634);
+        return this.removeTempContainer(), v12635[0].referenceElement.bottomInLastPaper - v12635[0].referenceElement.printTopInPaper;
+      }, v12606.prototype.getLongTextIndent = function () {
         return this.options.longTextIndent ? '<span class="long-text-indent" style="margin-left:' + this.options.longTextIndent + 'pt"></span>' : '<span class="long-text-indent"></span>';
-      }, e.prototype.getPaperHtmlResult = function (t, e, n) {
-        var i = this,
-          o = [],
-          r = 0,
-          a = n || this.getData(e),
-          p = this.getText(this.getTitle(), a),
-          s = this.createTarget(this.getTitle(), this.options.testData || "");
-        this.css(s, a), e ? this.updateTargetWidth(s) : this.updateTargetSize(s), this.getTempContainer().html(""), this.getTempContainer().append(s);
-        var l = [this.getLongTextIndent()],
-          u = p.split(new RegExp("\r|\n", "g"));
-        if (u.forEach(function (t, e) {
-          var n = 0 != i.options.leftSpaceRemoved ? (t || "").toString().replace(/^\s*/, "") : t;
-          l = l.concat(n.split("")), e < u.length - 1 && l.push("<br/>" + i.getLongTextIndent());
-        }), 0 == l.length && (l = [""]), this.isHeaderOrFooter() || this.isFixed() || !e) return (f = this.getStringBySpecificHeight(l, 25e3, s)).target.css("left", this.options.displayLeft()), f.target.css("top", this.options.displayTop()), f.target[0].height = "", o.push(new P.a({
-          target: f.target,
-          printLine: this.options.displayTop() + f.height,
-          referenceElement: new E.a({
+      }, v12606.prototype.getPaperHtmlResult = function (v12636, v12637, v12638) {
+        var v12639 = this,
+          v12640 = [],
+          v12641 = 0,
+          v12642 = v12638 || this.getData(v12637),
+          v12643 = this.getText(this.getTitle(), v12642),
+          v12644 = this.createTarget(this.getTitle(), this.options.testData || "");
+        this.css(v12644, v12642), v12637 ? this.updateTargetWidth(v12644) : this.updateTargetSize(v12644), this.getTempContainer().html(""), this.getTempContainer().append(v12644);
+        var v12645 = [this.getLongTextIndent()],
+          v12646 = v12643.split(new RegExp("\r|\n", "g"));
+        if (v12646.forEach(function (v12647, v12648) {
+          var v12649 = 0 != v12639.options.leftSpaceRemoved ? (v12647 || "").toString().replace(/^\s*/, "") : v12647;
+          v12645 = v12645.concat(v12649.split("")), v12648 < v12646.length - 1 && v12645.push("<br/>" + v12639.getLongTextIndent());
+        }), 0 == v12645.length && (v12645 = [""]), this.isHeaderOrFooter() || this.isFixed() || !v12637) return (v12650 = this.getStringBySpecificHeight(v12645, 25e3, v12644)).target.css("left", this.options.displayLeft()), v12650.target.css("top", this.options.displayTop()), v12650.target[0].height = "", v12640.push(new v12587.a({
+          target: v12650.target,
+          printLine: this.options.displayTop() + v12650.height,
+          referenceElement: new v12507.a({
             top: this.options.getTop(),
             left: this.options.getLeft(),
             height: this.options.getHeight(),
             width: this.options.getWidth(),
-            beginPrintPaperIndex: t.index,
-            bottomInLastPaper: this.options.getTop() + f.height,
+            beginPrintPaperIndex: v12636.index,
+            bottomInLastPaper: this.options.getTop() + v12650.height,
             printTopInPaper: this.options.getTop()
           })
-        })), o;
+        })), v12640;
 
-        for (var d = this.getBeginPrintTopInPaperByReferenceElement(t); l.length > 0;) {
-          var c = 0,
-            h = t.getPaperFooter(r);
-          0 == r && d > h && "none" != t.panelPageRule && (d = d - h + t.paperHeader, o.push(new P.a({
+        for (var v12653 = this.getBeginPrintTopInPaperByReferenceElement(v12636); v12645.length > 0;) {
+          var v12654 = 0,
+            v12655 = v12636.getPaperFooter(v12641);
+          0 == v12641 && v12653 > v12655 && "none" != v12636.panelPageRule && (v12653 = v12653 - v12655 + v12636.paperHeader, v12640.push(new v12587.a({
             target: void 0,
             printLine: void 0
-          })), r++ , c = t.getContentHeight(r) - (d - t.paperHeader), h = t.getPaperFooter(r));
-          var f = this.getStringBySpecificHeight(l, c > 0 ? c : 0 == r ? h - d : t.getContentHeight(r), s);
-          l.splice(0, f.length);
-          var g = void 0,
-            m = void 0;
-          f.target.css("left", this.options.displayLeft()), f.target[0].height = "", 0 == r || c > 0 ? (m = d, f.target.css("top", m + "pt"), g = l.length > 0 ? d + f.height : null != this.options.lHeight ? d + (f.height > this.options.lHeight ? f.height : this.options.lHeight) : d + f.height) : (m = t.paperHeader, f.target.css("top", m + "pt"), g = m + f.height), o.push(new P.a({
-            target: f.target,
-            printLine: g,
-            referenceElement: new E.a({
+          })), v12641++, v12654 = v12636.getContentHeight(v12641) - (v12653 - v12636.paperHeader), v12655 = v12636.getPaperFooter(v12641));
+          var v12650 = this.getStringBySpecificHeight(v12645, v12654 > 0 ? v12654 : 0 == v12641 ? v12655 - v12653 : v12636.getContentHeight(v12641), v12644);
+          v12645.splice(0, v12650.length);
+          var v12657 = void 0,
+            v12658 = void 0;
+          v12650.target.css("left", this.options.displayLeft()), v12650.target[0].height = "", 0 == v12641 || v12654 > 0 ? (v12658 = v12653, v12650.target.css("top", v12658 + "pt"), v12657 = v12645.length > 0 ? v12653 + v12650.height : null != this.options.lHeight ? v12653 + (v12650.height > this.options.lHeight ? v12650.height : this.options.lHeight) : v12653 + v12650.height) : (v12658 = v12636.paperHeader, v12650.target.css("top", v12658 + "pt"), v12657 = v12658 + v12650.height), v12640.push(new v12587.a({
+            target: v12650.target,
+            printLine: v12657,
+            referenceElement: new v12507.a({
               top: this.options.getTop(),
               left: this.options.getLeft(),
               height: this.options.getHeight(),
               width: this.options.getWidth(),
-              beginPrintPaperIndex: t.index,
-              bottomInLastPaper: g,
-              printTopInPaper: m
+              beginPrintPaperIndex: v12636.index,
+              bottomInLastPaper: v12657,
+              printTopInPaper: v12658
             })
-          })), r++;
-          e && this.updatePanelHeight(g + this.options.getHeight(), t);
+          })), v12641++;
+          v12637 && this.updatePanelHeight(v12657 + this.options.getHeight(), v12636);
         }
 
-        return o;
-      }, e.prototype.getStringBySpecificHeight = function (t, e, n) {
-        var i = o.a.pt.toPx(e);
-        var r = void 0;
+        return v12640;
+      }, v12606.prototype.getStringBySpecificHeight = function (v12661, v12662, v12663) {
+        var v12664 = v12388.a.pt.toPx(v12662);
+        var v12666 = void 0;
         var noPaging = "none" == this.panel.panelPageRule;
         if (noPaging) {
-          r = this.IsPaginationIndex(t, t.length, -1, n);
+          v12666 = this.IsPaginationIndex(v12661, v12661.length, -1, v12663);
         } else {
-          r = this.IsPaginationIndex(t, t.length - 1, i, n);
+          v12666 = this.IsPaginationIndex(v12661, v12661.length - 1, v12664, v12663);
         }
-        return r.IsPagination ? r : this.BinarySearch(t, 0, t.length - 1, i, n);
-      }, e.prototype.BinarySearch = function (t, e, n, i, o) {
-        var r = Math.floor((e + n) / 2);
-        if (e > n) return o.find(".hiprint-printElement-longText-content").html(""), {
+        return v12666.IsPagination ? v12666 : this.BinarySearch(v12661, 0, v12661.length - 1, v12664, v12663);
+      }, v12606.prototype.BinarySearch = function (v12667, v12668, v12669, v12670, v12671) {
+        var v12672 = Math.floor((v12668 + v12669) / 2);
+        if (v12668 > v12669) return v12671.find(".hiprint-printElement-longText-content").html(""), {
           IsPagination: !0,
           height: 0,
           length: 0,
-          target: o.clone()
+          target: v12671.clone()
         };
-        var a = this.IsPaginationIndex(t, r, i, o);
-        return a.IsPagination ? a : "l" == a.move ? this.BinarySearch(t, e, r - 1, i, o) : this.BinarySearch(t, r + 1, n, i, o);
-      }, e.prototype.IsPaginationIndex = function (t, e, n, i) {
-        if (-1 == n) {
-          i.find(".hiprint-printElement-longText-content").html(t.slice(0, e).join(""));
-          var a = i.height();
+        var v12673 = this.IsPaginationIndex(v12667, v12672, v12670, v12671);
+        return v12673.IsPagination ? v12673 : "l" == v12673.move ? this.BinarySearch(v12667, v12668, v12672 - 1, v12670, v12671) : this.BinarySearch(v12667, v12672 + 1, v12669, v12670, v12671);
+      }, v12606.prototype.IsPaginationIndex = function (v12674, v12675, v12676, v12677) {
+        if (-1 == v12676) {
+          v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675).join(""));
+          var v12678 = v12677.height();
           return {
             IsPagination: !0,
-            height: o.a.px.toPt(a),
-            length: t.length,
-            target: i.clone()
-          }
+            height: v12388.a.px.toPt(v12678),
+            length: v12674.length,
+            target: v12677.clone()
+          };
         }
-        i.find(".hiprint-printElement-longText-content").html(t.slice(0, e + 2).join(""));
-        var r = i.height();
-        i.find(".hiprint-printElement-longText-content").html(t.slice(0, e + 1).join(""));
-        var a = i.height();
-        return e >= t.length - 1 && a < n ? {
+        v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675 + 2).join(""));
+        var v12680 = v12677.height();
+        v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675 + 1).join(""));
+        var v12678 = v12677.height();
+        return v12675 >= v12674.length - 1 && v12678 < v12676 ? {
           IsPagination: !0,
-          height: o.a.px.toPt(a),
-          length: t.length,
-          target: i.clone()
-        } : a <= n && r >= n ? {
+          height: v12388.a.px.toPt(v12678),
+          length: v12674.length,
+          target: v12677.clone()
+        } : v12678 <= v12676 && v12680 >= v12676 ? {
           IsPagination: !0,
-          height: a,
-          length: e + 1,
-          target: i.clone()
-        } : a >= n ? {
+          height: v12678,
+          length: v12675 + 1,
+          target: v12677.clone()
+        } : v12678 >= v12676 ? {
           IsPagination: !1,
           move: "l"
-        } : r <= n ? {
+        } : v12680 <= v12676 ? {
           IsPagination: !1,
           move: "r"
         } : {
           IsPagination: !0,
           result: 1
         };
-      }, e;
-    }(f.a),
-    x = function () {
-      function t() {
+      }, v12606;
+    }(v12447.a),
+    v12683 = function () {
+      function v12684() {
       }
 
-      return t.replaceEnterAndNewline = function (t, e) {
-        return t.replace(new RegExp("\r|\n|/g", "g"), e);
-      }, t.replaceTab = function (t, e) {
-        return t.replace(new RegExp("\t/g", "g"), e);
-      }, t.replaceEnterAndNewlineAndTab = function (t, e) {
-        return t.replace(new RegExp("\r|\n|\t|/g", "g"), e);
-      }, t;
+      return v12684.replaceEnterAndNewline = function (v12685, v12686) {
+        return v12685.replace(new RegExp("\r|\n|/g", "g"), v12686);
+      }, v12684.replaceTab = function (v12687, v12688) {
+        return v12687.replace(new RegExp("\t/g", "g"), v12688);
+      }, v12684.replaceEnterAndNewlineAndTab = function (v12689, v12690) {
+        return v12689.replace(new RegExp("\r|\n|\t|/g", "g"), v12690);
+      }, v12684;
     }(),
-    C = function () {
-      var _t6 = function t(e, n) {
+    v12691 = function () {
+      var _t6 = function v12692(v12693, v12694) {
         return (_t6 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12695, v12696) {
+          v12695.__proto__ = v12696;
+        } || function (v12697, v12698) {
+          for (var v12699 in v12698) {
+            v12698.hasOwnProperty(v12699) && (v12697[v12699] = v12698[v12699]);
           }
-        })(e, n);
+        })(v12693, v12694);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12700, v12701) {
+        function v12702() {
+          this.constructor = v12700;
         }
 
-        _t6(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t6(v12700, v12701), v12700.prototype = null === v12701 ? Object.create(v12701) : (v12702.prototype = v12701.prototype, new v12702());
       };
     }(),
-    O = function (t) {
-      function e(e) {
-        var n = t.call(this, e) || this;
-        return n.title && (n.title = x.replaceEnterAndNewlineAndTab(n.title, "")), n;
+    v12703 = function (v12704) {
+      function v12707(v12705) {
+        var v12706 = v12704.call(this, v12705) || this;
+        return v12706.title && (v12706.title = v12683.replaceEnterAndNewlineAndTab(v12706.title, "")), v12706;
       }
 
-      return C(e, t), e.prototype.getHideTitle = function () {
+      return v12691(v12707, v12704), v12707.prototype.getHideTitle = function () {
         return null == this.hideTitle ? this.defaultOptions.hideTitle : this.hideTitle;
-      }, e.prototype.getTextType = function () {
+      }, v12707.prototype.getTextType = function () {
         return (null == this.textType ? this.defaultOptions.textType : this.textType) || "text";
-      }, e.prototype.getFontSize = function () {
+      }, v12707.prototype.getFontSize = function () {
         return (null == this.fontSize ? this.defaultOptions.fontSize : this.fontSize) || 9;
-      }, e.prototype.getbarcodeMode = function () {
+      }, v12707.prototype.getbarcodeMode = function () {
         return (null == this.barcodeMode ? this.defaultOptions.barcodeMode : this.barcodeMode) || "CODE128";
-      }, e.prototype.getBarWidth = function () {
+      }, v12707.prototype.getBarWidth = function () {
         return (null == this.barWidth ? this.defaultOptions.barWidth : this.barWidth) || 1;
-      }, e.prototype.getBarAutoWidth = function () {
+      }, v12707.prototype.getBarAutoWidth = function () {
         // 该属性 "true" 为 true，其余一概为 false
         return (null == this.barAutoWidth ? this.defaultOptions.barAutoWidth === "true" : this.barAutoWidth === "true") ?? true;
-      }, e.prototype.getQRcodeLevel = function () {
+      }, v12707.prototype.getQRcodeLevel = function () {
         return (null == this.qrCodeLevel ? this.defaultOptions.qrCodeLevel : this.qrCodeLevel) || 0;
-      }, e;
-    }(g.a),
-    H = function () {
-      var _t7 = function t(e, n) {
+      }, v12707;
+    }(v12448.a),
+    v12709 = function () {
+      var _t7 = function v12710(v12711, v12712) {
         return (_t7 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12713, v12714) {
+          v12713.__proto__ = v12714;
+        } || function (v12715, v12716) {
+          for (var v12717 in v12716) {
+            v12716.hasOwnProperty(v12717) && (v12715[v12717] = v12716[v12717]);
           }
-        })(e, n);
+        })(v12711, v12712);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12718, v12719) {
+        function v12720() {
+          this.constructor = v12718;
         }
 
-        _t7(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t7(v12718, v12719), v12718.prototype = null === v12719 ? Object.create(v12719) : (v12720.prototype = v12719.prototype, new v12720());
       };
     }(),
-    D = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new O(n), i.options.setDefault(new O(p.a.instance.text.default).getPrintElementOptionEntity()), i;
+    v12721 = function (v12722) {
+      function v12727(v12723, v12724) {
+        var v12725 = v12722.call(this, v12723) || this;
+        return v12725.options = new v12703(v12724), v12725.options.setDefault(new v12703(v12410.a.instance.text.default).getPrintElementOptionEntity()), v12725;
       }
 
-      return H(e, t), e.prototype.getDesignTarget = function (e) {
-        return t.prototype.getDesignTarget.call(this, e);
-      }, e.prototype.getProxyTarget = function (t) {
-        t && this.SetProxyTargetOption(t);
-        var e = this.getData(),
-          n = this.createTarget(this.printElementType.getText(!0), e);
-        return this.updateTargetSize(n), this.css(n, e), n;
-      }, e.prototype.updateDesignViewFromOptions = function () {
+      return v12709(v12727, v12722), v12727.prototype.getDesignTarget = function (v12728) {
+        return v12722.prototype.getDesignTarget.call(this, v12728);
+      }, v12727.prototype.getProxyTarget = function (v12729) {
+        v12729 && this.SetProxyTargetOption(v12729);
+        var v12730 = this.getData(),
+          v12731 = this.createTarget(this.printElementType.getText(!0), v12730);
+        return this.updateTargetSize(v12731), this.css(v12731, v12730), v12731;
+      }, v12727.prototype.updateDesignViewFromOptions = function () {
         // ! pub-beta 0.0.57-beta22 这里的处理似乎重复了，影响了 updateTargetText 方法执行，故在此处注释掉
         // var els = this.panel.printElements.filter(function (t) {
         //   return ('block' == t.designTarget.children().last().css('display')
@@ -8878,398 +8878,398 @@ var hiprint = function (t) {
         //   this.updateTargetText(ele.designTarget, ele.getTitle(), t)
         // })
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t), this.updateTargetText(this.designTarget, this.getTitle(), t);
+          var v12732 = this.getData();
+          this.css(this.designTarget, v12732), this.updateTargetText(this.designTarget, this.getTitle(), v12732);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.text;
-      }, e.prototype.getTitle = function () {
-        var t = this.options.title || this.printElementType.title || "";
-        return t && (t = x.replaceEnterAndNewlineAndTab(t, "")), t;
-      }, e.prototype.getData = function (t) {
-        var e = void 0;
-        var f = this.getField();
-        if (e = t ? f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "", this.options.format) {
-          if ("datetime" == this.options.dataType) return o.a.dateFormat(e, this.options.format);
+      }, v12727.prototype.getConfigOptions = function () {
+        return v12410.a.instance.text;
+      }, v12727.prototype.getTitle = function () {
+        var v12734 = this.options.title || this.printElementType.title || "";
+        return v12734 && (v12734 = v12683.replaceEnterAndNewlineAndTab(v12734, "")), v12734;
+      }, v12727.prototype.getData = function (v12735) {
+        var v12736 = void 0;
+        var v12737 = this.getField();
+        if (v12736 = v12735 ? v12737 ? v12737.split('.').reduce((v12738, v12739) => v12738 ? v12738[v12739] : v12735 ? v12735[v12739] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "", this.options.format) {
+          if ("datetime" == this.options.dataType) return v12388.a.dateFormat(v12736, this.options.format);
 
           if ("boolean" == this.options.dataType) {
-            var n = this.options.format.split(":");
-            if (n.length > 0) return !0 === e || "true" === e ? n[0] : n[1];
+            var v12741 = this.options.format.split(":");
+            if (v12741.length > 0) return !0 === v12736 || "true" === v12736 ? v12741[0] : v12741[1];
           }
         }
-        return e;
-      }, e.prototype.updateTargetText = function (t, e, n, i, rowIndex) {
-        var r = this.getFormatter(),
-          a = t.find(".hiprint-printElement-text-content"),
-          p = "";
-        p = this.getField() ? (this.options.getHideTitle() ? "" : e ? e + "：" : "") + hinnn.toUpperCase(this.options.upperCase, (r ? r(e, n, this.options, this._currenttemplateData, t) : n)) : n = hinnn.toUpperCase(this.options.upperCase,(r ? r(e, e, this.options, this._currenttemplateData, t) : e));
-        var s = this.options.getTextType();
-        if ("text" == s) a.html(p); else {
-          if ("barcode" == s) {
-            a.css({
+        return v12736;
+      }, v12727.prototype.updateTargetText = function (v12742, v12743, v12744, v12745, rowIndex) {
+        var v12746 = this.getFormatter(),
+          v12747 = v12742.find(".hiprint-printElement-text-content"),
+          v12748 = "";
+        v12748 = this.getField() ? (this.options.getHideTitle() ? "" : v12743 ? v12743 + "：" : "") + hinnn.toUpperCase(this.options.upperCase, v12746 ? v12746(v12743, v12744, this.options, this._currenttemplateData, v12742) : v12744) : v12744 = hinnn.toUpperCase(this.options.upperCase, v12746 ? v12746(v12743, v12743, this.options, this._currenttemplateData, v12742) : v12743);
+        var v12749 = this.options.getTextType();
+        if ("text" == v12749) v12747.html(v12748);else {
+          if ("barcode" == v12749) {
+            v12747.css({
               "display": "flex",
               "flex-direction": "column"
-            })
+            });
             // pub-beta 0.0.57-beta22 移除插件通过 div 添加的文本元素，默认使用 JsBarcode 生成条形码文本
-            a.html('<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg>');
+            v12747.html('<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg>');
             try {
-              n ? (JsBarcode(a.find(".hibarcode_imgcode")[0], n, {
+              v12744 ? (JsBarcode(v12747.find(".hibarcode_imgcode")[0], v12744, {
                 format: this.options.getbarcodeMode(),
                 width: this.options.getBarWidth(),
                 textMargin: -1,
                 lineColor: this.options.color || "#000000",
                 margin: 0,
-                height: parseInt(o.a.pt.toPx(this.options.getHeight() || 10).toString()),
-                displayValue: !this.options.hideTitle,
-              }), a.find(".hibarcode_imgcode").attr("height", "100%"), a.find(".hibarcode_imgcode").attr("width", "100%")) : a.html("");
+                height: parseInt(v12388.a.pt.toPx(this.options.getHeight() || 10).toString()),
+                displayValue: !this.options.hideTitle
+              }), v12747.find(".hibarcode_imgcode").attr("height", "100%"), v12747.find(".hibarcode_imgcode").attr("width", "100%")) : v12747.html("");
               // pub-beta 0.0.57-beta22 解决条形码自动宽度问题
-              let svgWidth = a.find(".hibarcode_imgcode rect")[0].attributes.width.value
+              let svgWidth = v12747.find(".hibarcode_imgcode rect")[0].attributes.width.value;
               svgWidth = Math.ceil(hinnn.px.toPt(svgWidth * 1.05));
               if (this.options.getBarAutoWidth() && svgWidth > this.options.width) {
-                a.parent().css("width", svgWidth + 'pt')
+                v12747.parent().css("width", svgWidth + 'pt');
                 this.options.width = svgWidth;
               }
-            } catch (t) {
-              console.log(t), a.html(`${i18n.__('此格式不支持该文本')}`);
+            } catch (v12751) {
+              console.log(v12751), v12747.html(`${i18n.__('此格式不支持该文本')}`);
             }
           }
 
-          if ("qrcode" == s) {
-            a.html("");
+          if ("qrcode" == v12749) {
+            v12747.html("");
 
             try {
-              if (n) {
-                a.css({
+              if (v12744) {
+                v12747.css({
                   "display": "flex",
                   "flex-direction": "column"
-                })
-                var width = this.options.width
-                var height = this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0)
+                });
+                var width = this.options.width;
+                var height = this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0);
                 var box = $('<div class="hiqrcode_imgcode"></div>').css({
                   "width": Math.min(width, height) + 'pt',
                   "height": Math.min(width, height) + 'pt',
                   "margin": "auto"
-                })
+                });
                 new QRCode(box[0], {
                   width: "100%",
                   height: "100%",
                   colorDark: this.options.color || "#000000",
                   useSVG: !0,
                   correctLevel: this.options.getQRcodeLevel()
-                }).makeCode(n);
-                a.html(box), !this.options.hideTitle && a.append(`<div class="hiqrcode_displayValue" style="white-space:nowrap">${n}</div>`);
+                }).makeCode(v12744);
+                v12747.html(box), !this.options.hideTitle && v12747.append(`<div class="hiqrcode_displayValue" style="white-space:nowrap">${v12744}</div>`);
               }
-            } catch (t) {
-              console.log(t), a.html(`${i18n.__('二维码生成失败')}`);
+            } catch (v12752) {
+              console.log(v12752), v12747.html(`${i18n.__('二维码生成失败')}`);
             }
           }
         }
-      }, e.prototype.onResize = function (e, n, i, o, r) {
-        t.prototype.onResize.call(this, e, n, i, o, r);
+      }, v12727.prototype.onResize = function (v12753, v12754, v12755, v12756, v12757) {
+        v12722.prototype.onResize.call(this, v12753, v12754, v12755, v12756, v12757);
         "barcode" != this.options.getTextType() && "qrcode" != this.options.getTextType() || this.updateTargetText(this.designTarget, this.getTitle(), this.getData());
-      }, e.prototype.createTarget = function (t, e, n) {
-        var i = $('<div tabindex="1" class="hiprint-printElement hiprint-printElement-text" style="position: absolute;"><div class="hiprint-printElement-text-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
-        return this.updateTargetText(i, t, e, n), i;
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    I = function () {
-      var _t8 = function t(e, n) {
+      }, v12727.prototype.createTarget = function (v12758, v12759, v12760) {
+        var v12761 = $('<div tabindex="1" class="hiprint-printElement hiprint-printElement-text" style="position: absolute;"><div class="hiprint-printElement-text-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
+        return this.updateTargetText(v12761, v12758, v12759, v12760), v12761;
+      }, v12727.prototype.getHtml = function (v12762, v12763, v12764) {
+        return this.getHtml2(v12762, v12763, v12764);
+      }, v12727;
+    }(v12447.a),
+    v12766 = function () {
+      var _t8 = function v12767(v12768, v12769) {
         return (_t8 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12770, v12771) {
+          v12770.__proto__ = v12771;
+        } || function (v12772, v12773) {
+          for (var v12774 in v12773) {
+            v12773.hasOwnProperty(v12774) && (v12772[v12774] = v12773[v12774]);
           }
-        })(e, n);
+        })(v12768, v12769);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12775, v12776) {
+        function v12777() {
+          this.constructor = v12775;
         }
 
-        _t8(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t8(v12775, v12776), v12775.prototype = null === v12776 ? Object.create(v12776) : (v12777.prototype = v12776.prototype, new v12777());
       };
     }(),
-    R = function (t) {
-      function e(e) {
-        return t.call(this, e) || this;
+    v12778 = function (v12779) {
+      function v12781(v12780) {
+        return v12779.call(this, v12780) || this;
       }
 
-      return I(e, t), e;
-    }(g.a),
-    M = function () {
-      var _t9 = function t(e, n) {
+      return v12766(v12781, v12779), v12781;
+    }(v12448.a),
+    v12783 = function () {
+      var _t9 = function v12784(v12785, v12786) {
         return (_t9 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12787, v12788) {
+          v12787.__proto__ = v12788;
+        } || function (v12789, v12790) {
+          for (var v12791 in v12790) {
+            v12790.hasOwnProperty(v12791) && (v12789[v12791] = v12790[v12791]);
           }
-        })(e, n);
+        })(v12785, v12786);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12792, v12793) {
+        function v12794() {
+          this.constructor = v12792;
         }
 
-        _t9(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t9(v12792, v12793), v12792.prototype = null === v12793 ? Object.create(v12793) : (v12794.prototype = v12793.prototype, new v12794());
       };
     }(),
-    S = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new R(n), i.options.setDefault(new R(p.a.instance.html.default).getPrintElementOptionEntity()), i;
+    v12795 = function (v12796) {
+      function v12801(v12797, v12798) {
+        var v12799 = v12796.call(this, v12797) || this;
+        return v12799.options = new v12778(v12798), v12799.options.setDefault(new v12778(v12410.a.instance.html.default).getPrintElementOptionEntity()), v12799;
       }
 
-      return M(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12783(v12801, v12796), v12801.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t), this.updateTargetHtml();
+          var v12802 = this.getData();
+          this.css(this.designTarget, v12802), this.updateTargetHtml();
         }
-      }, e.prototype.updateTargetHtml = function () {
-        var t = this.getFormatter();
+      }, v12801.prototype.updateTargetHtml = function () {
+        var v12803 = this.getFormatter();
 
-        if (t) {
-          var e = t(this.getData(), this.options, this._currenttemplateData);
-          this.designTarget.find(".hiprint-printElement-html-content").html(e);
+        if (v12803) {
+          var v12804 = v12803(this.getData(), this.options, this._currenttemplateData);
+          this.designTarget.find(".hiprint-printElement-html-content").html(v12804);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.html;
-      }, e.prototype.createTarget = function (t, e) {
-        var n = $('<div  class="hiprint-printElement hiprint-printElement-html" style="position: absolute;"><div class="hiprint-printElement-html-content" style="height:100%;width:100%"></div></div>'),
-          i = this.getFormatter();
+      }, v12801.prototype.getConfigOptions = function () {
+        return v12410.a.instance.html;
+      }, v12801.prototype.createTarget = function (v12806, v12807) {
+        var v12808 = $('<div  class="hiprint-printElement hiprint-printElement-html" style="position: absolute;"><div class="hiprint-printElement-html-content" style="height:100%;width:100%"></div></div>'),
+          v12809 = this.getFormatter();
 
-        if (i) {
-          var o = i(this.getData(), this.options, this._currenttemplateData);
-          n.find(".hiprint-printElement-html-content").append(o);
-        } else this.options.content && n.find(".hiprint-printElement-html-content").append(this.options.content);
+        if (v12809) {
+          var v12810 = v12809(this.getData(), this.options, this._currenttemplateData);
+          v12808.find(".hiprint-printElement-html-content").append(v12810);
+        } else this.options.content && v12808.find(".hiprint-printElement-html-content").append(this.options.content);
 
-        return n;
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    B = function () {
-      var _t10 = function t(e, n) {
+        return v12808;
+      }, v12801.prototype.getHtml = function (v12811, v12812, v12813) {
+        return this.getHtml2(v12811, v12812, v12813);
+      }, v12801;
+    }(v12447.a),
+    v12815 = function () {
+      var _t10 = function v12816(v12817, v12818) {
         return (_t10 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12819, v12820) {
+          v12819.__proto__ = v12820;
+        } || function (v12821, v12822) {
+          for (var v12823 in v12822) {
+            v12822.hasOwnProperty(v12823) && (v12821[v12823] = v12822[v12823]);
           }
-        })(e, n);
+        })(v12817, v12818);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12824, v12825) {
+        function v12826() {
+          this.constructor = v12824;
         }
 
-        _t10(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t10(v12824, v12825), v12824.prototype = null === v12825 ? Object.create(v12825) : (v12826.prototype = v12825.prototype, new v12826());
       };
     }(),
-    F = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.vline.default).getPrintElementOptionEntity()), i;
+    v12827 = function (v12828) {
+      function v12835(v12829, v12830) {
+        var v12831 = v12828.call(this, v12829) || this;
+        return v12831.options = new v12448.a(v12830), v12831.options.setDefault(new v12448.a(v12410.a.instance.vline.default).getPrintElementOptionEntity()), v12831;
       }
 
-      return B(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12815(v12835, v12828), v12835.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t);
+          var v12836 = this.getData();
+          this.css(this.designTarget, v12836);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.vline;
-      }, e.prototype.createTarget = function (t, e) {
+      }, v12835.prototype.getConfigOptions = function () {
+        return v12410.a.instance.vline;
+      }, v12835.prototype.createTarget = function (v12838, v12839) {
         return $('<div class="hiprint-printElement hiprint-printElement-vline" style="border-left:1px solid;position: absolute;"></div>');
-      }, e.prototype.getReizeableShowPoints = function () {
+      }, v12835.prototype.getReizeableShowPoints = function () {
         return ["s", "r"];
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    L = function () {
-      var _t11 = function t(e, n) {
+      }, v12835.prototype.getHtml = function (v12840, v12841, v12842) {
+        return this.getHtml2(v12840, v12841, v12842);
+      }, v12835;
+    }(v12447.a),
+    v12844 = function () {
+      var _t11 = function v12845(v12846, v12847) {
         return (_t11 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12848, v12849) {
+          v12848.__proto__ = v12849;
+        } || function (v12850, v12851) {
+          for (var v12852 in v12851) {
+            v12851.hasOwnProperty(v12852) && (v12850[v12852] = v12851[v12852]);
           }
-        })(e, n);
+        })(v12846, v12847);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12853, v12854) {
+        function v12855() {
+          this.constructor = v12853;
         }
 
-        _t11(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t11(v12853, v12854), v12853.prototype = null === v12854 ? Object.create(v12854) : (v12855.prototype = v12854.prototype, new v12855());
       };
     }(),
-    A = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.hline.default).getPrintElementOptionEntity()), i;
+    v12856 = function (v12857) {
+      function v12864(v12858, v12859) {
+        var v12860 = v12857.call(this, v12858) || this;
+        return v12860.options = new v12448.a(v12859), v12860.options.setDefault(new v12448.a(v12410.a.instance.hline.default).getPrintElementOptionEntity()), v12860;
       }
 
-      return L(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12844(v12864, v12857), v12864.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t);
+          var v12865 = this.getData();
+          this.css(this.designTarget, v12865);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.hline;
-      }, e.prototype.createTarget = function (t, e) {
+      }, v12864.prototype.getConfigOptions = function () {
+        return v12410.a.instance.hline;
+      }, v12864.prototype.createTarget = function (v12867, v12868) {
         return $('<div class="hiprint-printElement hiprint-printElement-hline" style="border-top:1px solid;position: absolute;"></div>');
-      }, e.prototype.getReizeableShowPoints = function () {
+      }, v12864.prototype.getReizeableShowPoints = function () {
         return ["e", "r"];
-      }, e;
-    }(f.a),
-    z = function () {
-      var _t12 = function t(e, n) {
+      }, v12864;
+    }(v12447.a),
+    v12870 = function () {
+      var _t12 = function v12871(v12872, v12873) {
         return (_t12 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12874, v12875) {
+          v12874.__proto__ = v12875;
+        } || function (v12876, v12877) {
+          for (var v12878 in v12877) {
+            v12877.hasOwnProperty(v12878) && (v12876[v12878] = v12877[v12878]);
           }
-        })(e, n);
+        })(v12872, v12873);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12879, v12880) {
+        function v12881() {
+          this.constructor = v12879;
         }
 
-        _t12(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t12(v12879, v12880), v12879.prototype = null === v12880 ? Object.create(v12880) : (v12881.prototype = v12880.prototype, new v12881());
       };
     }(),
-    k = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.rect.default).getPrintElementOptionEntity()), i;
+    v12882 = function (v12883) {
+      function v12890(v12884, v12885) {
+        var v12886 = v12883.call(this, v12884) || this;
+        return v12886.options = new v12448.a(v12885), v12886.options.setDefault(new v12448.a(v12410.a.instance.rect.default).getPrintElementOptionEntity()), v12886;
       }
 
-      return z(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12870(v12890, v12883), v12890.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t);
+          var v12891 = this.getData();
+          this.css(this.designTarget, v12891);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.rect;
-      }, e.prototype.createTarget = function (t, e) {
+      }, v12890.prototype.getConfigOptions = function () {
+        return v12410.a.instance.rect;
+      }, v12890.prototype.createTarget = function (v12893, v12894) {
         return $('<div class="hiprint-printElement hiprint-printElement-rect" style="border:1px solid;position: absolute;"></div>');
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    N = function () {
-      var _t13 = function t(e, n) {
+      }, v12890.prototype.getHtml = function (v12895, v12896, v12897) {
+        return this.getHtml2(v12895, v12896, v12897);
+      }, v12890;
+    }(v12447.a),
+    v12899 = function () {
+      var _t13 = function v12900(v12901, v12902) {
         return (_t13 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12903, v12904) {
+          v12903.__proto__ = v12904;
+        } || function (v12905, v12906) {
+          for (var v12907 in v12906) {
+            v12906.hasOwnProperty(v12907) && (v12905[v12907] = v12906[v12907]);
           }
-        })(e, n);
+        })(v12901, v12902);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v12908, v12909) {
+        function v12910() {
+          this.constructor = v12908;
         }
 
-        _t13(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t13(v12908, v12909), v12908.prototype = null === v12909 ? Object.create(v12909) : (v12910.prototype = v12909.prototype, new v12910());
       };
     }(),
-    V = function (t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.oval.default).getPrintElementOptionEntity()), i;
+    v12911 = function (v12912) {
+      function v12919(v12913, v12914) {
+        var v12915 = v12912.call(this, v12913) || this;
+        return v12915.options = new v12448.a(v12914), v12915.options.setDefault(new v12448.a(v12410.a.instance.oval.default).getPrintElementOptionEntity()), v12915;
       }
 
-      return N(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12899(v12919, v12912), v12919.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t);
+          var v12920 = this.getData();
+          this.css(this.designTarget, v12920);
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.oval;
-      }, e.prototype.createTarget = function (t, e) {
+      }, v12919.prototype.getConfigOptions = function () {
+        return v12410.a.instance.oval;
+      }, v12919.prototype.createTarget = function (v12922, v12923) {
         return $('<div class="hiprint-printElement hiprint-printElement-oval" style="border:1px solid;position: absolute;border-radius: 50%;"></div>');
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n);
-      }, e;
-    }(f.a),
-    barcode = function(t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.barcode.default).getPrintElementOptionEntity()), i;
+      }, v12919.prototype.getHtml = function (v12924, v12925, v12926) {
+        return this.getHtml2(v12924, v12925, v12926);
+      }, v12919;
+    }(v12447.a),
+    barcode = function (v12928) {
+      function v12935(v12929, v12930) {
+        var v12931 = v12928.call(this, v12929) || this;
+        return v12931.options = new v12448.a(v12930), v12931.options.setDefault(new v12448.a(v12410.a.instance.barcode.default).getPrintElementOptionEntity()), v12931;
       }
-      return N(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12899(v12935, v12928), v12935.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t), this.initBarcode(this.designTarget, this.getTitle(), this.getData());
+          var v12936 = this.getData();
+          this.css(this.designTarget, v12936), this.initBarcode(this.designTarget, this.getTitle(), this.getData());
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.barcode;
-      }, e.prototype.getBarAutoWidth = function () {
+      }, v12935.prototype.getConfigOptions = function () {
+        return v12410.a.instance.barcode;
+      }, v12935.prototype.getBarAutoWidth = function () {
         return (null == this.options.barAutoWidth ? this.options.defaultOptions.barAutoWidth === "true" : this.options.barAutoWidth === "true") ?? true;
-      }, e.prototype.onResize = function (e, n, i, o, r) {
-        t.prototype.onResize.call(this, e, n, i, o, r);
-        this.initBarcode(this.designTarget, this.getTitle(), this.getData())
-      }, e.prototype.getTitle = function () {
+      }, v12935.prototype.onResize = function (v12938, v12939, v12940, v12941, v12942) {
+        v12928.prototype.onResize.call(this, v12938, v12939, v12940, v12941, v12942);
+        this.initBarcode(this.designTarget, this.getTitle(), this.getData());
+      }, v12935.prototype.getTitle = function () {
         return this.options.title || this.printElementType.title;
-      }, e.prototype.getData = function (t) {
-        var e = void 0;
-        var f = this.getField();
-        e = t ? f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || ""
-        return e;
-      }, e.prototype.initBarcode = function (designTarget, title, text) {
-        designTarget = designTarget || this.designTarget
-        var content = designTarget.find('.hiprint-printElement-barcode-content')
+      }, v12935.prototype.getData = function (v12943) {
+        var v12944 = void 0;
+        var v12945 = this.getField();
+        v12944 = v12943 ? v12945 ? v12945.split('.').reduce((v12946, v12947) => v12946 ? v12946[v12947] : v12943 ? v12943[v12947] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "";
+        return v12944;
+      }, v12935.prototype.initBarcode = function (designTarget, title, text) {
+        designTarget = designTarget || this.designTarget;
+        var content = designTarget.find('.hiprint-printElement-barcode-content');
         try {
           // 计算 barcode 的高度，判断是否需要减去 title，使 title 包含在元素内部
-          const height = o.a.pt.toMm(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 :0));
+          const height = v12388.a.pt.toMm(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0));
           var barcode = bwipjs.toSVG({
             bcid: this.options.barcodeType || 'code128',
             text: text || this.options.testData || this.options.title,
             scale: this.options.barWidth || 1,
-            width: !this.getBarAutoWidth() ? parseInt(o.a.pt.toMm(this.options.getWidth())) : '',
+            width: !this.getBarAutoWidth() ? parseInt(v12388.a.pt.toMm(this.options.getWidth())) : '',
             height: parseInt(height),
             includetext: !this.options.hideTitle,
-            barcolor: this.options.barColor || "#000",
-          })
+            barcolor: this.options.barColor || "#000"
+          });
           // pub-beta 0.0.57-beta22 优化了条码自动调整宽度的逻辑，title 文本改为使用 bwipjs 文本内部实现
-          barcode = $(barcode)
+          barcode = $(barcode);
           // pub-beta 0.0.57-beta22 svg 元素需要添加 preserveAspectRatio 属性，使其横向可以自适应缩放
-          barcode.attr("preserveAspectRatio", "none slice")
+          barcode.attr("preserveAspectRatio", "none slice");
           let svgWidth = barcode[0].attributes.viewBox.value.split(" ")[2]; // 通过 viewBox 属性获取 bwipjs 内部生成的 svg 宽度
           svgWidth = Math.ceil(hinnn.px.toPt(svgWidth * 1.05));
           if (this.getBarAutoWidth() && svgWidth > this.options.width) {
-            content.parent().css("width", svgWidth + 'pt')
+            content.parent().css("width", svgWidth + 'pt');
             barcode.css("height", "100%");
             this.options.width = svgWidth;
           }
-          content.html(barcode)
+          content.html(barcode);
           // if (!this.options.hideTitle) {
           //   const titleText = title ? title + ( text ? ':' : '' ) : '';
           //   const textAlign = this.options.textAlign || 'center';
@@ -9278,50 +9278,50 @@ var hiprint = function (t) {
           //   content.append($(`<div class="hiprint-printElement-barcode-content-title" style="${ textStyle }">${ titleText }${ text }</div>`))
           // }
         } catch (error) {
-          console.error(error)
-          content.html($(`<div>${i18n.__('条形码生成失败')}</div>`))
+          console.error(error);
+          content.html($(`<div>${i18n.__('条形码生成失败')}</div>`));
         }
       },
       // 设置 barcode 元素 resize 控制点
-      e.prototype.getReizeableShowPoints = function () {
+      v12935.prototype.getReizeableShowPoints = function () {
         return ['s', 'e', 'se', 'r'];
-      }, e.prototype.createTarget = function (title, data) {
+      }, v12935.prototype.createTarget = function (title, data) {
         var designTarget = $('<div class="hiprint-printElement hiprint-printElement-barcode" style="position: absolute;"><div class="hiprint-printElement-barcode-content" style="height:100%;width:100%;display:flex;flex-direction:column"></div></div>');
         this.initBarcode(designTarget, title, data);
         return designTarget;
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n)
-      }, e;
-    }(f.a),
-    qrcode = function(t) {
-      function e(e, n) {
-        var i = t.call(this, e) || this;
-        return i.options = new g.a(n), i.options.setDefault(new g.a(p.a.instance.qrcode.default).getPrintElementOptionEntity()), i;
+      }, v12935.prototype.getHtml = function (v12950, v12951, v12952) {
+        return this.getHtml2(v12950, v12951, v12952);
+      }, v12935;
+    }(v12447.a),
+    qrcode = function (v12954) {
+      function v12961(v12955, v12956) {
+        var v12957 = v12954.call(this, v12955) || this;
+        return v12957.options = new v12448.a(v12956), v12957.options.setDefault(new v12448.a(v12410.a.instance.qrcode.default).getPrintElementOptionEntity()), v12957;
       }
-      return N(e, t), e.prototype.updateDesignViewFromOptions = function () {
+      return v12899(v12961, v12954), v12961.prototype.updateDesignViewFromOptions = function () {
         if (this.designTarget) {
-          var t = this.getData();
-          this.css(this.designTarget, t), this.initQrcode(this.designTarget, this.getTitle(), this.getData());
+          var v12962 = this.getData();
+          this.css(this.designTarget, v12962), this.initQrcode(this.designTarget, this.getTitle(), this.getData());
         }
-      }, e.prototype.getConfigOptions = function () {
-        return p.a.instance.qrcode;
-      }, e.prototype.onResize = function (e, n, i, o, r) {
-        t.prototype.onResize.call(this, e, n, i, o, r);
-        this.initQrcode(this.designTarget, this.getTitle(), this.getData())
-      }, e.prototype.getTitle = function () {
+      }, v12961.prototype.getConfigOptions = function () {
+        return v12410.a.instance.qrcode;
+      }, v12961.prototype.onResize = function (v12964, v12965, v12966, v12967, v12968) {
+        v12954.prototype.onResize.call(this, v12964, v12965, v12966, v12967, v12968);
+        this.initQrcode(this.designTarget, this.getTitle(), this.getData());
+      }, v12961.prototype.getTitle = function () {
         return this.options.title || this.printElementType.title;
-      }, e.prototype.getData = function (t) {
-        var e = void 0;
-        var f = this.getField();
-        e = t ? f ? f.split('.').reduce((a, c) => a ? a[c] : t ? t[c] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || ""
-        return e;
-      }, e.prototype.initQrcode = function (designTarget, title, text) {
-        designTarget = designTarget || this.designTarget
-        var content = designTarget.find('.hiprint-printElement-qrcode-content')
+      }, v12961.prototype.getData = function (v12969) {
+        var v12970 = void 0;
+        var v12971 = this.getField();
+        v12970 = v12969 ? v12971 ? v12971.split('.').reduce((v12972, v12973) => v12972 ? v12972[v12973] : v12969 ? v12969[v12973] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "";
+        return v12970;
+      }, v12961.prototype.initQrcode = function (designTarget, title, text) {
+        designTarget = designTarget || this.designTarget;
+        var content = designTarget.find('.hiprint-printElement-qrcode-content');
         try {
-          const width = o.a.pt.toPx(this.options.getWidth());
+          const width = v12388.a.pt.toPx(this.options.getWidth());
           // 计算 qrcode 的高度，判断是否需要减去 title，使 title 包含在元素内部
-          const height = o.a.pt.toPx(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 :0));
+          const height = v12388.a.pt.toPx(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0));
           // 根据宽高 判断 qrcode 上下、左右 留白边距
           const paddingwidth = width >= height ? Math.abs(parseInt((width - height) / 2)) : 0;
           const paddingheight = width >= height ? 0 : Math.abs(parseInt((height - width) / 2));
@@ -9336,566 +9336,566 @@ var hiprint = function (t) {
             height: Math.min(parseInt(width / 2.835), parseInt(height / 2.835)),
             includetext: false,
             eclevel: ['M', 'L', 'H', 'Q'][this.options.qrCodeLevel ?? 0],
-            barcolor: this.options.barColor || "#000",
-          })
-          content.html($(qrcode))
+            barcolor: this.options.barColor || "#000"
+          });
+          content.html($(qrcode));
           if (!this.options.hideTitle) {
-            const titleText = title ? title + ( text ? ':' : '' ) : '';
+            const titleText = title ? title + (text ? ':' : '') : '';
             const textAlign = this.options.textAlign || 'center';
             // 支持type为qrcode的textAlign属性
-            const textStyle = textAlign === 'justify' ? 'text-align-last: justify;text-justify: distribute-all-lines;' : `text-align: ${ textAlign };`
-            content.append($(`<div class="hiprint-printElement-qrcode-content-title" style="${ textStyle }">${ titleText }${ text }</div>`))
+            const textStyle = textAlign === 'justify' ? 'text-align-last: justify;text-justify: distribute-all-lines;' : `text-align: ${textAlign};`;
+            content.append($(`<div class="hiprint-printElement-qrcode-content-title" style="${textStyle}">${titleText}${text}</div>`));
           }
         } catch (error) {
-          console.error(error)
-          content.html($(`<div>${i18n.__('二维码生成失败')}</div>`))
+          console.error(error);
+          content.html($(`<div>${i18n.__('二维码生成失败')}</div>`));
         }
       },
       // 设置 qrcode 元素 resize 控制点
-      e.prototype.getReizeableShowPoints = function () {
+      v12961.prototype.getReizeableShowPoints = function () {
         return ['s', 'e', 'se', 'r'];
-      }, e.prototype.createTarget = function (title, data) {
+      }, v12961.prototype.createTarget = function (title, data) {
         var designTarget = $('<div class="hiprint-printElement hiprint-printElement-qrcode" style="position: absolute;"><div class="hiprint-printElement-qrcode-content" style="height:100%;width:100%;display:flex;flex-direction:column"></div></div>');
         this.initQrcode(designTarget, title, data);
         return designTarget;
-      }, e.prototype.getHtml = function (t, e, n) {
-        return this.getHtml2(t, e, n)
-      }, e;
-    }(f.a),
-    W = function () {
-      function t() {
+      }, v12961.prototype.getHtml = function (v12976, v12977, v12978) {
+        return this.getHtml2(v12976, v12977, v12978);
+      }, v12961;
+    }(v12447.a),
+    v12980 = function () {
+      function v12981() {
       }
 
-      return t.createPrintElement = function (t, e) {
-        return "text" == t.type ? new D(t, e) : "image" == t.type ? new v(t, e) : "longText" == t.type ? new w(t, e) : "table" == t.type ? new d.a(t, e) : "html" == t.type ? new S(t, e) : "vline" == t.type ? new F(t, e) : "hline" == t.type ? new A(t, e) : "rect" == t.type ? new k(t, e) : "oval" == t.type ? new V(t, e) : "barcode" == t.type ? new barcode(t, e) : "qrcode" == t.type ? new qrcode(t, e) : void 0;
-      }, t;
+      return v12981.createPrintElement = function (v12982, v12983) {
+        return "text" == v12982.type ? new v12721(v12982, v12983) : "image" == v12982.type ? new v12461(v12982, v12983) : "longText" == v12982.type ? new v12600(v12982, v12983) : "table" == v12982.type ? new v12422.a(v12982, v12983) : "html" == v12982.type ? new v12795(v12982, v12983) : "vline" == v12982.type ? new v12827(v12982, v12983) : "hline" == v12982.type ? new v12856(v12982, v12983) : "rect" == v12982.type ? new v12882(v12982, v12983) : "oval" == v12982.type ? new v12911(v12982, v12983) : "barcode" == v12982.type ? new barcode(v12982, v12983) : "qrcode" == v12982.type ? new qrcode(v12982, v12983) : void 0;
+      }, v12981;
     }(),
-    j = function () {
-      function t(t) {
-        this.field = t.field, this.fields = t.fields, this.title = t.title, this.text = t.text, this.tid = t.tid, this.data = t.data, this.styler = t.styler, this.formatter = t.formatter, this.type = t.type, this.onRendered = t.onRendered, this.options = t.options;
+    v12985 = function () {
+      function v12987(v12986) {
+        this.field = v12986.field, this.fields = v12986.fields, this.title = v12986.title, this.text = v12986.text, this.tid = v12986.tid, this.data = v12986.data, this.styler = v12986.styler, this.formatter = v12986.formatter, this.type = v12986.type, this.onRendered = v12986.onRendered, this.options = v12986.options;
       }
 
-      return t.prototype.getText = function (t) {
-        return t ? this.title || this.text || "" : this.text || this.title || "";
-      }, t.prototype.getData = function () {
+      return v12987.prototype.getText = function (v12988) {
+        return v12988 ? this.title || this.text || "" : this.text || this.title || "";
+      }, v12987.prototype.getData = function () {
         return this.data;
-      }, t.prototype.createPrintElement = function (t) {
-        var e = {};
-        return $.extend(e, t || {}), W.createPrintElement(this, e);
-      }, t.prototype.getPrintElementTypeEntity = function () {
-        return new c({
+      }, v12987.prototype.createPrintElement = function (v12989) {
+        var v12990 = {};
+        return $.extend(v12990, v12989 || {}), v12980.createPrintElement(this, v12990);
+      }, v12987.prototype.getPrintElementTypeEntity = function () {
+        return new v12423({
           title: this.title,
           type: this.type
         });
-      }, t.prototype.getFields = function () {
+      }, v12987.prototype.getFields = function () {
         return this.fields;
-      }, t.prototype.getOptions = function () {
+      }, v12987.prototype.getOptions = function () {
         return this.options || {};
-      }, t;
+      }, v12987;
     }(),
-    U = n(16),
-    K = n(12),
-    G = function () {
-      var _t14 = function t(e, n) {
+    v12991 = v12385(16),
+    v12992 = v12385(12),
+    v12993 = function () {
+      var _t14 = function v12994(v12995, v12996) {
         return (_t14 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v12997, v12998) {
+          v12997.__proto__ = v12998;
+        } || function (v12999, v13000) {
+          for (var v13001 in v13000) {
+            v13000.hasOwnProperty(v13001) && (v12999[v13001] = v13000[v13001]);
           }
-        })(e, n);
+        })(v12995, v12996);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v13002, v13003) {
+        function v13004() {
+          this.constructor = v13002;
         }
 
-        _t14(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t14(v13002, v13003), v13002.prototype = null === v13003 ? Object.create(v13003) : (v13004.prototype = v13003.prototype, new v13004());
       };
     }(),
-    q = function (t) {
-      function e(e) {
-        var n = t.call(this, e) || this;
-        (e = e || {}).columns ? (n.columns = [], e.columns.forEach(function (t) {
-          n.columns.push(new K.a(t));
-        })) : n.columns = [new K.a({
-          columns: [new u.a({
+    v13005 = function (v13006) {
+      function v13014(v13007) {
+        var v13008 = v13006.call(this, v13007) || this;
+        (v13007 = v13007 || {}).columns ? (v13008.columns = [], v13007.columns.forEach(function (v13009) {
+          v13008.columns.push(new v12992.a(v13009));
+        })) : v13008.columns = [new v12992.a({
+          columns: [new v12421.a({
             width: 100
-          }), new u.a({
+          }), new v12421.a({
             width: 100
           })]
         })];
-        return n.lHeight = e.lHeight, n.autoCompletion = e.autoCompletion, n.tableFooterRepeat = e.tableFooterRepeat, n;
+        return v13008.lHeight = v13007.lHeight, v13008.autoCompletion = v13007.autoCompletion, v13008.tableFooterRepeat = v13007.tableFooterRepeat, v13008;
       }
 
-      return G(e, t), e.prototype.getPrintElementOptionEntity = function () {
-        var e = t.prototype.getPrintElementOptionEntity.call(this);
-        e.fields = this.fields;
-        return e.columns = [], this.columns.forEach(function (t) {
-          e.columns.push(t.getPrintElementOptionEntity());
-        }), e;
-      }, e;
-    }(g.a),
-    Q = function () {
-      var _t16 = function t(e, n) {
+      return v12993(v13014, v13006), v13014.prototype.getPrintElementOptionEntity = function () {
+        var v13015 = v13006.prototype.getPrintElementOptionEntity.call(this);
+        v13015.fields = this.fields;
+        return v13015.columns = [], this.columns.forEach(function (v13016) {
+          v13015.columns.push(v13016.getPrintElementOptionEntity());
+        }), v13015;
+      }, v13014;
+    }(v12448.a),
+    v13018 = function () {
+      var _t16 = function v13019(v13020, v13021) {
         return (_t16 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v13022, v13023) {
+          v13022.__proto__ = v13023;
+        } || function (v13024, v13025) {
+          for (var v13026 in v13025) {
+            v13025.hasOwnProperty(v13026) && (v13024[v13026] = v13025[v13026]);
           }
-        })(e, n);
+        })(v13020, v13021);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v13027, v13028) {
+        function v13029() {
+          this.constructor = v13027;
         }
 
-        _t16(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t16(v13027, v13028), v13027.prototype = null === v13028 ? Object.create(v13028) : (v13029.prototype = v13028.prototype, new v13029());
       };
     }(),
     tt = function () {
-      var _t17 = function t(e, n) {
+      var _t17 = function v13030(v13031, v13032) {
         return (_t17 = Object.setPrototypeOf || _instanceof({
           __proto__: []
-        }, Array) && function (t, e) {
-          t.__proto__ = e;
-        } || function (t, e) {
-          for (var n in e) {
-            e.hasOwnProperty(n) && (t[n] = e[n]);
+        }, Array) && function (v13033, v13034) {
+          v13033.__proto__ = v13034;
+        } || function (v13035, v13036) {
+          for (var v13037 in v13036) {
+            v13036.hasOwnProperty(v13037) && (v13035[v13037] = v13036[v13037]);
           }
-        })(e, n);
+        })(v13031, v13032);
       };
 
-      return function (e, n) {
-        function i() {
-          this.constructor = e;
+      return function (v13038, v13039) {
+        function v13040() {
+          this.constructor = v13038;
         }
 
-        _t17(e, n), e.prototype = null === n ? Object.create(n) : (i.prototype = n.prototype, new i());
+        _t17(v13038, v13039), v13038.prototype = null === v13039 ? Object.create(v13039) : (v13040.prototype = v13039.prototype, new v13040());
       };
     }(),
-    et = function (t) {
-      function e(e) {
-        return t.call(this, e) || this;
+    et = function (v13041) {
+      function v13043(v13042) {
+        return v13041.call(this, v13042) || this;
       }
 
-      return tt(e, t), e.prototype.createPrintElement = function (t) {
-        var e = {};
-        return $.extend(e, t || {}), W.createPrintElement(this, e);
-      }, e.prototype.getPrintElementTypeEntity = function () {
-        return new c({
+      return tt(v13043, v13041), v13043.prototype.createPrintElement = function (v13044) {
+        var v13045 = {};
+        return $.extend(v13045, v13044 || {}), v12980.createPrintElement(this, v13045);
+      }, v13043.prototype.getPrintElementTypeEntity = function () {
+        return new v12423({
           title: this.title,
           type: this.type
         });
-      }, e;
-    }(j),
+      }, v13043;
+    }(v12985),
     nt = function () {
-      function t() {
+      function v13046() {
       }
 
-      return t.createPrintElementType = function (t) {
-        return t.type = t.type || "text", "text" == t.type ? new et(t) : "table" == t.type ? new h(t) : new j(t);
-      }, t;
+      return v13046.createPrintElementType = function (v13047) {
+        return v13047.type = v13047.type || "text", "text" == v13047.type ? new et(v13047) : "table" == v13047.type ? new v12426(v13047) : new v12985(v13047);
+      }, v13046;
     }(),
     it = function () {
-      function t() {
+      function v13048() {
       }
 
-      return t.getElementTypeGroups = function (e) {
-        var n = t.formatterModule(e);
-        return a.instance[n] || [];
-      }, t.getElementType = function (t, e) {
-        if (t) return a.instance.getElementType(t);
+      return v13048.getElementTypeGroups = function (v13049) {
+        var v13050 = v13048.formatterModule(v13049);
+        return v12393.instance[v13050] || [];
+      }, v13048.getElementType = function (v13051, v13052) {
+        if (v13051) return v12393.instance.getElementType(v13051);
         nt.createPrintElementType({
-          type: e
+          type: v13052
         });
-      }, t.build = function (e, n) {
-        var i = t.formatterModule(n),
-          o = new l().createPrintElementTypeHtml(e, this.getElementTypeGroups(i));
-        this.enableDrag(o);
-      }, t.buildByHtml = function (t) {
-        this.enableDrag(t);
-      }, t.enableDrag = function (e) {
-        e.hidraggable({
+      }, v13048.build = function (v13053, v13054) {
+        var v13055 = v13048.formatterModule(v13054),
+          v13056 = new v12412().createPrintElementTypeHtml(v13053, this.getElementTypeGroups(v13055));
+        this.enableDrag(v13056);
+      }, v13048.buildByHtml = function (v13057) {
+        this.enableDrag(v13057);
+      }, v13048.enableDrag = function (v13058) {
+        v13058.hidraggable({
           revert: !0,
-          proxy: function proxy(t) {
-            var e = s.a.instance.getDragingPrintElement(),
-              n = e.printElement.getProxyTarget(e.printElement.printElementType.getOptions());
-            return n.appendTo("body"), n.css("z-index", "9999"), n;
+          proxy: function proxy(v13059) {
+            var v13060 = v12411.a.instance.getDragingPrintElement(),
+              v13062 = v13060.printElement.getProxyTarget(v13060.printElement.printElementType.getOptions());
+            return v13062.appendTo("body"), v13062.css("z-index", "9999"), v13062;
           },
           moveUnit: "pt",
           minMove: 4,
-          onBeforeDrag: function onBeforeDrag(e) {
-            s.a.instance.draging = !0;
-            var tid = $(e.data.target).attr("tid");
-            var n = t.getElementType(tid, $(e.data.target).attr("ptype"));
-            if (!n) {
+          onBeforeDrag: function onBeforeDrag(v13063) {
+            v12411.a.instance.draging = !0;
+            var tid = $(v13063.data.target).attr("tid");
+            var v13065 = v13048.getElementType(tid, $(v13063.data.target).attr("ptype"));
+            if (!v13065) {
               throw new Error(`${i18n.__('请检查 hiprint.init 的 provider 是否配置了')} [${tid}]`);
               return !1;
             }
-            var ele = n.createPrintElement();
+            var ele = v13065.createPrintElement();
             if (!ele) {
-              if (n.type == 'tableCustom') {
+              if (v13065.type == 'tableCustom') {
                 throw new Error(`${i18n.__("已移除'tableCustom',请替换使用'table'详情见更新记录")}`);
                 return !1;
               }
             }
-            return s.a.instance.setDragingPrintElement(ele), !0;
+            return v12411.a.instance.setDragingPrintElement(ele), !0;
           },
-          onDrag: function onDrag(t, e, n) {
-            s.a.instance.getDragingPrintElement().updatePosition(e, n);
+          onDrag: function onDrag(v13067, v13068, v13069) {
+            v12411.a.instance.getDragingPrintElement().updatePosition(v13068, v13069);
           },
-          onStopDrag: function onStopDrag(t) {
-            s.a.instance.draging = !1;
+          onStopDrag: function onStopDrag(v13071) {
+            v12411.a.instance.draging = !1;
           }
         });
-      }, t.formatterModule = function (t) {
-        return t || "_default";
-      }, t;
+      }, v13048.formatterModule = function (v13073) {
+        return v13073 || "_default";
+      }, v13048;
     }(),
     ot = function () {
-      return function (t, e) {
-        var n = this;
-        this.name = t, this.printElementTypes = [], e.forEach(function (t) {
-          n.printElementTypes.push(nt.createPrintElementType(t));
+      return function (v13074, v13075) {
+        var v13076 = this;
+        this.name = v13074, this.printElementTypes = [], v13075.forEach(function (v13077) {
+          v13076.printElementTypes.push(nt.createPrintElementType(v13077));
         });
       };
     }(),
     rt = function () {
-      return function (t) {
-        if (this.index = t.index, this.name = t.name, this.paperType = t.paperType, this.paperType) {
-          var e = s.a.instance[this.paperType];
-          t.height ? (this.height = t.height, this.width = t.width) : (this.height = e.height, this.width = e.width);
-        } else this.height = t.height, this.width = t.width;
+      return function (v13078) {
+        if (this.index = v13078.index, this.name = v13078.name, this.paperType = v13078.paperType, this.paperType) {
+          var v13079 = v12411.a.instance[this.paperType];
+          v13078.height ? (this.height = v13078.height, this.width = v13078.width) : (this.height = v13079.height, this.width = v13079.width);
+        } else this.height = v13078.height, this.width = v13078.width;
 
-        this.paperHeader = t.paperHeader || 0, this.paperFooter = t.paperFooter || o.a.mm.toPt(this.height), this.printElements = t.printElements || [], this.paperNumberLeft = t.paperNumberLeft, this.paperNumberTop = t.paperNumberTop, this.paperNumberDisabled = t.paperNumberDisabled, this.paperNumberContinue = t.paperNumberContinue, this.paperNumberFormat = t.paperNumberFormat, this.panelPaperRule = t.panelPaperRule, this.panelPageRule = t.panelPageRule, this.rotate = t.rotate || void 0, this.firstPaperFooter = t.firstPaperFooter, this.evenPaperFooter = t.evenPaperFooter, this.oddPaperFooter = t.oddPaperFooter, this.lastPaperFooter = t.lastPaperFooter, this.topOffset = t.topOffset, this.fontFamily = t.fontFamily, this.leftOffset = t.leftOffset, this.orient = t.orient, this.scale = t.scale, this.watermarkOptions= t.watermarkOptions, this.panelLayoutOptions = t.panelLayoutOptions;
+        this.paperHeader = v13078.paperHeader || 0, this.paperFooter = v13078.paperFooter || v12388.a.mm.toPt(this.height), this.printElements = v13078.printElements || [], this.paperNumberLeft = v13078.paperNumberLeft, this.paperNumberTop = v13078.paperNumberTop, this.paperNumberDisabled = v13078.paperNumberDisabled, this.paperNumberContinue = v13078.paperNumberContinue, this.paperNumberFormat = v13078.paperNumberFormat, this.panelPaperRule = v13078.panelPaperRule, this.panelPageRule = v13078.panelPageRule, this.rotate = v13078.rotate || void 0, this.firstPaperFooter = v13078.firstPaperFooter, this.evenPaperFooter = v13078.evenPaperFooter, this.oddPaperFooter = v13078.oddPaperFooter, this.lastPaperFooter = v13078.lastPaperFooter, this.topOffset = v13078.topOffset, this.fontFamily = v13078.fontFamily, this.leftOffset = v13078.leftOffset, this.orient = v13078.orient, this.scale = v13078.scale, this.watermarkOptions = v13078.watermarkOptions, this.panelLayoutOptions = v13078.panelLayoutOptions;
       };
     }(),
     at = function () {
-      function t(t, e, n, i) {
-        this.bx = t, this.by = e, this.ex = t, this.ey = e, this.startX = this.minX = t, this.startY = this.minY = e, this.maxX = t, this.maxY = e, this.lastLeft = n, this.lastTop = i;
+      function v13086(v13082, v13083, v13084, v13085) {
+        this.bx = v13082, this.by = v13083, this.ex = v13082, this.ey = v13083, this.startX = this.minX = v13082, this.startY = this.minY = v13083, this.maxX = v13082, this.maxY = v13083, this.lastLeft = v13084, this.lastTop = v13085;
       }
 
-      return t.prototype.updateRect = function (t, e, i) {
-        var scale = i.designPaper.scale||1.0
-        this.ex = t
-        this.ey = e
-        this.minX = this.startX/scale < t/scale ? this.startX/scale : t/scale,
-        this.minY = this.startY/scale < e/scale ? this.startY/scale : e/scale,
-        this.maxX = this.startX/scale < t/scale ? t/scale : this.startX/scale,
-        this.maxY = this.startY/scale < e/scale ? e/scale : this.startY/scale;
+      return v13086.prototype.updateRect = function (v13087, v13088, v13089) {
+        var scale = v13089.designPaper.scale || 1.0;
+        this.ex = v13087;
+        this.ey = v13088;
+        this.minX = this.startX / scale < v13087 / scale ? this.startX / scale : v13087 / scale,
+        this.minY = this.startY / scale < v13088 / scale ? this.startY / scale : v13088 / scale,
+        this.maxX = this.startX / scale < v13087 / scale ? v13087 / scale : this.startX / scale,
+        this.maxY = this.startY / scale < v13088 / scale ? v13088 / scale : this.startY / scale;
 
-      }, t.prototype.updatePositionByMultipleSelect = function (t, e) {
-        null != t && (this.lastLeft = this.lastLeft + t), null != e && (this.lastTop = this.lastTop + e), this.target.css({
+      }, v13086.prototype.updatePositionByMultipleSelect = function (v13090, v13091) {
+        null != v13090 && (this.lastLeft = this.lastLeft + v13090), null != v13091 && (this.lastTop = this.lastTop + v13091), this.target.css({
           left: this.lastLeft + "pt",
           top: this.lastTop + "pt"
         });
-      }, t;
+      }, v13086;
     }(),
     pt = function () {
-      function t(t, e) {
-        this.templateId = e, this.index = t.index, this.name = t.name, this.width = t.width, this.height = t.height, this.paperType = t.paperType, this.paperHeader = t.paperHeader, this.paperFooter = t.paperFooter, this.initPrintElements(t.printElements), this.paperNumberLeft = t.paperNumberLeft, this.paperNumberTop = t.paperNumberTop, this.paperNumberDisabled = t.paperNumberDisabled, this.paperNumberContinue = t.paperNumberContinue == void 0 ? true : t.paperNumberContinue, this.paperNumberFormat = t.paperNumberFormat, this.panelPaperRule = t.panelPaperRule, this.panelPageRule = t.panelPageRule, this.firstPaperFooter = t.firstPaperFooter, this.evenPaperFooter = t.evenPaperFooter, this.oddPaperFooter = t.oddPaperFooter, this.lastPaperFooter = t.lastPaperFooter, this.topOffset = t.topOffset, this.leftOffset = t.leftOffset, this.fontFamily = t.fontFamily, this.orient = t.orient, this.target = this.createTarget(), this.rotate = t.rotate, this.scale = t.scale, this.watermarkOptions = t.watermarkOptions || {}, this.panelLayoutOptions = t.panelLayoutOptions || {};
+      function v13094(v13092, v13093) {
+        this.templateId = v13093, this.index = v13092.index, this.name = v13092.name, this.width = v13092.width, this.height = v13092.height, this.paperType = v13092.paperType, this.paperHeader = v13092.paperHeader, this.paperFooter = v13092.paperFooter, this.initPrintElements(v13092.printElements), this.paperNumberLeft = v13092.paperNumberLeft, this.paperNumberTop = v13092.paperNumberTop, this.paperNumberDisabled = v13092.paperNumberDisabled, this.paperNumberContinue = v13092.paperNumberContinue == void 0 ? true : v13092.paperNumberContinue, this.paperNumberFormat = v13092.paperNumberFormat, this.panelPaperRule = v13092.panelPaperRule, this.panelPageRule = v13092.panelPageRule, this.firstPaperFooter = v13092.firstPaperFooter, this.evenPaperFooter = v13092.evenPaperFooter, this.oddPaperFooter = v13092.oddPaperFooter, this.lastPaperFooter = v13092.lastPaperFooter, this.topOffset = v13092.topOffset, this.leftOffset = v13092.leftOffset, this.fontFamily = v13092.fontFamily, this.orient = v13092.orient, this.target = this.createTarget(), this.rotate = v13092.rotate, this.scale = v13092.scale, this.watermarkOptions = v13092.watermarkOptions || {}, this.panelLayoutOptions = v13092.panelLayoutOptions || {};
       }
 
-      return t.prototype.design = function (t) {
-        var e = this;
-        this.orderPrintElements(), this.designPaper = this.createNewPage(0), this.target.html(""), this.target.append(this.designPaper.getTarget()), this.droppablePaper(this.designPaper), this.designPaper.design(t), this.designPaper.subscribePaperBaseInfoChanged(function (t) {
-          e.paperHeader = t.paperHeader, e.paperFooter = t.paperFooter, e.paperNumberLeft = t.paperNumberLeft, e.paperNumberTop = t.paperNumberTop, e.paperNumberDisabled = t.paperNumberDisabled, e.paperNumberFormat = t.paperNumberFormat;
-        }), this.printElements.forEach(function (n) {
-          e.appendDesignPrintElement(e.designPaper, n), n.design(t, e.designPaper);
-        }), this.target.bind("click.hiprint", function (t) {
+      return v13094.prototype.design = function (v13095) {
+        var v13096 = this;
+        this.orderPrintElements(), this.designPaper = this.createNewPage(0), this.target.html(""), this.target.append(this.designPaper.getTarget()), this.droppablePaper(this.designPaper), this.designPaper.design(v13095), this.designPaper.subscribePaperBaseInfoChanged(function (v13097) {
+          v13096.paperHeader = v13097.paperHeader, v13096.paperFooter = v13097.paperFooter, v13096.paperNumberLeft = v13097.paperNumberLeft, v13096.paperNumberTop = v13097.paperNumberTop, v13096.paperNumberDisabled = v13097.paperNumberDisabled, v13096.paperNumberFormat = v13097.paperNumberFormat;
+        }), this.printElements.forEach(function (v13098) {
+          v13096.appendDesignPrintElement(v13096.designPaper, v13098), v13098.design(v13095, v13096.designPaper);
+        }), this.target.bind("click.hiprint", function (v13099) {
           let panelOptions = {
-            panelPaperRule: e.panelPaperRule,
-            panelPageRule: e.panelPageRule,
-            firstPaperFooter: e.firstPaperFooter,
-            evenPaperFooter: e.evenPaperFooter,
-            oddPaperFooter: e.oddPaperFooter,
-            lastPaperFooter: e.lastPaperFooter,
-            leftOffset: e.leftOffset,
-            topOffset: e.topOffset,
-            panelLayoutOptions:e.panelLayoutOptions || {},
-            fontFamily: e.fontFamily,
-            orient: e.orient,
-            paperNumberDisabled: e.paperNumberDisabled,
-            paperNumberContinue: e.paperNumberContinue,
-            paperNumberFormat: e.paperNumberFormat,
-            watermarkOptions: e.watermarkOptions || {},
+            panelPaperRule: v13096.panelPaperRule,
+            panelPageRule: v13096.panelPageRule,
+            firstPaperFooter: v13096.firstPaperFooter,
+            evenPaperFooter: v13096.evenPaperFooter,
+            oddPaperFooter: v13096.oddPaperFooter,
+            lastPaperFooter: v13096.lastPaperFooter,
+            leftOffset: v13096.leftOffset,
+            topOffset: v13096.topOffset,
+            panelLayoutOptions: v13096.panelLayoutOptions || {},
+            fontFamily: v13096.fontFamily,
+            orient: v13096.orient,
+            paperNumberDisabled: v13096.paperNumberDisabled,
+            paperNumberContinue: v13096.paperNumberContinue,
+            paperNumberFormat: v13096.paperNumberFormat,
+            watermarkOptions: v13096.watermarkOptions || {}
           };
-          if (!p.a.instance.paperNumberContinue) {
+          if (!v12410.a.instance.paperNumberContinue) {
             delete panelOptions['paperNumberContinue'];
           }
-          o.a.event.trigger("BuildCustomOptionSettingEventKey_" + e.templateId, {
+          v12388.a.event.trigger("BuildCustomOptionSettingEventKey_" + v13096.templateId, {
             options: panelOptions,
-            callback: function callback(t) {
-              e.panelLayoutOptions = t.panelLayoutOptions || {},e.watermarkOptions = t.watermarkOptions || void 0, (t.watermarkOptions && e.designPaper.createWaterMark(true, 1, t.watermarkOptions))
-              e.panelPaperRule = t.panelPaperRule, e.panelPageRule = t.panelPageRule, e.firstPaperFooter = t.firstPaperFooter, e.evenPaperFooter = t.evenPaperFooter, e.oddPaperFooter = t.oddPaperFooter, e.lastPaperFooter = t.lastPaperFooter, e.leftOffset = t.leftOffset, e.topOffset = t.topOffset, e.fontFamily = t.fontFamily, e.orient = t.orient, e.paperNumberDisabled = e.designPaper.paperNumberDisabled = !!t.paperNumberDisabled || void 0, e.paperNumberContinue = e.designPaper.paperNumberContinue = t.paperNumberContinue, e.paperNumberFormat = t.paperNumberFormat, e.designPaper.paperNumberFormat = t.paperNumberFormat, (t.paperNumberFormat && (e.designPaper.paperNumberTarget = e.designPaper.createPaperNumber(e.designPaper.formatPaperNumber(1, 1), true))), e.designPaper.setOffset(e.leftOffset, e.topOffset), e.css(e.target), e.designPaper.resetPaperNumber(e.designPaper.paperNumberTarget), e.designPaper.triggerOnPaperBaseInfoChanged();
+            callback: function callback(v13102) {
+              v13096.panelLayoutOptions = v13102.panelLayoutOptions || {}, v13096.watermarkOptions = v13102.watermarkOptions || void 0, v13102.watermarkOptions && v13096.designPaper.createWaterMark(true, 1, v13102.watermarkOptions);
+              v13096.panelPaperRule = v13102.panelPaperRule, v13096.panelPageRule = v13102.panelPageRule, v13096.firstPaperFooter = v13102.firstPaperFooter, v13096.evenPaperFooter = v13102.evenPaperFooter, v13096.oddPaperFooter = v13102.oddPaperFooter, v13096.lastPaperFooter = v13102.lastPaperFooter, v13096.leftOffset = v13102.leftOffset, v13096.topOffset = v13102.topOffset, v13096.fontFamily = v13102.fontFamily, v13096.orient = v13102.orient, v13096.paperNumberDisabled = v13096.designPaper.paperNumberDisabled = !!v13102.paperNumberDisabled || void 0, v13096.paperNumberContinue = v13096.designPaper.paperNumberContinue = v13102.paperNumberContinue, v13096.paperNumberFormat = v13102.paperNumberFormat, v13096.designPaper.paperNumberFormat = v13102.paperNumberFormat, v13102.paperNumberFormat && (v13096.designPaper.paperNumberTarget = v13096.designPaper.createPaperNumber(v13096.designPaper.formatPaperNumber(1, 1), true)), v13096.designPaper.setOffset(v13096.leftOffset, v13096.topOffset), v13096.css(v13096.target), v13096.designPaper.resetPaperNumber(v13096.designPaper.paperNumberTarget), v13096.designPaper.triggerOnPaperBaseInfoChanged();
             }
           });
         }), this.bindShortcutKeyEvent();
         this.bingPasteEvent();
         this.bindBatchMoveElement();
-      }, t.prototype.update = function (t) {
+      }, v13094.prototype.update = function (v13103) {
         try {
           var start = Date.now();
-          console.log('start', start)
-          var e = this;
-          this.index = t.index, this.name = t.name, this.width = t.width, this.height = t.height, this.paperType = t.paperType, this.paperHeader = t.paperHeader, this.paperFooter = t.paperFooter;
-          this.designPaper.width = o.a.mm.toPt(t.width), this.designPaper.height = o.a.mm.toPt(this.height), this.designPaper.paperType = this.paperType, this.designPaper.paperHeader = this.paperHeader, this.designPaper.paperFooter = this.paperFooter;
-          this.designPaper.mmheight = t.height, this.designPaper.mmwidth = t.width;
+          console.log('start', start);
+          var v13104 = this;
+          this.index = v13103.index, this.name = v13103.name, this.width = v13103.width, this.height = v13103.height, this.paperType = v13103.paperType, this.paperHeader = v13103.paperHeader, this.paperFooter = v13103.paperFooter;
+          this.designPaper.width = v12388.a.mm.toPt(v13103.width), this.designPaper.height = v12388.a.mm.toPt(this.height), this.designPaper.paperType = this.paperType, this.designPaper.paperHeader = this.paperHeader, this.designPaper.paperFooter = this.paperFooter;
+          this.designPaper.mmheight = v13103.height, this.designPaper.mmwidth = v13103.width;
           // 页眉线
           this.designPaper.headerLinetarget.css("top", (this.paperHeader || -1) + "pt"),
           0 == this.paperHeader && this.designPaper.headerLinetarget.addClass("hideheaderLinetarget");
           // 页脚线
           this.designPaper.footerLinetarget.css("top", parseInt(this.paperFooter.toString()) + "pt"),
-          this.paperFooter == this.height && (this.designPaper.footerLinetarget.css("top", t.height - p.a.instance.paperHeightTrim + "mm"));
+          this.paperFooter == this.height && this.designPaper.footerLinetarget.css("top", v13103.height - v12410.a.instance.paperHeightTrim + "mm");
           // 水印参数
-          this.watermarkOptions = t.watermarkOptions || {};
+          this.watermarkOptions = v13103.watermarkOptions || {};
           this.designPaper.createWaterMark(true, this.index, this.watermarkOptions);
           // 页码
-          this.paperNumberLeft = t.paperNumberLeft, this.paperNumberTop = t.paperNumberTop, this.paperNumberDisabled = t.paperNumberDisabled, this.paperNumberContinue = t.paperNumberContinue, this.paperNumberFormat = t.paperNumberFormat;
+          this.paperNumberLeft = v13103.paperNumberLeft, this.paperNumberTop = v13103.paperNumberTop, this.paperNumberDisabled = v13103.paperNumberDisabled, this.paperNumberContinue = v13103.paperNumberContinue, this.paperNumberFormat = v13103.paperNumberFormat;
           this.designPaper.paperNumberLeft = this.paperNumberLeft, this.designPaper.paperNumberTop = this.paperNumberTop, this.designPaper.paperNumberDisabled = this.paperNumberDisabled, this.designPaper.paperNumberContinue = this.paperNumberContinue, this.designPaper.paperNumberFormat = this.paperNumberFormat;
           this.designPaper.paperNumberTarget.css("top", this.paperNumberTop + "pt").css("left", this.paperNumberLeft + "pt"), this.designPaper.resetPaperNumber(this.designPaper.paperNumberTarget);
           // 字体方向
-          this.fontFamily = t.fontFamily, this.orient = t.orient, this.rotate = t.rotate, this.scale = t.scale;
-          this.designPaper.fontFamily = this.fontFamily, this.designPaper.orient = this.orient, this.designPaper.scale = e.designPaper.scale || this.scale;
+          this.fontFamily = v13103.fontFamily, this.orient = v13103.orient, this.rotate = v13103.rotate, this.scale = v13103.scale;
+          this.designPaper.fontFamily = this.fontFamily, this.designPaper.orient = this.orient, this.designPaper.scale = v13104.designPaper.scale || this.scale;
           // 面板参数
-          this.panelLayoutOptions = t.panelLayoutOptions, this.panelPaperRule = t.panelPaperRule, this.panelPageRule = t.panelPageRule, this.firstPaperFooter = t.firstPaperFooter, this.evenPaperFooter = t.evenPaperFooter,
-            this.oddPaperFooter = t.oddPaperFooter, this.lastPaperFooter = t.lastPaperFooter, this.topOffset = t.topOffset, this.leftOffset = t.leftOffset;
+          this.panelLayoutOptions = v13103.panelLayoutOptions, this.panelPaperRule = v13103.panelPaperRule, this.panelPageRule = v13103.panelPageRule, this.firstPaperFooter = v13103.firstPaperFooter, this.evenPaperFooter = v13103.evenPaperFooter,
+          this.oddPaperFooter = v13103.oddPaperFooter, this.lastPaperFooter = v13103.lastPaperFooter, this.topOffset = v13103.topOffset, this.leftOffset = v13103.leftOffset;
           this.designPaper.setFooter(this.firstPaperFooter, this.evenPaperFooter, this.oddPaperFooter, this.lastPaperFooter),
-            this.designPaper.setOffset(this.leftOffset, this.topOffset);
+          this.designPaper.setOffset(this.leftOffset, this.topOffset);
           var end = Date.now();
-          console.log('更新参数 end', end)
-          console.log('更新参数 time:', end - start)
+          console.log('更新参数 end', end);
+          console.log('更新参数 time:', end - start);
           // 清空面板
-          this.printElements.forEach(function (t) {
-            t.designTarget && t.designTarget.length && t.designTarget.remove();
+          this.printElements.forEach(function (v13108) {
+            v13108.designTarget && v13108.designTarget.length && v13108.designTarget.remove();
           }), this.printElements = [];
           var end = Date.now();
-          console.log('清空面板 end', end)
-          console.log('清空面板 time:', end - start)
+          console.log('清空面板 end', end);
+          console.log('清空面板 time:', end - start);
           // 更新面板
-          this.initPrintElements(t.printElements);
+          this.initPrintElements(v13103.printElements);
           var end = Date.now();
-          console.log('初始化元素 end', end)
-          console.log('初始化元素 time:', end - start)
-          this.printElements.forEach(function (n) {
-            e.appendDesignPrintElement(e.designPaper, n), n.design(t, e.designPaper);
-          })
+          console.log('初始化元素 end', end);
+          console.log('初始化元素 time:', end - start);
+          this.printElements.forEach(function (v13109) {
+            v13104.appendDesignPrintElement(v13104.designPaper, v13109), v13109.design(v13103, v13104.designPaper);
+          });
           var end = Date.now();
-          console.log('插入面板 end', end)
-          console.log('插入面板 time:', end - start)
-        } catch (e) {
-          console.log('???????')
-          console.log(e)
+          console.log('插入面板 end', end);
+          console.log('插入面板 time:', end - start);
+        } catch (v13110) {
+          console.log('???????');
+          console.log(v13110);
         }
-      }, t.prototype.bindShortcutKeyEvent = function () {
-        var n = this;
-        $(document).keydown(function (e) {
-          if ('INPUT' == e.target.tagName) return;
+      }, v13094.prototype.bindShortcutKeyEvent = function () {
+        var v13111 = this;
+        $(document).keydown(function (v13112) {
+          if ('INPUT' == v13112.target.tagName) return;
           // ctrl/command + z 撤销 / ctrl/command + shift + z 重做
-          if ((e.ctrlKey || e.metaKey) && 90 == e.keyCode) {
-            if (e.shiftKey) {
-              o.a.event.trigger("hiprintTemplateDataShortcutKey_" + n.templateId, "redo");
+          if ((v13112.ctrlKey || v13112.metaKey) && 90 == v13112.keyCode) {
+            if (v13112.shiftKey) {
+              v12388.a.event.trigger("hiprintTemplateDataShortcutKey_" + v13111.templateId, "redo");
             } else {
-              o.a.event.trigger("hiprintTemplateDataShortcutKey_" + n.templateId, "undo");
+              v12388.a.event.trigger("hiprintTemplateDataShortcutKey_" + v13111.templateId, "undo");
             }
-            e.preventDefault();
+            v13112.preventDefault();
           }
         });
-      }, t.prototype.bingPasteEvent = function () {
-        var n = this;
-        n.designPaper.target.attr("tabindex", "1");
-        n.designPaper.target.keydown(function (e) {
+      }, v13094.prototype.bingPasteEvent = function () {
+        var v13115 = this;
+        v13115.designPaper.target.attr("tabindex", "1");
+        v13115.designPaper.target.keydown(function (v13116) {
           // ctrl + v / command + v
-          if ('INPUT' == e.target.tagName) return;
-          if ((e.ctrlKey || e.metaKey) && 86 == e.keyCode) {
-            n.pasteJson(e);
-            e.preventDefault();
+          if ('INPUT' == v13116.target.tagName) return;
+          if ((v13116.ctrlKey || v13116.metaKey) && 86 == v13116.keyCode) {
+            v13115.pasteJson(v13116);
+            v13116.preventDefault();
           }
         });
-      }, t.prototype.pasteJson = function (e) {
+      }, v13094.prototype.pasteJson = function (v13117) {
         var copyArea = $('#copyArea');
         if (!copyArea.length) return;
         try {
           var json = copyArea.text();
           var objList = JSON.parse(json);
-          let operationPasterPosition = null
-          let replacePosition = null
-          var left = null
-          var top = null
-          objList.forEach((obj,index) => {
+          let operationPasterPosition = null;
+          let replacePosition = null;
+          var left = null;
+          var top = null;
+          objList.forEach((obj, index) => {
             if (!obj.printElementType && !obj.templateId) return;
             // 复制使用当前模板内的元素 进行克隆
             // todo: 使用参数创建
-            var n = this, r = obj.options, ele = n.getElementById(obj.id);
+            var v13118 = this,v13119 = obj.options,ele = v13118.getElementById(obj.id);
             if (!ele) return;
-            var a = ele.clone(obj);
-            if (!a) return;
+            var v13120 = ele.clone(obj);
+            if (!v13120) return;
             // 判断是否是在元素上进行paste
-            if(index === 0){
+            if (index === 0) {
               operationPasterPosition = {
                 x: obj.options.left,
                 y: obj.options.top
-              }
-              var useMouse = e.currentTarget.className != e.target.className;
-              left = (!useMouse && n.mouseOffsetX && o.a.px.toPt(n.mouseOffsetX)) || (r.left += 10);
-              top = (!useMouse && n.mouseOffsetY && o.a.px.toPt(n.mouseOffsetY)) || (r.top += 10);
+              };
+              var useMouse = v13117.currentTarget.className != v13117.target.className;
+              left = !useMouse && v13118.mouseOffsetX && v12388.a.px.toPt(v13118.mouseOffsetX) || (v13119.left += 10);
+              top = !useMouse && v13118.mouseOffsetY && v12388.a.px.toPt(v13118.mouseOffsetY) || (v13119.top += 10);
               replacePosition = {
                 x: left,
                 y: top
-              }
-            }else{
+              };
+            } else {
               const position = {
                 x: obj.options.left,
                 y: obj.options.top
-              }
+              };
               const incrementPosition = {
                 x: position.x - operationPasterPosition.x,
                 y: position.y - operationPasterPosition.y
-              }
-              left = replacePosition.x + incrementPosition.x
-              top = replacePosition.y + incrementPosition.y
+              };
+              left = replacePosition.x + incrementPosition.x;
+              top = replacePosition.y + incrementPosition.y;
 
             }
-            a.options.setLeft(left);
-            a.options.setTop(top);
-            a.setTemplateId(n.templateId), a.setPanel(n);
-            n.appendDesignPrintElement(n.designPaper, a, !1);
+            v13120.options.setLeft(left);
+            v13120.options.setTop(top);
+            v13120.setTemplateId(v13118.templateId), v13120.setPanel(v13118);
+            v13118.appendDesignPrintElement(v13118.designPaper, v13120, !1);
             // 在复制的地方也重新给他算轮次
-            const template = s.a.instance.getPrintTemplateById(n.templateId)
-            if(a.options.field && template.qtDesigner){
-              a.options.qid = template.qtDesignderFunction(a.options.field)
+            const template = v12411.a.instance.getPrintTemplateById(v13118.templateId);
+            if (v13120.options.field && template.qtDesigner) {
+              v13120.options.qid = template.qtDesignderFunction(v13120.options.field);
             }
-            n.printElements.push(a), a.design(void 0, n.designPaper);
+            v13118.printElements.push(v13120), v13120.design(void 0, v13118.designPaper);
             console.log('pasteJson success');
-            o.a.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "复制");
+            v12388.a.event.trigger("hiprintTemplateDataChanged_" + v13118.templateId, "复制");
             // 点击克隆出来的元素
-            a.designTarget.children('.resize-panel').trigger($.Event('click'));
-          })
-        } catch (e) {
-          console.error('pasteJson error', e);
+            v13120.designTarget.children('.resize-panel').trigger($.Event('click'));
+          });
+        } catch (v13141) {
+          console.error('pasteJson error', v13141);
         }
-      }, t.prototype.css = function (t) {
-        if (this.fontFamily) t.css("fontFamily", this.fontFamily);
-        else t[0].style.fontFamily = '';
-      }, t.prototype.getConfig = function () {
-        return p.a.instance;
-      }, t.prototype.getHtml = function (t, e, n, i, o) {
-        var r = this;
+      }, v13094.prototype.css = function (v13142) {
+        if (this.fontFamily) v13142.css("fontFamily", this.fontFamily);else
+        v13142[0].style.fontFamily = '';
+      }, v13094.prototype.getConfig = function () {
+        return v12410.a.instance;
+      }, v13094.prototype.getHtml = function (v13144, v13145, v13146, v13147, v13148) {
+        var v13149 = this;
         this.orderPrintElements();
-        let config = r.getConfig();
-        var a,
-          p = n || [],
-          s = i || this,
-          l = void 0;
+        let config = v13149.getConfig();
+        var v13150,
+          v13151 = v13146 || [],
+          v13152 = v13147 || this,
+          v13153 = void 0;
 
-        if (i) {
-          l = p[p.length - 1];
-          a = l.getPanelTarget();
-          l.updateReferenceElement(new E.a({
+        if (v13147) {
+          v13153 = v13151[v13151.length - 1];
+          v13150 = v13153.getPanelTarget();
+          v13153.updateReferenceElement(new v12507.a({
             top: this.paperHeader,
             left: 0,
             height: 0,
             width: 0,
-            bottomInLastPaper: l.referenceElement.bottomInLastPaper,
-            beginPrintPaperIndex: p.length - 1,
-            printTopInPaper: l.referenceElement.bottomInLastPaper,
-            endPrintPaperIndex: p.length - 1
+            bottomInLastPaper: v13153.referenceElement.bottomInLastPaper,
+            beginPrintPaperIndex: v13151.length - 1,
+            printTopInPaper: v13153.referenceElement.bottomInLastPaper,
+            endPrintPaperIndex: v13151.length - 1
           }));
         } else {
-          a = s.createTarget();
-          l = s.createNewPage(p.length);
-          p.push(l);
-          a.append(l.getTarget());
+          v13150 = v13152.createTarget();
+          v13153 = v13152.createNewPage(v13151.length);
+          v13151.push(v13153);
+          v13150.append(v13153.getTarget());
         }
-        this.printElements.filter(function (t) {
-          return !t.isFixed() && !t.isHeaderOrFooter();
-        }).forEach(function (e) {
-          var n = [],
-            i = p[p.length - 1];
-          if (i.referenceElement.isPositionLeftOrRight(e.options.getTop())) {
-            l = p[i.referenceElement.beginPrintPaperIndex];
+        this.printElements.filter(function (v13155) {
+          return !v13155.isFixed() && !v13155.isHeaderOrFooter();
+        }).forEach(function (v13156) {
+          var v13157 = [],
+            v13158 = v13151[v13151.length - 1];
+          if (v13158.referenceElement.isPositionLeftOrRight(v13156.options.getTop())) {
+            v13153 = v13151[v13158.referenceElement.beginPrintPaperIndex];
           } else {
-            l = p[i.referenceElement.endPrintPaperIndex];
+            v13153 = v13151[v13158.referenceElement.endPrintPaperIndex];
           }
-          n = e.getHtml(l, t)
-          n.forEach(function (t, i) {
-            t.referenceElement && (t.referenceElement.endPrintPaperIndex = t.referenceElement.beginPrintPaperIndex + n.length - 1);
-            if (i > 0) {
-              if (l.index < p.length - 1) {
-                l = p[l.index + 1];
+          v13157 = v13156.getHtml(v13153, v13144);
+          v13157.forEach(function (v13159, v13160) {
+            v13159.referenceElement && (v13159.referenceElement.endPrintPaperIndex = v13159.referenceElement.beginPrintPaperIndex + v13157.length - 1);
+            if (v13160 > 0) {
+              if (v13153.index < v13151.length - 1) {
+                v13153 = v13151[v13153.index + 1];
               } else {
-                l = s.createNewPage(p.length, l.referenceElement);
-                p.push(l)
+                v13153 = v13152.createNewPage(v13151.length, v13153.referenceElement);
+                v13151.push(v13153);
               }
-              a.append(l.getTarget());
+              v13150.append(v13153.getTarget());
             }
             // 元素隐藏时不添加到html内
-            t.target && (("none" != e.options.showInPage && l.append(t.target)), l.updatePrintLine(t.printLine), e.onRendered(l, t.target));
-            i == n.length - 1 && t.referenceElement && l.updateReferenceElement(t.referenceElement);
+            v13159.target && ("none" != v13156.options.showInPage && v13153.append(v13159.target), v13153.updatePrintLine(v13159.printLine), v13156.onRendered(v13153, v13159.target));
+            v13160 == v13157.length - 1 && v13159.referenceElement && v13153.updateReferenceElement(v13159.referenceElement);
           });
         });
-        o && o.templates.forEach(function (t, e) {
-          var i = t.data || {},
-            o = t.options || {};
-          t.template.printPanels.forEach(function (t) {
-            t.getHtml(i, o, n, r);
+        v13148 && v13148.templates.forEach(function (v13161, v13162) {
+          var v13163 = v13161.data || {},
+            v13164 = v13161.options || {};
+          v13161.template.printPanels.forEach(function (v13165) {
+            v13165.getHtml(v13163, v13164, v13146, v13149);
           });
         });
         // config 是否开启页码续排
         if (config.paperNumberContinue) {
           // 面板是否页码续排
-          if (r.paperNumberContinue) {
-            hinnn._paperList = [...(hinnn._paperList||[]),...p];
+          if (v13149.paperNumberContinue) {
+            hinnn._paperList = [...(hinnn._paperList || []), ...v13151];
           } else {
-            hinnn._paperList = [...p];
+            hinnn._paperList = [...v13151];
           }
         }
-        if (!i) {
-          if (this.lastPaperFooter) p[p.length - 1].printLine > this.lastPaperFooter && (l = s.createNewPage(p.length, l.referenceElement), p.push(l), a.append(l.getTarget()));
+        if (!v13147) {
+          if (this.lastPaperFooter) v13151[v13151.length - 1].printLine > this.lastPaperFooter && (v13153 = v13152.createNewPage(v13151.length, v13153.referenceElement), v13151.push(v13153), v13150.append(v13153.getTarget()));
           // 这里是处理奇偶页设置
-          this.panelPaperRule && ("odd" == this.panelPaperRule && p.length % 2 == 0 && (l = s.createNewPage(p.length, l.referenceElement), p.push(l), a.append(l.getTarget())), "even" == this.panelPaperRule && p.length % 2 == 1 && (l = s.createNewPage(p.length, l.referenceElement), p.push(l), a.append(l.getTarget())));
-          p.forEach(function (n) {
-            n.updatePaperNumber(n.index + 1, p.length, e.paperNumberToggleInEven), r.fillPaperHeaderAndFooter(n, t, p.length), e && (null != e.leftOffset && n.setLeftOffset(e.leftOffset), null != e.topOffset && n.setTopOffset(e.topOffset));
+          this.panelPaperRule && ("odd" == this.panelPaperRule && v13151.length % 2 == 0 && (v13153 = v13152.createNewPage(v13151.length, v13153.referenceElement), v13151.push(v13153), v13150.append(v13153.getTarget())), "even" == this.panelPaperRule && v13151.length % 2 == 1 && (v13153 = v13152.createNewPage(v13151.length, v13153.referenceElement), v13151.push(v13153), v13150.append(v13153.getTarget())));
+          v13151.forEach(function (v13166) {
+            v13166.updatePaperNumber(v13166.index + 1, v13151.length, v13145.paperNumberToggleInEven), v13149.fillPaperHeaderAndFooter(v13166, v13144, v13151.length), v13145 && (null != v13145.leftOffset && v13166.setLeftOffset(v13145.leftOffset), null != v13145.topOffset && v13166.setTopOffset(v13145.topOffset));
           });
-          a.prepend(this.getPrintStyle());
+          v13150.prepend(this.getPrintStyle());
           // config 是否开启页码续排
           if (config.paperNumberContinue) {
-            hinnn._paperList.forEach(function (n, index) {
-              n.updatePaperNumber(index + 1, hinnn._paperList.length)
+            hinnn._paperList.forEach(function (v13167, index) {
+              v13167.updatePaperNumber(index + 1, hinnn._paperList.length);
             });
           }
         }
 
-        return a;
-      }, t.prototype.resize = function (t, e, n, i) {
-        this.width = e, this.height = n, this.paperType = t, this.rotate = i, this.designPaper.resize(e, n);
-      }, t.prototype.rotatePaper = function () {
+        return v13150;
+      }, v13094.prototype.resize = function (v13168, v13169, v13170, v13171) {
+        this.width = v13169, this.height = v13170, this.paperType = v13168, this.rotate = v13171, this.designPaper.resize(v13169, v13170);
+      }, v13094.prototype.rotatePaper = function () {
         null == this.rotate && (this.rotate = !1), this.rotate = !this.rotate, this.resize(this.paperType, this.height, this.width, this.rotate);
-      }, t.prototype.zoom = function (s, p) {
-        if (p) {
-          this.scale = s
+      }, v13094.prototype.zoom = function (v13172, v13173) {
+        if (v13173) {
+          this.scale = v13172;
         } else {
-          this.scale = void 0
+          this.scale = void 0;
         }
-        this.designPaper.zoom(s);
-      }, t.prototype.getTarget = function () {
+        this.designPaper.zoom(v13172);
+      }, v13094.prototype.getTarget = function () {
         return this.target;
-      }, t.prototype.enable = function () {
+      }, v13094.prototype.enable = function () {
         this.target.removeClass("hipanel-disable");
-      }, t.prototype.disable = function () {
+      }, v13094.prototype.disable = function () {
         this.target.addClass("hipanel-disable");
-      }, t.prototype.getPanelEntity = function (t) {
-        var e = [];
-        return this.printElements.forEach(function (n) {
-          e.push(n.getPrintElementEntity(t));
+      }, v13094.prototype.getPanelEntity = function (v13174) {
+        var v13175 = [];
+        return this.printElements.forEach(function (v13176) {
+          v13175.push(v13176.getPrintElementEntity(v13174));
         }), new rt({
           index: this.index,
           name: this.name || this.index + 1,
@@ -9911,7 +9911,7 @@ var hiprint = function (t) {
           panelPageRule: this.panelPageRule ? this.panelPageRule : void 0,
           paperNumberLeft: this.paperNumberLeft,
           paperNumberTop: this.paperNumberTop,
-          printElements: e,
+          printElements: v13175,
           rotate: this.rotate,
           firstPaperFooter: this.firstPaperFooter,
           evenPaperFooter: this.evenPaperFooter,
@@ -9925,106 +9925,106 @@ var hiprint = function (t) {
           leftOffset: this.leftOffset,
           panelLayoutOptions: this.panelLayoutOptions || {}
         });
-      }, t.prototype.createTarget = function () {
-        var t = $('<div class="hiprint-printPanel panel-index-' + this.index + '"></div>');
-        return this.css(t), t;
-      }, t.prototype.droppablePaper = function (t) {
-        var e = this;
-        t.getTarget().hidroppable({
+      }, v13094.prototype.createTarget = function () {
+        var v13177 = $('<div class="hiprint-printPanel panel-index-' + this.index + '"></div>');
+        return this.css(v13177), v13177;
+      }, v13094.prototype.droppablePaper = function (v13178) {
+        var v13179 = this;
+        v13178.getTarget().hidroppable({
           accept: ".ep-draggable-item",
-          onDrop: function onDrop(n, i) {
-            const template = s.a.instance.getPrintTemplateById(e.templateId)
-            var r = s.a.instance.getDragingPrintElement(),
-              a = r.printElement;
-            var ptr = e.designPaper.scale || 1;
-            var left = (r.left - o.a.px.toPt(e.target.children(".hiprint-printPaper").offset().left)) / ptr,
-              top = (r.top - o.a.px.toPt(e.target.children(".hiprint-printPaper").offset().top)) / ptr;
-            a.updateSizeAndPositionOptions(e.mathroundToporleft(left), e.mathroundToporleft(top));
-            a.setTemplateId(e.templateId), a.setPanel(e), e.appendDesignPrintElement(e.designPaper, a, !0);
+          onDrop: function onDrop(v13180, v13181) {
+            const template = v12411.a.instance.getPrintTemplateById(v13179.templateId);
+            var v13183 = v12411.a.instance.getDragingPrintElement(),
+              v13182 = v13183.printElement;
+            var ptr = v13179.designPaper.scale || 1;
+            var left = (v13183.left - v12388.a.px.toPt(v13179.target.children(".hiprint-printPaper").offset().left)) / ptr,
+              top = (v13183.top - v12388.a.px.toPt(v13179.target.children(".hiprint-printPaper").offset().top)) / ptr;
+            v13182.updateSizeAndPositionOptions(v13179.mathroundToporleft(left), v13179.mathroundToporleft(top));
+            v13182.setTemplateId(v13179.templateId), v13182.setPanel(v13179), v13179.appendDesignPrintElement(v13179.designPaper, v13182, !0);
             // 如果说编辑器开启qtDesigner,那么就将唯一ID构建唯一ID生成逻辑代码
-            if(a.options.field && template.qtDesigner){
-              a.options.qid = template.qtDesignderFunction(a.options.field)
+            if (v13182.options.field && template.qtDesigner) {
+              v13182.options.qid = template.qtDesignderFunction(v13182.options.field);
             }
-            e.printElements.push(a), a.design(void 0, t);
-            o.a.event.trigger("hiprintTemplateDataChanged_" + e.templateId, "新增");
+            v13179.printElements.push(v13182), v13182.design(void 0, v13178);
+            v12388.a.event.trigger("hiprintTemplateDataChanged_" + v13179.templateId, "新增");
           }
         });
-      }, t.prototype.initPrintElements = function (t) {
-        var e = this;
-        this.printElements = [], t && t.forEach(function (n) {
-          var i;
+      }, v13094.prototype.initPrintElements = function (v13188) {
+        var v13189 = this;
+        this.printElements = [], v13188 && v13188.forEach(function (v13190) {
+          var v13191;
 
-          if (i = n.printElementType ? nt.createPrintElementType(n.printElementType) : a.instance.getElementType(n.tid)) {
-            var o = i.createPrintElement(n.options);
-            o.setTemplateId(e.templateId), o.setPanel(e), e.printElements.push(o);
-          } else console.log("miss " + JSON.stringify(t));
+          if (v13191 = v13190.printElementType ? nt.createPrintElementType(v13190.printElementType) : v12393.instance.getElementType(v13190.tid)) {
+            var v13192 = v13191.createPrintElement(v13190.options);
+            v13192.setTemplateId(v13189.templateId), v13192.setPanel(v13189), v13189.printElements.push(v13192);
+          } else console.log("miss " + JSON.stringify(v13188));
         });
-      }, t.prototype.mathroundToporleft = function (t) {
-        var e = p.a.instance.movingDistance;
-        return Math.round(t / e) * e;
-      }, t.prototype.appendDesignPrintElement = function (t, e, n) {
-        e.setCurrenttemplateData(void 0);
-        var i = e.getDesignTarget(t);
-        i.addClass("design"), n && e.initSizeByHtml(i), t.append(i);
-      }, t.prototype.createNewPage = function (t, e) {
-        var n = new T(this.templateId, this.index, this.watermarkOptions, this.panelPageRule, this.scale, this.width, this.height, this.paperHeader, this.paperFooter, this.paperNumberLeft, this.paperNumberTop, this.paperNumberDisabled, this.paperNumberContinue, this.paperNumberFormat, t, e);
-        return n.setFooter(this.firstPaperFooter, this.evenPaperFooter, this.oddPaperFooter, this.lastPaperFooter), n.setOffset(this.leftOffset, this.topOffset), n;
-      }, t.prototype.orderPrintElements = function () {
-        this.printElements = o.a.orderBy(this.printElements, function (t) {
-          return t.options.getLeft();
-        }), this.printElements = o.a.orderBy(this.printElements, function (t) {
-          return t.options.getTop();
+      }, v13094.prototype.mathroundToporleft = function (v13193) {
+        var v13194 = v12410.a.instance.movingDistance;
+        return Math.round(v13193 / v13194) * v13194;
+      }, v13094.prototype.appendDesignPrintElement = function (v13196, v13197, v13198) {
+        v13197.setCurrenttemplateData(void 0);
+        var v13199 = v13197.getDesignTarget(v13196);
+        v13199.addClass("design"), v13198 && v13197.initSizeByHtml(v13199), v13196.append(v13199);
+      }, v13094.prototype.createNewPage = function (v13200, v13201) {
+        var v13202 = new v12508(this.templateId, this.index, this.watermarkOptions, this.panelPageRule, this.scale, this.width, this.height, this.paperHeader, this.paperFooter, this.paperNumberLeft, this.paperNumberTop, this.paperNumberDisabled, this.paperNumberContinue, this.paperNumberFormat, v13200, v13201);
+        return v13202.setFooter(this.firstPaperFooter, this.evenPaperFooter, this.oddPaperFooter, this.lastPaperFooter), v13202.setOffset(this.leftOffset, this.topOffset), v13202;
+      }, v13094.prototype.orderPrintElements = function () {
+        this.printElements = v12388.a.orderBy(this.printElements, function (v13204) {
+          return v13204.options.getLeft();
+        }), this.printElements = v12388.a.orderBy(this.printElements, function (v13206) {
+          return v13206.options.getTop();
         });
-      }, t.prototype.fillPaperHeaderAndFooter = function (t, e, n) {
-        this.printElements.filter(function (t) {
-          return t.isFixed() || t.isHeaderOrFooter();
-        }).forEach(function (i) {
-          if (i.isFixed(), i.showInPage(t.index, n)) {
-            var o = i.getHtml(t, e);
-            o.length && t.append(o[0].target);
+      }, v13094.prototype.fillPaperHeaderAndFooter = function (v13207, v13208, v13209) {
+        this.printElements.filter(function (v13210) {
+          return v13210.isFixed() || v13210.isHeaderOrFooter();
+        }).forEach(function (v13211) {
+          if (v13211.isFixed(), v13211.showInPage(v13207.index, v13209)) {
+            var v13212 = v13211.getHtml(v13207, v13208);
+            v13212.length && v13207.append(v13212[0].target);
           }
         });
-      }, t.prototype.clear = function () {
-        this.printElements.forEach(function (t) {
-          t.designTarget && t.designTarget.length && t.designTarget.remove();
+      }, v13094.prototype.clear = function () {
+        this.printElements.forEach(function (v13213) {
+          v13213.designTarget && v13213.designTarget.length && v13213.designTarget.remove();
         }), this.printElements = [];
-        o.a.event.trigger("hiprintTemplateDataChanged_" + this.templateId, "清空");
-      }, t.prototype.insertPrintElementToPanel = function (t) {
-        var e = this.getPrintElementTypeByEntity(t);
+        v12388.a.event.trigger("hiprintTemplateDataChanged_" + this.templateId, "清空");
+      }, v13094.prototype.insertPrintElementToPanel = function (v13215) {
+        var v13216 = this.getPrintElementTypeByEntity(v13215);
 
-        if (e) {
-          var n = e.createPrintElement(t.options);
-          n.setTemplateId(this.templateId), n.setPanel(this), this.printElements.push(n);
+        if (v13216) {
+          var v13217 = v13216.createPrintElement(v13215.options);
+          v13217.setTemplateId(this.templateId), v13217.setPanel(this), this.printElements.push(v13217);
         }
-      }, t.prototype.addPrintText = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "text", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintHtml = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "html", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintTable = function (t) {
-        if (t.printElementType = t.printElementType || {}, t.printElementType.type = "table", t.options && t.options.columns) {
-          var e = $.extend({}, t.options.columns);
-          t.printElementType.columns = e.columns, e.columns = void 0;
+      }, v13094.prototype.addPrintText = function (v13218) {
+        v13218.printElementType = v13218.printElementType || {}, v13218.printElementType.type = "text", this.insertPrintElementToPanel(v13218);
+      }, v13094.prototype.addPrintHtml = function (v13219) {
+        v13219.printElementType = v13219.printElementType || {}, v13219.printElementType.type = "html", this.insertPrintElementToPanel(v13219);
+      }, v13094.prototype.addPrintTable = function (v13220) {
+        if (v13220.printElementType = v13220.printElementType || {}, v13220.printElementType.type = "table", v13220.options && v13220.options.columns) {
+          var v13221 = $.extend({}, v13220.options.columns);
+          v13220.printElementType.columns = v13221.columns, v13221.columns = void 0;
         }
 
-        this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintImage = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "image", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintLongText = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "longText", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintVline = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "vline", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintHline = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "hline", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintRect = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "rect", this.insertPrintElementToPanel(t);
-      }, t.prototype.addPrintOval = function (t) {
-        t.printElementType = t.printElementType || {}, t.printElementType.type = "oval", this.insertPrintElementToPanel(t);
-      }, t.prototype.getPrintElementTypeByEntity = function (t) {
-        var e;
-        return (e = t.tid ? a.instance.getElementType(t.tid) : nt.createPrintElementType(t.printElementType)) || console.log("miss " + JSON.stringify(t)), e;
-      }, t.prototype.getPrintStyle = function () {
-        let layoutStyle = ''
-        if(this.panelLayoutOptions && this.panelLayoutOptions['layoutType'] === 'row'){
+        this.insertPrintElementToPanel(v13220);
+      }, v13094.prototype.addPrintImage = function (v13222) {
+        v13222.printElementType = v13222.printElementType || {}, v13222.printElementType.type = "image", this.insertPrintElementToPanel(v13222);
+      }, v13094.prototype.addPrintLongText = function (v13223) {
+        v13223.printElementType = v13223.printElementType || {}, v13223.printElementType.type = "longText", this.insertPrintElementToPanel(v13223);
+      }, v13094.prototype.addPrintVline = function (v13224) {
+        v13224.printElementType = v13224.printElementType || {}, v13224.printElementType.type = "vline", this.insertPrintElementToPanel(v13224);
+      }, v13094.prototype.addPrintHline = function (v13225) {
+        v13225.printElementType = v13225.printElementType || {}, v13225.printElementType.type = "hline", this.insertPrintElementToPanel(v13225);
+      }, v13094.prototype.addPrintRect = function (v13226) {
+        v13226.printElementType = v13226.printElementType || {}, v13226.printElementType.type = "rect", this.insertPrintElementToPanel(v13226);
+      }, v13094.prototype.addPrintOval = function (v13227) {
+        v13227.printElementType = v13227.printElementType || {}, v13227.printElementType.type = "oval", this.insertPrintElementToPanel(v13227);
+      }, v13094.prototype.getPrintElementTypeByEntity = function (v13228) {
+        var v13229;
+        return (v13229 = v13228.tid ? v12393.instance.getElementType(v13228.tid) : nt.createPrintElementType(v13228.printElementType)) || console.log("miss " + JSON.stringify(v13228)), v13229;
+      }, v13094.prototype.getPrintStyle = function () {
+        let layoutStyle = '';
+        if (this.panelLayoutOptions && this.panelLayoutOptions['layoutType'] === 'row') {
           layoutStyle = `
             <style>
             .hiprint-printTemplate{
@@ -10035,1189 +10035,1189 @@ var hiprint = function (t) {
                 padding: ${(Number(this.panelLayoutOptions['layoutRowGap']) || 0) / 2}mm ${(Number(this.panelLayoutOptions['layoutColumnGap']) || 0) / 2}mm;
               }
             </style>
-          `
+          `;
         }
         return layoutStyle + " <style printStyle>\n        @page\n        {\n             border:0;\n             padding:0cm;\n             margin:0cm;\n             " + this.getPrintSizeStyle() + "\n        }\n        </style>\n";
-      }, t.prototype.getPrintSizeStyle = function () {
+      }, v13094.prototype.getPrintSizeStyle = function () {
         return this.paperType ? "size:" + this.paperType + " " + (this.height > this.width ? "portrait" : "landscape") + ";" : "size: " + this.width + "mm " + this.height + "mm " + (this.orient ? 1 == this.orient ? "portrait" : "landscape" : "") + ";";
-      }, t.prototype.deletePrintElement = function (t) {
-        var e = this;
-        this.printElements.filter(function (n, i) {
-          n.id == t.id && (t.delete(), e.printElements.splice(i, 1));
+      }, v13094.prototype.deletePrintElement = function (v13230) {
+        var v13231 = this;
+        this.printElements.filter(function (v13232, v13233) {
+          v13232.id == v13230.id && (v13230.delete(), v13231.printElements.splice(v13233, 1));
         });
-      }, t.prototype.getElementByTid = function (t) {
-        return this.printElements.filter(function (e) {
-          return e.printElementType.tid === t;
-        }).map(function (t, e) {
-          return t;
+      }, v13094.prototype.getElementByTid = function (v13234) {
+        return this.printElements.filter(function (v13235) {
+          return v13235.printElementType.tid === v13234;
+        }).map(function (v13236, v13237) {
+          return v13236;
         });
-      }, t.prototype.getElementByName = function (t) {
-        return this.printElements.filter(function (e) {
-          return e.options.name === t;
-        }).map(function (t, e) {
-          return t;
+      }, v13094.prototype.getElementByName = function (v13238) {
+        return this.printElements.filter(function (v13239) {
+          return v13239.options.name === v13238;
+        }).map(function (v13240, v13241) {
+          return v13240;
         });
-      }, t.prototype.getElementById = function (t) {
-        return this.printElements.find(function (e) {
-          return e.id === t;
+      }, v13094.prototype.getElementById = function (v13242) {
+        return this.printElements.find(function (v13243) {
+          return v13243.id === v13242;
         });
-      }, t.prototype.getFieldsInPanel = function () {
-        var t = [];
-        return this.printElements.forEach(function (e) {
-          e.options && e.options.field ? t.push(e.options.field) : e.printElementType.field && t.push(e.printElementType.field);
-        }), t;
-      }, t.prototype.getTestData = function () {
-        var t = {};
-        return this.printElements.forEach(function (e) {
-          if ("table" != e.printElementType.type) {
-            e.options && e.options.field ? t[e.options.field] = e.options.testData : e.printElementType.field ? t[e.printElementType.field] = e.printElementType.data || e.options.testData : void 0;
+      }, v13094.prototype.getFieldsInPanel = function () {
+        var v13244 = [];
+        return this.printElements.forEach(function (v13245) {
+          v13245.options && v13245.options.field ? v13244.push(v13245.options.field) : v13245.printElementType.field && v13244.push(v13245.printElementType.field);
+        }), v13244;
+      }, v13094.prototype.getTestData = function () {
+        var v13246 = {};
+        return this.printElements.forEach(function (v13247) {
+          if ("table" != v13247.printElementType.type) {
+            v13247.options && v13247.options.field ? v13246[v13247.options.field] = v13247.options.testData : v13247.printElementType.field ? v13246[v13247.printElementType.field] = v13247.printElementType.data || v13247.options.testData : void 0;
           }
-        }), t;
-      }, t.prototype.bindBatchMoveElement = function () {
-        var t = this;
-        this.designPaper.getTarget().on("mousemove", function (e) {
-          if ((e.target.className && _typeof(e.target.className) == "string" && (e.target.className.includes("editing")))) {
+        }), v13246;
+      }, v13094.prototype.bindBatchMoveElement = function () {
+        var v13248 = this;
+        this.designPaper.getTarget().on("mousemove", function (v13249) {
+          if (v13249.target.className && _typeof(v13249.target.className) == "string" && v13249.target.className.includes("editing")) {
             return;
           }
-          if (e.currentTarget.className == t.designPaper.target[0].className) {
-            t.mouseOffsetX = e.offsetX, t.mouseOffsetY = e.offsetY;
+          if (v13249.currentTarget.className == v13248.designPaper.target[0].className) {
+            v13248.mouseOffsetX = v13249.offsetX, v13248.mouseOffsetY = v13249.offsetY;
           } else {
-            t.mouseOffsetX = t.mouseOffsetY = void 0;
+            v13248.mouseOffsetX = v13248.mouseOffsetY = void 0;
           }
-          s.a.instance.draging || 1 === e.buttons && s.a.instance.rectDraging && (t.mouseRect && (t.mouseRect.updateRect(e.pageX, e.pageY, t), t.updateRectPanel(t.mouseRect)));
-        }).on("mousedown", function (e) {
-          s.a.instance.rectDraging = true;
-          if ((e.target.className && _typeof(e.target.className) == "string" && (e.target.className.includes("editing")))) {
+          v12411.a.instance.draging || 1 === v13249.buttons && v12411.a.instance.rectDraging && v13248.mouseRect && (v13248.mouseRect.updateRect(v13249.pageX, v13249.pageY, v13248), v13248.updateRectPanel(v13248.mouseRect));
+        }).on("mousedown", function (v13252) {
+          v12411.a.instance.rectDraging = true;
+          if (v13252.target.className && _typeof(v13252.target.className) == "string" && v13252.target.className.includes("editing")) {
             return;
           }
-          s.a.instance.draging || (t.mouseRect && t.mouseRect.target && t.mouseRect.target.remove(), 1 === e.buttons && _typeof(e.target.className) == "string" && e.target.className.includes("hiprint-printPaper hidroppable design") && (t.mouseRect = new at(e.pageX, e.pageY, s.a.instance.dragLengthCNum(e.pageX - t.designPaper.getTarget().offset().left, p.a.instance.movingDistance), s.a.instance.dragLengthCNum(e.pageY - t.designPaper.getTarget().offset().top, p.a.instance.movingDistance))));
-        }).on("mouseup", function (e) {
-          s.a.instance.rectDraging = false;
+          v12411.a.instance.draging || (v13248.mouseRect && v13248.mouseRect.target && v13248.mouseRect.target.remove(), 1 === v13252.buttons && _typeof(v13252.target.className) == "string" && v13252.target.className.includes("hiprint-printPaper hidroppable design") && (v13248.mouseRect = new at(v13252.pageX, v13252.pageY, v12411.a.instance.dragLengthCNum(v13252.pageX - v13248.designPaper.getTarget().offset().left, v12410.a.instance.movingDistance), v12411.a.instance.dragLengthCNum(v13252.pageY - v13248.designPaper.getTarget().offset().top, v12410.a.instance.movingDistance))));
+        }).on("mouseup", function (v13259) {
+          v12411.a.instance.rectDraging = false;
         });
-      }, t.prototype.getElementInRect = function (t) {
-        var e = [];
-        return this.printElements.filter(function (n) {
-          return n.options.draggable !== false;
-        }).forEach(function (n) {
-          n.inRect(t) && e.push(n);
-        }), e;
-      }, t.prototype.updateRectPanel = function (t) {
-        var e = this,
-          n = this.designPaper.getTarget();
+      }, v13094.prototype.getElementInRect = function (v13261) {
+        var v13262 = [];
+        return this.printElements.filter(function (v13263) {
+          return v13263.options.draggable !== false;
+        }).forEach(function (v13264) {
+          v13264.inRect(v13261) && v13262.push(v13264);
+        }), v13262;
+      }, v13094.prototype.updateRectPanel = function (v13265) {
+        var v13266 = this,
+          v13267 = this.designPaper.getTarget();
         var ptr = this.designPaper.scale || 1;
-        this.mouseRect.target || (this.mouseRect.target = $('<div tabindex="1" class="mouseRect" style="z-index:2;position: absolute;opacity:0.2;border: 1px dashed #000;background-color:#31676f;"><span></span></div>'), n.find(".hiprint-printPaper-content").append(this.mouseRect.target), this.bingKeyboardMoveEvent(this.mouseRect.target), this.mouseRect.target.hidraggable({
-          onDrag: function onDrag(t, n, i) {
-              e.mouseRect.lastLeft = e.mouseRect.lastLeft ? o.a.px.toPt(e.mouseRect.target[0].offsetLeft) : n / ptr, e.mouseRect.lastTop = e.mouseRect.lastTop ? o.a.px.toPt(e.mouseRect.target[0].offsetTop) : i / ptr
-              , (e.mouseRect.mouseRectSelectedElement || []).forEach(function (t) {
-              t.updatePositionByMultipleSelect(n - e.mouseRect.lastLeft, i - e.mouseRect.lastTop);
+        this.mouseRect.target || (this.mouseRect.target = $('<div tabindex="1" class="mouseRect" style="z-index:2;position: absolute;opacity:0.2;border: 1px dashed #000;background-color:#31676f;"><span></span></div>'), v13267.find(".hiprint-printPaper-content").append(this.mouseRect.target), this.bingKeyboardMoveEvent(this.mouseRect.target), this.mouseRect.target.hidraggable({
+          onDrag: function onDrag(v13268, v13269, v13270) {
+            v13266.mouseRect.lastLeft = v13266.mouseRect.lastLeft ? v12388.a.px.toPt(v13266.mouseRect.target[0].offsetLeft) : v13269 / ptr, v13266.mouseRect.lastTop = v13266.mouseRect.lastTop ? v12388.a.px.toPt(v13266.mouseRect.target[0].offsetTop) : v13270 / ptr,
+            (v13266.mouseRect.mouseRectSelectedElement || []).forEach(function (v13273) {
+              v13273.updatePositionByMultipleSelect(v13269 - v13266.mouseRect.lastLeft, v13270 - v13266.mouseRect.lastTop);
             }),
-            e.mouseRect.lastLeft = n / ptr,
-            e.mouseRect.lastTop = i / ptr,
-            s.a.instance.changed = !0;
+            v13266.mouseRect.lastLeft = v13269 / ptr,
+            v13266.mouseRect.lastTop = v13270 / ptr,
+            v12411.a.instance.changed = !0;
           },
           moveUnit: "pt",
-          minMove: p.a.instance.movingDistance,
-          onBeforeDrag: function onBeforeDrag(t) {
-            e.mouseRect.target.focus(), s.a.instance.draging = !0, e.mouseRect.mouseRectSelectedElement || (e.mouseRect.mouseRectSelectedElement = e.getElementInRect(e.mouseRect));
-            e.mouseRect.target.css({
+          minMove: v12410.a.instance.movingDistance,
+          onBeforeDrag: function onBeforeDrag(v13276) {
+            v13266.mouseRect.target.focus(), v12411.a.instance.draging = !0, v13266.mouseRect.mouseRectSelectedElement || (v13266.mouseRect.mouseRectSelectedElement = v13266.getElementInRect(v13266.mouseRect));
+            v13266.mouseRect.target.css({
               transform: 'unset'
             });
           },
           getScale: function getScale() {
-            return e.designPaper.scale || 1;
+            return v13266.designPaper.scale || 1;
           },
-          onStopDrag: function onStopDrag(t) {
-            if (s.a.instance.changed) o.a.event.trigger("hiprintTemplateDataChanged_" + n.templateId, "框选移动");
-            s.a.instance.draging = !1;
-            s.a.instance.changed = !1;
+          onStopDrag: function onStopDrag(v13278) {
+            if (v12411.a.instance.changed) v12388.a.event.trigger("hiprintTemplateDataChanged_" + v13267.templateId, "框选移动");
+            v12411.a.instance.draging = !1;
+            v12411.a.instance.changed = !1;
           }
-        }))
-        if (t.ex >= t.bx && t.ey >= t.by) {// 终点大于起点
+        }));
+        if (v13265.ex >= v13265.bx && v13265.ey >= v13265.by) {// 终点大于起点
           this.mouseRect.target.css({
-            height: t.maxY - t.minY + "px",
-            width: t.maxX - t.minX + "px",
-            left: t.lastLeft / ptr + "pt",
-            top: t.lastTop / ptr + "pt",
-            transform: 'unset',
+            height: v13265.maxY - v13265.minY + "px",
+            width: v13265.maxX - v13265.minX + "px",
+            left: v13265.lastLeft / ptr + "pt",
+            top: v13265.lastTop / ptr + "pt",
+            transform: 'unset'
           });
-        } else if (t.ex < t.bx && t.ey < t.by) {
+        } else if (v13265.ex < v13265.bx && v13265.ey < v13265.by) {
           this.mouseRect.target.css({
-            height: t.maxY - t.minY + "px",
-            width: t.maxX - t.minX + "px",
-            left: t.lastLeft / ptr + "pt",
-            top: t.lastTop / ptr + "pt",
+            height: v13265.maxY - v13265.minY + "px",
+            width: v13265.maxX - v13265.minX + "px",
+            left: v13265.lastLeft / ptr + "pt",
+            top: v13265.lastTop / ptr + "pt",
             transform: 'rotate(180deg)',
             'transform-origin': '0 0'
           });
-        // 左下角
-        } else if (t.ex < t.bx && t.ey >t.by){
+          // 左下角
+        } else if (v13265.ex < v13265.bx && v13265.ey > v13265.by) {
           this.mouseRect.target.css({
-            height: t.maxY - t.minY + "px",
-            width: t.maxX - t.minX + "px",
-            left: t.lastLeft / ptr + "pt",
-            top: t.lastTop / ptr + "pt",
+            height: v13265.maxY - v13265.minY + "px",
+            width: v13265.maxX - v13265.minX + "px",
+            left: v13265.lastLeft / ptr + "pt",
+            top: v13265.lastTop / ptr + "pt",
             transform: 'rotateY(180deg)',
             'transform-origin': '0 0'
           });
-        } else if (t.ex > t.bx && t.ey < t.by){
+        } else if (v13265.ex > v13265.bx && v13265.ey < v13265.by) {
           this.mouseRect.target.css({
-            height: t.maxY - t.minY + "px",
-            width: t.maxX - t.minX + "px",
-            left: t.lastLeft / ptr + "pt",
-            top: t.lastTop / ptr + "pt",
+            height: v13265.maxY - v13265.minY + "px",
+            width: v13265.maxX - v13265.minX + "px",
+            left: v13265.lastLeft / ptr + "pt",
+            top: v13265.lastTop / ptr + "pt",
             transform: 'rotateX(180deg)',
             'transform-origin': '0 0'
           });
         }
-        t.target.focus()
-      }, t.prototype.bingKeyboardMoveEvent = function (t) {
-        var e = this;
-        t.attr("tabindex", "1"), t.keydown(function (t) {
-          e.mouseRect.mouseRectSelectedElement || (e.mouseRect.mouseRectSelectedElement = e.getElementInRect(e.mouseRect));
-          var n = e.mouseRect.mouseRectSelectedElement || [];
+        v13265.target.focus();
+      }, v13094.prototype.bingKeyboardMoveEvent = function (v13283) {
+        var v13284 = this;
+        v13283.attr("tabindex", "1"), v13283.keydown(function (v13285) {
+          v13284.mouseRect.mouseRectSelectedElement || (v13284.mouseRect.mouseRectSelectedElement = v13284.getElementInRect(v13284.mouseRect));
+          var v13286 = v13284.mouseRect.mouseRectSelectedElement || [];
 
-          switch (t.keyCode) {
-          case 37:
-            e.mouseRect.updatePositionByMultipleSelect(0 - p.a.instance.movingDistance, 0), n.forEach(function (t) {
-              t.updatePositionByMultipleSelect(0 - p.a.instance.movingDistance, 0);
-            }), t.preventDefault();
-            break;
+          switch (v13285.keyCode) {
+            case 37:
+              v13284.mouseRect.updatePositionByMultipleSelect(0 - v12410.a.instance.movingDistance, 0), v13286.forEach(function (v13288) {
+                v13288.updatePositionByMultipleSelect(0 - v12410.a.instance.movingDistance, 0);
+              }), v13285.preventDefault();
+              break;
 
-          case 38:
-            e.mouseRect.updatePositionByMultipleSelect(0, 0 - p.a.instance.movingDistance), n.forEach(function (t) {
-              t.updatePositionByMultipleSelect(0, 0 - p.a.instance.movingDistance);
-            }), t.preventDefault();
-            break;
+            case 38:
+              v13284.mouseRect.updatePositionByMultipleSelect(0, 0 - v12410.a.instance.movingDistance), v13286.forEach(function (v13291) {
+                v13291.updatePositionByMultipleSelect(0, 0 - v12410.a.instance.movingDistance);
+              }), v13285.preventDefault();
+              break;
 
-          case 39:
-            e.mouseRect.updatePositionByMultipleSelect(p.a.instance.movingDistance, 0), n.forEach(function (t) {
-              t.updatePositionByMultipleSelect(p.a.instance.movingDistance, 0);
-            }), t.preventDefault();
-            break;
+            case 39:
+              v13284.mouseRect.updatePositionByMultipleSelect(v12410.a.instance.movingDistance, 0), v13286.forEach(function (v13294) {
+                v13294.updatePositionByMultipleSelect(v12410.a.instance.movingDistance, 0);
+              }), v13285.preventDefault();
+              break;
 
-          case 40:
-            e.mouseRect.updatePositionByMultipleSelect(0, p.a.instance.movingDistance), n.forEach(function (t) {
-              t.updatePositionByMultipleSelect(0, p.a.instance.movingDistance);
-            }), t.preventDefault();
+            case 40:
+              v13284.mouseRect.updatePositionByMultipleSelect(0, v12410.a.instance.movingDistance), v13286.forEach(function (v13297) {
+                v13297.updatePositionByMultipleSelect(0, v12410.a.instance.movingDistance);
+              }), v13285.preventDefault();
           }
-          if ([37, 38, 39, 40].includes(t.keyCode)) {
-            o.a.event.trigger("hiprintTemplateDataChanged_" + e.templateId, "框选移动");
+          if ([37, 38, 39, 40].includes(v13285.keyCode)) {
+            v12388.a.event.trigger("hiprintTemplateDataChanged_" + v13284.templateId, "框选移动");
           }
         });
-      }, t;
+      }, v13094;
     }(),
     st = function () {
-      return function (t) {
-        if (t) if (t.panels) {
+      return function (v13300) {
+        if (v13300) if (v13300.panels) {
           this.panels = [];
 
-          for (var e = 0; e < t.panels.length; e++) {
-            this.panels.push(new rt(t.panels[e]));
+          for (var v13301 = 0; v13301 < v13300.panels.length; v13301++) {
+            this.panels.push(new rt(v13300.panels[v13301]));
           }
         } else this.panels = [];
       };
     }(),
-    lt = n(9),
+    lt = v12385(9),
     ut = function () {
-      function t(t, e) {
-        var n = this;
-        this.printElementOptionSettingPanel = {}, this.printTemplate = t, this.settingContainer = $(e), o.a.event.on(t.getPrintElementSelectEventKey(), function (t) {
-          n.buildSetting(t);
-        }), o.a.event.on(t.getBuildCustomOptionSettingEventKey(), function (t) {
-          n.buildSettingByCustomOptions(t);
-        }), o.a.event.on('clearSettingContainer', function () {
-          n.clearSettingContainer();
+      function v13310(v13302, v13303) {
+        var v13304 = this;
+        this.printElementOptionSettingPanel = {}, this.printTemplate = v13302, this.settingContainer = $(v13303), v12388.a.event.on(v13302.getPrintElementSelectEventKey(), function (v13306) {
+          v13304.buildSetting(v13306);
+        }), v12388.a.event.on(v13302.getBuildCustomOptionSettingEventKey(), function (v13308) {
+          v13304.buildSettingByCustomOptions(v13308);
+        }), v12388.a.event.on('clearSettingContainer', function () {
+          v13304.clearSettingContainer();
         });
       }
 
-      return t.prototype.init = function () {
-      }, t.prototype.clearSettingContainer = function () {
+      return v13310.prototype.init = function () {
+      }, v13310.prototype.clearSettingContainer = function () {
         this.clearLastPrintElement(), this.settingContainer.html("");
-      }, t.prototype.clearLastPrintElement = function () {
+      }, v13310.prototype.clearLastPrintElement = function () {
         if (this.lastPrintElement) {
           if (this.lastPrintElement._editing) {
             this.lastPrintElement.updateByContent(true);
           }
           if (this.lastPrintElement._printElementOptionTabs) {
-            this.lastPrintElement._printElementOptionTabs.forEach(function (t) {
-              t.list && t.list.forEach(function (e) {
-                e.destroy();
-              })
-            })
+            this.lastPrintElement._printElementOptionTabs.forEach(function (v13311) {
+              v13311.list && v13311.list.forEach(function (v13312) {
+                v13312.destroy();
+              });
+            });
           }
           if (this.lastPrintElement._printElementOptionItems) {
-            this.lastPrintElement._printElementOptionItems.forEach(function (t) {
-              t.destroy();
-            })
+            this.lastPrintElement._printElementOptionItems.forEach(function (v13313) {
+              v13313.destroy();
+            });
           }
         }
         this.lastPrintElement = void 0;
-      }, t.prototype.buildSetting = function (t) {
-        var e = this,
-          n = this,
-          i = t.printElement,
-          o = t.customOptionsInput;
-        var tabs = i.getPrintElementOptionTabs();
-        e.clearSettingContainer();
-        var r;
+      }, v13310.prototype.buildSetting = function (v13314) {
+        var v13315 = this,
+          v13316 = this,
+          v13317 = v13314.printElement,
+          v13318 = v13314.customOptionsInput;
+        var tabs = v13317.getPrintElementOptionTabs();
+        v13315.clearSettingContainer();
+        var v13319;
         if (tabs.length) {
-          r = $('<div class="prop-tabs"><ul class="prop-tab-items"></ul></div>');
+          v13319 = $('<div class="prop-tabs"><ul class="prop-tab-items"></ul></div>');
           tabs.forEach(function (tab) {
-            var item = $('<li class="prop-tab-item"><span class="tab-title">' + i18n.__(tab.name) + '</span></li>')
-            r.find('.prop-tab-items').append(item)
-            var options = $('<div class="hiprint-option-items" data-title="' + i18n.__(tab.name) + '"></div>')
-            tab.list.forEach(function (t) {
-              t.submit = function (t) {
-                i.submitOption();
+            var item = $('<li class="prop-tab-item"><span class="tab-title">' + i18n.__(tab.name) + '</span></li>');
+            v13319.find('.prop-tab-items').append(item);
+            var options = $('<div class="hiprint-option-items" data-title="' + i18n.__(tab.name) + '"></div>');
+            tab.list.forEach(function (v13320) {
+              v13320.submit = function (v13321) {
+                v13317.submitOption();
               };
-              var n = t.createTarget(i, i.options, i.printElementType);
-              e.printElementOptionSettingPanel[t.name] = n, options.append(n);
+              var v13322 = v13320.createTarget(v13317, v13317.options, v13317.printElementType);
+              v13315.printElementOptionSettingPanel[v13320.name] = v13322, options.append(v13322);
               // 貌似只有这两个才需要多个参数
-              if (['columns', 'dataType'].includes(t.name)) {
-                t.setValue(i.options[t.name], i.options, i.printElementType);
+              if (['columns', 'dataType'].includes(v13320.name)) {
+                v13320.setValue(v13317.options[v13320.name], v13317.options, v13317.printElementType);
               } else {
                 // 传入所有参数
-                if (['coordinate', 'widthHeight'].includes(t.name)) {
-                  t.setValue(i.options, i)
+                if (['coordinate', 'widthHeight'].includes(v13320.name)) {
+                  v13320.setValue(v13317.options, v13317);
                 } else {
                   // options 没有就取 printElementType内的 (如 table 的 footerFormatter)
-                  t.setValue(i.options[t.name] || i.printElementType[t.name])
+                  v13320.setValue(v13317.options[v13320.name] || v13317.printElementType[v13320.name]);
                 }
               }
-              n.find("textarea").bind("dblclick.textarea", function (event) {
+              v13322.find("textarea").bind("dblclick.textarea", function (event) {
                 if (!$(this).val()) {
                   var placeholder = event.target.placeholder || "";
                   $(this).val(placeholder);
                 };
               });
-            })
-            if (tab.list.length == 0 && o && o.length) {
-              o.forEach(function (t) {
-                var n2 = t.callback;
-                t.callback = function (t) {
-                  n2 && (n2(t));
+            });
+            if (tab.list.length == 0 && v13318 && v13318.length) {
+              v13318.forEach(function (v13323) {
+                var n2 = v13323.callback;
+                v13323.callback = function (v13324) {
+                  n2 && n2(v13324);
                 };
-                var tableColumn = t.optionItems;
-                t.title && options.append('<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label hiprint-option-title">\n              ' + t.title + "\n            </div>\n        </div>");
-                tableColumn.forEach(function (e) {
-                  e.submit = function (e) {
-                    t.callback(n.getValueByOptionItems(tableColumn));
-                  }, options.append(e.createTarget(n.printTemplate, t.options, void 0)),
-                    e.setValue(t.options[e.name], t.options, void 0);
+                var tableColumn = v13323.optionItems;
+                v13323.title && options.append('<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label hiprint-option-title">\n              ' + v13323.title + "\n            </div>\n        </div>");
+                tableColumn.forEach(function (v13325) {
+                  v13325.submit = function (v13326) {
+                    v13323.callback(v13316.getValueByOptionItems(tableColumn));
+                  }, options.append(v13325.createTarget(v13316.printTemplate, v13323.options, void 0)),
+                  v13325.setValue(v13323.options[v13325.name], v13323.options, void 0);
                 });
                 options.find('.auto-submit').change(function () {
-                  t.callback(n.getValueByOptionItems(tableColumn))
-                })
-                options.find('.auto-submit:input').bind('keydown.submitOption', function (e) {
-                  13 === e.keyCode && t.callback(n.getValueByOptionItems(tableColumn));
-                })
+                  v13323.callback(v13316.getValueByOptionItems(tableColumn));
+                });
+                options.find('.auto-submit:input').bind('keydown.submitOption', function (v13327) {
+                  13 === v13327.keyCode && v13323.callback(v13316.getValueByOptionItems(tableColumn));
+                });
                 options.find("textarea").bind("dblclick.textarea", function (event) {
                   if (!$(this).val()) {
                     var placeholder = event.target.placeholder || "";
                     $(this).val(placeholder);
                   };
                 });
-              })
+              });
             }
-            r.append(options)
-          })
+            v13319.append(options);
+          });
         } else {
-          r = $('<div class="hiprint-option-items"></div>')
-          i.getPrintElementOptionItems().forEach(function (t) {
-            t.submit = function (t) {
-              i.submitOption();
+          v13319 = $('<div class="hiprint-option-items"></div>');
+          v13317.getPrintElementOptionItems().forEach(function (v13328) {
+            v13328.submit = function (v13329) {
+              v13317.submitOption();
             };
 
-            var n = t.createTarget(i, i.options, i.printElementType);
-            e.printElementOptionSettingPanel[t.name] = n, r.append(n);
+            var v13330 = v13328.createTarget(v13317, v13317.options, v13317.printElementType);
+            v13315.printElementOptionSettingPanel[v13328.name] = v13330, v13319.append(v13330);
             // 貌似只有这两个才需要多个参数
-            if (['columns', 'dataType'].includes(t.name)) {
-              t.setValue(i.options[t.name], i.options, i.printElementType);
+            if (['columns', 'dataType'].includes(v13328.name)) {
+              v13328.setValue(v13317.options[v13328.name], v13317.options, v13317.printElementType);
             } else {
               // 传入所有参数
-              if (['coordinate', 'widthHeight'].includes(t.name)) {
-                t.setValue(i.options, i)
+              if (['coordinate', 'widthHeight'].includes(v13328.name)) {
+                v13328.setValue(v13317.options, v13317);
               } else {
                 // options 没有就取 printElementType内的 (如 table 的 footerFormatter)
-                t.setValue(i.options[t.name] || i.printElementType[t.name])
+                v13328.setValue(v13317.options[v13328.name] || v13317.printElementType[v13328.name]);
               }
             }
           });
         }
-        var a = $(`<button class="hiprint-option-item-settingBtn hiprint-option-item-submitBtn"\n        type="button">${i18n.__('确定')}</button>`),
-          p = $(`<button  class="hiprint-option-item-settingBtn hiprint-option-item-deleteBtn"\n        type="button">${i18n.__('删除')}</button>`);
-        r.append(a);
-        i.options.draggable != false && r.append(p); // draggable 为 false 时不显示参数面板 删除 按钮
+        var v13331 = $(`<button class="hiprint-option-item-settingBtn hiprint-option-item-submitBtn"\n        type="button">${i18n.__('确定')}</button>`),
+          v13332 = $(`<button  class="hiprint-option-item-settingBtn hiprint-option-item-deleteBtn"\n        type="button">${i18n.__('删除')}</button>`);
+        v13319.append(v13331);
+        v13317.options.draggable != false && v13319.append(v13332); // draggable 为 false 时不显示参数面板 删除 按钮
         if (tabs.length) {
-          r.on('click', '.prop-tab-item', function () {
+          v13319.on('click', '.prop-tab-item', function () {
             var $li = $(this);
             var index = $li.index();
             // 上次点击tab的index
-            e.settingContainer.data('last-index', index);
+            v13315.settingContainer.data('last-index', index);
             $li.addClass('active');
             $li.siblings().removeClass('active');
-            var options = r.find('.hiprint-option-items:eq(' + index + ')');
-            options.addClass('active')
+            var options = v13319.find('.hiprint-option-items:eq(' + index + ')');
+            options.addClass('active');
             options.siblings().removeClass('active');
-          })
-          var lastIndex = +(e.settingContainer.data('last-index') || 0);
+          });
+          var lastIndex = +(v13315.settingContainer.data('last-index') || 0);
           if (lastIndex >= tabs.length) {
             lastIndex = 0;
           }
-          r.find('.prop-tab-item:eq(' + lastIndex + ')').click();
+          v13319.find('.prop-tab-item:eq(' + lastIndex + ')').click();
         }
-        a.bind("click.submitOption", function () {
-          i.submitOption();
-        }), p.bind("click.deleteBtn", function () {
-          hinnn.event.trigger("hiprintTemplateDataChanged_" + i.templateId, "删除");
-          n.printTemplate.deletePrintElement(i);
-          e.clearSettingContainer();
-        }), r.find(".auto-submit").change(function (t) {
-          i.submitOption();
-        }), r.find(".auto-submit:input").bind("keydown.submitOption", function (t) {
-          13 == t.keyCode && i.submitOption();
-        }), this.settingContainer.append(r), tabs.length < 1 && o && o.forEach(function (t) {
-          var n = t.callback;
-          t.callback = function (t) {
-            n && (n(t), i.submitOption());
-          }, e.buildSettingByCustomOptions(t, e.settingContainer);
-        }), this.lastPrintElement = i;
-      }, t.prototype.buildSettingByCustomOptions = function (t, e) {
-        var n = this;
+        v13331.bind("click.submitOption", function () {
+          v13317.submitOption();
+        }), v13332.bind("click.deleteBtn", function () {
+          hinnn.event.trigger("hiprintTemplateDataChanged_" + v13317.templateId, "删除");
+          v13316.printTemplate.deletePrintElement(v13317);
+          v13315.clearSettingContainer();
+        }), v13319.find(".auto-submit").change(function (v13333) {
+          v13317.submitOption();
+        }), v13319.find(".auto-submit:input").bind("keydown.submitOption", function (v13334) {
+          13 == v13334.keyCode && v13317.submitOption();
+        }), this.settingContainer.append(v13319), tabs.length < 1 && v13318 && v13318.forEach(function (v13335) {
+          var v13336 = v13335.callback;
+          v13335.callback = function (v13337) {
+            v13336 && (v13336(v13337), v13317.submitOption());
+          }, v13315.buildSettingByCustomOptions(v13335, v13315.settingContainer);
+        }), this.lastPrintElement = v13317;
+      }, v13310.prototype.buildSettingByCustomOptions = function (v13338, v13339) {
+        var v13340 = this;
         this.clearLastPrintElement();
-        var i = e || this.settingContainer;
-        e || this.settingContainer.html("");
-        var o = [], supportOptions = p.a.instance.panel.supportOptions.filter(function (t) {
-          return !t.hidden;
-        }).map(function (e) {
-          return e.name;
+        var v13341 = v13339 || this.settingContainer;
+        v13339 || this.settingContainer.html("");
+        var v13342 = [],supportOptions = v12410.a.instance.panel.supportOptions.filter(function (v13344) {
+            return !v13344.hidden;
+          }).map(function (v13345) {
+            return v13345.name;
+          });
+        v13338.optionItems ? v13342 = v13338.optionItems : Object.keys(v13338.options).filter(function (v13346) {
+          return supportOptions.includes(v13346);
+        }).forEach(function (v13347) {
+          var v13348 = lt.a.getItem(v13347);
+          v13348 && v13342.push(v13348);
         });
-        t.optionItems ? o = t.optionItems : Object.keys(t.options).filter(function (t) {
-          return supportOptions.includes(t);
-        }).forEach(function (t) {
-          var e = lt.a.getItem(t);
-          e && o.push(e);
+        var v13350 = $('<div class="hiprint-option-items"></div>');
+        v13338.title && v13350.append('<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label hiprint-option-title">\n              ' + v13338.title + "\n            </div>\n        </div>"), v13342.forEach(function (v13351) {
+          v13351.submit = function (v13352) {
+            v13338.callback(v13340.getValueByOptionItems(v13342));
+          }, v13350.append(v13351.createTarget(v13340.printTemplate, v13338.options, void 0)), v13351.setValue(v13338.options[v13351.name], v13338.options, void 0);
         });
-        var r = $('<div class="hiprint-option-items"></div>');
-        t.title && r.append('<div class="hiprint-option-item hiprint-option-item-row">\n            <div class="hiprint-option-item-label hiprint-option-title">\n              ' + t.title + "\n            </div>\n        </div>"), o.forEach(function (e) {
-          e.submit = function (e) {
-            t.callback(n.getValueByOptionItems(o));
-          }, r.append(e.createTarget(n.printTemplate, t.options, void 0)), e.setValue(t.options[e.name], t.options, void 0);
-        });
-        var a = $(`<button class="hiprint-option-item-settingBtn hiprint-option-item-submitBtn"\n        type="button">${i18n.__('确定')}</button>`);
-        r.append(a), a.bind("click.submitOption", function () {
-          t.callback(n.getValueByOptionItems(o));
-        }), r.find(".auto-submit").change(function (e) {
-          t.callback(n.getValueByOptionItems(o));
-        }), r.find(".auto-submit:input").bind("keydown.submitOption", function (e) {
-          13 == e.keyCode && t.callback(n.getValueByOptionItems(o));
-        }), i.append(r);
-      }, t.prototype.getValueByOptionItems = function (t) {
-        var e = {};
-        return t.forEach(function (t) {
-          e[t.name] = t.getValue();
-        }), e;
-      }, t;
+        var v13343 = $(`<button class="hiprint-option-item-settingBtn hiprint-option-item-submitBtn"\n        type="button">${i18n.__('确定')}</button>`);
+        v13350.append(v13343), v13343.bind("click.submitOption", function () {
+          v13338.callback(v13340.getValueByOptionItems(v13342));
+        }), v13350.find(".auto-submit").change(function (v13353) {
+          v13338.callback(v13340.getValueByOptionItems(v13342));
+        }), v13350.find(".auto-submit:input").bind("keydown.submitOption", function (v13354) {
+          13 == v13354.keyCode && v13338.callback(v13340.getValueByOptionItems(v13342));
+        }), v13341.append(v13350);
+      }, v13310.prototype.getValueByOptionItems = function (v13355) {
+        var v13356 = {};
+        return v13355.forEach(function (v13357) {
+          v13356[v13357.name] = v13357.getValue();
+        }), v13356;
+      }, v13310;
     }(),
     dt = function () {
-      function t(t, e) {
-        this.paginationContainer = t, this.jqPaginationContainer = $(this.paginationContainer), this.template = e;
+      function v13360(v13358, v13359) {
+        this.paginationContainer = v13358, this.jqPaginationContainer = $(this.paginationContainer), this.template = v13359;
       }
 
-      return t.prototype.buildPagination = function (t) {
-        var e = this.template.getPaneltotal(),
-          n = this;
+      return v13360.prototype.buildPagination = function (v13361) {
+        var v13362 = this.template.getPaneltotal(),
+          v13363 = this;
         this.jqPaginationContainer.html("");
 
-        for (var i = $('<ul class="hiprint-pagination"></ul>'), o = function o() {
-          var t = r,
-            name = n.template.printPanels[t].name || (t + 1),
-            e = $("<li><span>" + name + '</span><a href="javascript:void(0);">x</a></li>');
-          e.find("span").click(function () {
-            n.template.selectPanel(t), e.siblings().removeClass("selected"), $(this).parent("li").addClass("selected");
-          }), e.find("a").click(function () {
-            n.template.deletePanel(t), n.buildPagination();
-          }), i.append(e);
-        }, r = 0; r < e; r++) {
-          o();
+        for (var v13364 = $('<ul class="hiprint-pagination"></ul>'), v13365 = function v13366() {
+            var v13367 = v13368,
+              name = v13363.template.printPanels[v13367].name || v13367 + 1,
+              v13369 = $("<li><span>" + name + '</span><a href="javascript:void(0);">x</a></li>');
+            v13369.find("span").click(function () {
+              v13363.template.selectPanel(v13367), v13369.siblings().removeClass("selected"), $(this).parent("li").addClass("selected");
+            }), v13369.find("a").click(function () {
+              v13363.template.deletePanel(v13367), v13363.buildPagination();
+            }), v13364.append(v13369);
+          }, v13368 = 0; v13368 < v13362; v13368++) {
+          v13365();
         }
 
-        var a = $("<li><span>+</span></li>");
-        i.append(a), this.jqPaginationContainer.append(i), a.click(function () {
-          var createPanel = function(t) {
-            n.template.addPrintPanel(t || void 0, !0), n.buildPagination();
+        var v13370 = $("<li><span>+</span></li>");
+        v13364.append(v13370), this.jqPaginationContainer.append(v13364), v13370.click(function () {
+          var createPanel = function (v13371) {
+            v13363.template.addPrintPanel(v13371 || void 0, !0), v13363.buildPagination();
             $('.hiprint-pagination li').removeClass('selected');
             $('.hiprint-pagination li:nth-last-child(2)').addClass('selected');
           };
-          if (n.template.onPanelAddClick) {
+          if (v13363.template.onPanelAddClick) {
             var panel = {
-              index: n.template.printPanels.length,
+              index: v13363.template.printPanels.length,
               paperType: "A4"
-            }
-            n.template.onPanelAddClick(panel, createPanel);
+            };
+            v13363.template.onPanelAddClick(panel, createPanel);
           } else {
             createPanel();
           }
         });
-      }, t.prototype.selectPanel = function (idx) {
-        var i = idx || this.template.editingPanel.index;
-        var li = $('.hiprint-pagination li:nth(' + i + ')');
+      }, v13360.prototype.selectPanel = function (idx) {
+        var v13372 = idx || this.template.editingPanel.index;
+        var li = $('.hiprint-pagination li:nth(' + v13372 + ')');
         if (li.length) {
           li.siblings().removeClass('selected');
           li.addClass("selected");
         }
-	hinnn.event.trigger("onSelectPanel", this.template.editingPanel, i, li);
-      }, t;
+        hinnn.event.trigger("onSelectPanel", this.template.editingPanel, v13372, li);
+      }, v13360;
     }(),
     ct = function () {
-      function t(t) {
-        var e = this;
-        this.tempimageBase64 = {}, this.id = s.a.instance.guid(), s.a.instance.setPrintTemplateById(this.id, this);
-        var n = t || {};
+      function v13381(v13373) {
+        var v13374 = this;
+        this.tempimageBase64 = {}, this.id = v12411.a.instance.guid(), v12411.a.instance.setPrintTemplateById(this.id, this);
+        var v13377 = v13373 || {};
         this.printPanels = [];
-        this.dataMode = n.dataMode || 1;
-        this.history = n.history != void 0 ? n.history : !0;
-        this.willOutOfBounds = n.willOutOfBounds != void 0 ? n.willOutOfBounds : !0;
-        this.onDataChanged = n.onDataChanged;
-        this.onUpdateError = n.onUpdateError;
-        this.lastJson = n.template || {};
-        this.historyList = [{id: s.a.instance.guid(), type: '初始', json: this.lastJson}];
+        this.dataMode = v13377.dataMode || 1;
+        this.history = v13377.history != void 0 ? v13377.history : !0;
+        this.willOutOfBounds = v13377.willOutOfBounds != void 0 ? v13377.willOutOfBounds : !0;
+        this.onDataChanged = v13377.onDataChanged;
+        this.onUpdateError = v13377.onUpdateError;
+        this.lastJson = v13377.template || {};
+        this.historyList = [{ id: v12411.a.instance.guid(), type: '初始', json: this.lastJson }];
         this.historyPos = 0;
-        this.defaultPanelName = n.defaultPanelName;
+        this.defaultPanelName = v13377.defaultPanelName;
         this.designOptions = {};
-        this.qtDesigner = n.qtDesigner != void 0 ? n.qtDesigner : !0;
-        this.qtDesignerMap = {}
-        this.qtDesignderFunction = function(field){
-          this.qtDesignerMap = {}
-          const fieldTitle = field.split("_")[0]
-          for(const item of this.editingPanel.printElements){
-            if(item.options.field === void 0){
-              continue
+        this.qtDesigner = v13377.qtDesigner != void 0 ? v13377.qtDesigner : !0;
+        this.qtDesignerMap = {};
+        this.qtDesignderFunction = function (field) {
+          this.qtDesignerMap = {};
+          const fieldTitle = field.split("_")[0];
+          for (const item of this.editingPanel.printElements) {
+            if (item.options.field === void 0) {
+              continue;
             }
-            const renderKey = item.options.field.split("_")[0]
-            if(this.qtDesignerMap[renderKey] === void 0){
-              this.qtDesignerMap[renderKey] = 1
-            }else{
-              this.qtDesignerMap[renderKey] += 1
+            const renderKey = item.options.field.split("_")[0];
+            if (this.qtDesignerMap[renderKey] === void 0) {
+              this.qtDesignerMap[renderKey] = 1;
+            } else {
+              this.qtDesignerMap[renderKey] += 1;
             }
           }
-          if(this.qtDesignerMap[fieldTitle] === 0||this.qtDesignerMap[fieldTitle] === void 0){
-            return fieldTitle
-          }else{
-            return fieldTitle +"_"+ this.qtDesignerMap[fieldTitle]
+          if (this.qtDesignerMap[fieldTitle] === 0 || this.qtDesignerMap[fieldTitle] === void 0) {
+            return fieldTitle;
+          } else {
+            return fieldTitle + "_" + this.qtDesignerMap[fieldTitle];
           }
-        }
-        var i = new st(n.template || []);
-        n.template && i.panels.forEach(function (t) {
-          e.printPanels.push(new pt(t, e.id));
-        }), n.fontList && (this.fontList = n.fontList), n.fields && (this.fields = n.fields), n.onImageChooseClick && (this.onImageChooseClick = n.onImageChooseClick),
-          n.onPanelAddClick && (this.onPanelAddClick = n.onPanelAddClick),
-        n.settingContainer && new ut(this, n.settingContainer), n.paginationContainer && (this.printPaginationCreator = new dt(n.paginationContainer, this), this.printPaginationCreator.buildPagination()), this.initAutoSave();
+        };
+        var v13379 = new st(v13377.template || []);
+        v13377.template && v13379.panels.forEach(function (v13380) {
+          v13374.printPanels.push(new pt(v13380, v13374.id));
+        }), v13377.fontList && (this.fontList = v13377.fontList), v13377.fields && (this.fields = v13377.fields), v13377.onImageChooseClick && (this.onImageChooseClick = v13377.onImageChooseClick),
+        v13377.onPanelAddClick && (this.onPanelAddClick = v13377.onPanelAddClick),
+        v13377.settingContainer && new ut(this, v13377.settingContainer), v13377.paginationContainer && (this.printPaginationCreator = new dt(v13377.paginationContainer, this), this.printPaginationCreator.buildPagination()), this.initAutoSave();
       }
 
-      return t.prototype.design = function (t, e) {
-        var n = this;
+      return v13381.prototype.design = function (v13382, v13383) {
+        var v13384 = this;
 
-        if (e || (e = {}), 0 == this.printPanels.length) {
-          var i = this.createDefaultPanel();
-          this.printPanels.push(i);
+        if (v13383 || (v13383 = {}), 0 == this.printPanels.length) {
+          var v13385 = this.createDefaultPanel();
+          this.printPanels.push(v13385);
         }
 
-        if (!t) throw new Error("options.container can not be empty");
-        n.designOptions = e;
-        this.createContainer(t), this.printPanels.forEach(function (t, i) {
-          n.container.append(t.getTarget()), i > 0 && t.disable(), t.design(e);
+        if (!v13382) throw new Error("options.container can not be empty");
+        v13384.designOptions = v13383;
+        this.createContainer(v13382), this.printPanels.forEach(function (v13386, v13387) {
+          v13384.container.append(v13386.getTarget()), v13387 > 0 && v13386.disable(), v13386.design(v13383);
         }), this.selectPanel(0);
-      }, t.prototype.getSimpleHtml = function (t, e) {
-        var n = this;
-        e || (e = {});
-        var i = $('<div class="hiprint-printTemplate"></div>');
-        t && t.constructor === Array ? t.forEach(function (data,dataIndex) {
-          data && n.printPanels.forEach(function (n, o) {
-            i.append(n.getHtml(data, e));
+      }, v13381.prototype.getSimpleHtml = function (v13388, v13389) {
+        var v13390 = this;
+        v13389 || (v13389 = {});
+        var v13391 = $('<div class="hiprint-printTemplate"></div>');
+        v13388 && v13388.constructor === Array ? v13388.forEach(function (data, dataIndex) {
+          data && v13390.printPanels.forEach(function (v13392, v13393) {
+            v13391.append(v13392.getHtml(data, v13389));
             // 批量打印 续排页码
-            if (dataIndex == t.length - 1) {
+            if (dataIndex == v13388.length - 1) {
               delete hinnn._paperList;
             }
           });
         }) : this.printPanels.forEach(function (panel, panelIndex) {
-          i.append(panel.getHtml(t, e));
+          v13391.append(panel.getHtml(v13388, v13389));
           // 多面板打印 续排页码
-          if (panelIndex == n.printPanels.length - 1) {
+          if (panelIndex == v13390.printPanels.length - 1) {
             delete hinnn._paperList;
           }
         });
-        return e && e.imgToBase64 && this.transformImg(i.find("img")), i;
-      }, t.prototype.getHtml = function (t, e) {
-        return t || (t = {}), this.getSimpleHtml(t, e);
-      }, t.prototype.getJointHtml = function (t, e, n) {
-        var i = $('<div class="hiprint-printTemplate"></div>'),
-          o = [];
-        return this.printPanels.forEach(function (r, a) {
-          i.append(r.getHtml(t, e, o, void 0, n));
-        }), i;
-      }, t.prototype.setPaper = function (t, e) {
-        if (/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(t)) this.editingPanel.resize(void 0, parseFloat(t), parseFloat(e), !1); else {
-          var n = s.a.instance[t];
-          if (!n) throw new Error("not found pagetype:" + (t || ""));
-          this.editingPanel.resize(t, n.width, n.height, !1);
+        return v13389 && v13389.imgToBase64 && this.transformImg(v13391.find("img")), v13391;
+      }, v13381.prototype.getHtml = function (v13394, v13395) {
+        return v13394 || (v13394 = {}), this.getSimpleHtml(v13394, v13395);
+      }, v13381.prototype.getJointHtml = function (v13396, v13397, v13398) {
+        var v13399 = $('<div class="hiprint-printTemplate"></div>'),
+          v13400 = [];
+        return this.printPanels.forEach(function (v13401, v13402) {
+          v13399.append(v13401.getHtml(v13396, v13397, v13400, void 0, v13398));
+        }), v13399;
+      }, v13381.prototype.setPaper = function (v13403, v13404) {
+        if (/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(v13403)) this.editingPanel.resize(void 0, parseFloat(v13403), parseFloat(v13404), !1);else {
+          var v13405 = v12411.a.instance[v13403];
+          if (!v13405) throw new Error("not found pagetype:" + (v13403 || ""));
+          this.editingPanel.resize(v13403, v13405.width, v13405.height, !1);
         }
-      }, t.prototype.rotatePaper = function () {
+      }, v13381.prototype.rotatePaper = function () {
         this.editingPanel.rotatePaper();
-      }, t.prototype.zoom = function (s, p) {
-        this.editingPanel.zoom(s, p);
-      }, t.prototype.addPrintPanel = function (t, e) {
-        var n = t ? new pt(new rt(t), this.id) : this.createDefaultPanel();
-        return t && (t.index = this.printPanels.length), e && (this.container.append(n.getTarget()), n.design(this.designOptions)), this.printPanels.push(n), e && this.selectPanel(n.index), n;
-      }, t.prototype.selectPanel = function (t) {
-        var e = this;
-        if (t > e.printPanels.length - 1) t = e.printPanels.length - 1;
-        this.printPanels.forEach(function (n, i) {
-          t == i ? (n.enable(), e.editingPanel = n, e.printPaginationCreator && e.printPaginationCreator.selectPanel(t)) : n.disable();
+      }, v13381.prototype.zoom = function (v13407, v13408) {
+        this.editingPanel.zoom(v13407, v13408);
+      }, v13381.prototype.addPrintPanel = function (v13409, v13410) {
+        var v13411 = v13409 ? new pt(new rt(v13409), this.id) : this.createDefaultPanel();
+        return v13409 && (v13409.index = this.printPanels.length), v13410 && (this.container.append(v13411.getTarget()), v13411.design(this.designOptions)), this.printPanels.push(v13411), v13410 && this.selectPanel(v13411.index), v13411;
+      }, v13381.prototype.selectPanel = function (v13412) {
+        var v13413 = this;
+        if (v13412 > v13413.printPanels.length - 1) v13412 = v13413.printPanels.length - 1;
+        this.printPanels.forEach(function (v13414, v13415) {
+          v13412 == v13415 ? (v13414.enable(), v13413.editingPanel = v13414, v13413.printPaginationCreator && v13413.printPaginationCreator.selectPanel(v13412)) : v13414.disable();
         });
-      }, t.prototype.deletePanel = function (t) {
-        this.printPanels[t].clear(), this.printPanels[t].getTarget().remove(), this.printPanels.splice(t, 1);
-      }, t.prototype.getPaneltotal = function () {
+      }, v13381.prototype.deletePanel = function (v13416) {
+        this.printPanels[v13416].clear(), this.printPanels[v13416].getTarget().remove(), this.printPanels.splice(v13416, 1);
+      }, v13381.prototype.getPaneltotal = function () {
         return this.printPanels.length;
-      }, t.prototype.createDefaultPanel = function () {
+      }, v13381.prototype.createDefaultPanel = function () {
         return new pt(new rt({
           index: this.printPanels.length,
           name: this.defaultPanelName,
           paperType: "A4"
         }), this.id);
-      }, t.prototype.createContainer = function (t) {
-        t ? (this.container = $(t), this.container.addClass("hiprint-printTemplate")) : this.container = $('<div class="hiprint-printTemplate"></div>');
-      }, t.prototype.getJsonTid = function () {
-        var t = [];
-        return this.printPanels.forEach(function (e) {
-          e.getPanelEntity().printElements.length && t.push(e.getPanelEntity());
+      }, v13381.prototype.createContainer = function (v13417) {
+        v13417 ? (this.container = $(v13417), this.container.addClass("hiprint-printTemplate")) : this.container = $('<div class="hiprint-printTemplate"></div>');
+      }, v13381.prototype.getJsonTid = function () {
+        var v13418 = [];
+        return this.printPanels.forEach(function (v13419) {
+          v13419.getPanelEntity().printElements.length && v13418.push(v13419.getPanelEntity());
         }), new st({
-          panels: t
+          panels: v13418
         });
-      }, t.prototype.getJson = function () {
-        var t = [];
-        return this.printPanels.forEach(function (e) {
-          t.push(e.getPanelEntity(!0));
+      }, v13381.prototype.getJson = function () {
+        var v13420 = [];
+        return this.printPanels.forEach(function (v13421) {
+          v13420.push(v13421.getPanelEntity(!0));
         }), new st({
-          panels: t
+          panels: v13420
         });
-      }, t.prototype.undo = function (t) {
-        o.a.event.trigger("hiprintTemplateDataShortcutKey_" + this.id, "undo");
-      }, t.prototype.redo = function (t) {
-        o.a.event.trigger("hiprintTemplateDataShortcutKey_" + this.id, "redo");
-      }, t.prototype.getPrintElementSelectEventKey = function () {
+      }, v13381.prototype.undo = function (v13422) {
+        v12388.a.event.trigger("hiprintTemplateDataShortcutKey_" + this.id, "undo");
+      }, v13381.prototype.redo = function (v13424) {
+        v12388.a.event.trigger("hiprintTemplateDataShortcutKey_" + this.id, "redo");
+      }, v13381.prototype.getPrintElementSelectEventKey = function () {
         return "PrintElementSelectEventKey_" + this.id;
-      }, t.prototype.getBuildCustomOptionSettingEventKey = function () {
+      }, v13381.prototype.getBuildCustomOptionSettingEventKey = function () {
         return "BuildCustomOptionSettingEventKey_" + this.id;
-      }, t.prototype.clear = function () {
-        this.printPanels.forEach(function (t) {
-          if (t.clear(), t.index > 0) {
-            var e = t.getTarget();
-            e && e.length && e.remove();
+      }, v13381.prototype.clear = function () {
+        this.printPanels.forEach(function (v13426) {
+          if (v13426.clear(), v13426.index > 0) {
+            var v13427 = v13426.getTarget();
+            v13427 && v13427.length && v13427.remove();
           }
         }), this.printPanels = [this.printPanels[0]], this.printPaginationCreator && this.printPaginationCreator.buildPagination();
-      }, t.prototype.getPaperType = function (t) {
-        return null == t && (t = 0), this.printPanels[0].paperType;
-      }, t.prototype.getOrient = function (t) {
-        return null == t && (t = 0), this.printPanels[t].height > this.printPanels[t].width ? 1 : 2;
-      }, t.prototype.getPrintStyle = function (t) {
-        return this.printPanels[t].getPrintStyle();
-      }, t.prototype.print = function (t, e, o) {
-        t || (t = {}), this.getHtml(t, e).hiwprint(o);
-      }, t.prototype.print2 = function (t, e) {
-        if (t || (t = {}), e || (e = {}), this.clientIsOpened()) {
-          var n = this,
-            i = 0,
-            o = {},
-            r = $('link[media=print][href*="print-lock.css"]'),
+      }, v13381.prototype.getPaperType = function (v13428) {
+        return null == v13428 && (v13428 = 0), this.printPanels[0].paperType;
+      }, v13381.prototype.getOrient = function (v13429) {
+        return null == v13429 && (v13429 = 0), this.printPanels[v13429].height > this.printPanels[v13429].width ? 1 : 2;
+      }, v13381.prototype.getPrintStyle = function (v13430) {
+        return this.printPanels[v13430].getPrintStyle();
+      }, v13381.prototype.print = function (v13431, v13432, v13433) {
+        v13431 || (v13431 = {}), this.getHtml(v13431, v13432).hiwprint(v13433);
+      }, v13381.prototype.print2 = function (v13434, v13435) {
+        if (v13434 || (v13434 = {}), v13435 || (v13435 = {}), this.clientIsOpened()) {
+          var v13436 = this,
+            v13437 = 0,
+            v13438 = {},
+            v13439 = $('link[media=print][href*="print-lock.css"]'),
             css = '';
-          if (e.styleHandler) {
-            css += e.styleHandler()
+          if (v13435.styleHandler) {
+            css += v13435.styleHandler();
           }
-          if (r.length <= 0) {
+          if (v13439.length <= 0) {
             throw new Error("请在 入口文件(index.html) 中引入 print-lock.css. 注意: link[media=\"print\"]");
             return;
           }
-          r.each(function (a, p) {
-            var s = new XMLHttpRequest();
-            s.open("GET", $(p).attr("href")), s.onreadystatechange = function () {
-              if (4 === s.readyState && 200 === s.status && (o[a + ""] = '<style rel="stylesheet" type="text/css">' + s.responseText + "</style>", ++i == r.length)) {
-                for (var p = "", l = 0; l < r.length; l++) {
-                  p += o[l + ""];
+          v13439.each(function (v13440, v13441) {
+            var v13442 = new XMLHttpRequest();
+            v13442.open("GET", $(v13441).attr("href")), v13442.onreadystatechange = function () {
+              if (4 === v13442.readyState && 200 === v13442.status && (v13438[v13440 + ""] = '<style rel="stylesheet" type="text/css">' + v13442.responseText + "</style>", ++v13437 == v13439.length)) {
+                for (var v13443 = "", v13444 = 0; v13444 < v13439.length; v13444++) {
+                  v13443 += v13438[v13444 + ""];
                 }
-                if (css) p = css + p;
-                n.sentToClient(p, t, e);
+                if (css) v13443 = css + v13443;
+                v13436.sentToClient(v13443, v13434, v13435);
               }
-            }, s.send();
+            }, v13442.send();
           });
         } else alert(`${i18n.__('连接客户端失败')}`);
-      }, t.prototype.imageToBase64 = function (t) {
-        var e = $(t).attr("src");
-        if (-1 == e.indexOf("base64")) try {
-          if (!this.tempimageBase64[e]) {
-            var n = document.createElement("canvas"),
-              i = new Image();
-            i.src = t.attr("src"), n.width = i.width, n.height = i.height, n.getContext("2d").drawImage(i, 0, 0), e && (this.tempimageBase64[e] = n.toDataURL("image/png"));
+      }, v13381.prototype.imageToBase64 = function (v13445) {
+        var v13446 = $(v13445).attr("src");
+        if (-1 == v13446.indexOf("base64")) try {
+          if (!this.tempimageBase64[v13446]) {
+            var v13447 = document.createElement("canvas"),
+              v13448 = new Image();
+            v13448.src = v13445.attr("src"), v13447.width = v13448.width, v13447.height = v13448.height, v13447.getContext("2d").drawImage(v13448, 0, 0), v13446 && (this.tempimageBase64[v13446] = v13447.toDataURL("image/png"));
           }
 
-          t.attr("src", this.tempimageBase64[e]);
-        } catch (e) {
+          v13445.attr("src", this.tempimageBase64[v13446]);
+        } catch (v13449) {
           try {
-            this.xhrLoadImage(t);
-          } catch (t) {
-            console.log(t);
+            this.xhrLoadImage(v13445);
+          } catch (v13450) {
+            console.log(v13450);
           }
         }
-      }, t.prototype.xhrLoadImage = function (t) {
-      }, t.prototype.sentToClient = function (t, e, n) {
-        e || (e = {});
-        var i = $.extend({}, n || {});
-        i.imgToBase64 = !0;
-        var o = t + this.getHtml(e, i)[0].outerHTML;
-        i.id = s.a.instance.guid(), i.html = o, i.templateId = this.id, hiwebSocket.send(i);
-      }, t.prototype.printByHtml = function (t) {
-        $(t).hiwprint();
-      }, t.prototype.printByHtml2 = function (t, e) {
-        if (e || (e = {}), this.clientIsOpened()) {
-          var n = this,
-            i = 0,
-            o = {},
-            r = $('link[media=print][href*="print-lock.css"]');
-          if (r.length <= 0) {
+      }, v13381.prototype.xhrLoadImage = function (v13451) {
+      }, v13381.prototype.sentToClient = function (v13452, v13453, v13454) {
+        v13453 || (v13453 = {});
+        var v13455 = $.extend({}, v13454 || {});
+        v13455.imgToBase64 = !0;
+        var v13456 = v13452 + this.getHtml(v13453, v13455)[0].outerHTML;
+        v13455.id = v12411.a.instance.guid(), v13455.html = v13456, v13455.templateId = this.id, hiwebSocket.send(v13455);
+      }, v13381.prototype.printByHtml = function (v13458) {
+        $(v13458).hiwprint();
+      }, v13381.prototype.printByHtml2 = function (v13459, v13460) {
+        if (v13460 || (v13460 = {}), this.clientIsOpened()) {
+          var v13461 = this,
+            v13462 = 0,
+            v13463 = {},
+            v13464 = $('link[media=print][href*="print-lock.css"]');
+          if (v13464.length <= 0) {
             throw new Error("请在 入口文件(index.html) 中引入 print-lock.css. 注意: link[media=\"print\"]");
             return;
           }
-          r.each(function (a, p) {
-            var l = new XMLHttpRequest();
-            l.open("GET", $(p).attr("href")), l.onreadystatechange = function () {
-              if (4 === l.readyState && 200 === l.status && (o[a + ""] = '<style rel="stylesheet" type="text/css">' + l.responseText + "</style>", ++i == r.length)) {
-                for (var p = "", u = 0; u < r.length; u++) {
-                  p += o[u + ""];
+          v13464.each(function (v13465, v13466) {
+            var v13467 = new XMLHttpRequest();
+            v13467.open("GET", $(v13466).attr("href")), v13467.onreadystatechange = function () {
+              if (4 === v13467.readyState && 200 === v13467.status && (v13463[v13465 + ""] = '<style rel="stylesheet" type="text/css">' + v13467.responseText + "</style>", ++v13462 == v13464.length)) {
+                for (var v13468 = "", v13469 = 0; v13469 < v13464.length; v13469++) {
+                  v13468 += v13463[v13469 + ""];
                 }
 
-                var d = p + $(t)[0].outerHTML,
-                  c = $.extend({}, e || {});
-                c.id = s.a.instance.guid(), c.html = d, c.templateId = n.id, hiwebSocket.send(c);
+                var v13470 = v13468 + $(v13459)[0].outerHTML,
+                  v13471 = $.extend({}, v13460 || {});
+                v13471.id = v12411.a.instance.guid(), v13471.html = v13470, v13471.templateId = v13461.id, hiwebSocket.send(v13471);
               }
-            }, l.send();
+            }, v13467.send();
           });
         } else alert(`${i18n.__('连接客户端失败')}`);
-      }, t.prototype.deletePrintElement = function (t) {
-        this.printPanels.forEach(function (e) {
-          e.deletePrintElement(t);
+      }, v13381.prototype.deletePrintElement = function (v13473) {
+        this.printPanels.forEach(function (v13474) {
+          v13474.deletePrintElement(v13473);
         });
-      }, t.prototype.transformImg = function (t) {
-        var e = this;
-        t.map(function (t, n) {
-          e.imageToBase64($(n));
+      }, v13381.prototype.transformImg = function (v13475) {
+        var v13476 = this;
+        v13475.map(function (v13477, v13478) {
+          v13476.imageToBase64($(v13478));
         });
-      }, t.prototype.toPdf = function (t, e, options) {
-        var i = this;
+      }, v13381.prototype.toPdf = function (v13479, v13480, options) {
+        var v13481 = this;
         var dtd = $.Deferred();
         var isDownload = true;
         if (this.printPanels.length) {
-          var r = o.a.mm.toPt(this.printPanels[0].width),
-            a = o.a.mm.toPt(this.printPanels[0].height),
-            p = $.extend({
+          var v13482 = v12388.a.mm.toPt(this.printPanels[0].width),
+            v13483 = v12388.a.mm.toPt(this.printPanels[0].height),
+            v13485 = $.extend({
               scale: 2,
-              width: o.a.pt.toPx(r),
+              width: v12388.a.pt.toPx(v13482),
               x: 0,
               y: 0,
               useCORS: !0
             }, options || {}),
-            s = new jsPDF({
+            v13489 = new jsPDF({
               orientation: 1 == this.getOrient(0) ? "portrait" : "landscape",
               unit: "pt",
-              format: this.printPanels[0].paperType ? this.printPanels[0].paperType.toLocaleLowerCase() : [r, a]
+              format: this.printPanels[0].paperType ? this.printPanels[0].paperType.toLocaleLowerCase() : [v13482, v13483]
             }),
-            l = this.getHtml(t, options);
+            v13490 = this.getHtml(v13479, options);
           if (options && undefined != options.isDownload) {
-            isDownload = options.isDownload
+            isDownload = options.isDownload;
           }
           this.createTempContainer();
-          var u = this.getTempContainer();
-          this.svg2canvas(l), u.html(l[0]);
-          var d = u.find(".hiprint-printPanel .hiprint-printPaper").length;
-          $(l).css("position:fixed"), html2canvas(l[0], p).then(function (t) {
-            var n = t.getContext("2d");
-            n.mozImageSmoothingEnabled = !1, n.webkitImageSmoothingEnabled = !1, n.msImageSmoothingEnabled = !1, n.imageSmoothingEnabled = !1;
+          var v13491 = this.getTempContainer();
+          this.svg2canvas(v13490), v13491.html(v13490[0]);
+          var v13492 = v13491.find(".hiprint-printPanel .hiprint-printPaper").length;
+          $(v13490).css("position:fixed"), html2canvas(v13490[0], v13485).then(function (v13493) {
+            var v13494 = v13493.getContext("2d");
+            v13494.mozImageSmoothingEnabled = !1, v13494.webkitImageSmoothingEnabled = !1, v13494.msImageSmoothingEnabled = !1, v13494.imageSmoothingEnabled = !1;
 
-            for (var o = t.toDataURL("image/jpeg"), p = 0; p < d; p++) {
-              s.addImage(o, "JPEG", 0, 0 - p * a, r, d * a), p < d - 1 && s.addPage();
+            for (var v13495 = v13493.toDataURL("image/jpeg"), v13496 = 0; v13496 < v13492; v13496++) {
+              v13489.addImage(v13495, "JPEG", 0, 0 - v13496 * v13483, v13482, v13492 * v13483), v13496 < v13492 - 1 && v13489.addPage();
             }
             if (isDownload) {
-              i.removeTempContainer(), e.indexOf(".pdf") > -1 ? s.save(e) : s.save(e + ".pdf");
+              v13481.removeTempContainer(), v13480.indexOf(".pdf") > -1 ? v13489.save(v13480) : v13489.save(v13480 + ".pdf");
             } else {
-              i.removeTempContainer();
+              v13481.removeTempContainer();
               let type = options.type || 'blob';
-              var pdfFile = s.output(type);
+              var pdfFile = v13489.output(type);
               dtd.resolve(pdfFile);
             }
           });
         }
         return dtd.promise();
-      }, t.prototype.createTempContainer = function () {
+      }, v13381.prototype.createTempContainer = function () {
         this.removeTempContainer(), $("body").prepend($('<div class="hiprint_temp_Container" style="overflow:hidden;height: 0px;box-sizing: border-box;"></div>'));
-      }, t.prototype.removeTempContainer = function () {
+      }, v13381.prototype.removeTempContainer = function () {
         $(".hiprint_temp_Container").remove();
-      }, t.prototype.getTempContainer = function () {
+      }, v13381.prototype.getTempContainer = function () {
         return $(".hiprint_temp_Container");
-      }, t.prototype.svg2canvas = function (t) {
+      }, v13381.prototype.svg2canvas = function (v13497) {
         var that = this;
-        t.find("svg").each(function (t, e) {
-          var n = e.parentNode, p = that.parentWidthHeight(n),
-            i = document.createElement("canvas");
-          i.width = p.width, i.height = p.height;
-          var ctx = i.getContext('2d'),
-            str = new XMLSerializer().serializeToString(e);
-          Canvg.fromString(ctx, str).render(), $(e).before(i), n.removeChild(e);
+        v13497.find("svg").each(function (v13498, v13499) {
+          var v13500 = v13499.parentNode,v13501 = that.parentWidthHeight(v13500),
+            v13502 = document.createElement("canvas");
+          v13502.width = v13501.width, v13502.height = v13501.height;
+          var ctx = v13502.getContext('2d'),
+            str = new XMLSerializer().serializeToString(v13499);
+          Canvg.fromString(ctx, str).render(), $(v13499).before(v13502), v13500.removeChild(v13499);
         });
-      }, t.prototype.parentWidthHeight = function (t) {
-        if (t.style.width.endsWith('%') || t.style.height.endsWith('%')) {
-          if (t.className != 'hiprint-printPaper-content') {
-            return this.parentWidthHeight(t.parentNode);
+      }, v13381.prototype.parentWidthHeight = function (v13503) {
+        if (v13503.style.width.endsWith('%') || v13503.style.height.endsWith('%')) {
+          if (v13503.className != 'hiprint-printPaper-content') {
+            return this.parentWidthHeight(v13503.parentNode);
           }
-          return {width: 10, height: 10}
+          return { width: 10, height: 10 };
         } else {
-          return {width: o.a.pt.toPx(parseFloat(t.style.width)), height: o.a.pt.toPx(parseFloat(t.style.height))}
+          return { width: v12388.a.pt.toPx(parseFloat(v13503.style.width)), height: v12388.a.pt.toPx(parseFloat(v13503.style.height)) };
         }
-      }, t.prototype.on = function (t, e) {
-        o.a.event.clear(t + "_" + this.id);
-        o.a.event.on(t + "_" + this.id, e);
-      }, t.prototype.clientIsOpened = function () {
+      }, v13381.prototype.on = function (v13506, v13507) {
+        v12388.a.event.clear(v13506 + "_" + this.id);
+        v12388.a.event.on(v13506 + "_" + this.id, v13507);
+      }, v13381.prototype.clientIsOpened = function () {
         return hiwebSocket.opened;
-      }, t.prototype.getPrinterList = function () {
-        var t = hiwebSocket.getPrinterList();
-        return t || [];
-      }, t.prototype.getElementByTid = function (t, e) {
-        return null == e && (e = 0), this.printPanels[e].getElementByTid(t);
-      }, t.prototype.getElementByName = function (t, e) {
-        return null == e && (e = 0), this.printPanels[e].getElementByName(t);
-      }, t.prototype.getPanel = function (t) {
-        return null == t && (t = 0), this.printPanels[t];
-      }, t.prototype.loadAllImages = function (t, e, n) {
-        var i = this;
-        null == n && (n = 0);
+      }, v13381.prototype.getPrinterList = function () {
+        var v13510 = hiwebSocket.getPrinterList();
+        return v13510 || [];
+      }, v13381.prototype.getElementByTid = function (v13511, v13512) {
+        return null == v13512 && (v13512 = 0), this.printPanels[v13512].getElementByTid(v13511);
+      }, v13381.prototype.getElementByName = function (v13513, v13514) {
+        return null == v13514 && (v13514 = 0), this.printPanels[v13514].getElementByName(v13513);
+      }, v13381.prototype.getPanel = function (v13515) {
+        return null == v13515 && (v13515 = 0), this.printPanels[v13515];
+      }, v13381.prototype.loadAllImages = function (v13516, v13517, v13518) {
+        var v13519 = this;
+        null == v13518 && (v13518 = 0);
 
-        for (var o = t[0].getElementsByTagName("img"), r = !0, a = 0; a < o.length; a++) {
-          var p = o[a];
-          p.src && p.src !== window.location.href && -1 == p.src.indexOf("base64") && (p && void 0 !== p.naturalWidth && 0 !== p.naturalWidth && p.complete || (r = !1));
+        for (var v13520 = v13516[0].getElementsByTagName("img"), v13521 = !0, v13522 = 0; v13522 < v13520.length; v13522++) {
+          var v13523 = v13520[v13522];
+          v13523.src && v13523.src !== window.location.href && -1 == v13523.src.indexOf("base64") && (v13523 && void 0 !== v13523.naturalWidth && 0 !== v13523.naturalWidth && v13523.complete || (v13521 = !1));
         }
 
-        n++ , !r && n < 10 ? setTimeout(function () {
-          i.loadAllImages(t, e, n);
-        }, 500) : e();
-      }, t.prototype.setFontList = function (t) {
-        this.fontList = t;
-      }, t.prototype.getFontList = function () {
+        v13518++, !v13521 && v13518 < 10 ? setTimeout(function () {
+          v13519.loadAllImages(v13516, v13517, v13518);
+        }, 500) : v13517();
+      }, v13381.prototype.setFontList = function (v13524) {
+        this.fontList = v13524;
+      }, v13381.prototype.getFontList = function () {
         return this.fontList;
-      }, t.prototype.setFields = function (t) {
-        this.fields = t;
-      }, t.prototype.getFields = function () {
+      }, v13381.prototype.setFields = function (v13525) {
+        this.fields = v13525;
+      }, v13381.prototype.getFields = function () {
         return this.fields;
-      }, t.prototype.setOnImageChooseClick = function (t) {
-        this.onImageChooseClick = t;
-      }, t.prototype.getOnImageChooseClick = function () {
+      }, v13381.prototype.setOnImageChooseClick = function (v13526) {
+        this.onImageChooseClick = v13526;
+      }, v13381.prototype.getOnImageChooseClick = function () {
         return this.onImageChooseClick;
-      }, t.prototype.getFieldsInPanel = function () {
-        var t = [];
-        return this.printPanels.forEach(function (e) {
-          t = t.concat(e.getFieldsInPanel());
-        }), t;
-      }, t.prototype.getTestData = function () {
-        var t = {};
-        return this.printPanels.forEach(function (e) {
-          t = Object.assign(t, e.getTestData());
-        }), t;
-      }, t.prototype.update = function (t, idx) {
-        var e = this;
+      }, v13381.prototype.getFieldsInPanel = function () {
+        var v13527 = [];
+        return this.printPanels.forEach(function (v13528) {
+          v13527 = v13527.concat(v13528.getFieldsInPanel());
+        }), v13527;
+      }, v13381.prototype.getTestData = function () {
+        var v13529 = {};
+        return this.printPanels.forEach(function (v13530) {
+          v13529 = Object.assign(v13529, v13530.getTestData());
+        }), v13529;
+      }, v13381.prototype.update = function (v13531, idx) {
+        var v13532 = this;
         try {
-          if (t && "object" == _typeof(t) && t.panels.length > 0) {
-            var curLen = e.printPanels.length - 1;
-            t.panels.forEach(function(panel, index) {
+          if (v13531 && "object" == _typeof(v13531) && v13531.panels.length > 0) {
+            var curLen = v13532.printPanels.length - 1;
+            v13531.panels.forEach(function (panel, index) {
               if (index > curLen) {
-                e.printPanels.push(new pt(panel, e.id));
-                var t = e.printPanels[index];
-                e.container.append(t.getTarget()), index > 0 && t.disable(), t.design(e.designOptions);
-                e.printPaginationCreator && e.printPaginationCreator.buildPagination();
+                v13532.printPanels.push(new pt(panel, v13532.id));
+                var v13533 = v13532.printPanels[index];
+                v13532.container.append(v13533.getTarget()), index > 0 && v13533.disable(), v13533.design(v13532.designOptions);
+                v13532.printPaginationCreator && v13532.printPaginationCreator.buildPagination();
               }
               var temp = new rt(panel);
-              e.editingPanel = e.printPanels[index];
-              e.editingPanel.update(temp);
-            })
-            e.selectPanel(idx || 0);
+              v13532.editingPanel = v13532.printPanels[index];
+              v13532.editingPanel.update(temp);
+            });
+            v13532.selectPanel(idx || 0);
           }
         } catch (er) {
           console.log(er);
-          e.onUpdateError && e.onUpdateError(er);
+          v13532.onUpdateError && v13532.onUpdateError(er);
         }
-      }, t.prototype.getSelectEls = function () {
-        var t = this;
+      }, v13381.prototype.getSelectEls = function () {
+        var v13534 = this;
         var elements = [];
         // 获取选区元素
-        if (t.editingPanel.mouseRect && t.editingPanel.mouseRect.target && $(".mouseRect").length) {
-          elements = t.editingPanel.getElementInRect(t.editingPanel.mouseRect);
-        } else { // 获取多选元素
-          elements = t.editingPanel.printElements.filter(function (el) {
+        if (v13534.editingPanel.mouseRect && v13534.editingPanel.mouseRect.target && $(".mouseRect").length) {
+          elements = v13534.editingPanel.getElementInRect(v13534.editingPanel.mouseRect);
+        } else {// 获取多选元素
+          elements = v13534.editingPanel.printElements.filter(function (el) {
             return "block" == el.designTarget.children().last().css("display") && !el.printElementType.type.includes("table");
-          })
+          });
         }
-        return elements
+        return elements;
       },
-     t.prototype.selectElementsByField = function (fieldsArray){
-            var hiPrintEntity = this
-            var t = $
-            hiPrintEntity.editingPanel.printElements.forEach((e, index) => {
-              if(fieldsArray && fieldsArray.includes(e.options.field)){
-                let designTarget = e.designTarget
-                designTarget.children("div[panelindex]").addClass("selected")
-                designTarget.children().last().css({
-                  display: "block"
-                })
-                designTarget = designTarget[0]
-                t.data(designTarget, "hidraggable").options.onBeforeSelectAllDrag.call(designTarget,{})
-              }
-            })
-          },
-      t.prototype.selectAllElements = function () {
-        var hiPrintEntity = this
-        var t = $
-        hiPrintEntity.editingPanel.printElements.forEach((e, index) => {
-          let designTarget = e.designTarget
-          designTarget.children("div[panelindex]").addClass("selected")
+      v13381.prototype.selectElementsByField = function (fieldsArray) {
+        var hiPrintEntity = this;
+        var v13535 = $;
+        hiPrintEntity.editingPanel.printElements.forEach((v13536, index) => {
+          if (fieldsArray && fieldsArray.includes(v13536.options.field)) {
+            let designTarget = v13536.designTarget;
+            designTarget.children("div[panelindex]").addClass("selected");
+            designTarget.children().last().css({
+              display: "block"
+            });
+            designTarget = designTarget[0];
+            v13535.data(designTarget, "hidraggable").options.onBeforeSelectAllDrag.call(designTarget, {});
+          }
+        });
+      },
+      v13381.prototype.selectAllElements = function () {
+        var hiPrintEntity = this;
+        var v13537 = $;
+        hiPrintEntity.editingPanel.printElements.forEach((v13538, index) => {
+          let designTarget = v13538.designTarget;
+          designTarget.children("div[panelindex]").addClass("selected");
           designTarget.children().last().css({
             display: "block"
-          })
-          designTarget = designTarget[0]
-          t.data(designTarget, "hidraggable").options
-            .onBeforeSelectAllDrag
-            .call(designTarget, {})
-        })
+          });
+          designTarget = designTarget[0];
+          v13537.data(designTarget, "hidraggable").options.
+          onBeforeSelectAllDrag.
+          call(designTarget, {});
+        });
       },
-      t.prototype.updateOption = function (option, v) { // 批量更新参数
+      v13381.prototype.updateOption = function (option, v13539) {// 批量更新参数
         var elements = this.getSelectEls();
         if (elements && elements.length) {
-          elements.forEach(function (e) {
-            e.updateOption(option, v, true)
-          })
-          o.a.event.trigger("hiprintTemplateDataChanged_" + this.id, "批量修改");
+          elements.forEach(function (v13540) {
+            v13540.updateOption(option, v13539, true);
+          });
+          v12388.a.event.trigger("hiprintTemplateDataChanged_" + this.id, "批量修改");
         }
-      }, t.prototype.setElsAlign = function (e) { // 设置框选、多选元素对齐api
-        var t = this;
+      }, v13381.prototype.setElsAlign = function (v13542) {// 设置框选、多选元素对齐api
+        var v13543 = this;
         var elements = this.getSelectEls();
         if (elements.length) {
-          var minLeft = Math.min.apply(null, elements.map(function (el) {return el.options.left}));
-          var maxRight = Math.max.apply(null, elements.map(function (el) {return el.options.left + el.options.width}));
-          var minTop = Math.min.apply(null, elements.map(function (el) {return el.options.top}));
-          var maxBottom = Math.max.apply(null, elements.map(function (el) {return el.options.top + el.options.height}));
-          switch (e) {
-          case "left": // 左对齐
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(minLeft);
-              el.designTarget.css("left", el.options.displayLeft());
-            })
-            break;
-          case "vertical": // 居中
-            var vertical = minLeft + (maxRight - minLeft) / 2;
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(vertical - el.options.width / 2);
-              el.designTarget.css("left", el.options.displayLeft());
-            })
-            break;
-          case "right": // 右对齐
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(maxRight - el.options.width);
-              el.designTarget.css("left", el.options.displayLeft())
-            })
-            break;
-          case "top": // 顶部对齐
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(undefined, minTop);
-              el.designTarget.css("top", el.options.displayTop());
-            })
-            break;
-          case "horizontal": // 垂直居中
-            var horizontal = minTop + (maxBottom - minTop) / 2;
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(undefined, horizontal - el.options.height / 2);
-              el.designTarget.css("top", el.options.displayTop());
-            })
-            break;
-          case "bottom": //底部对齐
-            elements.forEach(function (el) {
-              el.updateSizeAndPositionOptions(undefined, maxBottom - el.options.height);
-              el.designTarget.css("top", el.options.displayTop());
-            })
-            break;
-          case "distributeHor": // 横向分散
-            var sumWidth = [].reduce.call(elements, function (total, el) {
-              return total + el.options.width;
-            }, 0)
-            var distributeHor = ((maxRight - minLeft) - sumWidth) / (elements.length - 1);
-            elements.sort(function (prev, curr) {
-              return prev.options.left - curr.options.left;
-            })
-            elements.forEach(function (el, index) {
-              if (![0, elements.length - 1].includes(index)) {
-                el.updateSizeAndPositionOptions(elements[index - 1].options.left + elements[index - 1].options.width + distributeHor);
+          var minLeft = Math.min.apply(null, elements.map(function (el) {return el.options.left;}));
+          var maxRight = Math.max.apply(null, elements.map(function (el) {return el.options.left + el.options.width;}));
+          var minTop = Math.min.apply(null, elements.map(function (el) {return el.options.top;}));
+          var maxBottom = Math.max.apply(null, elements.map(function (el) {return el.options.top + el.options.height;}));
+          switch (v13542) {
+            case "left": // 左对齐
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(minLeft);
                 el.designTarget.css("left", el.options.displayLeft());
-              }
-            })
-            break;
-          case "distributeVer": // 纵向分散
-            var sumHeight = [].reduce.call(elements, function (total, el) {
-              return total + el.options.height;
-            }, 0)
-            var distributeVer = ((maxBottom - minTop) - sumHeight) / (elements.length - 1);
-            elements.sort(function (prev, curr) {
-              return prev.options.top - curr.options.top;
-            })
-            elements.forEach(function (el, index) {
-              if (![0, elements.length - 1].includes(index)) {
-                el.updateSizeAndPositionOptions(undefined, elements[index - 1].options.top + elements[index - 1].options.height + distributeVer);
+              });
+              break;
+            case "vertical": // 居中
+              var vertical = minLeft + (maxRight - minLeft) / 2;
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(vertical - el.options.width / 2);
+                el.designTarget.css("left", el.options.displayLeft());
+              });
+              break;
+            case "right": // 右对齐
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(maxRight - el.options.width);
+                el.designTarget.css("left", el.options.displayLeft());
+              });
+              break;
+            case "top": // 顶部对齐
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(undefined, minTop);
                 el.designTarget.css("top", el.options.displayTop());
-              }
-            })
-            break;
+              });
+              break;
+            case "horizontal": // 垂直居中
+              var horizontal = minTop + (maxBottom - minTop) / 2;
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(undefined, horizontal - el.options.height / 2);
+                el.designTarget.css("top", el.options.displayTop());
+              });
+              break;
+            case "bottom": //底部对齐
+              elements.forEach(function (el) {
+                el.updateSizeAndPositionOptions(undefined, maxBottom - el.options.height);
+                el.designTarget.css("top", el.options.displayTop());
+              });
+              break;
+            case "distributeHor": // 横向分散
+              var sumWidth = [].reduce.call(elements, function (total, el) {
+                return total + el.options.width;
+              }, 0);
+              var distributeHor = (maxRight - minLeft - sumWidth) / (elements.length - 1);
+              elements.sort(function (prev, curr) {
+                return prev.options.left - curr.options.left;
+              });
+              elements.forEach(function (el, index) {
+                if (![0, elements.length - 1].includes(index)) {
+                  el.updateSizeAndPositionOptions(elements[index - 1].options.left + elements[index - 1].options.width + distributeHor);
+                  el.designTarget.css("left", el.options.displayLeft());
+                }
+              });
+              break;
+            case "distributeVer": // 纵向分散
+              var sumHeight = [].reduce.call(elements, function (total, el) {
+                return total + el.options.height;
+              }, 0);
+              var distributeVer = (maxBottom - minTop - sumHeight) / (elements.length - 1);
+              elements.sort(function (prev, curr) {
+                return prev.options.top - curr.options.top;
+              });
+              elements.forEach(function (el, index) {
+                if (![0, elements.length - 1].includes(index)) {
+                  el.updateSizeAndPositionOptions(undefined, elements[index - 1].options.top + elements[index - 1].options.height + distributeVer);
+                  el.designTarget.css("top", el.options.displayTop());
+                }
+              });
+              break;
           }
         }
-      }, t.prototype.setElsSpace = function (dis, isHor) {
-        var t = this;
+      }, v13381.prototype.setElsSpace = function (dis, isHor) {
+        var v13544 = this;
         var elements = this.getSelectEls();
         if (elements.length) {
-          if (isHor) { // 水平距离 →
+          if (isHor) {// 水平距离 →
             elements.sort(function (prev, curr) {
               return prev.options.left - curr.options.left;
-            })
+            });
             elements.forEach(function (el, index) {
               if (index > 0) {
                 el.updateSizeAndPositionOptions(elements[index - 1].options.left + elements[index - 1].options.width + dis);
                 el.designTarget.css("left", el.options.displayLeft());
               }
-            })
-          } else { // 垂直距离 ↓
+            });
+          } else {// 垂直距离 ↓
             elements.sort(function (prev, curr) {
               return prev.options.top - curr.options.top;
-            })
+            });
             elements.forEach(function (el, index) {
               if (index > 0) {
                 el.updateSizeAndPositionOptions(undefined, elements[index - 1].options.top + elements[index - 1].options.height + dis);
                 el.designTarget.css("top", el.options.displayTop());
               }
-            })
+            });
           }
         }
-      }, t.prototype.initAutoSave = function () {
-        var t = this;
-        o.a.event.on("hiprintTemplateDataShortcutKey_" + this.id, function (key) {
-          if (!t.history) return;
+      }, v13381.prototype.initAutoSave = function () {
+        var v13545 = this;
+        v12388.a.event.on("hiprintTemplateDataShortcutKey_" + this.id, function (key) {
+          if (!v13545.history) return;
           switch (key) {
-          case "undo":
-            if (t.historyPos > 0) {
-              t.historyPos -= 1;
-              var cur = t.historyList[t.historyPos];
-              t.update(cur.json);
-            }
-            break;
-          case "redo":
-            if (t.historyPos < t.historyList.length - 1) {
-              t.historyPos += 1;
-              var cur = t.historyList[t.historyPos];
-              t.update(cur.json);
-            }
-            break;
+            case "undo":
+              if (v13545.historyPos > 0) {
+                v13545.historyPos -= 1;
+                var cur = v13545.historyList[v13545.historyPos];
+                v13545.update(cur.json);
+              }
+              break;
+            case "redo":
+              if (v13545.historyPos < v13545.historyList.length - 1) {
+                v13545.historyPos += 1;
+                var cur = v13545.historyList[v13545.historyPos];
+                v13545.update(cur.json);
+              }
+              break;
           }
         });
-        o.a.event.on("hiprintTemplateDataChanged_" + this.id, function (type) {
-          if (t.history) {
-            var j = 1 == t.dataMode ? t.getJson() : t.getJsonTid()
-            t.lastJson = j;
-            if (t.historyPos < t.historyList.length - 1) {
-              t.historyList = t.historyList.slice(0, t.historyPos + 1);
+        v12388.a.event.on("hiprintTemplateDataChanged_" + this.id, function (type) {
+          if (v13545.history) {
+            var v13548 = 1 == v13545.dataMode ? v13545.getJson() : v13545.getJsonTid();
+            v13545.lastJson = v13548;
+            if (v13545.historyPos < v13545.historyList.length - 1) {
+              v13545.historyList = v13545.historyList.slice(0, v13545.historyPos + 1);
             }
-            t.historyList.push({id: s.a.instance.guid(), type: type, json: j});
-            if (t.historyList.length > 50) {
-              t.historyList = t.historyList.slice(0, 1).concat(t.historyList.slice(1, 50));
+            v13545.historyList.push({ id: v12411.a.instance.guid(), type: type, json: v13548 });
+            if (v13545.historyList.length > 50) {
+              v13545.historyList = v13545.historyList.slice(0, 1).concat(v13545.historyList.slice(1, 50));
             } else {
-              t.historyPos += 1;
+              v13545.historyPos += 1;
             }
-            t.onDataChanged && t.onDataChanged(type, j);
+            v13545.onDataChanged && v13545.onDataChanged(type, v13548);
           }
         });
-      }, t;
+      }, v13381;
     }();
 
-  function ht(t) {
-    this.getHtml(t).hiwprint();
+  function ht(v13550) {
+    this.getHtml(v13550).hiwprint();
   }
 
-  function ft(t, e, n) {
-    $.extend({}, t || {}).imgToBase64 = !0;
-    var i = new ct({});
-    i.on("printSuccess", e), i.on("printError", n), i.printByHtml2(this.getHtml(t), t.options);
+  function ft(v13551, v13552, v13553) {
+    $.extend({}, v13551 || {}).imgToBase64 = !0;
+    var v13554 = new ct({});
+    v13554.on("printSuccess", v13552), v13554.on("printError", v13553), v13554.printByHtml2(this.getHtml(v13551), v13551.options);
   }
 
-  function gt(t) {
-    var e = void 0;
-    return t && t.templates.forEach(function (n, i) {
-      var o = $.extend({}, n.options || {});
-      t.imgToBase64 && (o.imgToBase64 = !0), e ? e.append(n.template.getHtml(n.data, o).html()) : e = n.template.getHtml(n.data, o);
-    }), e;
+  function gt(v13555) {
+    var v13556 = void 0;
+    return v13555 && v13555.templates.forEach(function (v13557, v13558) {
+      var v13559 = $.extend({}, v13557.options || {});
+      v13555.imgToBase64 && (v13559.imgToBase64 = !0), v13556 ? v13556.append(v13557.template.getHtml(v13557.data, v13559).html()) : v13556 = v13557.template.getHtml(v13557.data, v13559);
+    }), v13556;
   }
 
-  function mt(t) {
-    p.a.instance.init(t), p.a.instance.providers && p.a.instance.providers.forEach(function (t) {
-      t.addElementTypes(a.instance);
+  function mt(v13560) {
+    v12410.a.instance.init(v13560), v12410.a.instance.providers && v12410.a.instance.providers.forEach(function (v13564) {
+      v13564.addElementTypes(v12393.instance);
     });
-    if (window.autoConnect && (p.a.instance.host != hiwebSocket.host || p.a.instance.token != hiwebSocket.token)) {
-      hiwebSocket.stop()
-      p.a.instance.host && (hiwebSocket.host = p.a.instance.host);
-      p.a.instance.token && (hiwebSocket.token = p.a.instance.token);
-      hiwebSocket.start()
+    if (window.autoConnect && (v12410.a.instance.host != hiwebSocket.host || v12410.a.instance.token != hiwebSocket.token)) {
+      hiwebSocket.stop();
+      v12410.a.instance.host && (hiwebSocket.host = v12410.a.instance.host);
+      v12410.a.instance.token && (hiwebSocket.token = v12410.a.instance.token);
+      hiwebSocket.start();
     }
-    if (p.a.instance.lang && Object.keys(languages).includes(p.a.instance.lang)) {
-      i18n.lang = p.a.instance.lang;
+    if (v12410.a.instance.lang && Object.keys(languages).includes(v12410.a.instance.lang)) {
+      i18n.lang = v12410.a.instance.lang;
     } else {
-      i18n.lang = 'cn'
+      i18n.lang = 'cn';
     }
   }
 
-  function cig(t) {
-    if (t) {
-      t && Object.keys(t).forEach(function (i) {
-        if (i == "optionItems" && t.optionItems && t.optionItems.length) {
-          p.a.instance.registerItems(t.optionItems);
-        }
-        else if (t[i].tabs && t[i].tabs.length) {
-          t[i].tabs.forEach(function (tab, idx) {
+  function cig(v13574) {
+    if (v13574) {
+      v13574 && Object.keys(v13574).forEach(function (v13575) {
+        if (v13575 == "optionItems" && v13574.optionItems && v13574.optionItems.length) {
+          v12410.a.instance.registerItems(v13574.optionItems);
+        } else
+        if (v13574[v13575].tabs && v13574[v13575].tabs.length) {
+          v13574[v13575].tabs.forEach(function (tab, idx) {
             if (tab.replace) {
-              $.extend(p.a.instance[i].tabs[idx], tab);
+              $.extend(v12410.a.instance[v13575].tabs[idx], tab);
             } else {
-              var options = tab.options, list = p.a.instance[i].tabs[idx].options;
-              options.forEach(function (o) {
-                var idx = list.findIndex(function (e) {
-                  return e.name == o.name
+              var options = tab.options,list = v12410.a.instance[v13575].tabs[idx].options;
+              options.forEach(function (v13579) {
+                var idx = list.findIndex(function (v13580) {
+                  return v13580.name == v13579.name;
                 });
-                if (idx > -1) list[idx].hidden = o.hidden;
-                else {
-                  if (o.after) {
-                    idx = list.findIndex(function (e) {
-                      return e.name == o.after
+                if (idx > -1) list[idx].hidden = v13579.hidden;else
+                {
+                  if (v13579.after) {
+                    idx = list.findIndex(function (v13581) {
+                      return v13581.name == v13579.after;
                     });
-                    if (idx > -1) list.splice(idx + 1, 0, o)
-                  } else list.push(o);
+                    if (idx > -1) list.splice(idx + 1, 0, v13579);
+                  } else list.push(v13579);
                 }
-              })
-              $.extend(p.a.instance[i].tabs[idx], {
+              });
+              $.extend(v12410.a.instance[v13575].tabs[idx], {
                 name: tab.name,
                 options: list
               });
             }
-          })
-          delete t[i].tabs;
-        }
-        else if (t[i].supportOptions) {
-          var options = t[i].supportOptions, list = p.a.instance[i].supportOptions;
-          options.forEach(function (o) {
-            var idx = list.findIndex(function (e) {
-              return e.name == o.name
+          });
+          delete v13574[v13575].tabs;
+        } else
+        if (v13574[v13575].supportOptions) {
+          var options = v13574[v13575].supportOptions,list = v12410.a.instance[v13575].supportOptions;
+          options.forEach(function (v13584) {
+            var idx = list.findIndex(function (v13585) {
+              return v13585.name == v13584.name;
             });
-            if (idx > -1) list[idx].hidden = o.hidden;
-            else {
-              if (o.after) {
-                idx = list.findIndex(function (e) {
-                  return e.name == o.after
+            if (idx > -1) list[idx].hidden = v13584.hidden;else
+            {
+              if (v13584.after) {
+                idx = list.findIndex(function (v13586) {
+                  return v13586.name == v13584.after;
                 });
-                if (idx > -1) list.splice(idx + 1, 0, o)
-              } else list.push(o);
+                if (idx > -1) list.splice(idx + 1, 0, v13584);
+              } else list.push(v13584);
             }
-          })
-          $.extend(p.a.instance[i].supportOptions, list);
-          delete t[i].supportOptions;
+          });
+          $.extend(v12410.a.instance[v13575].supportOptions, list);
+          delete v13574[v13575].supportOptions;
         } else {
           var keyMap = {};
-          keyMap[i] = t[i];
-          $.extend(p.a.instance, keyMap);
+          keyMap[v13575] = v13574[v13575];
+          $.extend(v12410.a.instance, keyMap);
         }
       });
     } else {
-      $.extend(p.a.instance, HIPRINT_CONFIG);
+      $.extend(v12410.a.instance, HIPRINT_CONFIG);
     }
   }
 
-  function uep(t, c) {
-    return a.instance.updateElementType(t, c);
+  function uep(v13590, v13591) {
+    return v12393.instance.updateElementType(v13590, v13591);
   }
 
-  function rpl(c) {
-    p.a.instance.clear("printerList");
-    p.a.instance.on("printerList", c);
+  function rpl(v13592) {
+    v12410.a.instance.clear("printerList");
+    v12410.a.instance.on("printerList", v13592);
     hiwebSocket.refreshPrinterList();
   }
 
-  function getClients(c) {
-    p.a.instance.clear("clients");
-    p.a.instance.on("clients", c);
+  function getClients(v13595) {
+    v12410.a.instance.clear("clients");
+    v12410.a.instance.on("clients", v13595);
     hiwebSocket.getClients();
   }
 
-  function getClientInfo(c) {
-    p.a.instance.clear("clientInfo");
-    p.a.instance.on("getClientInfo", c);
-    hiwebSocket.getClientInfo()
+  function getClientInfo(v13598) {
+    v12410.a.instance.clear("clientInfo");
+    v12410.a.instance.on("getClientInfo", v13598);
+    hiwebSocket.getClientInfo();
   }
 
-  function getAddr(type, c, ...args) {
-    p.a.instance.clear("address_" + type);
-    p.a.instance.on("address_" + type, c);
+  function getAddr(type, v13601, ...args) {
+    v12410.a.instance.clear("address_" + type);
+    v12410.a.instance.on("address_" + type, v13601);
     hiwebSocket.getAddress(type, ...args);
   }
 
   function ippPrint(options, callback, connected) {
-    p.a.instance.clear("ippPrinterCallback");
-    p.a.instance.on("ippPrinterCallback", callback);
-    p.a.instance.clear("ippPrinterConnected");
-    p.a.instance.on("ippPrinterConnected", connected);
+    v12410.a.instance.clear("ippPrinterCallback");
+    v12410.a.instance.on("ippPrinterCallback", callback);
+    v12410.a.instance.clear("ippPrinterConnected");
+    v12410.a.instance.on("ippPrinterConnected", connected);
     hiwebSocket.ippPrint(options);
   }
 
   function ippRequest(options, callback) {
-    p.a.instance.clear("ippRequestCallback");
-    p.a.instance.on("ippRequestCallback", callback);
+    v12410.a.instance.clear("ippRequestCallback");
+    v12410.a.instance.on("ippRequestCallback", callback);
     hiwebSocket.ippRequest(options);
   }
 
-  n.d(e, "init", function () {
+  v12385.d(v12384, "init", function () {
     return mt;
-  }), n.d(e, "setConfig", function () {
+  }), v12385.d(v12384, "setConfig", function () {
     return cig;
-  }), n.d(e, "updateElementType", function () {
+  }), v12385.d(v12384, "updateElementType", function () {
     return uep;
-  }), n.d(e, "hiwebSocket", function () {
+  }), v12385.d(v12384, "hiwebSocket", function () {
     return hiwebSocket;
-  }), n.d(e, "refreshPrinterList", function () {
+  }), v12385.d(v12384, "refreshPrinterList", function () {
     return rpl;
-  }), n.d(e, "getClients", function() {
+  }), v12385.d(v12384, "getClients", function () {
     return getClients;
-  }), n.d(e, "getClientInfo", function() {
+  }), v12385.d(v12384, "getClientInfo", function () {
     return getClientInfo;
-  }), n.d(e, "getAddress", function () {
+  }), v12385.d(v12384, "getAddress", function () {
     return getAddr;
-  }), n.d(e, "ippPrint", function () {
+  }), v12385.d(v12384, "ippPrint", function () {
     return ippPrint;
-  }), n.d(e, "ippRequest", function () {
+  }), v12385.d(v12384, "ippRequest", function () {
     return ippRequest;
-  }), n.d(e, "PrintElementTypeManager", function () {
+  }), v12385.d(v12384, "PrintElementTypeManager", function () {
     return it;
-  }), n.d(e, "PrintElementTypeGroup", function () {
+  }), v12385.d(v12384, "PrintElementTypeGroup", function () {
     return ot;
-  }), n.d(e, "PrintTemplate", function () {
+  }), v12385.d(v12384, "PrintTemplate", function () {
     return ct;
-  }), n.d(e, "print", function () {
+  }), v12385.d(v12384, "print", function () {
     return ht;
-  }), n.d(e, "print2", function () {
+  }), v12385.d(v12384, "print2", function () {
     return ft;
-  }), n.d(e, "getHtml", function () {
+  }), v12385.d(v12384, "getHtml", function () {
     return gt;
   }), $(document).ready(function () {
     console.log('document ready');
@@ -11228,9 +11228,8 @@ var hiprint = function (t) {
   });
 }]);
 
-var defaultElementTypeProvider = defaultTypeProvider(hiprint)
+var defaultElementTypeProvider = defaultTypeProvider(hiprint);
 
 export {
   hiprint,
-  defaultElementTypeProvider
-}
+  defaultElementTypeProvider };
