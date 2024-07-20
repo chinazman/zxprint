@@ -1,25 +1,3 @@
-"use strict";
-
-/**
- * 这个JavaScript文件实现了一个复杂的打印模板设计和打印功能，它可能是一个打印管理系统的一部分。以下是根据文件内容得出的一些关键功能点：
-
-1. **打印模板管理**：创建、编辑和删除打印模板。
-2. **打印元素管理**：包括文本、图片、长文本、表格、HTML内容、条形码、二维码等元素的添加、配置和布局。
-3. **国际化支持**：通过`i18n`支持多语言。
-4. **本地存储**：使用`localStorage`保存和获取数据。
-5. **自定义拖拽列表**：允许用户自定义拖拽元素。
-6. **打印预览**：提供打印预览功能，包括页面缩放和旋转。
-7. **打印样式设置**：允许用户设置打印样式，如页眉、页脚、页码等。
-8. **打印操作**：支持直接打印和批量打印功能。
-9. **网络打印支持**：通过WebSocket与打印服务器通信，实现远程打印。
-10. **事件触发**：在模板更改、打印成功或打印错误时触发事件。
-11. **配置选项**：允许通过配置选项自定义打印行为和界面。
-12. **SVG到Canvas转换**：为了打印，将SVG元素转换为Canvas元素。
-13. **自动保存和历史记录**：自动保存模板更改，并允许撤销和重做操作。
-
-文件中使用了大量的自定义对象和函数，以及一些外部库，例如`jsbarcode`、`jspdf`、`html2canvas`、`canvg`等，来实现上述功能。整个系统似乎是为了提供一个完整的解决方案，用于设计和打印复杂的文档模板。
-
- */
 import {languages,i18n,$,_instanceof,_typeof} from "../hiprint.comm.js";
 // 条形码
 import JsBarcode from "jsbarcode";
@@ -57,1280 +35,27 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
 
 import "../plugins/hiLocalStorage.js"
 
+import {PrintElementTypeContext,PrintElementTypeHtmlProvider,PrintElementTypeEntity,PrintElementType} from "./commonEntitys.js";
+import PrintPage from "./PrintPage.js";
 
-  // 打印元素类型管理器
-class PrintElementTypeContext {
-  constructor() {
-    this.allElementTypes = [];
-  }
+import ImagePrintElement from "./elements/ImagePrintElement.js";
+import LongTextPrintElement from "./elements/LongTextPrintElement.js";
+import TextPrintElement from "./elements/TextPrintElement.js";
+import HtmlPrintElement from "./elements/HtmlPrintElement.js";
+import VLinePrintElement from "./elements/VLinePrintElement.js";
+import HLinePrintElement from "./elements/HLinePrintElement.js";
+import RectPrintElement from "./elements/RectPrintElement.js";
+import OvalPrintElement from "./elements/OvalPrintElement.js";
+import BarcodePrintElement from "./elements/BarcodePrintElement.js";
+import QrcodePrintElement from "./elements/QrcodePrintElement.js";
+var
 
-  static get instance() {
-    return PrintElementTypeContext._instance || (PrintElementTypeContext._instance = new PrintElementTypeContext()), PrintElementTypeContext._instance;
-  }
-
-  // 添加打印元素类型
-  addPrintElementTypes(moduleName, types) {
-    const self = this;
-    this[moduleName] ? this[moduleName] = this[moduleName].concat(types) : this[moduleName] = types;
-    types.forEach(function (typeGroup) {
-      self.allElementTypes = self.allElementTypes.concat(typeGroup.printElementTypes);
-    });
-  }
-
-  // 移除打印元素类型
-  removePrintElementTypes(moduleName) {
-    const self = this;
-    delete self[moduleName];
-    self.allElementTypes = self.allElementTypes.filter(function (elementType) {
-      return !elementType.tid.startsWith(moduleName);
-    });
-  }
-
-  // 获取元素类型分组
-  getElementTypeGroups(moduleName) {
-    return this[this.formatterModule(moduleName)] || [];
-  }
-
-  // 获取特定元素类型
-  getElementType(typeId) {
-    const matchedTypes = this.allElementTypes.filter(function (elementType) {
-      return elementType.tid == typeId;
-    });
-    if (matchedTypes.length > 0) return matchedTypes[0];
-  }
-
-  // 更新元素类型
-  updateElementType(typeId, updateFunction) {
-    const type = this.getElementType(typeId);
-    if (updateFunction) {
-      const newType = updateFunction(type);
-      const idx = this.allElementTypes.findIndex(function (elementType) {
-        return elementType.tid == typeId;
-      });
-      if (idx >= 0) {
-        this.allElementTypes.splice(idx, 1, newType);
-        return newType;
-      }
-    }
-    return type;
-  }
-
-  // 格式化模块名
-  formatterModule(moduleName) {
-    return moduleName || "_default";
-  }
-}
-
-// 打印元素类型HTML生成器
-class PrintElementTypeHtmlProvider {
-  // 创建打印元素类型HTML
-  createPrintElementTypeHtml(container, printElementTypes) {
-    const ulElement = $('<ul class="hiprint-printElement-type"></ul>');
-    printElementTypes.forEach(function (printElementType) {
-      const liElement = $("<li></li>");
-      liElement.append('<span class="title">' + printElementType.name + "</span>");
-      const subUlElement = $("<ul></ul>");
-      liElement.append(subUlElement);
-      printElementType.printElementTypes.forEach(function (elementType) {
-        subUlElement.append('<li><a class="ep-draggable-item" tid="' + elementType.tid + '">  ' + elementType.getText() + " </a></li>");
-      });
-      ulElement.append(liElement);
-    });
-    $(container).append(ulElement);
-    return ulElement.find(".ep-draggable-item");
-  }
-}
-
-// 打印元素实体类
-class PrintElementTypeEntity {
-  constructor(options) {
-    this.title = options.title;
-    this.type = options.type;
-  }
-}
-
-// 表格实体类
-class TableEntity {
-  constructor(options) {
-    this.title = options.title;
-    this.type = options.type;
-    this.editable = options.editable;
-    this.columnDisplayEditable = options.columnDisplayEditable;
-    this.columnDisplayIndexEditable = options.columnDisplayIndexEditable;
-    this.columnTitleEditable = options.columnTitleEditable;
-    this.columnResizable = options.columnResizable;
-    this.columnAlignEditable = options.columnAlignEditable;
-    this.isEnableEditField = options.isEnableEditField;
-    this.isEnableContextMenu = options.isEnableContextMenu;
-    this.isEnableInsertRow = options.isEnableInsertRow;
-    this.isEnableDeleteRow = options.isEnableDeleteRow;
-    this.isEnableInsertColumn = options.isEnableInsertColumn;
-    this.isEnableDeleteColumn = options.isEnableDeleteColumn;
-    this.isEnableMergeCell = options.isEnableMergeCell;
-  }
-}
-
-// 打印元素类型
-class PrintElementType {
-  constructor(options) {
-    const self = this;
-    this.text = options.text;
-    this.field = options.field;
-    this.fields = options.fields;
-    this.title = options.title;
-    this.tid = options.tid;
-    this.data = options.data;
-    this.styler = options.styler;
-    this.formatter = options.formatter;
-    this.type = options.type;
-    this.options = options.options;
-    this.editable = options.editable !== undefined ? options.editable : true;
-    this.columnDisplayEditable = options.columnDisplayEditable !== undefined ? options.columnDisplayEditable : true;
-    this.columnDisplayIndexEditable = options.columnDisplayIndexEditable !== undefined ? options.columnDisplayIndexEditable : true;
-    this.columnTitleEditable = options.columnTitleEditable !== undefined ? options.columnTitleEditable : true;
-    this.columnResizable = options.columnResizable !== undefined ? options.columnResizable : true;
-    this.columnAlignEditable = options.columnAlignEditable !== undefined ? options.columnAlignEditable : true;
-    this.columns = [];
-    (options.columns || []).forEach(function (column, index) {
-      self.columns.push(self.createTableColumnArray(column));
-    });
-    this.rowStyler = options.rowStyler;
-    this.striped = options.striped;
-    this.groupFields = options.groupFields || [];
-    this.groupFormatter = options.groupFormatter;
-    this.groupFooterFormatter = options.groupFooterFormatter;
-    this.footerFormatter = options.footerFormatter;
-    this.rowsColumnsMerge = options.rowsColumnsMerge;
-    this.rowsColumnsMergeClean = options.rowsColumnsMergeClean;
-    this.gridColumnsFooterFormatter = options.gridColumnsFooterFormatter;
-    this.isEnableEditField = options.isEnableEditField !== undefined ? options.isEnableEditField : true;
-    this.isEnableContextMenu = options.isEnableContextMenu !== undefined ? options.isEnableContextMenu : true;
-    this.isEnableInsertRow = options.isEnableInsertRow !== undefined ? options.isEnableInsertRow : true;
-    this.isEnableDeleteRow = options.isEnableDeleteRow !== undefined ? options.isEnableDeleteRow : true;
-    this.isEnableInsertColumn = options.isEnableInsertColumn !== undefined ? options.isEnableInsertColumn : true;
-    this.isEnableDeleteColumn = options.isEnableDeleteColumn !== undefined ? options.isEnableDeleteColumn : true;
-    this.isEnableMergeCell = options.isEnableMergeCell !== undefined ? options.isEnableMergeCell : true;
-    this.columnObj = this.makeColumnObj();
-  }
-
-  getText() {
-    return this.text || this.title || "";
-  }
-
-  createPrintElement(options) {
-    const self = this;
-    if (this.columns && this.columns.length == 0) {
-      (options.columns || []).forEach(function (column, index) {
-        self.columns.push(self.createTableColumnArray(column));
-      });
-    }
-    return new TablePrintElement(this, options);
-  }
-
-  getData() {
-    return [{}];
-  }
-
-  createTableColumnArray(columns) {
-    const tableColumns = [];
-    columns.forEach(function (column, index) {
-      tableColumns.push(new PrintTableCell(column));
-    });
-    return tableColumns;
-  }
-
-  getPrintElementTypeEntity() {
-    if ('table' == this.type) {
-      return new TableEntity({
-        title: this.title,
-        type: this.type,
-        editable: this.editable,
-        columnDisplayEditable: this.columnDisplayEditable,
-        columnDisplayIndexEditable: this.columnDisplayIndexEditable,
-        columnResizable: this.columnResizable,
-        columnAlignEditable: this.columnAlignEditable,
-        columnTitleEditable: this.columnTitleEditable,
-        isEnableEditField: this.isEnableEditField,
-        isEnableContextMenu: this.isEnableContextMenu,
-        isEnableInsertRow: this.isEnableInsertRow,
-        isEnableDeleteRow: this.isEnableDeleteRow,
-        isEnableInsertColumn: this.isEnableInsertColumn,
-        isEnableDeleteColumn: this.isEnableDeleteColumn,
-        isEnableMergeCell: this.isEnableMergeCell
-      });
-    }
-    return new PrintElementTypeEntity({
-      title: this.title,
-      type: this.type
-    });
-  }
-
-  getFields() {
-    return this.fields;
-  }
-
-  getOptions() {
-    return this.options || {};
-  }
-
-  getColumnByColumnId(columnId) {
-    return this.columnObj[columnId];
-  }
-
-  makeColumnObj(columns) {
-    const columnObject = {};
-    if (columns) {
-      columns.forEach(function (column) {
-        (column.id || column.columnId) && (columnObject[column.id || column.columnId] = column);
-      });
-    } else if (this.columns) {
-      this.columns.forEach(function (columnGroup) {
-        columnGroup.forEach(function (column) {
-          (column.id || column.columnId) && (columnObject[column.id || column.columnId] = column);
-        });
-      });
-    }
-    this.columnObj = columnObject;
-    return columnObject;
-  }
-}
-    var _r,
-
-
-
-
-
-      v12449 = (_r = function v12450(v12451, v12452) {
-        return (_r = Object.setPrototypeOf || _instanceof({
-          __proto__: []
-        }, Array) && function (v12453, v12454) {
-          v12453.__proto__ = v12454;
-        } || function (v12455, v12456) {
-          for (var v12457 in v12456) {
-            v12456.hasOwnProperty(v12457) && (v12455[v12457] = v12456[v12457]);
-          }
-        })(v12451, v12452);
-      }, function (v12458, v12459) {
-        function v12460() {
-          this.constructor = v12458;
-        }
-  
-        _r(v12458, v12459), v12458.prototype = null === v12459 ? Object.create(v12459) : (v12460.prototype = v12459.prototype, new v12460());
-      }),
-      ImagePrintElement = function (v12462) {
-        function v12469(v12463, v12464) {
-          var v12465 = v12462.call(this, v12463) || this;
-          return v12465.options = new PrintElementOption(v12464), v12465.options.setDefault(new PrintElementOption(PrintConfig.instance.image.default).getPrintElementOptionEntity()), v12465;
-        }
-  
-        return v12449(v12469, v12462), v12469.prototype.getReizeableShowPoints = function () {
-          return ["s", "e", "se", "r"];
-        }, v12469.prototype.getData = function (v12470) {
-          var v12471 = "",v12472 = this.getField();
-          v12470 ? v12471 = v12472 ? v12472.split('.').reduce((v12473, v12474) => v12473 ? v12473[v12474] : v12470[v12474], !1) || "" : this.options.src || this.printElementType.getData() : v12471 = this.options.src || this.printElementType.getData();
-          var v12475 = this.getFormatter();
-          return v12475 && (v12471 = v12475(v12471, this.options, this._currenttemplateData)), v12471 || "";
-        }, v12469.prototype.createTarget = function (v12476, v12477) {
-          var v12478 = $('<div  class="hiprint-printElement hiprint-printElement-image" style="position: absolute;"><div class="hiprint-printElement-image-content" style="height:100%;width:100%"></div></div>');
-          return this.updateTargetImage(v12478, v12476, v12477), v12478;
-        }, v12469.prototype.initSizeByHtml = function (v12479) {
-          v12462.prototype.initSizeByHtml.call(this, v12479), this.css(v12479, this.getData());
-        }, v12469.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.image;
-        }, v12469.prototype.updateDesignViewFromOptions = function () {
-          this.designTarget && (this.css(this.designTarget, this.getData()), this.updateTargetImage(this.designTarget, this.getTitle(), this.getData()));
-        }, v12469.prototype.updateTargetImage = function (v12481, v12482, v12483) {
-          var v12484 = v12481.find(".hiprint-printElement-image-content");
-          v12484.find("img").length ? v12484.find("img").attr("src", v12483) : v12484.html('<img style="width:100%;height:100%;" src="' + v12483 + '">');
-          if (v12483.length) v12484.find("img").css('cssText', `width:100%;height:100%;content:url("${v12483}")!important`);else
-          v12484.find("img").css('cssText', 'width:100%;height:100%;');
-          if (this.options.fit) v12484.find("img").css("object-fit", this.options.fit);
-          if (this.options.borderRadius) v12484.find("img").css("border-radius", this.options.borderRadius);
-        }, v12469.prototype.getHtml = function (v12485, v12486, v12487) {
-          return this.getHtml2(v12485, v12486, v12487);
-        }, v12469;
-      }(BasePrintElement),
-      v12489 = function () {
-        var _t4 = function v12490(v12491, v12492) {
-          return (_t4 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12493, v12494) {
-            v12493.__proto__ = v12494;
-          } || function (v12495, v12496) {
-            for (var v12497 in v12496) {
-              v12496.hasOwnProperty(v12497) && (v12495[v12497] = v12496[v12497]);
-            }
-          })(v12491, v12492);
-        };
-  
-        return function (v12498, v12499) {
-          function v12500() {
-            this.constructor = v12498;
-          }
-  
-          _t4(v12498, v12499), v12498.prototype = null === v12499 ? Object.create(v12499) : (v12500.prototype = v12499.prototype, new v12500());
-        };
-      }(),
-      v12501 = function (v12502) {
-        function v12505(v12503) {
-          var v12504 = this;
-          return v12503 = v12503 || {}, (v12504 = v12502.call(this, v12503) || this).leftSpaceRemoved = v12503.leftSpaceRemoved, v12504;
-        }
-  
-        return v12489(v12505, v12502), v12505.prototype.getHideTitle = function () {
-          return null == this.hideTitle ? this.defaultOptions.hideTitle : this.hideTitle;
-        }, v12505;
-      }(PrintElementOption),
-
-      v12508 = function () {
-        function v12523(v12509, idx, watermarkOptions, pr, scl, v12510, v12511, v12512, v12513, v12514, v12515, v12516, s1, v12517, v12518, v12519) {
-          this.panelPageRule = pr, this.scale = scl, this.watermarkOptions = watermarkOptions,
-          this.defaultPaperNumberFormat = "${paperNo}-${paperCount}", this.printLine = 0, this.templateId = v12509, this.panelIdx = idx, this.width = hinnn.mm.toPt(v12510), this.height = hinnn.mm.toPt(v12511), this.mmwidth = v12510, this.mmheight = v12511, this.paperHeader = v12512 >= 0 ? v12512 : 0, this.paperFooter = v12513, this.contentHeight = v12513 - v12512, this.createTarget(), this.index = v12518, this.paperNumberLeft = v12514 || parseInt((this.width - 30).toString()), this.paperNumberTop = v12515 || parseInt((this.height - 22).toString()), this.paperNumberDisabled = v12516, this.paperNumberContinue = s1, this.paperNumberFormat = v12517, this.referenceElement = v12519 ? $.extend({}, v12519) : new PrintReferenceElement({
-            top: 0,
-            left: 0,
-            height: 0,
-            width: 0,
-            bottomInLastPaper: 0,
-            beginPrintPaperIndex: 0,
-            printTopInPaper: 0,
-            endPrintPaperIndex: 0
-          });
-        }
-  
-        return v12523.prototype.subscribePaperBaseInfoChanged = function (v12524) {
-          this.onPaperBaseInfoChanged = v12524;
-        }, v12523.prototype.triggerOnPaperBaseInfoChanged = function (v12525) {
-          this.onPaperBaseInfoChanged && this.onPaperBaseInfoChanged({
-            panelPageRule: this.panelPageRule,
-            scale: this.scale,
-            paperHeader: this.paperHeader,
-            paperFooter: this.paperFooter,
-            paperNumberLeft: this.paperNumberLeft,
-            paperNumberTop: this.paperNumberTop,
-            paperNumberDisabled: this.paperNumberDisabled,
-            paperNumberContinue: this.paperNumberContinue,
-            paperNumberFormat: this.paperNumberFormat
-          });
-          hinnn.event.trigger("hiprintTemplateDataChanged_" + this.templateId, v12525 || "模板调整");
-        }, v12523.prototype.setFooter = function (v12527, v12528, v12529, v12530) {
-          this.firstPaperFooter = v12527, this.evenPaperFooter = v12528, this.oddPaperFooter = v12529, this.lastPaperFooter = v12530;
-        }, v12523.prototype.setOffset = function (v12531, v12532) {
-          this.setLeftOffset(v12531), this.setTopOffset(v12532);
-        }, v12523.prototype.setLeftOffset = function (v12533) {
-          v12533 ? this.paperContentTarget.css("left", v12533 + "pt") : this.paperContentTarget[0].style.left = "";
-        }, v12523.prototype.setTopOffset = function (v12534) {
-          v12534 ? this.paperContentTarget.css("top", v12534 + "pt") : this.paperContentTarget[0].style.top = "";
-        }, v12523.prototype.createTarget = function () {
-          this.target = $('<div class="hiprint-printPaper"><div class="hiprint-printPaper-content"></div></div>'), this.paperContentTarget = this.target.find(".hiprint-printPaper-content"), this.target.css("width", this.mmwidth + "mm"), this.target.css("height", this.mmheight - PrintConfig.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight), this.zoom(this.scale);
-        }, v12523.prototype.createHeaderLine = function () {
-          var v12536 = this;
-          this.headerLinetarget = $('<div class="hiprint-headerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.headerLinetarget.css("top", (this.paperHeader || -1) + "pt"), 0 == this.paperHeader && this.headerLinetarget.addClass("hideheaderLinetarget"), this.paperContentTarget.append(this.headerLinetarget), this.dragHeadLineOrFootLine(this.headerLinetarget, function (v12537, v12538) {
-            if (v12538 >= v12536.paperFooter) {
-              v12538 = v12536.paperFooter - 10;
-            }
-            v12536.paperHeader = v12538 >= 0 ? v12538 : 0, v12536.triggerOnPaperBaseInfoChanged();
-          });
-        }, v12523.prototype.createFooterLine = function () {
-          var v12539 = this;
-          this.footerLinetarget = $('<div class="hiprint-footerLine"  style="position: absolute;width: 100%;border-top: 1px dashed #c9bebe;height: 7pt;"></div>'), this.footerLinetarget.css("top", parseInt(this.paperFooter.toString()) + "pt"), this.paperFooter == this.height && (this.footerLinetarget.css("top", this.mmheight - PrintConfig.instance.paperHeightTrim + "mm"), this.footerLinetarget.addClass("hidefooterLinetarget")), this.paperContentTarget.append(this.footerLinetarget), this.dragHeadLineOrFootLine(this.footerLinetarget, function (v12541, v12542) {
-            if (v12542 <= v12539.paperHeader) {
-              v12542 = v12539.paperHeader + 10;
-            }
-            v12539.paperFooter = v12542, v12539.triggerOnPaperBaseInfoChanged();
-          });
-        }, v12523.prototype.createPaperNumber = function (v12543, v12544) {
-          var v12545 = this,
-            v12546 = this.target.find(".hiprint-paperNumber");
-          if (v12546.length) return v12546.html(v12543), v12546;
-          var v12547 = $('<span class="hiprint-paperNumber"  style="position: absolute">' + v12543 + "</span>");
-          return v12547.css("top", this.paperNumberTop + "pt"), v12547.css("left", this.paperNumberLeft + "pt"), this.paperContentTarget.append(v12547), v12544 && this.dragHeadLineOrFootLine(v12547, function (v12548, v12549) {
-            v12545.paperNumberTop = v12549, v12545.paperNumberLeft = v12548, v12545.triggerOnPaperBaseInfoChanged();
-          }, !0), v12547;
-        }, v12523.prototype.getTarget = function () {
-          return this.target;
-        }, v12523.prototype.append = function (v12550) {
-          this.paperContentTarget.append(v12550);
-        }, v12523.prototype.updateReferenceElement = function (v12551) {
-          v12551 && (this.referenceElement = v12551);
-        }, v12523.prototype.updatePrintLine = function (v12552) {
-          v12552 >= this.printLine && (this.printLine = v12552);
-        }, v12523.prototype.design = function (v12553) {
-          var v12554 = this;
-          this.createHeaderLine(), this.createFooterLine(), this.target.addClass("design"), v12553 && v12553.grid && this.target.addClass("grid"), this.paperNumberTarget = this.createPaperNumber(this.formatPaperNumber(1, 1), true), this.createRuler(), this.createWaterMark(true, this.panelIdx, this.watermarkOptions), this.resetPaperNumber(this.paperNumberTarget), $(this.paperNumberTarget).bind("dblclick.hiprint", function () {
-            null == v12554.paperNumberDisabled && (v12554.paperNumberDisabled = !1), v12554.paperNumberDisabled = !v12554.paperNumberDisabled, v12554.resetPaperNumber(v12554.paperNumberTarget), v12554.triggerOnPaperBaseInfoChanged("初始");
-          }), $(this.paperNumberTarget).bind("click.hiprint", function () {
-            hinnn.event.trigger("BuildCustomOptionSettingEventKey_" + v12554.templateId, {
-              options: {
-                paperNumberFormat: v12554.paperNumberFormat,
-                paperNumberDisabled: v12554.paperNumberDisabled,
-                paperNumberContinue: v12554.paperNumberContinue
-              },
-              callback: function callback(v12556) {
-                v12554.paperNumberDisabled = !!v12556.paperNumberDisabled || void 0, v12554.paperNumberContinue = v12556.paperNumberContinue, v12554.paperNumberFormat = v12556.paperNumberFormat ? v12556.paperNumberFormat : void 0, v12554.createPaperNumber(v12554.formatPaperNumber(1, 1), true), v12554.resetPaperNumber(v12554.paperNumberTarget), v12554.triggerOnPaperBaseInfoChanged();
-              }
-            });
-          });
-        }, v12523.prototype.resetPaperNumber = function (v12557) {
-          this.paperNumberDisabled ? v12557.addClass("hiprint-paperNumber-disabled") : v12557.removeClass("hiprint-paperNumber-disabled");
-        }, v12523.prototype.updatePaperNumber = function (v12558, v12559, v12560) {
-          var v12561 = this.createPaperNumber(this.formatPaperNumber(v12558, v12559));
-          this.paperNumberDisabled ? v12561.hide() : v12560 && this.index % 2 == 1 && (v12561[0].style.left = "", v12561.css("right", this.paperNumberLeft + "pt"));
-        }, v12523.prototype.formatPaperNumber = function (v12562, v12563) {
-          this.createWaterMark(false, v12562, this.watermarkOptions);
-          return eval("`" + (this.paperNumberFormat ? this.paperNumberFormat : this.defaultPaperNumberFormat).replace("paperNo", v12562).replace("paperCount", v12563) + "`");
-        }, v12523.prototype.dragHeadLineOrFootLine = function (v12564, v12565, v12566) {
-          var v12567 = this;
-          v12564.hidraggable({
-            axis: v12566 ? void 0 : "v",
-            onDrag: function onDrag(v12568, v12569, v12570) {
-              v12565(v12569, v12570);
-            },
-            moveUnit: "pt",
-            minMove: PrintConfig.instance.movingDistance,
-            onBeforeDrag: function onBeforeDrag(v12572) {
-              PrintLib.instance.draging = !0;
-            },
-            getScale: function getScale() {
-              return v12567.scale || 1;
-            },
-            onStopDrag: function onStopDrag(v12574) {
-              v12567.headerLinetarget.css("top", v12567.paperHeader + "pt");
-              v12567.footerLinetarget.css("top", v12567.paperFooter + "pt");
-              PrintLib.instance.draging = !1, v12567.footerLinetarget.removeClass("hidefooterLinetarget"), v12567.headerLinetarget.removeClass("hideheaderLinetarget");
-            }
-          });
-        }, v12523.prototype.resize = function (v12576, v12577) {
-          // 获取页脚高度比例
-          var parperFooterRatio = this.paperFooter / this.height;
-          this.width = hinnn.mm.toPt(v12576), this.height = hinnn.mm.toPt(v12577), this.mmwidth = v12576, this.mmheight = v12577, this.target.css("width", v12576 + "mm"), this.target.css("height", v12577 - PrintConfig.instance.paperHeightTrim + "mm"), this.target.attr("original-height", this.mmheight);
-          // 按比例计算页脚高度
-          var paperFooter = this.height * parperFooterRatio;
-          this.paperFooter = paperFooter || this.height, this.footerLinetarget.css("top", paperFooter + "pt"),
-          this.contentHeight = this.paperFooter - this.paperHeader,
-          // 设置纸张后, 页码位置重置问题
-          this.paperNumberLeft = this.paperNumberLeft > this.width ? parseInt((this.width - 30).toString()) : this.paperNumberLeft;
-          this.paperNumberTop = this.paperNumberTop > this.height ? this.paperNumberTop = parseInt((this.height - 22).toString()) : this.paperNumberTop;
-          this.paperNumberTarget.css("top", this.paperNumberTop + "pt"),
-          this.paperNumberTarget.css("left", this.paperNumberLeft + "pt"),
-          this.triggerOnPaperBaseInfoChanged("调整大小");
-        }, v12523.prototype.zoom = function (v12581) {
-          if (v12581) {
-            this.scale = v12581, this.target.css("transform", "scale(" + v12581 + ")");
-            if (v12581 > 1) {
-              this.target.css("transform-origin", "-" + v12581 + "% -" + v12581 + "%");
-            } else {
-              this.target.css("transform-origin", "0 0");
-            }
-            this.triggerOnPaperBaseInfoChanged("缩放");
-          }
-        }, v12523.prototype.getPaperFooter = function (v12582) {
-          var v12583 = this.index + v12582;
-          return 0 == v12583 ? this.firstPaperFooter ? this.firstPaperFooter : this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : v12583 % 2 == 0 ? this.oddPaperFooter ? this.oddPaperFooter : this.paperFooter : v12583 % 2 == 1 ? this.evenPaperFooter ? this.evenPaperFooter : this.paperFooter : void 0;
-        }, v12523.prototype.getContentHeight = function (v12584) {
-          return this.getPaperFooter(v12584) - this.paperHeader;
-        }, v12523.prototype.createRuler = function () {
-          this.target.append('<div class="hiprint_rul_wrapper">\n                     <img class="h_img" src="' + lImg + '" />\n                     <img class="v_img" src="' + vImg + '" />\n                    </div>');
-        }, v12523.prototype.createWaterMark = function (watch, idx, opts) {
-          var v12585 = this;
-          var options = Object.assign({}, opts || {}, {
-            id: `${v12585.templateId}_${v12585.panelIdx}_${idx || 1}_${watch ? 'design' : v12585.index}`,
-            watch: watch,
-            container: v12585.target[0]
-          });
-          if (!options.container) return;
-          if (options.content) {
-            if (watch) {
-              watermark.destroyWatermark(Object.assign({}, options, {
-                id: `${v12585.templateId}_${v12585.panelIdx}_${idx || 1}_${v12585.index}`
-              }));
-            }
-            watermark.createWatermark(options);
-          } else {
-            watermark.destroyWatermark(options);
-          }
-        }, v12523.prototype.displayHeight = function () {
-          return this.mmheight - PrintConfig.instance.paperHeightTrim + "mm";
-        }, v12523.prototype.displayWidth = function () {
-          return this.mmwidth + "mm";
-        }, v12523.prototype.getPanelTarget = function () {
-          return this.target.parent(".hiprint-printPanel ");
-        }, v12523;
-      }(),
-
-      v12588 = function () {
-        var _t5 = function v12589(v12590, v12591) {
-          return (_t5 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12592, v12593) {
-            v12592.__proto__ = v12593;
-          } || function (v12594, v12595) {
-            for (var v12596 in v12595) {
-              v12595.hasOwnProperty(v12596) && (v12594[v12596] = v12595[v12596]);
-            }
-          })(v12590, v12591);
-        };
-  
-        return function (v12597, v12598) {
-          function v12599() {
-            this.constructor = v12597;
-          }
-  
-          _t5(v12597, v12598), v12597.prototype = null === v12598 ? Object.create(v12598) : (v12599.prototype = v12598.prototype, new v12599());
-        };
-      }(),
-      LongTextPrintElement = function (v12601) {
-        function v12606(v12602, v12603) {
-          var v12604 = v12601.call(this, v12602) || this;
-          return v12604.options = new v12501(v12603), v12604.options.setDefault(new v12501(PrintConfig.instance.longText.default).getPrintElementOptionEntity()), v12604;
-        }
-  
-        return v12588(v12606, v12601), v12606.prototype.getDesignTarget = function (v12607) {
-          var v12608 = v12601.prototype.getDesignTarget.call(this, v12607);
-          return v12608.find(".hiprint-printElement-longText-content").css("border", "1px dashed #cebcbc"), v12608;
-        }, v12606.prototype.getProxyTarget = function (v12609) {
-          v12609 && this.SetProxyTargetOption(v12609);
-          var v12610 = this.getData(),
-            v12611 = this.createTarget(this.printElementType.getText(!0), v12610);
-          return this.updateTargetSize(v12611), this.css(v12611, v12610), v12611;
-        }, v12606.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12612 = this.getData(),
-              v12613 = this.getHtml(this.designPaper)[0].target;
-            this.designTarget.find(".hiprint-printElement-longText-content").html(v12613.find(".hiprint-printElement-longText-content").html()), this.css(this.designTarget, v12612);
-          }
-        }, v12606.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.longText;
-        }, v12606.prototype.getTitle = function () {
-          return this.options.title || this.printElementType.title;
-        }, v12606.prototype.getData = function (v12615) {
-          var v12616 = this.getField();
-          var v12617 = v12616 ? v12616.split('.').reduce((v12618, v12619) => v12618 ? v12618[v12619] : v12615 ? v12615[v12619] : "", !1) || "" : "";
-          return v12615 ? v12617 || "" : this.options.testData || this.printElementType.getData() || "";
-        }, v12606.prototype.updateTargetText = function (v12620, v12621, v12622) {
-          var v12623 = v12620.find(".hiprint-printElement-longText-content"),
-            v12624 = this.getText(v12621, v12622);
-          v12623.html(v12624);
-        }, v12606.prototype.createTarget = function (v12625, v12626) {
-          var v12627 = $('<div  class="hiprint-printElement hiprint-printElement-longText" style="position: absolute;"><div class="hiprint-printElement-longText-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
-          return this.updateTargetText(v12627, v12625, v12626), v12627;
-        }, v12606.prototype.getText = function (v12628, v12629) {
-          var v12630 = this.getFormatter();
-          v12629 && (v12629 = 0 != this.options.leftSpaceRemoved ? v12629.toString().replace(/^\s*/, "") : v12629);
-          return (this.getField() ? (this.options.getHideTitle() ? "" : v12628 ? v12628 + "：" : "") + (v12630 ? v12630(v12628, v12629, this.options, this._currenttemplateData) : v12629) : v12630 ? v12630(v12628, v12628, this.options, this._currenttemplateData) : v12628 || "") || "";
-        }, v12606.prototype.getHtml = function (v12631, v12632) {
-          this.setCurrentTemplateData(v12632), this.createTempContainer();
-          var v12633 = this.getPaperHtmlResult(v12631, v12632);
-          return this.removeTempContainer(), v12633;
-        }, v12606.prototype.getHeightByData = function (v12634) {
-          this.createTempContainer();
-          var v12635 = this.getPaperHtmlResult(new v12508("", "", void 0, 1e3, 1e3, 0, 25e3, 0, 0, !0, !0, void 0, 0, void 0), {}, v12634);
-          return this.removeTempContainer(), v12635[0].referenceElement.bottomInLastPaper - v12635[0].referenceElement.printTopInPaper;
-        }, v12606.prototype.getLongTextIndent = function () {
-          return this.options.longTextIndent ? '<span class="long-text-indent" style="margin-left:' + this.options.longTextIndent + 'pt"></span>' : '<span class="long-text-indent"></span>';
-        }, v12606.prototype.getPaperHtmlResult = function (v12636, v12637, v12638) {
-          var v12639 = this,
-            v12640 = [],
-            v12641 = 0,
-            v12642 = v12638 || this.getData(v12637),
-            v12643 = this.getText(this.getTitle(), v12642),
-            v12644 = this.createTarget(this.getTitle(), this.options.testData || "");
-          this.css(v12644, v12642), v12637 ? this.updateTargetWidth(v12644) : this.updateTargetSize(v12644), this.getTempContainer().html(""), this.getTempContainer().append(v12644);
-          var v12645 = [this.getLongTextIndent()],
-            v12646 = v12643.split(new RegExp("\r|\n", "g"));
-          if (v12646.forEach(function (v12647, v12648) {
-            var v12649 = 0 != v12639.options.leftSpaceRemoved ? (v12647 || "").toString().replace(/^\s*/, "") : v12647;
-            v12645 = v12645.concat(v12649.split("")), v12648 < v12646.length - 1 && v12645.push("<br/>" + v12639.getLongTextIndent());
-          }), 0 == v12645.length && (v12645 = [""]), this.isHeaderOrFooter() || this.isFixed() || !v12637) return (v12650 = this.getStringBySpecificHeight(v12645, 25e3, v12644)).target.css("left", this.options.displayLeft()), v12650.target.css("top", this.options.displayTop()), v12650.target[0].height = "", v12640.push(new PaperHtmlResult({
-            target: v12650.target,
-            printLine: this.options.displayTop() + v12650.height,
-            referenceElement: new PrintReferenceElement({
-              top: this.options.getTop(),
-              left: this.options.getLeft(),
-              height: this.options.getHeight(),
-              width: this.options.getWidth(),
-              beginPrintPaperIndex: v12636.index,
-              bottomInLastPaper: this.options.getTop() + v12650.height,
-              printTopInPaper: this.options.getTop()
-            })
-          })), v12640;
-  
-          for (var v12653 = this.getBeginPrintTopInPaperByReferenceElement(v12636); v12645.length > 0;) {
-            var v12654 = 0,
-              v12655 = v12636.getPaperFooter(v12641);
-            0 == v12641 && v12653 > v12655 && "none" != v12636.panelPageRule && (v12653 = v12653 - v12655 + v12636.paperHeader, v12640.push(new PaperHtmlResult({
-              target: void 0,
-              printLine: void 0
-            })), v12641++, v12654 = v12636.getContentHeight(v12641) - (v12653 - v12636.paperHeader), v12655 = v12636.getPaperFooter(v12641));
-            var v12650 = this.getStringBySpecificHeight(v12645, v12654 > 0 ? v12654 : 0 == v12641 ? v12655 - v12653 : v12636.getContentHeight(v12641), v12644);
-            v12645.splice(0, v12650.length);
-            var v12657 = void 0,
-              v12658 = void 0;
-            v12650.target.css("left", this.options.displayLeft()), v12650.target[0].height = "", 0 == v12641 || v12654 > 0 ? (v12658 = v12653, v12650.target.css("top", v12658 + "pt"), v12657 = v12645.length > 0 ? v12653 + v12650.height : null != this.options.lHeight ? v12653 + (v12650.height > this.options.lHeight ? v12650.height : this.options.lHeight) : v12653 + v12650.height) : (v12658 = v12636.paperHeader, v12650.target.css("top", v12658 + "pt"), v12657 = v12658 + v12650.height), v12640.push(new PaperHtmlResult({
-              target: v12650.target,
-              printLine: v12657,
-              referenceElement: new PrintReferenceElement({
-                top: this.options.getTop(),
-                left: this.options.getLeft(),
-                height: this.options.getHeight(),
-                width: this.options.getWidth(),
-                beginPrintPaperIndex: v12636.index,
-                bottomInLastPaper: v12657,
-                printTopInPaper: v12658
-              })
-            })), v12641++;
-            v12637 && this.updatePanelHeight(v12657 + this.options.getHeight(), v12636);
-          }
-  
-          return v12640;
-        }, v12606.prototype.getStringBySpecificHeight = function (v12661, v12662, v12663) {
-          var v12664 = hinnn.pt.toPx(v12662);
-          var v12666 = void 0;
-          var noPaging = "none" == this.panel.panelPageRule;
-          if (noPaging) {
-            v12666 = this.IsPaginationIndex(v12661, v12661.length, -1, v12663);
-          } else {
-            v12666 = this.IsPaginationIndex(v12661, v12661.length - 1, v12664, v12663);
-          }
-          return v12666.IsPagination ? v12666 : this.BinarySearch(v12661, 0, v12661.length - 1, v12664, v12663);
-        }, v12606.prototype.BinarySearch = function (v12667, v12668, v12669, v12670, v12671) {
-          var v12672 = Math.floor((v12668 + v12669) / 2);
-          if (v12668 > v12669) return v12671.find(".hiprint-printElement-longText-content").html(""), {
-            IsPagination: !0,
-            height: 0,
-            length: 0,
-            target: v12671.clone()
-          };
-          var v12673 = this.IsPaginationIndex(v12667, v12672, v12670, v12671);
-          return v12673.IsPagination ? v12673 : "l" == v12673.move ? this.BinarySearch(v12667, v12668, v12672 - 1, v12670, v12671) : this.BinarySearch(v12667, v12672 + 1, v12669, v12670, v12671);
-        }, v12606.prototype.IsPaginationIndex = function (v12674, v12675, v12676, v12677) {
-          if (-1 == v12676) {
-            v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675).join(""));
-            var v12678 = v12677.height();
-            return {
-              IsPagination: !0,
-              height: hinnn.px.toPt(v12678),
-              length: v12674.length,
-              target: v12677.clone()
-            };
-          }
-          v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675 + 2).join(""));
-          var v12680 = v12677.height();
-          v12677.find(".hiprint-printElement-longText-content").html(v12674.slice(0, v12675 + 1).join(""));
-          var v12678 = v12677.height();
-          return v12675 >= v12674.length - 1 && v12678 < v12676 ? {
-            IsPagination: !0,
-            height: hinnn.px.toPt(v12678),
-            length: v12674.length,
-            target: v12677.clone()
-          } : v12678 <= v12676 && v12680 >= v12676 ? {
-            IsPagination: !0,
-            height: v12678,
-            length: v12675 + 1,
-            target: v12677.clone()
-          } : v12678 >= v12676 ? {
-            IsPagination: !1,
-            move: "l"
-          } : v12680 <= v12676 ? {
-            IsPagination: !1,
-            move: "r"
-          } : {
-            IsPagination: !0,
-            result: 1
-          };
-        }, v12606;
-      }(BasePrintElement),
-      v12683 = function () {
-        function v12684() {
-        }
-  
-        return v12684.replaceEnterAndNewline = function (v12685, v12686) {
-          return v12685.replace(new RegExp("\r|\n|/g", "g"), v12686);
-        }, v12684.replaceTab = function (v12687, v12688) {
-          return v12687.replace(new RegExp("\t/g", "g"), v12688);
-        }, v12684.replaceEnterAndNewlineAndTab = function (v12689, v12690) {
-          return v12689.replace(new RegExp("\r|\n|\t|/g", "g"), v12690);
-        }, v12684;
-      }(),
-      v12691 = function () {
-        var _t6 = function v12692(v12693, v12694) {
-          return (_t6 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12695, v12696) {
-            v12695.__proto__ = v12696;
-          } || function (v12697, v12698) {
-            for (var v12699 in v12698) {
-              v12698.hasOwnProperty(v12699) && (v12697[v12699] = v12698[v12699]);
-            }
-          })(v12693, v12694);
-        };
-  
-        return function (v12700, v12701) {
-          function v12702() {
-            this.constructor = v12700;
-          }
-  
-          _t6(v12700, v12701), v12700.prototype = null === v12701 ? Object.create(v12701) : (v12702.prototype = v12701.prototype, new v12702());
-        };
-      }(),
-      v12703 = function (v12704) {
-        function v12707(v12705) {
-          var v12706 = v12704.call(this, v12705) || this;
-          return v12706.title && (v12706.title = v12683.replaceEnterAndNewlineAndTab(v12706.title, "")), v12706;
-        }
-  
-        return v12691(v12707, v12704), v12707.prototype.getHideTitle = function () {
-          return null == this.hideTitle ? this.defaultOptions.hideTitle : this.hideTitle;
-        }, v12707.prototype.getTextType = function () {
-          return (null == this.textType ? this.defaultOptions.textType : this.textType) || "text";
-        }, v12707.prototype.getFontSize = function () {
-          return (null == this.fontSize ? this.defaultOptions.fontSize : this.fontSize) || 9;
-        }, v12707.prototype.getbarcodeMode = function () {
-          return (null == this.barcodeMode ? this.defaultOptions.barcodeMode : this.barcodeMode) || "CODE128";
-        }, v12707.prototype.getBarWidth = function () {
-          return (null == this.barWidth ? this.defaultOptions.barWidth : this.barWidth) || 1;
-        }, v12707.prototype.getBarAutoWidth = function () {
-          // 该属性 "true" 为 true，其余一概为 false
-          return (null == this.barAutoWidth ? this.defaultOptions.barAutoWidth === "true" : this.barAutoWidth === "true") ?? true;
-        }, v12707.prototype.getQRcodeLevel = function () {
-          return (null == this.qrCodeLevel ? this.defaultOptions.qrCodeLevel : this.qrCodeLevel) || 0;
-        }, v12707;
-      }(PrintElementOption),
-      v12709 = function () {
-        var _t7 = function v12710(v12711, v12712) {
-          return (_t7 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12713, v12714) {
-            v12713.__proto__ = v12714;
-          } || function (v12715, v12716) {
-            for (var v12717 in v12716) {
-              v12716.hasOwnProperty(v12717) && (v12715[v12717] = v12716[v12717]);
-            }
-          })(v12711, v12712);
-        };
-  
-        return function (v12718, v12719) {
-          function v12720() {
-            this.constructor = v12718;
-          }
-  
-          _t7(v12718, v12719), v12718.prototype = null === v12719 ? Object.create(v12719) : (v12720.prototype = v12719.prototype, new v12720());
-        };
-      }(),
-      v12721 = function (v12722) {
-        function v12727(v12723, v12724) {
-          var v12725 = v12722.call(this, v12723) || this;
-          return v12725.options = new v12703(v12724), v12725.options.setDefault(new v12703(PrintConfig.instance.text.default).getPrintElementOptionEntity()), v12725;
-        }
-  
-        return v12709(v12727, v12722), v12727.prototype.getDesignTarget = function (v12728) {
-          return v12722.prototype.getDesignTarget.call(this, v12728);
-        }, v12727.prototype.getProxyTarget = function (v12729) {
-          v12729 && this.SetProxyTargetOption(v12729);
-          var v12730 = this.getData(),
-            v12731 = this.createTarget(this.printElementType.getText(!0), v12730);
-          return this.updateTargetSize(v12731), this.css(v12731, v12730), v12731;
-        }, v12727.prototype.updateDesignViewFromOptions = function () {
-          // ! pub-beta 0.0.57-beta22 这里的处理似乎重复了，影响了 updateTargetText 方法执行，故在此处注释掉
-          // var els = this.panel.printElements.filter(function (t) {
-          //   return ('block' == t.designTarget.children().last().css('display')
-          //     && t.designTarget.children().last().hasClass('selected')) && !t.printElementType.type.includes('table');
-          // });
-          // els.forEach(ele => {
-          //   var t = ele.getData()
-          //   ele.css(ele.designTarget, t)
-          //   this.updateTargetText(ele.designTarget, ele.getTitle(), t)
-          // })
-          if (this.designTarget) {
-            var v12732 = this.getData();
-            this.css(this.designTarget, v12732), this.updateTargetText(this.designTarget, this.getTitle(), v12732);
-          }
-        }, v12727.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.text;
-        }, v12727.prototype.getTitle = function () {
-          var v12734 = this.options.title || this.printElementType.title || "";
-          return v12734 && (v12734 = v12683.replaceEnterAndNewlineAndTab(v12734, "")), v12734;
-        }, v12727.prototype.getData = function (v12735) {
-          var v12736 = void 0;
-          var v12737 = this.getField();
-          if (v12736 = v12735 ? v12737 ? v12737.split('.').reduce((v12738, v12739) => v12738 ? v12738[v12739] : v12735 ? v12735[v12739] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "", this.options.format) {
-            if ("datetime" == this.options.dataType) return hinnn.dateFormat(v12736, this.options.format);
-  
-            if ("boolean" == this.options.dataType) {
-              var v12741 = this.options.format.split(":");
-              if (v12741.length > 0) return !0 === v12736 || "true" === v12736 ? v12741[0] : v12741[1];
-            }
-          }
-          return v12736;
-        }, v12727.prototype.updateTargetText = function (v12742, v12743, v12744, v12745, rowIndex) {
-          var v12746 = this.getFormatter(),
-            v12747 = v12742.find(".hiprint-printElement-text-content"),
-            v12748 = "";
-          v12748 = this.getField() ? (this.options.getHideTitle() ? "" : v12743 ? v12743 + "：" : "") + hinnn.toUpperCase(this.options.upperCase, v12746 ? v12746(v12743, v12744, this.options, this._currenttemplateData, v12742) : v12744) : v12744 = hinnn.toUpperCase(this.options.upperCase, v12746 ? v12746(v12743, v12743, this.options, this._currenttemplateData, v12742) : v12743);
-          var v12749 = this.options.getTextType();
-          if ("text" == v12749) v12747.html(v12748);else {
-            if ("barcode" == v12749) {
-              v12747.css({
-                "display": "flex",
-                "flex-direction": "column"
-              });
-              // pub-beta 0.0.57-beta22 移除插件通过 div 添加的文本元素，默认使用 JsBarcode 生成条形码文本
-              v12747.html('<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg>');
-              try {
-                v12744 ? (JsBarcode(v12747.find(".hibarcode_imgcode")[0], v12744, {
-                  format: this.options.getbarcodeMode(),
-                  width: this.options.getBarWidth(),
-                  textMargin: -1,
-                  lineColor: this.options.color || "#000000",
-                  margin: 0,
-                  height: parseInt(hinnn.pt.toPx(this.options.getHeight() || 10).toString()),
-                  displayValue: !this.options.hideTitle
-                }), v12747.find(".hibarcode_imgcode").attr("height", "100%"), v12747.find(".hibarcode_imgcode").attr("width", "100%")) : v12747.html("");
-                // pub-beta 0.0.57-beta22 解决条形码自动宽度问题
-                let svgWidth = v12747.find(".hibarcode_imgcode rect")[0].attributes.width.value;
-                svgWidth = Math.ceil(hinnn.px.toPt(svgWidth * 1.05));
-                if (this.options.getBarAutoWidth() && svgWidth > this.options.width) {
-                  v12747.parent().css("width", svgWidth + 'pt');
-                  this.options.width = svgWidth;
-                }
-              } catch (v12751) {
-                console.log(v12751), v12747.html(`${i18n.__('此格式不支持该文本')}`);
-              }
-            }
-  
-            if ("qrcode" == v12749) {
-              v12747.html("");
-  
-              try {
-                if (v12744) {
-                  v12747.css({
-                    "display": "flex",
-                    "flex-direction": "column"
-                  });
-                  var width = this.options.width;
-                  var height = this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0);
-                  var box = $('<div class="hiqrcode_imgcode"></div>').css({
-                    "width": Math.min(width, height) + 'pt',
-                    "height": Math.min(width, height) + 'pt',
-                    "margin": "auto"
-                  });
-                  new QRCode(box[0], {
-                    width: "100%",
-                    height: "100%",
-                    colorDark: this.options.color || "#000000",
-                    useSVG: !0,
-                    correctLevel: this.options.getQRcodeLevel()
-                  }).makeCode(v12744);
-                  v12747.html(box), !this.options.hideTitle && v12747.append(`<div class="hiqrcode_displayValue" style="white-space:nowrap">${v12744}</div>`);
-                }
-              } catch (v12752) {
-                console.log(v12752), v12747.html(`${i18n.__('二维码生成失败')}`);
-              }
-            }
-          }
-        }, v12727.prototype.onResize = function (v12753, v12754, v12755, v12756, v12757) {
-          v12722.prototype.onResize.call(this, v12753, v12754, v12755, v12756, v12757);
-          "barcode" != this.options.getTextType() && "qrcode" != this.options.getTextType() || this.updateTargetText(this.designTarget, this.getTitle(), this.getData());
-        }, v12727.prototype.createTarget = function (v12758, v12759, v12760) {
-          var v12761 = $('<div tabindex="1" class="hiprint-printElement hiprint-printElement-text" style="position: absolute;"><div class="hiprint-printElement-text-content hiprint-printElement-content" style="height:100%;width:100%"></div></div>');
-          return this.updateTargetText(v12761, v12758, v12759, v12760), v12761;
-        }, v12727.prototype.getHtml = function (v12762, v12763, v12764) {
-          return this.getHtml2(v12762, v12763, v12764);
-        }, v12727;
-      }(BasePrintElement),
-      v12766 = function () {
-        var _t8 = function v12767(v12768, v12769) {
-          return (_t8 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12770, v12771) {
-            v12770.__proto__ = v12771;
-          } || function (v12772, v12773) {
-            for (var v12774 in v12773) {
-              v12773.hasOwnProperty(v12774) && (v12772[v12774] = v12773[v12774]);
-            }
-          })(v12768, v12769);
-        };
-  
-        return function (v12775, v12776) {
-          function v12777() {
-            this.constructor = v12775;
-          }
-  
-          _t8(v12775, v12776), v12775.prototype = null === v12776 ? Object.create(v12776) : (v12777.prototype = v12776.prototype, new v12777());
-        };
-      }(),
-      v12778 = function (v12779) {
-        function v12781(v12780) {
-          return v12779.call(this, v12780) || this;
-        }
-  
-        return v12766(v12781, v12779), v12781;
-      }(PrintElementOption),
-      v12783 = function () {
-        var _t9 = function v12784(v12785, v12786) {
-          return (_t9 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12787, v12788) {
-            v12787.__proto__ = v12788;
-          } || function (v12789, v12790) {
-            for (var v12791 in v12790) {
-              v12790.hasOwnProperty(v12791) && (v12789[v12791] = v12790[v12791]);
-            }
-          })(v12785, v12786);
-        };
-  
-        return function (v12792, v12793) {
-          function v12794() {
-            this.constructor = v12792;
-          }
-  
-          _t9(v12792, v12793), v12792.prototype = null === v12793 ? Object.create(v12793) : (v12794.prototype = v12793.prototype, new v12794());
-        };
-      }(),
-      HtmlPrintElement = function (v12796) {
-        function v12801(v12797, v12798) {
-          var v12799 = v12796.call(this, v12797) || this;
-          return v12799.options = new v12778(v12798), v12799.options.setDefault(new v12778(PrintConfig.instance.html.default).getPrintElementOptionEntity()), v12799;
-        }
-  
-        return v12783(v12801, v12796), v12801.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12802 = this.getData();
-            this.css(this.designTarget, v12802), this.updateTargetHtml();
-          }
-        }, v12801.prototype.updateTargetHtml = function () {
-          var v12803 = this.getFormatter();
-  
-          if (v12803) {
-            var v12804 = v12803(this.getData(), this.options, this._currenttemplateData);
-            this.designTarget.find(".hiprint-printElement-html-content").html(v12804);
-          }
-        }, v12801.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.html;
-        }, v12801.prototype.createTarget = function (v12806, v12807) {
-          var v12808 = $('<div  class="hiprint-printElement hiprint-printElement-html" style="position: absolute;"><div class="hiprint-printElement-html-content" style="height:100%;width:100%"></div></div>'),
-            v12809 = this.getFormatter();
-  
-          if (v12809) {
-            var v12810 = v12809(this.getData(), this.options, this._currenttemplateData);
-            v12808.find(".hiprint-printElement-html-content").append(v12810);
-          } else this.options.content && v12808.find(".hiprint-printElement-html-content").append(this.options.content);
-  
-          return v12808;
-        }, v12801.prototype.getHtml = function (v12811, v12812, v12813) {
-          return this.getHtml2(v12811, v12812, v12813);
-        }, v12801;
-      }(BasePrintElement),
-      v12815 = function () {
-        var _t10 = function v12816(v12817, v12818) {
-          return (_t10 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12819, v12820) {
-            v12819.__proto__ = v12820;
-          } || function (v12821, v12822) {
-            for (var v12823 in v12822) {
-              v12822.hasOwnProperty(v12823) && (v12821[v12823] = v12822[v12823]);
-            }
-          })(v12817, v12818);
-        };
-  
-        return function (v12824, v12825) {
-          function v12826() {
-            this.constructor = v12824;
-          }
-  
-          _t10(v12824, v12825), v12824.prototype = null === v12825 ? Object.create(v12825) : (v12826.prototype = v12825.prototype, new v12826());
-        };
-      }(),
-      VLinePrintElement = function (v12828) {
-        function v12835(v12829, v12830) {
-          var v12831 = v12828.call(this, v12829) || this;
-          return v12831.options = new PrintElementOption(v12830), v12831.options.setDefault(new PrintElementOption(PrintConfig.instance.vline.default).getPrintElementOptionEntity()), v12831;
-        }
-  
-        return v12815(v12835, v12828), v12835.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12836 = this.getData();
-            this.css(this.designTarget, v12836);
-          }
-        }, v12835.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.vline;
-        }, v12835.prototype.createTarget = function (v12838, v12839) {
-          return $('<div class="hiprint-printElement hiprint-printElement-vline" style="border-left:1px solid;position: absolute;"></div>');
-        }, v12835.prototype.getReizeableShowPoints = function () {
-          return ["s", "r"];
-        }, v12835.prototype.getHtml = function (v12840, v12841, v12842) {
-          return this.getHtml2(v12840, v12841, v12842);
-        }, v12835;
-      }(BasePrintElement),
-      v12844 = function () {
-        var _t11 = function v12845(v12846, v12847) {
-          return (_t11 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12848, v12849) {
-            v12848.__proto__ = v12849;
-          } || function (v12850, v12851) {
-            for (var v12852 in v12851) {
-              v12851.hasOwnProperty(v12852) && (v12850[v12852] = v12851[v12852]);
-            }
-          })(v12846, v12847);
-        };
-  
-        return function (v12853, v12854) {
-          function v12855() {
-            this.constructor = v12853;
-          }
-  
-          _t11(v12853, v12854), v12853.prototype = null === v12854 ? Object.create(v12854) : (v12855.prototype = v12854.prototype, new v12855());
-        };
-      }(),
-      HLinePrintElement = function (v12857) {
-        function v12864(v12858, v12859) {
-          var v12860 = v12857.call(this, v12858) || this;
-          return v12860.options = new PrintElementOption(v12859), v12860.options.setDefault(new PrintElementOption(PrintConfig.instance.hline.default).getPrintElementOptionEntity()), v12860;
-        }
-  
-        return v12844(v12864, v12857), v12864.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12865 = this.getData();
-            this.css(this.designTarget, v12865);
-          }
-        }, v12864.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.hline;
-        }, v12864.prototype.createTarget = function (v12867, v12868) {
-          return $('<div class="hiprint-printElement hiprint-printElement-hline" style="border-top:1px solid;position: absolute;"></div>');
-        }, v12864.prototype.getReizeableShowPoints = function () {
-          return ["e", "r"];
-        }, v12864;
-      }(BasePrintElement),
-      v12870 = function () {
-        var _t12 = function v12871(v12872, v12873) {
-          return (_t12 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12874, v12875) {
-            v12874.__proto__ = v12875;
-          } || function (v12876, v12877) {
-            for (var v12878 in v12877) {
-              v12877.hasOwnProperty(v12878) && (v12876[v12878] = v12877[v12878]);
-            }
-          })(v12872, v12873);
-        };
-  
-        return function (v12879, v12880) {
-          function v12881() {
-            this.constructor = v12879;
-          }
-  
-          _t12(v12879, v12880), v12879.prototype = null === v12880 ? Object.create(v12880) : (v12881.prototype = v12880.prototype, new v12881());
-        };
-      }(),
-      RectPrintElement = function (v12883) {
-        function v12890(v12884, v12885) {
-          var v12886 = v12883.call(this, v12884) || this;
-          return v12886.options = new PrintElementOption(v12885), v12886.options.setDefault(new PrintElementOption(PrintConfig.instance.rect.default).getPrintElementOptionEntity()), v12886;
-        }
-  
-        return v12870(v12890, v12883), v12890.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12891 = this.getData();
-            this.css(this.designTarget, v12891);
-          }
-        }, v12890.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.rect;
-        }, v12890.prototype.createTarget = function (v12893, v12894) {
-          return $('<div class="hiprint-printElement hiprint-printElement-rect" style="border:1px solid;position: absolute;"></div>');
-        }, v12890.prototype.getHtml = function (v12895, v12896, v12897) {
-          return this.getHtml2(v12895, v12896, v12897);
-        }, v12890;
-      }(BasePrintElement),
-      v12899 = function () {
-        var _t13 = function v12900(v12901, v12902) {
-          return (_t13 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v12903, v12904) {
-            v12903.__proto__ = v12904;
-          } || function (v12905, v12906) {
-            for (var v12907 in v12906) {
-              v12906.hasOwnProperty(v12907) && (v12905[v12907] = v12906[v12907]);
-            }
-          })(v12901, v12902);
-        };
-  
-        return function (v12908, v12909) {
-          function v12910() {
-            this.constructor = v12908;
-          }
-  
-          _t13(v12908, v12909), v12908.prototype = null === v12909 ? Object.create(v12909) : (v12910.prototype = v12909.prototype, new v12910());
-        };
-      }(),
-      OvalPrintElement = function (v12912) {
-        function v12919(v12913, v12914) {
-          var v12915 = v12912.call(this, v12913) || this;
-          return v12915.options = new PrintElementOption(v12914), v12915.options.setDefault(new PrintElementOption(PrintConfig.instance.oval.default).getPrintElementOptionEntity()), v12915;
-        }
-  
-        return v12899(v12919, v12912), v12919.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12920 = this.getData();
-            this.css(this.designTarget, v12920);
-          }
-        }, v12919.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.oval;
-        }, v12919.prototype.createTarget = function (v12922, v12923) {
-          return $('<div class="hiprint-printElement hiprint-printElement-oval" style="border:1px solid;position: absolute;border-radius: 50%;"></div>');
-        }, v12919.prototype.getHtml = function (v12924, v12925, v12926) {
-          return this.getHtml2(v12924, v12925, v12926);
-        }, v12919;
-      }(BasePrintElement),
-      BarcodePrintElement = function (v12928) {
-        function v12935(v12929, v12930) {
-          var v12931 = v12928.call(this, v12929) || this;
-          return v12931.options = new PrintElementOption(v12930), v12931.options.setDefault(new PrintElementOption(PrintConfig.instance.barcode.default).getPrintElementOptionEntity()), v12931;
-        }
-        return v12899(v12935, v12928), v12935.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12936 = this.getData();
-            this.css(this.designTarget, v12936), this.initBarcode(this.designTarget, this.getTitle(), this.getData());
-          }
-        }, v12935.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.barcode;
-        }, v12935.prototype.getBarAutoWidth = function () {
-          return (null == this.options.barAutoWidth ? this.options.defaultOptions.barAutoWidth === "true" : this.options.barAutoWidth === "true") ?? true;
-        }, v12935.prototype.onResize = function (v12938, v12939, v12940, v12941, v12942) {
-          v12928.prototype.onResize.call(this, v12938, v12939, v12940, v12941, v12942);
-          this.initBarcode(this.designTarget, this.getTitle(), this.getData());
-        }, v12935.prototype.getTitle = function () {
-          return this.options.title || this.printElementType.title;
-        }, v12935.prototype.getData = function (v12943) {
-          var v12944 = void 0;
-          var v12945 = this.getField();
-          v12944 = v12943 ? v12945 ? v12945.split('.').reduce((v12946, v12947) => v12946 ? v12946[v12947] : v12943 ? v12943[v12947] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "";
-          return v12944;
-        }, v12935.prototype.initBarcode = function (designTarget, title, text) {
-          designTarget = designTarget || this.designTarget;
-          var content = designTarget.find('.hiprint-printElement-barcode-content');
-          try {
-            // 计算 barcode 的高度，判断是否需要减去 title，使 title 包含在元素内部
-            const height = hinnn.pt.toMm(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0));
-            var barcode = bwipjs.toSVG({
-              bcid: this.options.barcodeType || 'code128',
-              text: text || this.options.testData || this.options.title,
-              scale: this.options.barWidth || 1,
-              width: !this.getBarAutoWidth() ? parseInt(hinnn.pt.toMm(this.options.getWidth())) : '',
-              height: parseInt(height),
-              includetext: !this.options.hideTitle,
-              barcolor: this.options.barColor || "#000"
-            });
-            // pub-beta 0.0.57-beta22 优化了条码自动调整宽度的逻辑，title 文本改为使用 bwipjs 文本内部实现
-            barcode = $(barcode);
-            // pub-beta 0.0.57-beta22 svg 元素需要添加 preserveAspectRatio 属性，使其横向可以自适应缩放
-            barcode.attr("preserveAspectRatio", "none slice");
-            let svgWidth = barcode[0].attributes.viewBox.value.split(" ")[2]; // 通过 viewBox 属性获取 bwipjs 内部生成的 svg 宽度
-            svgWidth = Math.ceil(hinnn.px.toPt(svgWidth * 1.05));
-            if (this.getBarAutoWidth() && svgWidth > this.options.width) {
-              content.parent().css("width", svgWidth + 'pt');
-              barcode.css("height", "100%");
-              this.options.width = svgWidth;
-            }
-            content.html(barcode);
-            // if (!this.options.hideTitle) {
-            //   const titleText = title ? title + ( text ? ':' : '' ) : '';
-            //   const textAlign = this.options.textAlign || 'center';
-            //   // 支持type为barcode的textAlign属性
-            //   const textStyle = textAlign === 'justify' ? 'text-align-last: justify;text-justify: distribute-all-lines;' : `text-align: ${ textAlign };`
-            //   content.append($(`<div class="hiprint-printElement-barcode-content-title" style="${ textStyle }">${ titleText }${ text }</div>`))
-            // }
-          } catch (error) {
-            console.error(error);
-            content.html($(`<div>${i18n.__('条形码生成失败')}</div>`));
-          }
-        },
-        // 设置 barcode 元素 resize 控制点
-        v12935.prototype.getReizeableShowPoints = function () {
-          return ['s', 'e', 'se', 'r'];
-        }, v12935.prototype.createTarget = function (title, data) {
-          var designTarget = $('<div class="hiprint-printElement hiprint-printElement-barcode" style="position: absolute;"><div class="hiprint-printElement-barcode-content" style="height:100%;width:100%;display:flex;flex-direction:column"></div></div>');
-          this.initBarcode(designTarget, title, data);
-          return designTarget;
-        }, v12935.prototype.getHtml = function (v12950, v12951, v12952) {
-          return this.getHtml2(v12950, v12951, v12952);
-        }, v12935;
-      }(BasePrintElement),
-      QrcodePrintElement = function (v12954) {
-        function v12961(v12955, v12956) {
-          var v12957 = v12954.call(this, v12955) || this;
-          return v12957.options = new PrintElementOption(v12956), v12957.options.setDefault(new PrintElementOption(PrintConfig.instance.qrcode.default).getPrintElementOptionEntity()), v12957;
-        }
-        return v12899(v12961, v12954), v12961.prototype.updateDesignViewFromOptions = function () {
-          if (this.designTarget) {
-            var v12962 = this.getData();
-            this.css(this.designTarget, v12962), this.initQrcode(this.designTarget, this.getTitle(), this.getData());
-          }
-        }, v12961.prototype.getConfigOptions = function () {
-          return PrintConfig.instance.qrcode;
-        }, v12961.prototype.onResize = function (v12964, v12965, v12966, v12967, v12968) {
-          v12954.prototype.onResize.call(this, v12964, v12965, v12966, v12967, v12968);
-          this.initQrcode(this.designTarget, this.getTitle(), this.getData());
-        }, v12961.prototype.getTitle = function () {
-          return this.options.title || this.printElementType.title;
-        }, v12961.prototype.getData = function (v12969) {
-          var v12970 = void 0;
-          var v12971 = this.getField();
-          v12970 = v12969 ? v12971 ? v12971.split('.').reduce((v12972, v12973) => v12972 ? v12972[v12973] : v12969 ? v12969[v12973] : "", !1) || "" : "" : this.options.testData || this.printElementType.getData() || "";
-          return v12970;
-        }, v12961.prototype.initQrcode = function (designTarget, title, text) {
-          designTarget = designTarget || this.designTarget;
-          var content = designTarget.find('.hiprint-printElement-qrcode-content');
-          try {
-            const width = hinnn.pt.toPx(this.options.getWidth());
-            // 计算 qrcode 的高度，判断是否需要减去 title，使 title 包含在元素内部
-            const height = hinnn.pt.toPx(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0));
-            // 根据宽高 判断 qrcode 上下、左右 留白边距
-            const paddingwidth = width >= height ? Math.abs(parseInt((width - height) / 2)) : 0;
-            const paddingheight = width >= height ? 0 : Math.abs(parseInt((height - width) / 2));
-            var qrcode = bwipjs.toSVG({
-              bcid: this.options.qrcodeType || 'qrcode',
-              text: text || this.options.testData || this.options.title,
-              scale: 1,
-              paddingwidth,
-              paddingheight,
-              // 保持 qrcode 始终为正方形
-              width: Math.min(parseInt(width / 2.835), parseInt(height / 2.835)),
-              height: Math.min(parseInt(width / 2.835), parseInt(height / 2.835)),
-              includetext: false,
-              eclevel: ['M', 'L', 'H', 'Q'][this.options.qrCodeLevel ?? 0],
-              barcolor: this.options.barColor || "#000"
-            });
-            content.html($(qrcode));
-            if (!this.options.hideTitle) {
-              const titleText = title ? title + (text ? ':' : '') : '';
-              const textAlign = this.options.textAlign || 'center';
-              // 支持type为qrcode的textAlign属性
-              const textStyle = textAlign === 'justify' ? 'text-align-last: justify;text-justify: distribute-all-lines;' : `text-align: ${textAlign};`;
-              content.append($(`<div class="hiprint-printElement-qrcode-content-title" style="${textStyle}">${titleText}${text}</div>`));
-            }
-          } catch (error) {
-            console.error(error);
-            content.html($(`<div>${i18n.__('二维码生成失败')}</div>`));
-          }
-        },
-        // 设置 qrcode 元素 resize 控制点
-        v12961.prototype.getReizeableShowPoints = function () {
-          return ['s', 'e', 'se', 'r'];
-        }, v12961.prototype.createTarget = function (title, data) {
-          var designTarget = $('<div class="hiprint-printElement hiprint-printElement-qrcode" style="position: absolute;"><div class="hiprint-printElement-qrcode-content" style="height:100%;width:100%;display:flex;flex-direction:column"></div></div>');
-          this.initQrcode(designTarget, title, data);
-          return designTarget;
-        }, v12961.prototype.getHtml = function (v12976, v12977, v12978) {
-          return this.getHtml2(v12976, v12977, v12978);
-        }, v12961;
-      }(BasePrintElement),
       v12980 = function () {
         function v12981() {
         }
   
         return v12981.createPrintElement = function (v12982, v12983) {
-          return "text" == v12982.type ? new v12721(v12982, v12983) : "image" == v12982.type ? new ImagePrintElement(v12982, v12983) : "longText" == v12982.type ? new LongTextPrintElement(v12982, v12983) : "table" == v12982.type ? new TablePrintElement(v12982, v12983) : "html" == v12982.type ? new HtmlPrintElement(v12982, v12983) : "vline" == v12982.type ? new VLinePrintElement(v12982, v12983) : "hline" == v12982.type ? new HLinePrintElement(v12982, v12983) : "rect" == v12982.type ? new RectPrintElement(v12982, v12983) : "oval" == v12982.type ? new OvalPrintElement(v12982, v12983) : "barcode" == v12982.type ? new BarcodePrintElement(v12982, v12983) : "qrcode" == v12982.type ? new QrcodePrintElement(v12982, v12983) : void 0;
+          return "text" == v12982.type ? new TextPrintElement(v12982, v12983) : "image" == v12982.type ? new ImagePrintElement(v12982, v12983) : "longText" == v12982.type ? new LongTextPrintElement(v12982, v12983) : "table" == v12982.type ? new TablePrintElement(v12982, v12983) : "html" == v12982.type ? new HtmlPrintElement(v12982, v12983) : "vline" == v12982.type ? new VLinePrintElement(v12982, v12983) : "hline" == v12982.type ? new HLinePrintElement(v12982, v12983) : "rect" == v12982.type ? new RectPrintElement(v12982, v12983) : "oval" == v12982.type ? new OvalPrintElement(v12982, v12983) : "barcode" == v12982.type ? new BarcodePrintElement(v12982, v12983) : "qrcode" == v12982.type ? new QrcodePrintElement(v12982, v12983) : void 0;
         }, v12981;
       }(),
       v12985 = function () {
@@ -1402,27 +127,6 @@ class PrintElementType {
           }), v13015;
         }, v13014;
       }(PrintElementOption),
-      v13018 = function () {
-        var _t16 = function v13019(v13020, v13021) {
-          return (_t16 = Object.setPrototypeOf || _instanceof({
-            __proto__: []
-          }, Array) && function (v13022, v13023) {
-            v13022.__proto__ = v13023;
-          } || function (v13024, v13025) {
-            for (var v13026 in v13025) {
-              v13025.hasOwnProperty(v13026) && (v13024[v13026] = v13025[v13026]);
-            }
-          })(v13020, v13021);
-        };
-  
-        return function (v13027, v13028) {
-          function v13029() {
-            this.constructor = v13027;
-          }
-  
-          _t16(v13027, v13028), v13027.prototype = null === v13028 ? Object.create(v13028) : (v13029.prototype = v13028.prototype, new v13029());
-        };
-      }(),
       tt = function () {
         var _t17 = function v13030(v13031, v13032) {
           return (_t17 = Object.setPrototypeOf || _instanceof({
@@ -1531,7 +235,7 @@ class PrintElementType {
           });
         };
       }(),
-      rt = function () {
+      PrintPanelOption = function () {
         return function (v13078) {
           if (this.index = v13078.index, this.name = v13078.name, this.paperType = v13078.paperType, this.paperType) {
             var v13079 = PrintLib.instance[this.paperType];
@@ -1541,7 +245,7 @@ class PrintElementType {
           this.paperHeader = v13078.paperHeader || 0, this.paperFooter = v13078.paperFooter || hinnn.mm.toPt(this.height), this.printElements = v13078.printElements || [], this.paperNumberLeft = v13078.paperNumberLeft, this.paperNumberTop = v13078.paperNumberTop, this.paperNumberDisabled = v13078.paperNumberDisabled, this.paperNumberContinue = v13078.paperNumberContinue, this.paperNumberFormat = v13078.paperNumberFormat, this.panelPaperRule = v13078.panelPaperRule, this.panelPageRule = v13078.panelPageRule, this.rotate = v13078.rotate || void 0, this.firstPaperFooter = v13078.firstPaperFooter, this.evenPaperFooter = v13078.evenPaperFooter, this.oddPaperFooter = v13078.oddPaperFooter, this.lastPaperFooter = v13078.lastPaperFooter, this.topOffset = v13078.topOffset, this.fontFamily = v13078.fontFamily, this.leftOffset = v13078.leftOffset, this.orient = v13078.orient, this.scale = v13078.scale, this.watermarkOptions = v13078.watermarkOptions, this.panelLayoutOptions = v13078.panelLayoutOptions;
         };
       }(),
-      at = function () {
+      MouseRect = function () {
         function v13086(v13082, v13083, v13084, v13085) {
           this.bx = v13082, this.by = v13083, this.ex = v13082, this.ey = v13083, this.startX = this.minX = v13082, this.startY = this.minY = v13083, this.maxX = v13082, this.maxY = v13083, this.lastLeft = v13084, this.lastTop = v13085;
         }
@@ -1562,7 +266,7 @@ class PrintElementType {
           });
         }, v13086;
       }(),
-      pt = function () {
+      PrintPanel = function () {
         function v13094(v13092, v13093) {
           this.templateId = v13093, this.index = v13092.index, this.name = v13092.name, this.width = v13092.width, this.height = v13092.height, this.paperType = v13092.paperType, this.paperHeader = v13092.paperHeader, this.paperFooter = v13092.paperFooter, this.initPrintElements(v13092.printElements), this.paperNumberLeft = v13092.paperNumberLeft, this.paperNumberTop = v13092.paperNumberTop, this.paperNumberDisabled = v13092.paperNumberDisabled, this.paperNumberContinue = v13092.paperNumberContinue == void 0 ? true : v13092.paperNumberContinue, this.paperNumberFormat = v13092.paperNumberFormat, this.panelPaperRule = v13092.panelPaperRule, this.panelPageRule = v13092.panelPageRule, this.firstPaperFooter = v13092.firstPaperFooter, this.evenPaperFooter = v13092.evenPaperFooter, this.oddPaperFooter = v13092.oddPaperFooter, this.lastPaperFooter = v13092.lastPaperFooter, this.topOffset = v13092.topOffset, this.leftOffset = v13092.leftOffset, this.fontFamily = v13092.fontFamily, this.orient = v13092.orient, this.target = this.createTarget(), this.rotate = v13092.rotate, this.scale = v13092.scale, this.watermarkOptions = v13092.watermarkOptions || {}, this.panelLayoutOptions = v13092.panelLayoutOptions || {};
         }
@@ -1859,7 +563,7 @@ class PrintElementType {
           var v13175 = [];
           return this.printElements.forEach(function (v13176) {
             v13175.push(v13176.getPrintElementEntity(v13174));
-          }), new rt({
+          }), new PrintPanelOption({
             index: this.index,
             name: this.name || this.index + 1,
             width: this.width,
@@ -1930,7 +634,7 @@ class PrintElementType {
           var v13199 = v13197.getDesignTarget(v13196);
           v13199.addClass("design"), v13198 && v13197.initSizeByHtml(v13199), v13196.append(v13199);
         }, v13094.prototype.createNewPage = function (v13200, v13201) {
-          var v13202 = new v12508(this.templateId, this.index, this.watermarkOptions, this.panelPageRule, this.scale, this.width, this.height, this.paperHeader, this.paperFooter, this.paperNumberLeft, this.paperNumberTop, this.paperNumberDisabled, this.paperNumberContinue, this.paperNumberFormat, v13200, v13201);
+          var v13202 = new PrintPage(this.templateId, this.index, this.watermarkOptions, this.panelPageRule, this.scale, this.width, this.height, this.paperHeader, this.paperFooter, this.paperNumberLeft, this.paperNumberTop, this.paperNumberDisabled, this.paperNumberContinue, this.paperNumberFormat, v13200, v13201);
           return v13202.setFooter(this.firstPaperFooter, this.evenPaperFooter, this.oddPaperFooter, this.lastPaperFooter), v13202.setOffset(this.leftOffset, this.topOffset), v13202;
         }, v13094.prototype.orderPrintElements = function () {
           this.printElements = hinnn.orderBy(this.printElements, function (v13204) {
@@ -2053,7 +757,7 @@ class PrintElementType {
             if (v13252.target.className && _typeof(v13252.target.className) == "string" && v13252.target.className.includes("editing")) {
               return;
             }
-            PrintLib.instance.draging || (v13248.mouseRect && v13248.mouseRect.target && v13248.mouseRect.target.remove(), 1 === v13252.buttons && _typeof(v13252.target.className) == "string" && v13252.target.className.includes("hiprint-printPaper hidroppable design") && (v13248.mouseRect = new at(v13252.pageX, v13252.pageY, PrintLib.instance.dragLengthCNum(v13252.pageX - v13248.designPaper.getTarget().offset().left, PrintConfig.instance.movingDistance), PrintLib.instance.dragLengthCNum(v13252.pageY - v13248.designPaper.getTarget().offset().top, PrintConfig.instance.movingDistance))));
+            PrintLib.instance.draging || (v13248.mouseRect && v13248.mouseRect.target && v13248.mouseRect.target.remove(), 1 === v13252.buttons && _typeof(v13252.target.className) == "string" && v13252.target.className.includes("hiprint-printPaper hidroppable design") && (v13248.mouseRect = new MouseRect(v13252.pageX, v13252.pageY, PrintLib.instance.dragLengthCNum(v13252.pageX - v13248.designPaper.getTarget().offset().left, PrintConfig.instance.movingDistance), PrintLib.instance.dragLengthCNum(v13252.pageY - v13248.designPaper.getTarget().offset().top, PrintConfig.instance.movingDistance))));
           }).on("mouseup", function (v13259) {
             PrintLib.instance.rectDraging = false;
           });
@@ -2175,7 +879,7 @@ class PrintElementType {
             this.panels = [];
   
             for (var v13301 = 0; v13301 < v13300.panels.length; v13301++) {
-              this.panels.push(new rt(v13300.panels[v13301]));
+              this.panels.push(new PrintPanelOption(v13300.panels[v13301]));
             }
           } else this.panels = [];
         };
@@ -2472,7 +1176,7 @@ class PrintElementType {
           };
           var v13379 = new st(v13377.template || []);
           v13377.template && v13379.panels.forEach(function (v13380) {
-            v13374.printPanels.push(new pt(v13380, v13374.id));
+            v13374.printPanels.push(new PrintPanel(v13380, v13374.id));
           }), v13377.fontList && (this.fontList = v13377.fontList), v13377.fields && (this.fields = v13377.fields), v13377.onImageChooseClick && (this.onImageChooseClick = v13377.onImageChooseClick),
           v13377.onPanelAddClick && (this.onPanelAddClick = v13377.onPanelAddClick),
           v13377.settingContainer && new ut(this, v13377.settingContainer), v13377.paginationContainer && (this.printPaginationCreator = new dt(v13377.paginationContainer, this), this.printPaginationCreator.buildPagination()), this.initAutoSave();
@@ -2530,7 +1234,7 @@ class PrintElementType {
         }, v13381.prototype.zoom = function (v13407, v13408) {
           this.editingPanel.zoom(v13407, v13408);
         }, v13381.prototype.addPrintPanel = function (v13409, v13410) {
-          var v13411 = v13409 ? new pt(new rt(v13409), this.id) : this.createDefaultPanel();
+          var v13411 = v13409 ? new PrintPanel(new PrintPanelOption(v13409), this.id) : this.createDefaultPanel();
           return v13409 && (v13409.index = this.printPanels.length), v13410 && (this.container.append(v13411.getTarget()), v13411.design(this.designOptions)), this.printPanels.push(v13411), v13410 && this.selectPanel(v13411.index), v13411;
         }, v13381.prototype.selectPanel = function (v13412) {
           var v13413 = this;
@@ -2543,7 +1247,7 @@ class PrintElementType {
         }, v13381.prototype.getPaneltotal = function () {
           return this.printPanels.length;
         }, v13381.prototype.createDefaultPanel = function () {
-          return new pt(new rt({
+          return new PrintPanel(new PrintPanelOption({
             index: this.printPanels.length,
             name: this.defaultPanelName,
             paperType: "A4"
@@ -2799,12 +1503,12 @@ class PrintElementType {
               var curLen = v13532.printPanels.length - 1;
               v13531.panels.forEach(function (panel, index) {
                 if (index > curLen) {
-                  v13532.printPanels.push(new pt(panel, v13532.id));
+                  v13532.printPanels.push(new PrintPanel(panel, v13532.id));
                   var v13533 = v13532.printPanels[index];
                   v13532.container.append(v13533.getTarget()), index > 0 && v13533.disable(), v13533.design(v13532.designOptions);
                   v13532.printPaginationCreator && v13532.printPaginationCreator.buildPagination();
                 }
-                var temp = new rt(panel);
+                var temp = new PrintPanelOption(panel);
                 v13532.editingPanel = v13532.printPanels[index];
                 v13532.editingPanel.update(temp);
               });
@@ -3010,17 +1714,17 @@ class PrintElementType {
         }, v13381;
       }();
   
-    function ht(v13550) {
+    function print(v13550) {
       this.getHtml(v13550).hiwprint();
     }
   
-    function ft(v13551, v13552, v13553) {
+    function print2(v13551, v13552, v13553) {
       $.extend({}, v13551 || {}).imgToBase64 = !0;
       var v13554 = new PrintTemplate({});
       v13554.on("printSuccess", v13552), v13554.on("printError", v13553), v13554.printByHtml2(this.getHtml(v13551), v13551.options);
     }
   
-    function gt(v13555) {
+    function getHtml(v13555) {
       var v13556 = void 0;
       return v13555 && v13555.templates.forEach(function (v13557, v13558) {
         var v13559 = $.extend({}, v13557.options || {});
@@ -3028,7 +1732,7 @@ class PrintElementType {
       }), v13556;
     }
   
-    function mt(v13560) {
+    function init(v13560) {
       PrintConfig.instance.init(v13560), PrintConfig.instance.providers && PrintConfig.instance.providers.forEach(function (v13564) {
         v13564.addElementTypes(PrintElementTypeContext.instance);
       });
@@ -3045,7 +1749,7 @@ class PrintElementType {
       }
     }
   
-    function cig(v13574) {
+    function setConfig(v13574) {
       if (v13574) {
         v13574 && Object.keys(v13574).forEach(function (v13575) {
           if (v13575 == "optionItems" && v13574.optionItems && v13574.optionItems.length) {
@@ -3108,11 +1812,11 @@ class PrintElementType {
       }
     }
   
-    function uep(v13590, v13591) {
+    function updateElementType(v13590, v13591) {
       return PrintElementTypeContext.instance.updateElementType(v13590, v13591);
     }
   
-    function rpl(v13592) {
+    function refreshPrinterList(v13592) {
       PrintConfig.instance.clear("printerList");
       PrintConfig.instance.on("printerList", v13592);
       hiwebSocket.refreshPrinterList();
@@ -3130,7 +1834,7 @@ class PrintElementType {
       hiwebSocket.getClientInfo();
     }
   
-    function getAddr(type, v13601, ...args) {
+    function getAddress(type, v13601, ...args) {
       PrintConfig.instance.clear("address_" + type);
       PrintConfig.instance.on("address_" + type, v13601);
       hiwebSocket.getAddress(type, ...args);
@@ -3160,20 +1864,20 @@ class PrintElementType {
     });
 
     export default {
-      init: mt,
-      setConfig: cig,
-      updateElementType: uep,
+      init: init,
+      setConfig: setConfig,
+      updateElementType: updateElementType,
       hiwebSocket: hiwebSocket,
-      refreshPrinterList: rpl,
+      refreshPrinterList: refreshPrinterList,
       getClients: getClients,
       getClientInfo: getClientInfo,
-      getAddress: getAddr,
+      getAddress: getAddress,
       ippPrint: ippPrint,
       ippRequest: ippRequest,
       PrintElementTypeManager: PrintElementTypeManager,
       PrintElementTypeGroup: PrintElementTypeGroup,
       PrintTemplate: PrintTemplate,
-      print: ht,
-      print2: ft,
-      getHtml: gt
+      print: print,
+      print2: print2,
+      getHtml: getHtml
     };
