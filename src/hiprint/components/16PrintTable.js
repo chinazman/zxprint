@@ -34,599 +34,952 @@ import IdGenerator from "./11IdGenerator.js";
 import PrintLib from "./02PrintLib.js"
 
   
-    var v11604 = function () {
-        return function (v11605) {
-          this.table = v11605.table, this.templateId = v11605.templateId, this.fields = v11605.fields, this.isEnableEdit = v11605.isEnableEdit, this.trs = v11605.trs, this.resizeRow = v11605.resizeRow, this.resizeColumn = v11605.resizeColumn, this.isEnableEditField = v11605.isEnableEditField, this.isEnableContextMenu = v11605.isEnableContextMenu, this.isEnableEditField = v11605.isEnableEditField, this.isEnableInsertRow = v11605.isEnableInsertRow, this.isEnableDeleteRow = v11605.isEnableDeleteRow, this.isEnableInsertColumn = v11605.isEnableInsertColumn, this.isEnableDeleteColumn = v11605.isEnableDeleteColumn, this.isEnableMergeCell = v11605.isEnableMergeCell, this.columnResizable = v11605.columnResizable, this.columnAlignEditable = v11605.columnAlignEditable;
-        };
-      }(),
-      v11606 = function () {
-        function v11608(v11607) {
-          this.options = new v11604(v11607);
-        }
-  
-        return v11608.prototype.enableEidt = function () {
-          this.options.isEnableEdit;
-        }, v11608.prototype.disableEdit = function () {
-          this.options.isEnableEdit;
-        }, v11608.prototype.isEnableEdit = function () {
-          return this.options.isEnableEdit;
-        }, v11608;
-      }(),
-    //   v11609 = webpack_require(0),
-      v11610 = function () {
-        return function (v11611) {
-          this.cell = v11611.cell, this.link = v11611.link, this.linkType = v11611.linkType, this.bottom = v11611.bottom, this.rightMost = v11611.rightMost, this.rowLevel = v11611.rowLevel, this.columnLevel = v11611.columnLevel, this.indexInTableGridRow = v11611.indexInTableGridRow, this.indexInTableGridColumn = v11611.indexInTableGridColumn;
-        };
-      }(),
-    //   v11612 = webpack_require(10),
-      v11613 = function () {
-        function v11614() {
-        }
-  
-        return v11614.getLeftTableCell = function (v11615, v11616) {
-          var v11617;
-          return v11615.forEach(function (v11618, v11619) {
-            v11618.cell && v11619 < v11616 && (v11617 = v11618.cell);
-          }), v11617;
-        }, v11614.getIndex = function (v11620, v11621) {
-          var v11622;
-          return v11620.forEach(function (v11623, v11624) {
-            v11623.cell && v11623.cell.id == v11621 && (v11622 = v11624);
-          }), v11622;
-        }, v11614;
-      }(),
-    //   v11625 = webpack_require(13),
-    //   v11626 = webpack_require(11),
-      v11627 = function () {
-        return function (v11628, v11629) {
-          this.target = v11628, this.grips = v11629;
-        };
-      }(),
-      v11630 = function () {
-        return function (v11631) {
-          this.target = v11631;
-        };
-      }(),
-      v11632 = function () {
-        return function () {
-          this.rowColumns = [];
-        };
-      }(),
-      v11633 = function () {
-        function v11634() {
-        }
-  
-        return v11634.getColumnsWidth = function (v11635, v11636) {
-          var v11637 = {},
-            v11638 = v11634.allAutoWidth(v11635);
-          return v11635.rowColumns.forEach(function (v11639) {
-            var v11640 = v11636 - 0,
-              v11641 = v11639.width / v11638 * (v11640 > 0 ? v11640 : 0);
-            v11637[v11639.id] = v11641;
-          }), v11637;
-        }, v11634.resizeTableCellWeight = function (v11642) {
-          v11642.forEach(function (v11643) {
-            v11643.columns.forEach(function (v11644) {
-              v11644.hasWidth && $(v11644.getTarget()).css("width", v11644.width + "pt");
-            });
-          });
-        }, v11634.allAutoWidth = function (v11645) {
-          var v11646 = 0;
-          return v11645.rowColumns.forEach(function (v11647) {
-            v11646 += v11647.width;
-          }), v11646;
-        }, v11634.reconsitutionTableColumnTree = function (v11648, v11649, v11650) {
-          for (var v11651 = v11649 || new v11632(), v11652 = function v11653(v11654) {
-              v11651.totalLayer = v11654 + 1, v11651[v11654] = v11648[v11654].columns, v11651.rowColumns = v11651.rowColumns.concat(v11651[v11654].filter(function (v11655) {
-                return v11655.rowspan == v11648.length - v11654;
-              }));
-            }, v11656 = 0; v11656 < v11648.length; v11656++) {
-            v11652(v11656);
-          }
-  
-          return v11651;
-        }, v11634;
-      }(),
-    //   v11657 = webpack_require(2),
-      v11658 = function () {
-        function v11660(v11659) {
-          this.signature = "HiTresizer", this.hitable = v11659, this.rows = v11659.rows, this.target = v11659.target;
-        }
-  
-        return v11660.prototype.init = function () {
-          this.addResizeRowAndColumn(), this.hitable.optionsCoat.options.resizeColumn && this.createColumnGrips(), this.hitable.optionsCoat.options.resizeRow && this.createRowGrips();
-        }, v11660.prototype.resizeTableCellWidth = function () {
-          v11633.resizeTableCellWeight(this.rows);
-        }, v11660.prototype.addResizeRowAndColumn = function () {
-        }, v11660.prototype.createColumnGrips = function () {
-          var v11661 = this,
-            v11662 = this,
-            v11663 = [],
-            v11664 = $('<div class="columngrips"/>');
-          v11664.width(this.target.width()), this.rows.forEach(function (v11665) {
-            (v11665.columns || []).filter(function (column) {return column.checked;}).forEach(function (v11666, v11667) {
-              if (v11666.getTarget().attr("haswidth")) {
-                var v11668 = $('<div class="columngrip"><div class="gripResizer"></div></div>');
-                v11664.append(v11668);
-                var v11669 = new v11630(v11668);
-                v11663.length > 0 && (v11663[v11663.length - 1].nextGrip = v11669), v11663.push(v11669), v11661.syncGrips(v11666, v11669), $(v11668).hidraggable({
-                  axis: "h",
-                  onDrag: function onDrag(v11670, v11671, v11672) {
-                  },
-                  moveUnit: "pt",
-                  minMove: 1,
-                  getScale: function getScale() {
-                    return $('.hiprint-printPaper')[0].style.transform && parseFloat($('.hiprint-printPaper')[0].style.transform.slice(6, -1)) || 1;
-                  },
-                  onBeforeDrag: function onBeforeDrag(v11673) {
-                    if (PrintLib.instance.draging = !0, !v11669.nextGrip) return !1;
-                    v11662.dragingGrip = v11669, v11662.dragingGrip.left = parseFloat(v11662.dragingGrip.target.css("left").replace("px", "")), v11669.target.addClass("columngripDraging");
-                  },
-                  onStopDrag: function onStopDrag(v11675) {
-                    PrintLib.instance.draging = !1;
-                    var v11677 = parseFloat(v11662.dragingGrip.target.css("left").replace("px", "")),
-                      v11678 = hinnn.px.toPt(v11677 - v11662.dragingGrip.left);
-                    // 表格列宽限制 最小宽度为10pt
-                    if (v11669.cell.width + v11678 < 10) {
-                      v11678 = 10 - v11669.cell.width;
-                    } else if (v11669.nextGrip.cell.width - v11678 < 10) {
-                      v11678 = v11669.nextGrip.cell.width - 10;
-                    }
-                    v11669.cell.width = v11669.cell.width + v11678, v11669.nextGrip.cell.width = v11669.nextGrip.cell.width - v11678, v11661.resizeTableCellWidth(), v11669.target.removeClass("columngripDraging"), v11662.updateColumnGrips();
-                  }
-                });
-              }
-            });
-          }), this.target.before(v11664), this.cgripContariner = new v11627(v11664, v11663);
-        }, v11660.prototype.updateColumnGrips = function () {
-          this.cgripContariner && (this.cgripContariner.target.remove(), this.createColumnGrips());
-        }, v11660.prototype.updateRowGrips = function () {
-          this.rgripContariner && (this.rgripContariner.target.remove(), this.createRowGrips());
-        }, v11660.prototype.createRowGrips = function () {
-          var v11680 = this,
-            v11681 = this,
-            v11682 = [],
-            v11683 = $('<div class="rowgrips"/>');
-          this.rows.forEach(function (v11684, v11685) {
-            var v11686 = $('<div class="rowgrip"><div class="gripResizer"></div></div>');
-            v11683.append(v11686);
-            var v11687 = new v11630(v11686);
-            v11682.push(v11687), v11685 > 0 && v11685 < v11680.rows.length && $(v11686).hidraggable({
-              axis: "v",
-              onDrag: function onDrag(v11688, v11689, v11690) {
-              },
-              moveUnit: "pt",
-              minMove: 1,
-              onBeforeDrag: function onBeforeDrag(v11691) {
-                v11681.dragingGrip = v11687, v11681.dragingGrip.top = parseFloat(v11681.dragingGrip.target.css("top").replace("px", "")), v11687.target.addClass("rowgripDraging");
-              },
-              onStopDrag: function onStopDrag(v11692) {
-                var v11693 = parseFloat(v11681.dragingGrip.target.css("top").replace("px", "")),
-                  v11694 = hinnn.px.toPt(v11693 - v11681.dragingGrip.top + v11681.rows[v11685].columns[0].getTarget().height());
-                v11681.rows[v11685].columns[0].getTarget().css("height", v11694 + "pt"), v11681.syncRowGrips(), v11687.target.removeClass("rowgripDraging");
-              }
-            });
-          }), this.target.before(v11683), this.rgripContariner = new v11627(v11683, v11682), this.syncRowGrips();
-        }, v11660.prototype.syncGrips = function (v11696, v11697) {
-          var v11698 = v11696.getTarget();
-          v11697.cell = v11696, v11697.target.css({
-            left: v11698.offset().left - this.target.offset().left + v11698.outerWidth(!1),
-            height: 30
-          });
-        }, v11660.prototype.syncRowGrips = function () {
-          var v11699 = this;
-          this.rgripContariner.target.height(this.target.height()), this.rows.forEach(function (v11700, v11701) {
-            var v11702 = v11700.columns[0].getTarget();
-            v11699.rgripContariner.grips[v11701].target.css({
-              top: v11702.offset().top - v11699.target.offset().top + v11702.outerHeight(!1),
-              width: 30
-            });
-          });
-        }, v11660.prototype.addResizerHeadRow = function () {
-          this.target.find("thead").prepend();
-        }, v11660;
-      }(),
-      v11703 = function () {
-        function v11704() {
-        }
-  
-        return v11704.prototype.init = function () {
-        }, v11704.prototype.updateRowGrips = function () {
-        }, v11704.prototype.updateColumnGrips = function () {
-        }, v11704;
-      }();
-  
-  
-    var PrintTable = function () {
-      function v11710(v11707) {
-        this.id = IdGenerator.createId(), this.optionsCoat = new v11606(v11707), this.handle = v11707.handle, this.target = v11707.table, this.initRows(v11707.rows), this.init(v11707), this.tableCellSelector = new PrintTableCellSelector(this.rows, this.target), this.resizer = this.optionsCoat.options.columnResizable ? new v11658(this) : new v11703(), this.resizer.init();
+class PrintTableOption {
+  constructor(config) {
+    this.table = config.table;
+    this.templateId = config.templateId;
+    this.fields = config.fields;
+    this.isEnableEdit = config.isEnableEdit;
+    this.trs = config.trs;
+    this.resizeRow = config.resizeRow;
+    this.resizeColumn = config.resizeColumn;
+    this.isEnableEditField = config.isEnableEditField;
+    this.isEnableContextMenu = config.isEnableContextMenu;
+    this.isEnableInsertRow = config.isEnableInsertRow;
+    this.isEnableDeleteRow = config.isEnableDeleteRow;
+    this.isEnableInsertColumn = config.isEnableInsertColumn;
+    this.isEnableDeleteColumn = config.isEnableDeleteColumn;
+    this.isEnableMergeCell = config.isEnableMergeCell;
+    this.columnResizable = config.columnResizable;
+    this.columnAlignEditable = config.columnAlignEditable;
+  }
+}
+
+class PrintTableOptionCoat {
+  constructor(config) {
+    this.options = new PrintTableOption(config);
+  }
+
+  enableEdit() {
+    this.options.isEnableEdit;
+  }
+
+  disableEdit() {
+    this.options.isEnableEdit;
+  }
+
+  isEditEnabled() {
+    return this.options.isEnableEdit;
+  }
+}
+
+class PrintGridCell {
+  constructor(cellConfig) {
+    this.cell = cellConfig.cell;
+    this.link = cellConfig.link;
+    this.linkType = cellConfig.linkType;
+    this.bottom = cellConfig.bottom;
+    this.rightMost = cellConfig.rightMost;
+    this.rowLevel = cellConfig.rowLevel;
+    this.columnLevel = cellConfig.columnLevel;
+    this.indexInTableGridRow = cellConfig.indexInTableGridRow;
+    this.indexInTableGridColumn = cellConfig.indexInTableGridColumn;
+  }
+}
+
+class PrintGridCellHelper {
+  static getLeftTableCell(tableCells, index) {
+    let leftTableCell;
+    tableCells.forEach((cell, i) => {
+      if (cell.cell && i < index) {
+        leftTableCell = cell.cell;
       }
-  
-      return v11710.prototype.insertRow = function (v11711, v11712, v11713) {
-        var v11714 = v11712 || this.tableCellSelector.getSingleSelect(),
-          v11715 = v11714.cell,
-          v11716 = this.rows[v11714.rowIndex],
-          v11717 = v11714.rowIndex,
-          v11718 = this.getCellGrid(),
-          v11719 = new PrintTableRow();
-        if (v11719.init(this.optionsCoat, void 0, v11716.isHead), v11713 && v11719.getTarget().addClass(v11713), "above" == v11711) v11718[v11717].forEach(function (v11721) {
-          var v11722 = v11721.link ? v11721.link : v11721.cell,
-            v11723 = v11722.width / v11722.colspan;
-  
-          if (0 == v11721.columnLevel) {
-            var v11724 = v11719.createTableCell();
-            v11724.width = v11723, v11719.insertCellToLast(v11724);
-          } else {
-            if ("column" == v11721.linkType) {
-              var v11725 = v11721.link.getTarget();
-              v11721.link.rowspan += 1, v11725.attr("rowspan", v11721.link.rowspan);
-            }
-  
-            v11721.linkType;
-          }
-        }), this.rows.splice(v11717, 0, v11719), v11716.getTarget().before(v11719.getTarget()), hinnn.event.trigger("newRow" + this.id, v11719);else {
-          var v11727 = v11717 + v11715.rowspan - 1;
-          v11718[v11727].forEach(function (v11728) {
-            var v11729 = v11728.link ? v11728.link : v11728.cell,
-              v11730 = v11729.width / v11729.colspan;
-  
-            if (v11728.bottom) {
-              var v11731 = v11719.createTableCell();
-              v11731.width = v11730, v11719.insertCellToLast(v11731);
-            } else {
-              if (v11728.cell) {
-                var v11732 = v11728.cell.getTarget();
-                v11728.cell.rowspan += 1, v11732.attr("rowspan", v11728.cell.rowspan);
-              }
-  
-              if ("column" == v11728.linkType) {
-                v11732 = v11728.link.getTarget();
-                v11728.link.rowspan += 1, v11732.attr("rowspan", v11728.link.rowspan);
-              }
-            }
-          }), this.rows.splice(v11727 + 1, 0, v11719), this.rows[v11727].getTarget().after(v11719.getTarget()), hinnn.event.trigger("newRow" + this.id, v11719);
+    });
+    return leftTableCell;
+  }
+
+  static getIndex(tableCells, cellId) {
+    let cellIndex;
+    tableCells.forEach((cell, i) => {
+      if (cell.cell && cell.cell.id == cellId) {
+        cellIndex = i;
+      }
+    });
+    return cellIndex;
+  }
+}
+
+class CgripContainer {
+  constructor(target, grips) {
+    this.target = target;
+    this.grips = grips;
+  }
+}
+
+class Grips {
+  constructor(target) {
+    this.target = target;
+  }
+}
+
+class PrintGridRow {
+  constructor() {
+    this.rowColumns = [];
+  }
+}
+
+class PrintGridRowHelper {
+  static getColumnsWidth(gridRow, availableWidth) {
+    let columnWidths = {};
+    let totalAutoWidth = this.allAutoWidth(gridRow);
+
+    gridRow.rowColumns.forEach(column => {
+      let columnWidth = column.width / totalAutoWidth * (availableWidth > 0 ? availableWidth : 0);
+      columnWidths[column.id] = columnWidth;
+    });
+
+    return columnWidths;
+  }
+
+  static resizeTableCellWeight(rows) {
+    rows.forEach(row => {
+      row.columns.forEach(column => {
+        if (column.hasWidth) {
+          $(column.getTarget()).css("width", `${column.width}pt`);
         }
-      }, v11710.prototype.insertColumn = function (v11734, v11735, v11736, v11737) {
-        var v11738 = this,
-          v11739 = this.rows.concat(this.trRows),
-          v11740 = v11735 || this.tableCellSelector.getSingleSelect(),
-          v11741 = v11740.cell,
-          v11742 = v11740.rowIndex,
-          v11743 = this.getCellGrid(v11739),
-          v11744 = v11743[v11742].filter(function (v11745) {
-            return v11745.cell && v11745.cell.id == v11741.id || v11745.link && v11745.link.id == v11741.id;
-          });
-  
-        if ("left" == v11734) {
-          var v11746 = v11744[0].indexInTableGridRow;
-          v11743.forEach(function (v11747, v11748) {
-            var v11749 = v11747[v11746],
-              v11750 = v11747.filter(function (v11751, v11752) {
-                return v11752 >= v11746 && v11751.cell;
-              });
-  
-            if (0 == v11749.rowLevel) {
-              var v11753 = v11739[v11748],
-                v11754 = v11739[v11748].createTableCell();
-              v11736 && v11754.getTarget().addClass(v11736), null != v11737 && (v11754.width = v11737), v11750.length ? v11753.insertToTargetCellLeft(v11750[0].cell, v11754) : v11753.insertCellToLast(v11754), hinnn.event.trigger("newCell" + v11738.id, v11754);
-            } else if ("row" == v11749.linkType) {
-              var v11756 = v11749.link.getTarget();
-              v11749.link.colspan += 1, v11756.attr("colspan", v11749.link.colspan);
+      });
+    });
+  }
+
+  static allAutoWidth(gridRow) {
+    let totalWidth = 0;
+    gridRow.rowColumns.forEach(column => {
+      totalWidth += column.width;
+    });
+    return totalWidth;
+  }
+
+  static reconstituteTableColumnTree(gridRows, existingGridRow = new PrintGridRow()) {
+    gridRows.forEach((row, rowIndex) => {
+      existingGridRow.totalLayer = rowIndex + 1;
+      existingGridRow[rowIndex] = row.columns;
+      existingGridRow.rowColumns = existingGridRow.rowColumns.concat(
+        row.columns.filter(column => column.rowspan == gridRows.length - rowIndex)
+      );
+    });
+
+    return existingGridRow;
+  }
+}
+
+class PrintGripResizer {
+  constructor(printTable) {
+    this.signature = "HiTresizer";
+    this.hitable = printTable;
+    this.rows = printTable.rows;
+    this.target = printTable.target;
+  }
+
+  init() {
+    this.addResizeRowAndColumn();
+    if (this.hitable.optionsCoat.options.resizeColumn) {
+      this.createColumnGrips();
+    }
+    if (this.hitable.optionsCoat.options.resizeRow) {
+      this.createRowGrips();
+    }
+  }
+
+  resizeTableCellWidth() {
+    PrintGridRowHelper.resizeTableCellWeight(this.rows);
+  }
+
+  addResizeRowAndColumn() {
+    // implementation needed
+  }
+
+  createColumnGrips() {
+    let gripsList = [];
+    let columnGripsContainer = $('<div class="columngrips"/>');
+    columnGripsContainer.width(this.target.width());
+
+    this.rows.forEach(row => {
+      (row.columns || []).filter(column => column.checked).forEach((column, index) => {
+        if (column.getTarget().attr("haswidth")) {
+          let columnGrip = $('<div class="columngrip"><div class="gripResizer"></div></div>');
+          columnGripsContainer.append(columnGrip);
+          let newGrip = new Grips(columnGrip);
+          if (gripsList.length > 0) {
+            gripsList[gripsList.length - 1].nextGrip = newGrip;
+          }
+          gripsList.push(newGrip);
+          this.syncGrips(column, newGrip);
+          $(columnGrip).hidraggable({
+            axis: "h",
+            onDrag: function (event, ui, instance) {},
+            moveUnit: "pt",
+            minMove: 1,
+            getScale: function () {
+              return $('.hiprint-printPaper')[0].style.transform && parseFloat($('.hiprint-printPaper')[0].style.transform.slice(6, -1)) || 1;
+            },
+            onBeforeDrag: (event) => {
+              if (PrintLib.instance.draging = !0, !newGrip.nextGrip) return !1;
+              this.dragingGrip = newGrip;
+              this.dragingGrip.left = parseFloat(this.dragingGrip.target.css("left").replace("px", ""));
+              newGrip.target.addClass("columngripDraging");
+            },
+            onStopDrag: (event) => {
+              PrintLib.instance.draging = !1;
+              let leftPosition = parseFloat(this.dragingGrip.target.css("left").replace("px", ""));
+              let widthChange = hinnn.px.toPt(leftPosition - this.dragingGrip.left);
+              // 表格列宽限制 最小宽度为10pt
+              if (newGrip.cell.width + widthChange < 10) {
+                widthChange = 10 - newGrip.cell.width;
+              } else if (newGrip.nextGrip.cell.width - widthChange < 10) {
+                widthChange = newGrip.nextGrip.cell.width - 10;
+              }
+              newGrip.cell.width = newGrip.cell.width + widthChange;
+              newGrip.nextGrip.cell.width = newGrip.nextGrip.cell.width - widthChange;
+              this.resizeTableCellWidth();
+              newGrip.target.removeClass("columngripDraging");
+              this.updateColumnGrips();
             }
           });
+        }
+      });
+    });
+
+    this.target.before(columnGripsContainer);
+    this.columnGripContainer = new CgripContainer(columnGripsContainer, gripsList);
+  }
+
+  updateColumnGrips() {
+    if (this.columnGripContainer) {
+      this.columnGripContainer.target.remove();
+      this.createColumnGrips();
+    }
+  }
+
+  updateRowGrips() {
+    if (this.rowGripContainer) {
+      this.rowGripContainer.target.remove();
+      this.createRowGrips();
+    }
+  }
+
+  createRowGrips() {
+    let gripsList = [];
+    let rowGripsContainer = $('<div class="rowgrips"/>');
+
+    this.rows.forEach((row, index) => {
+      let rowGrip = $('<div class="rowgrip"><div class="gripResizer"></div></div>');
+      rowGripsContainer.append(rowGrip);
+      let newGrip = new Grips(rowGrip);
+      gripsList.push(newGrip);
+      if (index > 0 && index < this.rows.length) {
+        $(rowGrip).hidraggable({
+          axis: "v",
+          onDrag: function (event, ui, instance) {},
+          moveUnit: "pt",
+          minMove: 1,
+          onBeforeDrag: (event) => {
+            this.dragingGrip = newGrip;
+            this.dragingGrip.top = parseFloat(this.dragingGrip.target.css("top").replace("px", ""));
+            newGrip.target.addClass("rowgripDraging");
+          },
+          onStopDrag: (event) => {
+            let topPosition = parseFloat(this.dragingGrip.target.css("top").replace("px", ""));
+            let heightChange = hinnn.px.toPt(topPosition - this.dragingGrip.top + this.rows[index].columns[0].getTarget().height());
+            this.rows[index].columns[0].getTarget().css("height", `${heightChange}pt`);
+            this.syncRowGrips();
+            newGrip.target.removeClass("rowgripDraging");
+          }
+        });
+      }
+    });
+
+    this.target.before(rowGripsContainer);
+    this.rowGripContainer = new CgripContainer(rowGripsContainer, gripsList);
+    this.syncRowGrips();
+  }
+
+  syncGrips(column, grip) {
+    let targetElement = column.getTarget();
+    grip.cell = column;
+    grip.target.css({
+      left: targetElement.offset().left - this.target.offset().left      + targetElement.outerWidth(false),
+      height: 30
+    });
+  }
+
+  syncRowGrips() {
+    this.rowGripContainer.target.height(this.target.height());
+    this.rows.forEach((row, index) => {
+      let targetElement = row.columns[0].getTarget();
+      this.rowGripContainer.grips[index].target.css({
+        top: targetElement.offset().top - this.target.offset().top + targetElement.outerHeight(false),
+        width: 30
+      });
+    });
+  }
+
+  addResizerHeadRow() {
+    this.target.find("thead").prepend();
+  }
+}
+  
+  
+// 打印表格类
+class PrintTable {
+  /**
+   * 构造函数
+   * @param {Object} options 配置选项
+   */
+  constructor(options) {
+    this.id = IdGenerator.createId();
+    this.optionsCoat = new PrintTableOptionCoat(options);
+    this.handle = options.handle;
+    this.target = options.table;
+    this.initRows(options.rows);
+    this.init(options);
+    this.tableCellSelector = new PrintTableCellSelector(this.rows, this.target);
+    this.resizer = this.optionsCoat.options.columnResizable ? new PrintGripResizer(this) : new DefaultResizer();
+    this.resizer.init();
+  }
+
+  /**
+   * 插入行
+   * @param {string} position 插入位置
+   * @param {Object} selectedCell 选中的单元格
+   * @param {string} className 新行的类名
+   */
+  insertRow(position, selectedCell, className) {
+    const singleSelect = selectedCell || this.tableCellSelector.getSingleSelect();
+    const cell = singleSelect.cell;
+    const currentRow = this.rows[singleSelect.rowIndex];
+    const rowIndex = singleSelect.rowIndex;
+    const cellGrid = this.getCellGrid();
+    const newRow = new PrintTableRow();
+
+    newRow.init(this.optionsCoat, undefined, currentRow.isHead);
+    if (className) {
+      newRow.getTarget().addClass(className);
+    }
+
+    if (position === "above") {
+      cellGrid[rowIndex].forEach(gridCell => {
+        const targetCell = gridCell.link ? gridCell.link : gridCell.cell;
+        const cellWidth = targetCell.width / targetCell.colspan;
+
+        if (gridCell.columnLevel === 0) {
+          const newCell = newRow.createTableCell();
+          newCell.width = cellWidth;
+          newRow.insertCellToLast(newCell);
+        } else if (gridCell.linkType === "column") {
+          const linkTarget = gridCell.link.getTarget();
+          gridCell.link.rowspan += 1;
+          linkTarget.attr("rowspan", gridCell.link.rowspan);
+        }
+      });
+
+      this.rows.splice(rowIndex, 0, newRow);
+      currentRow.getTarget().before(newRow.getTarget());
+      hinnn.event.trigger("newRow" + this.id, newRow);
+    } else {
+      const lastRowIndex = rowIndex + cell.rowspan - 1;
+      cellGrid[lastRowIndex].forEach(gridCell => {
+        const targetCell = gridCell.link ? gridCell.link : gridCell.cell;
+        const cellWidth = targetCell.width / targetCell.colspan;
+
+        if (gridCell.bottom) {
+          const newCell = newRow.createTableCell();
+          newCell.width = cellWidth;
+          newRow.insertCellToLast(newCell);
         } else {
-          var v11757 = v11744[v11744.length - 1].indexInTableGridRow;
-          v11743.forEach(function (v11758, v11759) {
-            var v11760 = v11758[v11757],
-              v11761 = v11758.filter(function (v11762, v11763) {
-                return v11763 <= v11757 && v11762.cell;
-              });
-  
-            if (v11760.rightMost) {
-              var v11764 = v11739[v11759],
-                v11765 = v11764.createTableCell();
-              v11736 && v11765.getTarget().addClass(v11736), null != v11737 && (v11765.width = v11737), v11761.length ? v11764.insertToTargetCellRight(v11761[v11761.length - 1].cell, v11765) : v11764.insertCellToFirst(v11765), hinnn.event.trigger("newCell" + v11738.id, v11765);
-            } else {
-              var v11767 = v11760.link || v11760.cell;
-  
-              if ("row" == v11760.linkType) {
-                var v11768 = v11767.getTarget();
-                v11767.colspan += 1, v11768.attr("colspan", v11767.colspan);
-              }
-  
-              if (v11760.cell) {
-                v11768 = v11767.getTarget();
-                v11767.colspan += 1, v11768.attr("colspan", v11767.colspan);
-              }
-            }
-          });
-        }
-      }, v11710.prototype.deleteRow = function () {
-        var v11769 = this,
-          v11770 = this.tableCellSelector.getSingleSelect(),
-          v11771 = (v11770.cell, this.rows[v11770.rowIndex], v11770.rowIndex),
-          v11772 = this.getCellGrid(),
-          v11773 = this.rows[v11771];
-        v11772[v11771].forEach(function (v11774, v11775) {
-          if (v11774.cell) {
-            if (1 == v11774.cell.rowspan) v11773.removeCell(v11774.cell);else {
-              v11773.removeCell(v11774.cell);
-              var v11776 = v11772[v11771 + 1].filter(function (v11777, v11778) {
-                  return v11777.cell && v11778 > v11775;
-                }),
-                v11779 = v11769.rows[v11771 + 1],
-                v11780 = v11779.createTableCell(v11774.cell.rowspan - 1, v11774.cell.colspan);
-              v11776.length ? v11779.insertToTargetCellLeft(v11776[0].cell, v11780) : v11779.insertCellToLast(v11780);
-            }
-          } else if ("column" == v11774.linkType) {
-            var v11781 = v11774.link;
-            v11781.rowspan -= 1, v11781.getTarget().attr("rowspan", v11781.rowspan);
+          if (gridCell.cell) {
+            const cellTarget = gridCell.cell.getTarget();
+            gridCell.cell.rowspan += 1;
+            cellTarget.attr("rowspan", gridCell.cell.rowspan);
           }
-        }), v11773.getTarget().remove(), this.rows.splice(v11771, 1);
-      }, v11710.prototype.deleteColums = function () {
-        var v11782 = this.rows.concat(this.trRows),
-          v11783 = this.tableCellSelector.getSingleSelect(),
-          v11784 = v11783.cell,
-          v11785 = v11783.rowIndex,
-          v11786 = this.getCellGrid(v11782),
-          v11787 = v11786[v11785].filter(function (v11788) {
-            return v11788.cell && v11788.cell.id == v11784.id || v11788.link && v11788.link.id == v11784.id;
-          })[0].indexInTableGridRow;
-        v11786.forEach(function (v11789, v11790) {
-          var v11791 = v11789[v11787];
-          v11791.cell ? 1 == v11791.cell.colspan ? v11782[v11790].removeCell(v11791.cell) : (v11791.cell.colspan -= 1, v11791.cell.getTarget().attr("colspan", v11791.cell.colspan)) : "row" == v11791.linkType && (v11791.link.colspan -= 1, v11791.link.getTarget().attr("colspan", v11791.link.colspan));
+
+          if (gridCell.linkType === "column") {
+            const linkTarget = gridCell.link.getTarget();
+            gridCell.link.rowspan += 1;
+            linkTarget.attr("rowspan", gridCell.link.rowspan);
+          }
+        }
+      });
+
+      this.rows.splice(lastRowIndex + 1, 0, newRow);
+      this.rows[lastRowIndex].getTarget().after(newRow.getTarget());
+      hinnn.event.trigger("newRow" + this.id, newRow);
+    }
+  }
+
+  /**
+   * 插入列
+   * @param {string} position 插入位置
+   * @param {Object} selectedCell 选中的单元格
+   * @param {string} className 新列的类名
+   * @param {number} width 新列的宽度
+   */
+  insertColumn(position, selectedCell, className, width) {
+    const allRows = this.rows.concat(this.trRows);
+    const singleSelect = selectedCell || this.tableCellSelector.getSingleSelect();
+    const cell = singleSelect.cell;
+    const rowIndex = singleSelect.rowIndex;
+    const cellGrid = this.getCellGrid(allRows);
+    const targetCells = cellGrid[rowIndex].filter(gridCell => 
+      (gridCell.cell && gridCell.cell.id === cell.id) || 
+      (gridCell.link && gridCell.link.id === cell.id)
+    );
+
+    if (position === "left") {
+      const columnIndex = targetCells[0].indexInTableGridRow;
+      
+      cellGrid.forEach((row, rowIdx) => {
+        const currentCell = row[columnIndex];
+        const cellsAfterCurrent = row.filter((cell, idx) => idx >= columnIndex && cell.cell);
+
+        if (currentCell.rowLevel === 0) {
+          const currentRow = allRows[rowIdx];
+          const newCell = allRows[rowIdx].createTableCell();
+          
+          if (className) {
+            newCell.getTarget().addClass(className);
+          }
+          if (width != null) {
+            newCell.width = width;
+          }
+          
+          if (cellsAfterCurrent.length) {
+            currentRow.insertToTargetCellLeft(cellsAfterCurrent[0].cell, newCell);
+          } else {
+            currentRow.insertCellToLast(newCell);
+          }
+          
+          hinnn.event.trigger("newCell" + this.id, newCell);
+        } else if (currentCell.linkType === "row") {
+          const linkTarget = currentCell.link.getTarget();
+          currentCell.link.colspan += 1;
+          linkTarget.attr("colspan", currentCell.link.colspan);
+        }
+      });
+    } else {
+      const lastColumnIndex = targetCells[targetCells.length - 1].indexInTableGridRow;
+      
+      cellGrid.forEach((row, rowIdx) => {
+        const currentCell = row[lastColumnIndex];
+        const cellsBeforeCurrent = row.filter((cell, idx) => idx <= lastColumnIndex && cell.cell);
+
+        if (currentCell.rightMost) {
+          const currentRow = allRows[rowIdx];
+          const newCell = currentRow.createTableCell();
+          
+          if (className) {
+            newCell.getTarget().addClass(className);
+          }
+          if (width != null) {
+            newCell.width = width;
+          }
+          
+          if (cellsBeforeCurrent.length) {
+            currentRow.insertToTargetCellRight(cellsBeforeCurrent[cellsBeforeCurrent.length - 1].cell, newCell);
+          } else {
+            currentRow.insertCellToFirst(newCell);
+          }
+          
+          hinnn.event.trigger("newCell" + this.id, newCell);
+        } else {
+          const targetCell = currentCell.link || currentCell.cell;
+
+          if (currentCell.linkType === "row") {
+            const cellTarget = targetCell.getTarget();
+            targetCell.colspan += 1;
+            cellTarget.attr("colspan", targetCell.colspan);
+          }
+
+          if (currentCell.cell) {
+            const cellTarget = targetCell.getTarget();
+            targetCell.colspan += 1;
+            cellTarget.attr("colspan", targetCell.colspan);
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   * 删除行
+   */
+  deleteRow() {
+    const singleSelect = this.tableCellSelector.getSingleSelect();
+    const rowIndex = singleSelect.rowIndex;
+    const cellGrid = this.getCellGrid();
+    const rowToDelete = this.rows[rowIndex];
+
+    cellGrid[rowIndex].forEach((gridCell, columnIndex) => {
+      if (gridCell.cell) {
+        if (gridCell.cell.rowspan === 1) {
+          rowToDelete.removeCell(gridCell.cell);
+        } else {
+          rowToDelete.removeCell(gridCell.cell);
+          const cellsInNextRow = cellGrid[rowIndex + 1].filter((cell, idx) => cell.cell && idx > columnIndex);
+          const nextRow = this.rows[rowIndex + 1];
+          const newCell = nextRow.createTableCell(gridCell.cell.rowspan - 1, gridCell.cell.colspan);
+          
+          if (cellsInNextRow.length) {
+            nextRow.insertToTargetCellLeft(cellsInNextRow[0].cell, newCell);
+          } else {
+            nextRow.insertCellToLast(newCell);
+          }
+        }
+      } else if (gridCell.linkType === "column") {
+        const linkedCell = gridCell.link;
+        linkedCell.rowspan -= 1;
+        linkedCell.getTarget().attr("rowspan", linkedCell.rowspan);
+      }
+    });
+
+    rowToDelete.getTarget().remove();
+    this.rows.splice(rowIndex, 1);
+  }
+
+  /**
+   * 删除列
+   */
+  deleteColumns() {
+    const allRows = this.rows.concat(this.trRows);
+    const singleSelect = this.tableCellSelector.getSingleSelect();
+    const cell = singleSelect.cell;
+    const rowIndex = singleSelect.rowIndex;
+    const cellGrid = this.getCellGrid(allRows);
+    const columnIndex = cellGrid[rowIndex].find(gridCell => 
+      (gridCell.cell && gridCell.cell.id === cell.id) || 
+      (gridCell.link && gridCell.link.id === cell.id)
+    ).indexInTableGridRow;
+
+    cellGrid.forEach((row, rowIdx) => {
+      const targetCell = row[columnIndex];
+      if (targetCell.cell) {
+        if (targetCell.cell.colspan === 1) {
+          allRows[rowIdx].removeCell(targetCell.cell);
+        } else {
+          targetCell.cell.colspan -= 1;
+          targetCell.cell.getTarget().attr("colspan", targetCell.cell.colspan);
+        }
+      } else if (targetCell.linkType === "row") {
+        targetCell.link.colspan -= 1;
+        targetCell.link.getTarget().attr("colspan", targetCell.link.colspan);
+      }
+    });
+  }
+
+  /**
+   * 合并单元格
+   */
+  mergeCell() {
+    const selectedCells = this.tableCellSelector.getSelectedCells();
+
+    if (selectedCells.length === 0) return;
+
+    const targetCell = selectedCells[0][0].cell;
+
+    selectedCells.forEach((row, rowIndex) => {
+      row.forEach((cell, columnIndex) => {
+        if (rowIndex === 0) {
+          if (columnIndex !== 0) {
+            targetCell.colspan += cell.cell.colspan;
+            this.rows[cell.rowIndex].removeCell(cell.cell);
+          }
+        } else {
+          this.rows[cell.rowIndex].removeCell(cell.cell);
+        }
+        if (columnIndex === 0 && selectedCells[0][0].rowIndex + targetCell.rowspan - 1 < cell.rowIndex) {
+          targetCell.rowspan += cell.cell.rowspan;
+        }
+      });
+    });
+
+    targetCell.getTarget().attr("colspan", targetCell.colspan);
+    targetCell.getTarget().attr("rowspan", targetCell.rowspan);
+    this.tableCellSelector.setSingleSelect(selectedCells[0][0]);
+  }
+
+  /**
+   * 拆分单元格
+   */
+  splitCell() {
+    const singleSelect = this.tableCellSelector.getSingleSelect();
+    const cellGrid = this.getCellGrid();
+    const columnIndex = PrintGridCellHelper.getIndex(cellGrid[singleSelect.rowIndex], singleSelect.cell.id);
+
+    if (singleSelect) {
+      for (let i = singleSelect.rowIndex; i < singleSelect.rowIndex + singleSelect.cell.rowspan; i++) {
+        const currentRow = this.rows[i];
+        const targetCell = i === singleSelect.rowIndex ? singleSelect.cell : PrintGridCellHelper.getLeftTableCell(cellGrid[i], columnIndex);
+        
+        for (let j = 0; j < singleSelect.cell.colspan; j++) {
+          if (i === singleSelect.rowIndex && j === 0) continue;
+          
+          if (targetCell) {
+            currentRow.insertToTargetCellRight(targetCell, currentRow.createTableCell());
+          } else {
+            currentRow.insertCellToFirst(currentRow.createTableCell());
+          }
+        }
+      }
+
+      singleSelect.cell.rowspan = 1;
+      singleSelect.cell.colspan = 1;
+      singleSelect.cell.getTarget().attr("colspan", singleSelect.cell.colspan);
+      singleSelect.cell.getTarget().attr("rowspan", singleSelect.cell.rowspan);
+    }
+  }
+
+  /**
+   * 初始化表格
+   * @param {Object} options 配置选项
+   */
+  init(options) {
+    $(this.target).addClass("hitable");
+
+    this.optionsCoat.onBeforEdit = editInfo => {
+      if (this.optionsCoat.options.onBeforEdit && options.onBeforEdit(editInfo) === false) {
+        return false;
+      }
+      if (this.optionsCoat.editingCell) {
+        this.optionsCoat.editingCell.endEdit();
+      }
+      return true;
+    };
+
+    $(this.target).mousedown(e => {
+      this.optionsCoat.isLeftMouseButtonDown = true;
+    });
+
+    $(this.target).mouseup(e => {
+      this.optionsCoat.isLeftMouseButtonDown = false;
+    });
+
+    this.initContext();
+
+    this.target.on("mousemove", e => {
+      if (e.buttons === 1) {
+        this.tableCellSelector.multipleSelectByXY(e.pageX, e.pageY);
+      }
+    }).on("mousedown", e => {
+      if (e.buttons === 1) {
+        this.tableCellSelector.singleSelectByXY(e.pageX, e.pageY);
+      }
+    });
+  }
+
+  /**
+   * 初始化行
+   * @param {Array} rows 行数据
+   */
+  initRows(rows) {
+    this.trRows = [];
+
+    if (rows) {
+      this.rows = rows;
+      rows.forEach((row, index) => {
+        row.init(this.optionsCoat, this.target.find("tr:eq(" + index + ")"), true);
+      });
+
+      const trs = this.optionsCoat.options.trs;
+      if (trs) {
+        this.initRowsByTrs(trs).forEach(row => {
+          this.trRows.push(row);
         });
-      }, v11710.prototype.mergeCell = function () {
-        var v11792 = this,
-          v11793 = this.tableCellSelector.getSelectedCells();
-  
-        if (0 != v11793.length) {
-          var v11794 = v11793[0][0].cell;
-          v11793.forEach(function (v11795, v11796) {
-            v11795.forEach(function (v11797, v11798) {
-              0 == v11796 ? 0 != v11798 && (v11794.colspan += v11797.cell.colspan, v11792.rows[v11797.rowIndex].removeCell(v11797.cell)) : v11792.rows[v11797.rowIndex].removeCell(v11797.cell), 0 == v11798 && v11793[0][0].rowIndex + v11794.rowspan - 1 < v11797.rowIndex && (v11794.rowspan += v11797.cell.rowspan);
+      }
+    } else {
+      this.rows = this.initRowsByTrs(this.target.find("tr"));
+    }
+  }
+
+  /**
+   * 根据 TR 元素初始化行
+   * @param {Array} trs TR 元素数组
+   * @returns {Array} 初始化后的行数组
+   */
+  initRowsByTrs(trs) {
+    return trs.map((index, tr) => {
+      const row = new PrintTableRow();
+      row.init(this.optionsCoat, $(tr));
+      return row;
+    }).get();
+  }
+
+  /**
+   * 启用编辑
+   */
+  enableEdit() {
+    this.optionsCoat.enableEdit();
+  }
+
+  /**
+   * 禁用编辑
+   */
+  disableEdit() {
+    this.optionsCoat.disableEdit();
+  }
+
+/**
+   * 获取单元格网格
+   * @param {Array} rows 行数组
+   * @returns {Array} 单元格网格
+   */
+getCellGrid(rows) {
+  const targetRows = rows || this.rows;
+  const columnStep = this.getColumnStep();
+  const grid = [];
+
+  targetRows.forEach((row, rowIndex) => {
+    row.columns.forEach((cell, cellIndex) => {
+      for (let i = 0; i < cell.colspan; i++) {
+        for (let j = 0; j < columnStep; j++) {
+          if (!grid[rowIndex]) {
+            grid[rowIndex] = [];
+          }
+
+          if (!grid[rowIndex][j]) {
+            grid[rowIndex][j] = new PrintGridCell({
+              cell: i === 0 ? cell : undefined,
+              link: i !== 0 ? cell : undefined,
+              linkType: i > 0 ? "row" : undefined,
+              rightMost: i === cell.colspan - 1 || undefined,
+              bottom: cell.rowspan - 1 === 0,
+              rowLevel: i,
+              columnLevel: 0,
+              indexInTableGridRow: j,
+              indexInTableGridColumn: rowIndex
             });
-          }), v11794.getTarget().attr("colspan", v11794.colspan), v11794.getTarget().attr("rowspan", v11794.rowspan), this.tableCellSelector.setSingleSelect(v11793[0][0]);
-        }
-      }, v11710.prototype.splitCell = function () {
-        var v11799 = this.tableCellSelector.getSingleSelect(),
-          v11800 = this.getCellGrid(),
-          v11801 = v11613.getIndex(v11800[v11799.rowIndex], v11799.cell.id);
-  
-        if (v11799) {
-          for (var v11802 = v11799.rowIndex; v11802 < v11799.rowIndex + v11799.cell.rowspan; v11802++) {
-            for (var v11803 = this.rows[v11802], v11804 = v11802 == v11799.rowIndex ? v11799.cell : v11613.getLeftTableCell(v11800[v11802], v11801), v11805 = 0; v11805 < v11799.cell.colspan; v11805++) {
-              v11802 == v11799.rowIndex && 0 == v11805 || (v11804 ? v11803.insertToTargetCellRight(v11804, v11803.createTableCell()) : v11803.insertCellToFirst(v11803.createTableCell()));
+
+            for (let k = rowIndex + 1, m = 1; m < cell.rowspan; m++) {
+              if (!grid[k]) {
+                grid[k] = [];
+              }
+              grid[k][j] = new PrintGridCell({
+                cell: undefined,
+                link: cell,
+                linkType: i > 0 ? "rowColumn" : "column",
+                rightMost: i === cell.colspan - 1 || undefined,
+                bottom: m === cell.rowspan - 1,
+                rowLevel: i,
+                columnLevel: m,
+                indexInTableGridRow: j,
+                indexInTableGridColumn: k
+              });
+              k++;
             }
+
+            break;
           }
-  
-          v11799.cell.rowspan = 1, v11799.cell.colspan = 1, v11799.cell.getTarget().attr("colspan", v11799.cell.colspan), v11799.cell.getTarget().attr("rowspan", v11799.cell.rowspan);
         }
-      }, v11710.prototype.init = function (v11806) {
-        var v11807 = this;
-        $(this.target).addClass("hitable"), this.optionsCoat.onBeforEdit = function (v11808) {
-          if (v11807.optionsCoat.options.onBeforEdit && !1 === v11806.onBeforEdit(v11808)) return !1;
-          return v11807.optionsCoat.editingCell && v11807.optionsCoat.editingCell.endEdit(), !0;
-        }, $(this.target).mousedown(function (v11809) {
-          v11807.optionsCoat.isLeftMouseButtonDown = !0;
-        }), $(this.target).mouseup(function (v11810) {
-          v11807.optionsCoat.isLeftMouseButtonDown = !1;
-        }), this.initContext(), this.target.on("mousemove", function (v11811) {
-          1 === v11811.buttons && v11807.tableCellSelector.multipleSelectByXY(v11811.pageX, v11811.pageY);
-        }).on("mousedown", function (v11812) {
-          1 === v11812.buttons && v11807.tableCellSelector.singleSelectByXY(v11812.pageX, v11812.pageY);
-        });
-      }, v11710.prototype.initRows = function (v11813) {
-        var v11814 = this;
-  
-        if (this.trRows = [], v11813) {
-          this.rows = v11813, v11813.forEach(function (v11815, v11816) {
-            v11815.init(v11814.optionsCoat, v11814.target.find("tr:eq(" + v11816 + ")"), !0);
-          });
-          var v11817 = this.optionsCoat.options.trs;
-          v11817 && this.initRowsByTrs(v11817).forEach(function (v11818) {
-            v11814.trRows.push(v11818);
-          });
-        } else this.rows = this.initRowsByTrs(this.target.find("tr"));
-      }, v11710.prototype.initRowsByTrs = function (v11819) {
-        var v11820 = this;
-        return v11819.map(function (v11821, v11822) {
-          var v11823 = new PrintTableRow();
-          return v11823.init(v11820.optionsCoat, $(v11822)), v11823;
-        }).get();
-      }, v11710.prototype.enableEidt = function () {
-        this.optionsCoat.enableEidt();
-      }, v11710.prototype.disableEdit = function () {
-        this.optionsCoat.disableEdit();
-      }, v11710.prototype.getCellGrid = function (v11825) {
-        var v11826 = v11825 || this.rows,
-          v11827 = this.getColumnStep(),
-          v11828 = new Array();
-        return v11826.forEach(function (v11829, v11830) {
-          v11829.columns.forEach(function (v11831, v11832) {
-            for (var v11833 = 0; v11833 < v11831.colspan; v11833++) {
-              for (var v11834 = 0, v11835 = !1; v11834 < v11827 && !v11835;) {
-                if (v11828[v11830] = v11828[v11830] || [], v11828[v11830][v11834]) ;else {
-                  v11828[v11830][v11834] = new v11610({
-                    cell: 0 == v11833 ? v11831 : void 0,
-                    link: 0 != v11833 ? v11831 : void 0,
-                    linkType: v11833 > 0 ? "row" : void 0,
-                    rightMost: v11833 == v11831.colspan - 1 || void 0,
-                    bottom: 0 == v11831.rowspan - 1,
-                    rowLevel: v11833,
-                    columnLevel: 0,
-                    indexInTableGridRow: v11834,
-                    indexInTableGridColumn: v11830
-                  });
-  
-                  for (var v11836 = v11830 + 1, v11837 = 1; v11837 < v11831.rowspan; v11837++) {
-                    v11828[v11836] = v11828[v11836] || [], v11828[v11836][v11834] = new v11610({
-                      cell: void 0,
-                      link: v11831,
-                      linkType: v11833 > 0 ? "rowColumn" : "column",
-                      rightMost: v11833 == v11831.colspan - 1 || void 0,
-                      bottom: v11837 == v11831.rowspan - 1,
-                      rowLevel: v11833,
-                      columnLevel: v11837,
-                      indexInTableGridRow: v11834,
-                      indexInTableGridColumn: v11836
-                    }), v11836 += 1;
-                  }
-  
-                  v11835 = !0;
-                }
-                v11834++;
-              }
-            }
-          });
-        }), v11828;
-      }, v11710.prototype.setAlign = function (v11838) {
-        var v11839 = this.tableCellSelector.getSingleSelect();
-        v11839 && v11839.cell.setAlign(v11838);
-      }, v11710.prototype.setVAlign = function (v11840) {
-        var v11841 = this.tableCellSelector.getSingleSelect();
-        v11841 && v11841.cell.setVAlign(v11840);
-      }, v11710.prototype.getColumnStep = function (v11842) {
-        var v11843 = 0;
-        return this.rows.length && this.rows[v11842 || 0].columns.forEach(function (v11844) {
-          v11843 += v11844.colspan;
-        }), v11843;
-      }, v11710.prototype.initContext = function () {
-        var v11845 = this;
-        if (!this.optionsCoat.options.isEnableContextMenu) return !1;
-        $(this.handle).hicontextMenu({
-          menus: [{
-            text: `${i18n.__('在上方插入行')}`,
-            enabled: this.optionsCoat.options.isEnableInsertRow,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect();
-            },
-            callback: function callback() {
-              v11845.insertRow("above"), v11845.resizer.updateRowGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('在下方插入行')}`,
-            borderBottom: !0,
-            enabled: this.optionsCoat.options.isEnableInsertRow,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect();
-            },
-            callback: function callback() {
-              v11845.insertRow("below"), v11845.resizer.updateRowGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('向左方插入列')}`,
-            enabled: this.optionsCoat.options.isEnableInsertColumn,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect();
-            },
-            callback: function callback() {
-              v11845.insertColumn("left"), v11845.resizer.updateColumnGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('向右方插入列')}`,
-            enabled: this.optionsCoat.options.isEnableInsertColumn,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect();
-            },
-            borderBottom: !0,
-            callback: function callback() {
-              v11845.insertColumn("right"), v11845.resizer.updateColumnGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('删除行')}`,
-            enabled: this.optionsCoat.options.isEnableDeleteRow,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect() || v11845.rows.length <= 1;
-            },
-            callback: function callback() {
-              v11845.deleteRow(), v11845.resizer.updateRowGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('删除列')}`,
-            borderBottom: !0,
-            enabled: this.optionsCoat.options.isEnableDeleteColumn,
-            disable: function disable() {
-              return !v11845.tableCellSelector.getSingleSelect() || v11845.rows.length > 0 && v11845.rows[0].columns.length <= 1;
-            },
-            callback: function callback() {
-              v11845.deleteColums(), v11845.resizer.updateColumnGrips(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('对齐')}`,
-            borderBottom: !0,
-            enabled: this.optionsCoat.options.columnAlignEditable,
-            menus: [{
-              text: `${i18n.__('左')}`,
-              callback: function callback() {
-                v11845.setAlign("left");
-              }
-            }, {
-              text: `${i18n.__('左右居中')}`,
-              callback: function callback() {
-                v11845.setAlign("center");
-              }
-            }, {
-              text: `${i18n.__('右')}`,
-              callback: function callback() {
-                v11845.setAlign("right");
-              }
-            }, {
-              text: `${i18n.__('默认')}`,
-              borderBottom: !0,
-              callback: function callback() {
-                v11845.setAlign("");
-              }
-            }, {
-              text: `${i18n.__('上')}`,
-              callback: function callback() {
-                v11845.setVAlign("top");
-              }
-            }, {
-              text: `${i18n.__('垂直居中')}`,
-              callback: function callback() {
-                v11845.setVAlign("middle");
-              }
-            }, {
-              text: `${i18n.__('下')}`,
-              callback: function callback() {
-                v11845.setVAlign("bottom");
-              }
-            }, {
-              text: `${i18n.__('默认')}`,
-              callback: function callback() {
-                v11845.setVAlign("");
-              }
-            }]
-          }, {
-            text: `${i18n.__('合并单元格')}`,
-            enabled: this.optionsCoat.options.isEnableMergeCell,
-            disable: function disable() {
-              return v11845.tableCellSelector.getSingleSelect();
-            },
-            callback: function callback() {
-              v11845.mergeCell(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }, {
-            text: `${i18n.__('解开单元格')}`,
-            enabled: this.optionsCoat.options.isEnableMergeCell,
-            disable: function disable() {
-              var v11853 = v11845.tableCellSelector.getSingleSelect();
-              return !v11853 || 1 == v11853.cell.rowspan && 1 == v11853.cell.colspan;
-            },
-            callback: function callback() {
-              v11845.splitCell(), hinnn.event.trigger("updateTable" + v11845.id);
-            }
-          }].filter(function (v11855) {
-            return v11855.enabled;
-          })
-        });
-      }, v11710.prototype.getTableWidth = function () {
-        return hinnn.px.toPt(this.target.outerWidth(!1));
-      }, v11710.prototype.updateColumnGrips = function () {
-        this.resizer.updateColumnGrips();
-      }, v11710.prototype.updateRowGrips = function () {
-        this.resizer.updateRowGrips();
-      }, v11710;
-    }();
+      }
+    });
+  });
+
+  return grid;
+}
+
+/**
+ * 设置对齐方式
+ * @param {string} align 对齐方式
+ */
+setAlign(align) {
+  const singleSelect = this.tableCellSelector.getSingleSelect();
+  if (singleSelect) {
+    singleSelect.cell.setAlign(align);
+  }
+}
+
+/**
+ * 设置垂直对齐方式
+ * @param {string} vAlign 垂直对齐方式
+ */
+setVAlign(vAlign) {
+  const singleSelect = this.tableCellSelector.getSingleSelect();
+  if (singleSelect) {
+    singleSelect.cell.setVAlign(vAlign);
+  }
+}
+
+/**
+ * 获取列步长
+ * @param {number} rowIndex 行索引
+ * @returns {number} 列步长
+ */
+getColumnStep(rowIndex) {
+  let step = 0;
+  if (this.rows.length) {
+    this.rows[rowIndex || 0].columns.forEach(cell => {
+      step += cell.colspan;
+    });
+  }
+  return step;
+}
+
+/**
+ * 初始化上下文菜单
+ */
+initContext() {
+  if (!this.optionsCoat.options.isEnableContextMenu) {
+    return false;
+  }
+
+  $(this.handle).hicontextMenu({
+    menus: [
+      {
+        text: `${i18n.__('在上方插入行')}`,
+        enabled: this.optionsCoat.options.isEnableInsertRow,
+        disable: () => !this.tableCellSelector.getSingleSelect(),
+        callback: () => {
+          this.insertRow("above");
+          this.resizer.updateRowGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('在下方插入行')}`,
+        borderBottom: true,
+        enabled: this.optionsCoat.options.isEnableInsertRow,
+        disable: () => !this.tableCellSelector.getSingleSelect(),
+        callback: () => {
+          this.insertRow("below");
+          this.resizer.updateRowGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('向左方插入列')}`,
+        enabled: this.optionsCoat.options.isEnableInsertColumn,
+        disable: () => !this.tableCellSelector.getSingleSelect(),
+        callback: () => {
+          this.insertColumn("left");
+          this.resizer.updateColumnGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('向右方插入列')}`,
+        enabled: this.optionsCoat.options.isEnableInsertColumn,
+        disable: () => !this.tableCellSelector.getSingleSelect(),
+        borderBottom: true,
+        callback: () => {
+          this.insertColumn("right");
+          this.resizer.updateColumnGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('删除行')}`,
+        enabled: this.optionsCoat.options.isEnableDeleteRow,
+        disable: () => !this.tableCellSelector.getSingleSelect() || this.rows.length <= 1,
+        callback: () => {
+          this.deleteRow();
+          this.resizer.updateRowGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('删除列')}`,
+        borderBottom: true,
+        enabled: this.optionsCoat.options.isEnableDeleteColumn,
+        disable: () => !this.tableCellSelector.getSingleSelect() || (this.rows.length > 0 && this.rows[0].columns.length <= 1),
+        callback: () => {
+          this.deleteColumns();
+          this.resizer.updateColumnGrips();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('对齐')}`,
+        borderBottom: true,
+        enabled: this.optionsCoat.options.columnAlignEditable,
+        menus: [
+          {
+            text: `${i18n.__('左')}`,
+            callback: () => this.setAlign("left")
+          },
+          {
+            text: `${i18n.__('左右居中')}`,
+            callback: () => this.setAlign("center")
+          },
+          {
+            text: `${i18n.__('右')}`,
+            callback: () => this.setAlign("right")
+          },
+          {
+            text: `${i18n.__('默认')}`,
+            borderBottom: true,
+            callback: () => this.setAlign("")
+          },
+          {
+            text: `${i18n.__('上')}`,
+            callback: () => this.setVAlign("top")
+          },
+          {
+            text: `${i18n.__('垂直居中')}`,
+            callback: () => this.setVAlign("middle")
+          },
+          {
+            text: `${i18n.__('下')}`,
+            callback: () => this.setVAlign("bottom")
+          },
+          {
+            text: `${i18n.__('默认')}`,
+            callback: () => this.setVAlign("")
+          }
+        ]
+      },
+      {
+        text: `${i18n.__('合并单元格')}`,
+        enabled: this.optionsCoat.options.isEnableMergeCell,
+        disable: () => this.tableCellSelector.getSingleSelect(),
+        callback: () => {
+          this.mergeCell();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      },
+      {
+        text: `${i18n.__('解开单元格')}`,
+        enabled: this.optionsCoat.options.isEnableMergeCell,
+        disable: () => {
+          const singleSelect = this.tableCellSelector.getSingleSelect();
+          return !singleSelect || (singleSelect.cell.rowspan === 1 && singleSelect.cell.colspan === 1);
+        },
+        callback: () => {
+          this.splitCell();
+          hinnn.event.trigger("updateTable" + this.id);
+        }
+      }
+    ].filter(menu => menu.enabled)
+  });
+}
+
+/**
+ * 获取表格宽度
+ * @returns {number} 表格宽度
+ */
+getTableWidth() {
+  return hinnn.px.toPt(this.target.outerWidth(false));
+}
+
+/**
+ * 更新列宽调整器
+ */
+updateColumnGrips() {
+  this.resizer.updateColumnGrips();
+}
+
+/**
+ * 更新行高调整器
+ */
+updateRowGrips() {
+  this.resizer.updateRowGrips();
+}
+}
   export default PrintTable;

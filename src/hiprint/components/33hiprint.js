@@ -55,170 +55,251 @@ import PaperHtmlResult from "./06PaperHtmlResult.js";
 import PrintElementTableRow from "./12PrintElementTableRow.js";
 import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";
 
+import "../plugins/hiLocalStorage.js"
 
 
-  
-    // webpack_require.r(webpack_exports);
-    // webpack_require(22), webpack_require(23), webpack_require(24), webpack_require(25);
-    var v12387;
-      // v12388 = webpack_require(0);
-    // webpack_require(26);
-    window.hiLocalStorage = (v12387 = window.localStorage || null, {
-      saveLocalData: function saveLocalData(v12389, v12390) {
-        return !(!v12387 || !v12390 || (v12387.setItem(v12389, v12390), 0));
-      },
-      getLocalData: function getLocalData(v12391) {
-        return v12387 ? v12387.getItem(v12391) : null;
-      },
-      removeItem: function removeItem(v12392) {
-        v12387 && v12387.removeItem(v12392);
-      }
+  // 打印元素类型管理器
+class PrintElementTypeContext {
+  constructor() {
+    this.allElementTypes = [];
+  }
+
+  static get instance() {
+    return PrintElementTypeContext._instance || (PrintElementTypeContext._instance = new PrintElementTypeContext()), PrintElementTypeContext._instance;
+  }
+
+  // 添加打印元素类型
+  addPrintElementTypes(moduleName, types) {
+    const self = this;
+    this[moduleName] ? this[moduleName] = this[moduleName].concat(types) : this[moduleName] = types;
+    types.forEach(function (typeGroup) {
+      self.allElementTypes = self.allElementTypes.concat(typeGroup.printElementTypes);
     });
-    // webpack_require(27), webpack_require(32);
-  
+  }
+
+  // 移除打印元素类型
+  removePrintElementTypes(moduleName) {
+    const self = this;
+    delete self[moduleName];
+    self.allElementTypes = self.allElementTypes.filter(function (elementType) {
+      return !elementType.tid.startsWith(moduleName);
+    });
+  }
+
+  // 获取元素类型分组
+  getElementTypeGroups(moduleName) {
+    return this[this.formatterModule(moduleName)] || [];
+  }
+
+  // 获取特定元素类型
+  getElementType(typeId) {
+    const matchedTypes = this.allElementTypes.filter(function (elementType) {
+      return elementType.tid == typeId;
+    });
+    if (matchedTypes.length > 0) return matchedTypes[0];
+  }
+
+  // 更新元素类型
+  updateElementType(typeId, updateFunction) {
+    const type = this.getElementType(typeId);
+    if (updateFunction) {
+      const newType = updateFunction(type);
+      const idx = this.allElementTypes.findIndex(function (elementType) {
+        return elementType.tid == typeId;
+      });
+      if (idx >= 0) {
+        this.allElementTypes.splice(idx, 1, newType);
+        return newType;
+      }
+    }
+    return type;
+  }
+
+  // 格式化模块名
+  formatterModule(moduleName) {
+    return moduleName || "_default";
+  }
+}
+
+// 打印元素类型HTML生成器
+class PrintElementTypeHtmlProvider {
+  // 创建打印元素类型HTML
+  createPrintElementTypeHtml(container, printElementTypes) {
+    const ulElement = $('<ul class="hiprint-printElement-type"></ul>');
+    printElementTypes.forEach(function (printElementType) {
+      const liElement = $("<li></li>");
+      liElement.append('<span class="title">' + printElementType.name + "</span>");
+      const subUlElement = $("<ul></ul>");
+      liElement.append(subUlElement);
+      printElementType.printElementTypes.forEach(function (elementType) {
+        subUlElement.append('<li><a class="ep-draggable-item" tid="' + elementType.tid + '">  ' + elementType.getText() + " </a></li>");
+      });
+      ulElement.append(liElement);
+    });
+    $(container).append(ulElement);
+    return ulElement.find(".ep-draggable-item");
+  }
+}
+
+// 打印元素实体类
+class PrintElementTypeEntity {
+  constructor(options) {
+    this.title = options.title;
+    this.type = options.type;
+  }
+}
+
+// 表格实体类
+class TableEntity {
+  constructor(options) {
+    this.title = options.title;
+    this.type = options.type;
+    this.editable = options.editable;
+    this.columnDisplayEditable = options.columnDisplayEditable;
+    this.columnDisplayIndexEditable = options.columnDisplayIndexEditable;
+    this.columnTitleEditable = options.columnTitleEditable;
+    this.columnResizable = options.columnResizable;
+    this.columnAlignEditable = options.columnAlignEditable;
+    this.isEnableEditField = options.isEnableEditField;
+    this.isEnableContextMenu = options.isEnableContextMenu;
+    this.isEnableInsertRow = options.isEnableInsertRow;
+    this.isEnableDeleteRow = options.isEnableDeleteRow;
+    this.isEnableInsertColumn = options.isEnableInsertColumn;
+    this.isEnableDeleteColumn = options.isEnableDeleteColumn;
+    this.isEnableMergeCell = options.isEnableMergeCell;
+  }
+}
+
+// 打印元素类型
+class PrintElementType {
+  constructor(options) {
+    const self = this;
+    this.text = options.text;
+    this.field = options.field;
+    this.fields = options.fields;
+    this.title = options.title;
+    this.tid = options.tid;
+    this.data = options.data;
+    this.styler = options.styler;
+    this.formatter = options.formatter;
+    this.type = options.type;
+    this.options = options.options;
+    this.editable = options.editable !== undefined ? options.editable : true;
+    this.columnDisplayEditable = options.columnDisplayEditable !== undefined ? options.columnDisplayEditable : true;
+    this.columnDisplayIndexEditable = options.columnDisplayIndexEditable !== undefined ? options.columnDisplayIndexEditable : true;
+    this.columnTitleEditable = options.columnTitleEditable !== undefined ? options.columnTitleEditable : true;
+    this.columnResizable = options.columnResizable !== undefined ? options.columnResizable : true;
+    this.columnAlignEditable = options.columnAlignEditable !== undefined ? options.columnAlignEditable : true;
+    this.columns = [];
+    (options.columns || []).forEach(function (column, index) {
+      self.columns.push(self.createTableColumnArray(column));
+    });
+    this.rowStyler = options.rowStyler;
+    this.striped = options.striped;
+    this.groupFields = options.groupFields || [];
+    this.groupFormatter = options.groupFormatter;
+    this.groupFooterFormatter = options.groupFooterFormatter;
+    this.footerFormatter = options.footerFormatter;
+    this.rowsColumnsMerge = options.rowsColumnsMerge;
+    this.rowsColumnsMergeClean = options.rowsColumnsMergeClean;
+    this.gridColumnsFooterFormatter = options.gridColumnsFooterFormatter;
+    this.isEnableEditField = options.isEnableEditField !== undefined ? options.isEnableEditField : true;
+    this.isEnableContextMenu = options.isEnableContextMenu !== undefined ? options.isEnableContextMenu : true;
+    this.isEnableInsertRow = options.isEnableInsertRow !== undefined ? options.isEnableInsertRow : true;
+    this.isEnableDeleteRow = options.isEnableDeleteRow !== undefined ? options.isEnableDeleteRow : true;
+    this.isEnableInsertColumn = options.isEnableInsertColumn !== undefined ? options.isEnableInsertColumn : true;
+    this.isEnableDeleteColumn = options.isEnableDeleteColumn !== undefined ? options.isEnableDeleteColumn : true;
+    this.isEnableMergeCell = options.isEnableMergeCell !== undefined ? options.isEnableMergeCell : true;
+    this.columnObj = this.makeColumnObj();
+  }
+
+  getText() {
+    return this.text || this.title || "";
+  }
+
+  createPrintElement(options) {
+    const self = this;
+    if (this.columns && this.columns.length == 0) {
+      (options.columns || []).forEach(function (column, index) {
+        self.columns.push(self.createTableColumnArray(column));
+      });
+    }
+    return new TablePrintElement(this, options);
+  }
+
+  getData() {
+    return [{}];
+  }
+
+  createTableColumnArray(columns) {
+    const tableColumns = [];
+    columns.forEach(function (column, index) {
+      tableColumns.push(new PrintTableCell(column));
+    });
+    return tableColumns;
+  }
+
+  getPrintElementTypeEntity() {
+    if ('table' == this.type) {
+      return new TableEntity({
+        title: this.title,
+        type: this.type,
+        editable: this.editable,
+        columnDisplayEditable: this.columnDisplayEditable,
+        columnDisplayIndexEditable: this.columnDisplayIndexEditable,
+        columnResizable: this.columnResizable,
+        columnAlignEditable: this.columnAlignEditable,
+        columnTitleEditable: this.columnTitleEditable,
+        isEnableEditField: this.isEnableEditField,
+        isEnableContextMenu: this.isEnableContextMenu,
+        isEnableInsertRow: this.isEnableInsertRow,
+        isEnableDeleteRow: this.isEnableDeleteRow,
+        isEnableInsertColumn: this.isEnableInsertColumn,
+        isEnableDeleteColumn: this.isEnableDeleteColumn,
+        isEnableMergeCell: this.isEnableMergeCell
+      });
+    }
+    return new PrintElementTypeEntity({
+      title: this.title,
+      type: this.type
+    });
+  }
+
+  getFields() {
+    return this.fields;
+  }
+
+  getOptions() {
+    return this.options || {};
+  }
+
+  getColumnByColumnId(columnId) {
+    return this.columnObj[columnId];
+  }
+
+  makeColumnObj(columns) {
+    const columnObject = {};
+    if (columns) {
+      columns.forEach(function (column) {
+        (column.id || column.columnId) && (columnObject[column.id || column.columnId] = column);
+      });
+    } else if (this.columns) {
+      this.columns.forEach(function (columnGroup) {
+        columnGroup.forEach(function (column) {
+          (column.id || column.columnId) && (columnObject[column.id || column.columnId] = column);
+        });
+      });
+    }
+    this.columnObj = columnObject;
+    return columnObject;
+  }
+}
     var _r,
-      v12393 = function () {
-        function v12394() {
-          this.allElementTypes = [];
-        }
-  
-        return Object.defineProperty(v12394, "instance", {
-          get: function get() {
-            return v12394._instance || (v12394._instance = new v12394()), v12394._instance;
-          },
-          enumerable: !0,
-          configurable: !0
-        }), v12394.prototype.addPrintElementTypes = function (v12395, v12396) {
-          var v12397 = this;
-          this[v12395] ? this[v12395] = this[v12395].concat(v12396) : this[v12395] = v12396, v12396.forEach(function (v12398) {
-            v12397.allElementTypes = v12397.allElementTypes.concat(v12398.printElementTypes);
-          });
-        }, v12394.prototype.removePrintElementTypes = function (v12399) {
-          var v12400 = this;
-          delete v12400[v12399], v12400.allElementTypes = v12400.allElementTypes.filter(function (v12401) {
-            return !v12401.tid.startsWith(v12399);
-          });
-        }, v12394.prototype.getElementTypeGroups = function (v12402) {
-          return this[this.formatterModule(v12402)] || [];
-        }, v12394.prototype.getElementType = function (v12403) {
-          var v12404 = this.allElementTypes.filter(function (v12405) {
-            return v12405.tid == v12403;
-          });
-          if (v12404.length > 0) return v12404[0];
-        }, v12394.prototype.updateElementType = function (v12406, v12407) {
-          var type = this.getElementType(v12406);
-          if (v12407) {
-            var newType = v12407(type);
-            var idx = this.allElementTypes.findIndex(function (v12408) {
-              return v12408.tid == v12406;
-            });
-            if (idx >= 0) {
-              this.allElementTypes.splice(idx, 1, newType);
-              return newType;
-            }
-          }
-          return type;
-        }, v12394.prototype.formatterModule = function (v12409) {
-          return v12409 || "_default";
-        }, v12394;
-      }(),
-      // v12410 = webpack_require(1),
-      // v12411 = webpack_require(2),
-      v12412 = function () {
-        function v12413() {
-        }
-  
-        return v12413.prototype.createPrintElementTypeHtml = function (v12414, v12415) {
-          var v12416 = $('<ul class="hiprint-printElement-type"></ul>');
-          return v12415.forEach(function (v12417) {
-            var v12418 = $("<li></li>");
-            v12418.append('<span class="title">' + v12417.name + "</span>");
-            var v12419 = $("<ul></ul>");
-            v12418.append(v12419), v12417.printElementTypes.forEach(function (v12420) {
-              v12419.append('<li><a class="ep-draggable-item" tid="' + v12420.tid + '">  ' + v12420.getText() + " </a></li>");
-            }), v12416.append(v12418);
-          }), $(v12414).append(v12416), v12416.find(".ep-draggable-item");
-        }, v12413;
-      }(),
-      // v12421 = webpack_require(5),
-      // v12422 = webpack_require(15),
-      v12423 = function () {
-        return function (v12424) {
-          this.title = v12424.title, this.type = v12424.type;
-        };
-      }(),
-      ctable = function () {
-        return function (v12425) {
-          this.title = v12425.title, this.type = v12425.type, this.editable = v12425.editable, this.columnDisplayEditable = v12425.columnDisplayEditable, this.columnDisplayIndexEditable = v12425.columnDisplayIndexEditable, this.columnTitleEditable = v12425.columnTitleEditable, this.columnResizable = v12425.columnResizable, this.columnAlignEditable = v12425.columnAlignEditable,
-          this.isEnableEditField = v12425.isEnableEditField, this.isEnableContextMenu = v12425.isEnableContextMenu, this.isEnableInsertRow = v12425.isEnableInsertRow, this.isEnableDeleteRow = v12425.isEnableDeleteRow, this.isEnableInsertColumn = v12425.isEnableInsertColumn, this.isEnableDeleteColumn = v12425.isEnableDeleteColumn, this.isEnableMergeCell = v12425.isEnableMergeCell;
-        };
-      }(),
-      v12426 = function () {
-        function v12431(v12427) {
-          var v12428 = this;
-          this.text = v12427.text, this.field = v12427.field, this.fields = v12427.fields, this.title = v12427.title, this.tid = v12427.tid, this.data = v12427.data, this.styler = v12427.styler, this.formatter = v12427.formatter, this.type = v12427.type, this.options = v12427.options, this.editable = v12427.editable != void 0 ? v12427.editable : !0, this.columnDisplayEditable = v12427.columnDisplayEditable != void 0 ? v12427.columnDisplayEditable : !0, this.columnDisplayIndexEditable = v12427.columnDisplayIndexEditable != void 0 ? v12427.columnDisplayIndexEditable : !0, this.columnTitleEditable = v12427.columnTitleEditable != void 0 ? v12427.columnTitleEditable : !0, this.columnResizable = v12427.columnResizable != void 0 ? v12427.columnResizable : !0, this.columnAlignEditable = v12427.columnAlignEditable != void 0 ? v12427.columnAlignEditable : !0, this.columns = [], (v12427.columns || []).forEach(function (v12429, v12430) {
-            v12428.columns.push(v12428.createTableColumnArray(v12429));
-          }), this.rowStyler = v12427.rowStyler, this.striped = v12427.striped, this.groupFields = v12427.groupFields || [], this.groupFormatter = v12427.groupFormatter, this.groupFooterFormatter = v12427.groupFooterFormatter, this.footerFormatter = v12427.footerFormatter, this.rowsColumnsMerge = v12427.rowsColumnsMerge, this.rowsColumnsMergeClean = v12427.rowsColumnsMergeClean, this.gridColumnsFooterFormatter = v12427.gridColumnsFooterFormatter,
-          this.isEnableEditField = v12427.isEnableEditField != void 0 ? v12427.isEnableEditField : !0, this.isEnableContextMenu = v12427.isEnableContextMenu != void 0 ? v12427.isEnableContextMenu : !0, this.isEnableInsertRow = v12427.isEnableInsertRow != void 0 ? v12427.isEnableInsertRow : !0, this.isEnableDeleteRow = v12427.isEnableDeleteRow != void 0 ? v12427.isEnableDeleteRow : !0, this.isEnableInsertColumn = v12427.isEnableInsertColumn != void 0 ? v12427.isEnableInsertColumn : !0, this.isEnableDeleteColumn = v12427.isEnableDeleteColumn != void 0 ? v12427.isEnableDeleteColumn : !0, this.isEnableMergeCell = v12427.isEnableMergeCell != void 0 ? v12427.isEnableMergeCell : !0, this.columnObj = this.makeColumnObj();
-        }
-  
-        return v12431.prototype.getText = function () {
-          return this.text || this.title || "";
-        }, v12431.prototype.createPrintElement = function (v12432) {
-          var v12433 = this;
-          return this.columns && 0 == this.columns.length && (v12432.columns || []).forEach(function (v12434, v12435) {
-            v12433.columns.push(v12433.createTableColumnArray(v12434));
-          }), new TablePrintElement(this, v12432);
-        }, v12431.prototype.getData = function () {
-          return [{}];
-        }, v12431.prototype.createTableColumnArray = function (v12437) {
-          var v12438 = [];
-          return v12437.forEach(function (v12439, v12440) {
-            v12438.push(new PrintTableCell(v12439));
-          }), v12438;
-        }, v12431.prototype.getPrintElementTypeEntity = function () {
-          if ('table' == this.type) {
-            return new ctable({
-              title: this.title,
-              type: this.type,
-              editable: this.editable,
-              columnDisplayEditable: this.columnDisplayEditable,
-              columnDisplayIndexEditable: this.columnDisplayIndexEditable,
-              columnResizable: this.columnResizable,
-              columnAlignEditable: this.columnAlignEditable,
-              columnTitleEditable: this.columnTitleEditable,
-              isEnableEditField: this.isEnableEditField,
-              isEnableContextMenu: this.isEnableContextMenu,
-              isEnableInsertRow: this.isEnableInsertRow,
-              isEnableDeleteRow: this.isEnableDeleteRow,
-              isEnableInsertColumn: this.isEnableInsertColumn,
-              isEnableDeleteColumn: this.isEnableDeleteColumn,
-              isEnableMergeCell: this.isEnableMergeCell
-            });
-          }
-          return new v12423({
-            title: this.title,
-            type: this.type
-          });
-        }, v12431.prototype.getFields = function () {
-          return this.fields;
-        }, v12431.prototype.getOptions = function () {
-          return this.options || {};
-        }, v12431.prototype.getColumnByColumnId = function (v12442) {
-          return this.columnObj[v12442];
-        }, v12431.prototype.makeColumnObj = function (columns) {
-          var v12443 = {};
-          return columns ? columns.forEach(function (v12444) {
-            (v12444.id || v12444.columnId) && (v12443[v12444.id || v12444.columnId] = v12444);
-          }) : this.columns && this.columns.forEach(function (v12445) {
-            v12445.forEach(function (v12446) {
-              (v12446.id || v12446.columnId) && (v12443[v12446.id || v12446.columnId] = v12446);
-            });
-          }), this.columnObj = v12443, v12443;
-        }, v12431;
-      }(),
-      // v12447 = webpack_require(4),
-      // v12448 = webpack_require(3),
+
+
+
+
+
       v12449 = (_r = function v12450(v12451, v12452) {
         return (_r = Object.setPrototypeOf || _instanceof({
           __proto__: []
@@ -236,7 +317,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
   
         _r(v12458, v12459), v12458.prototype = null === v12459 ? Object.create(v12459) : (v12460.prototype = v12459.prototype, new v12460());
       }),
-      v12461 = function (v12462) {
+      ImagePrintElement = function (v12462) {
         function v12469(v12463, v12464) {
           var v12465 = v12462.call(this, v12463) || this;
           return v12465.options = new PrintElementOption(v12464), v12465.options.setDefault(new PrintElementOption(PrintConfig.instance.image.default).getPrintElementOptionEntity()), v12465;
@@ -300,7 +381,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return null == this.hideTitle ? this.defaultOptions.hideTitle : this.hideTitle;
         }, v12505;
       }(PrintElementOption),
-      // v12507 = webpack_require(8),
+
       v12508 = function () {
         function v12523(v12509, idx, watermarkOptions, pr, scl, v12510, v12511, v12512, v12513, v12514, v12515, v12516, s1, v12517, v12518, v12519) {
           this.panelPageRule = pr, this.scale = scl, this.watermarkOptions = watermarkOptions,
@@ -475,7 +556,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return this.target.parent(".hiprint-printPanel ");
         }, v12523;
       }(),
-      // v12587 = webpack_require(6),
+
       v12588 = function () {
         var _t5 = function v12589(v12590, v12591) {
           return (_t5 = Object.setPrototypeOf || _instanceof({
@@ -497,7 +578,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t5(v12597, v12598), v12597.prototype = null === v12598 ? Object.create(v12598) : (v12599.prototype = v12598.prototype, new v12599());
         };
       }(),
-      v12600 = function (v12601) {
+      LongTextPrintElement = function (v12601) {
         function v12606(v12602, v12603) {
           var v12604 = v12601.call(this, v12602) || this;
           return v12604.options = new v12501(v12603), v12604.options.setDefault(new v12501(PrintConfig.instance.longText.default).getPrintElementOptionEntity()), v12604;
@@ -905,7 +986,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t9(v12792, v12793), v12792.prototype = null === v12793 ? Object.create(v12793) : (v12794.prototype = v12793.prototype, new v12794());
         };
       }(),
-      v12795 = function (v12796) {
+      HtmlPrintElement = function (v12796) {
         function v12801(v12797, v12798) {
           var v12799 = v12796.call(this, v12797) || this;
           return v12799.options = new v12778(v12798), v12799.options.setDefault(new v12778(PrintConfig.instance.html.default).getPrintElementOptionEntity()), v12799;
@@ -960,7 +1041,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t10(v12824, v12825), v12824.prototype = null === v12825 ? Object.create(v12825) : (v12826.prototype = v12825.prototype, new v12826());
         };
       }(),
-      v12827 = function (v12828) {
+      VLinePrintElement = function (v12828) {
         function v12835(v12829, v12830) {
           var v12831 = v12828.call(this, v12829) || this;
           return v12831.options = new PrintElementOption(v12830), v12831.options.setDefault(new PrintElementOption(PrintConfig.instance.vline.default).getPrintElementOptionEntity()), v12831;
@@ -1002,7 +1083,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t11(v12853, v12854), v12853.prototype = null === v12854 ? Object.create(v12854) : (v12855.prototype = v12854.prototype, new v12855());
         };
       }(),
-      v12856 = function (v12857) {
+      HLinePrintElement = function (v12857) {
         function v12864(v12858, v12859) {
           var v12860 = v12857.call(this, v12858) || this;
           return v12860.options = new PrintElementOption(v12859), v12860.options.setDefault(new PrintElementOption(PrintConfig.instance.hline.default).getPrintElementOptionEntity()), v12860;
@@ -1042,7 +1123,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t12(v12879, v12880), v12879.prototype = null === v12880 ? Object.create(v12880) : (v12881.prototype = v12880.prototype, new v12881());
         };
       }(),
-      v12882 = function (v12883) {
+      RectPrintElement = function (v12883) {
         function v12890(v12884, v12885) {
           var v12886 = v12883.call(this, v12884) || this;
           return v12886.options = new PrintElementOption(v12885), v12886.options.setDefault(new PrintElementOption(PrintConfig.instance.rect.default).getPrintElementOptionEntity()), v12886;
@@ -1082,7 +1163,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           _t13(v12908, v12909), v12908.prototype = null === v12909 ? Object.create(v12909) : (v12910.prototype = v12909.prototype, new v12910());
         };
       }(),
-      v12911 = function (v12912) {
+      OvalPrintElement = function (v12912) {
         function v12919(v12913, v12914) {
           var v12915 = v12912.call(this, v12913) || this;
           return v12915.options = new PrintElementOption(v12914), v12915.options.setDefault(new PrintElementOption(PrintConfig.instance.oval.default).getPrintElementOptionEntity()), v12915;
@@ -1101,7 +1182,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return this.getHtml2(v12924, v12925, v12926);
         }, v12919;
       }(BasePrintElement),
-      barcode = function (v12928) {
+      BarcodePrintElement = function (v12928) {
         function v12935(v12929, v12930) {
           var v12931 = v12928.call(this, v12929) || this;
           return v12931.options = new PrintElementOption(v12930), v12931.options.setDefault(new PrintElementOption(PrintConfig.instance.barcode.default).getPrintElementOptionEntity()), v12931;
@@ -1175,7 +1256,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return this.getHtml2(v12950, v12951, v12952);
         }, v12935;
       }(BasePrintElement),
-      qrcode = function (v12954) {
+      QrcodePrintElement = function (v12954) {
         function v12961(v12955, v12956) {
           var v12957 = v12954.call(this, v12955) || this;
           return v12957.options = new PrintElementOption(v12956), v12957.options.setDefault(new PrintElementOption(PrintConfig.instance.qrcode.default).getPrintElementOptionEntity()), v12957;
@@ -1249,7 +1330,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
         }
   
         return v12981.createPrintElement = function (v12982, v12983) {
-          return "text" == v12982.type ? new v12721(v12982, v12983) : "image" == v12982.type ? new v12461(v12982, v12983) : "longText" == v12982.type ? new v12600(v12982, v12983) : "table" == v12982.type ? new TablePrintElement(v12982, v12983) : "html" == v12982.type ? new v12795(v12982, v12983) : "vline" == v12982.type ? new v12827(v12982, v12983) : "hline" == v12982.type ? new v12856(v12982, v12983) : "rect" == v12982.type ? new v12882(v12982, v12983) : "oval" == v12982.type ? new v12911(v12982, v12983) : "barcode" == v12982.type ? new barcode(v12982, v12983) : "qrcode" == v12982.type ? new qrcode(v12982, v12983) : void 0;
+          return "text" == v12982.type ? new v12721(v12982, v12983) : "image" == v12982.type ? new ImagePrintElement(v12982, v12983) : "longText" == v12982.type ? new LongTextPrintElement(v12982, v12983) : "table" == v12982.type ? new TablePrintElement(v12982, v12983) : "html" == v12982.type ? new HtmlPrintElement(v12982, v12983) : "vline" == v12982.type ? new VLinePrintElement(v12982, v12983) : "hline" == v12982.type ? new HLinePrintElement(v12982, v12983) : "rect" == v12982.type ? new RectPrintElement(v12982, v12983) : "oval" == v12982.type ? new OvalPrintElement(v12982, v12983) : "barcode" == v12982.type ? new BarcodePrintElement(v12982, v12983) : "qrcode" == v12982.type ? new QrcodePrintElement(v12982, v12983) : void 0;
         }, v12981;
       }(),
       v12985 = function () {
@@ -1265,7 +1346,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           var v12990 = {};
           return $.extend(v12990, v12989 || {}), v12980.createPrintElement(this, v12990);
         }, v12987.prototype.getPrintElementTypeEntity = function () {
-          return new v12423({
+          return new PrintElementTypeEntity({
             title: this.title,
             type: this.type
           });
@@ -1275,8 +1356,8 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return this.options || {};
         }, v12987;
       }(),
-      // v12991 = webpack_require(16),
-      // v12992 = webpack_require(12),
+
+      
       v12993 = function () {
         var _t14 = function v12994(v12995, v12996) {
           return (_t14 = Object.setPrototypeOf || _instanceof({
@@ -1372,7 +1453,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           var v13045 = {};
           return $.extend(v13045, v13044 || {}), v12980.createPrintElement(this, v13045);
         }, v13043.prototype.getPrintElementTypeEntity = function () {
-          return new v12423({
+          return new PrintElementTypeEntity({
             title: this.title,
             type: this.type
           });
@@ -1383,24 +1464,24 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
         }
   
         return v13046.createPrintElementType = function (v13047) {
-          return v13047.type = v13047.type || "text", "text" == v13047.type ? new et(v13047) : "table" == v13047.type ? new v12426(v13047) : new v12985(v13047);
+          return v13047.type = v13047.type || "text", "text" == v13047.type ? new et(v13047) : "table" == v13047.type ? new PrintElementType(v13047) : new v12985(v13047);
         }, v13046;
       }(),
-      it = function () {
+      PrintElementTypeManager = function () {
         function v13048() {
         }
   
         return v13048.getElementTypeGroups = function (v13049) {
           var v13050 = v13048.formatterModule(v13049);
-          return v12393.instance[v13050] || [];
+          return PrintElementTypeContext.instance[v13050] || [];
         }, v13048.getElementType = function (v13051, v13052) {
-          if (v13051) return v12393.instance.getElementType(v13051);
+          if (v13051) return PrintElementTypeContext.instance.getElementType(v13051);
           nt.createPrintElementType({
             type: v13052
           });
         }, v13048.build = function (v13053, v13054) {
           var v13055 = v13048.formatterModule(v13054),
-            v13056 = new v12412().createPrintElementTypeHtml(v13053, this.getElementTypeGroups(v13055));
+            v13056 = new PrintElementTypeHtmlProvider().createPrintElementTypeHtml(v13053, this.getElementTypeGroups(v13055));
           this.enableDrag(v13056);
         }, v13048.buildByHtml = function (v13057) {
           this.enableDrag(v13057);
@@ -1442,7 +1523,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           return v13073 || "_default";
         }, v13048;
       }(),
-      ot = function () {
+      PrintElementTypeGroup = function () {
         return function (v13074, v13075) {
           var v13076 = this;
           this.name = v13074, this.printElementTypes = [], v13075.forEach(function (v13077) {
@@ -1836,7 +1917,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           this.printElements = [], v13188 && v13188.forEach(function (v13190) {
             var v13191;
   
-            if (v13191 = v13190.printElementType ? nt.createPrintElementType(v13190.printElementType) : v12393.instance.getElementType(v13190.tid)) {
+            if (v13191 = v13190.printElementType ? nt.createPrintElementType(v13190.printElementType) : PrintElementTypeContext.instance.getElementType(v13190.tid)) {
               var v13192 = v13191.createPrintElement(v13190.options);
               v13192.setTemplateId(v13189.templateId), v13192.setPanel(v13189), v13189.printElements.push(v13192);
             } else console.log("miss " + JSON.stringify(v13188));
@@ -1903,7 +1984,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           v13227.printElementType = v13227.printElementType || {}, v13227.printElementType.type = "oval", this.insertPrintElementToPanel(v13227);
         }, v13094.prototype.getPrintElementTypeByEntity = function (v13228) {
           var v13229;
-          return (v13229 = v13228.tid ? v12393.instance.getElementType(v13228.tid) : nt.createPrintElementType(v13228.printElementType)) || console.log("miss " + JSON.stringify(v13228)), v13229;
+          return (v13229 = v13228.tid ? PrintElementTypeContext.instance.getElementType(v13228.tid) : nt.createPrintElementType(v13228.printElementType)) || console.log("miss " + JSON.stringify(v13228)), v13229;
         }, v13094.prototype.getPrintStyle = function () {
           let layoutStyle = '';
           if (this.panelLayoutOptions && this.panelLayoutOptions['layoutType'] === 'row') {
@@ -2099,7 +2180,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           } else this.panels = [];
         };
       }(),
-      // lt = webpack_require(9),
+
       ut = function () {
         function v13310(v13302, v13303) {
           var v13304 = this;
@@ -2351,7 +2432,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
           hinnn.event.trigger("onSelectPanel", this.template.editingPanel, v13372, li);
         }, v13360;
       }(),
-      ct = function () {
+      PrintTemplate = function () {
         function v13381(v13373) {
           var v13374 = this;
           this.tempimageBase64 = {}, this.id = PrintLib.instance.guid(), PrintLib.instance.setPrintTemplateById(this.id, this);
@@ -2935,7 +3016,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
   
     function ft(v13551, v13552, v13553) {
       $.extend({}, v13551 || {}).imgToBase64 = !0;
-      var v13554 = new ct({});
+      var v13554 = new PrintTemplate({});
       v13554.on("printSuccess", v13552), v13554.on("printError", v13553), v13554.printByHtml2(this.getHtml(v13551), v13551.options);
     }
   
@@ -2949,7 +3030,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
   
     function mt(v13560) {
       PrintConfig.instance.init(v13560), PrintConfig.instance.providers && PrintConfig.instance.providers.forEach(function (v13564) {
-        v13564.addElementTypes(v12393.instance);
+        v13564.addElementTypes(PrintElementTypeContext.instance);
       });
       if (window.autoConnect && (PrintConfig.instance.host != hiwebSocket.host || PrintConfig.instance.token != hiwebSocket.token)) {
         hiwebSocket.stop();
@@ -3028,7 +3109,7 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
     }
   
     function uep(v13590, v13591) {
-      return v12393.instance.updateElementType(v13590, v13591);
+      return PrintElementTypeContext.instance.updateElementType(v13590, v13591);
     }
   
     function rpl(v13592) {
@@ -3089,9 +3170,9 @@ import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js"
       getAddress: getAddr,
       ippPrint: ippPrint,
       ippRequest: ippRequest,
-      PrintElementTypeManager: it,
-      PrintElementTypeGroup: ot,
-      PrintTemplate: ct,
+      PrintElementTypeManager: PrintElementTypeManager,
+      PrintElementTypeGroup: PrintElementTypeGroup,
+      PrintTemplate: PrintTemplate,
       print: ht,
       print2: ft,
       getHtml: gt
