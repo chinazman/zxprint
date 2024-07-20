@@ -146,7 +146,7 @@ class TableEntity {
 }
 
 // 打印元素类型
-class PrintElementType {
+class PrintElementTypeTable {
   constructor(options) {
     const self = this;
     this.text = options.text;
@@ -271,5 +271,5 @@ class PrintElementType {
 }
 
 export {
-    PrintElementTypeContext,PrintElementTypeHtmlProvider,PrintElementTypeEntity,PrintElementType
+    PrintElementTypeContext,PrintElementTypeHtmlProvider,PrintElementTypeEntity,PrintElementTypeTable
 }
