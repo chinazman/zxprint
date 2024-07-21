@@ -1,4 +1,4 @@
-import TableRect from "./10TableRect";
+import TableRect from "./TableRect";
 /**
  * 界面元素工具类
  */

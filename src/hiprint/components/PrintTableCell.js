@@ -4,9 +4,9 @@
  * import 相关资源
  */
 import {i18n,$} from "../hiprint.comm.js";
-import TableRect from "./10TableRect.js";
-import TableRectHelper from "./14TableRectHelper.js";
-import IdUtil from "./11IdGenerator.js";
+import TableRect from "./TableRect.js";
+import TableRectHelper from "./TableRectHelper.js";
+import IdUtil from "./IdGenerator.js";
 
 // 文本编辑器类
 class TextEditor {

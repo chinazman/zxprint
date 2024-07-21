@@ -1,7 +1,7 @@
 import {$} from "../../hiprint.comm.js";
-import PrintConfig from "../01PrintConfig.js";
-import BasePrintElement from "../04BasePrintElement.js";
-import PrintElementOption from "../03PrintElementOption.js";
+import PrintConfig from "../PrintConfig.js";
+import BasePrintElement from "../BasePrintElement.js";
+import PrintElementOption from "../PrintElementOption.js";
 //椭圆打印元素
 class OvalPrintElement extends BasePrintElement {
   constructor(elementType, options) {

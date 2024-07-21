@@ -1,5 +1,5 @@
-import PrintTableCell from "./05PrintTableCell.js";
-import PrintTableRow from "./13PrintTableRow.js";
+import PrintTableCell from "./PrintTableCell.js";
+import PrintTableRow from "./PrintTableRow.js";
 
 /**
  * PrintElementTableRow 类，继承自 PrintTableRow

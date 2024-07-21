@@ -1,6 +1,6 @@
-import PrintElementOption from "./03PrintElementOption.js";
-import PrintElementTableRow from "./12PrintElementTableRow.js";
-import PrintTableCell from "./05PrintTableCell.js";
+import PrintElementOption from "./PrintElementOption.js";
+import PrintElementTableRow from "./PrintElementTableRow.js";
+import PrintTableCell from "./PrintTableCell.js";
 
 /**
  * 表格列选项类

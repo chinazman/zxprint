@@ -27,11 +27,11 @@
 
  */
 import {i18n,$} from "../hiprint.comm.js";
-import hinnn from "./00hinnn.js";
-import PrintTableCellSelector from "./10PrintTableCellSelector.js";
-import PrintTableRow from "./13PrintTableRow.js";
-import IdGenerator from "./11IdGenerator.js";
-import PrintLib from "./02PrintLib.js"
+import hinnn from "./hinnn.js";
+import PrintTableCellSelector from "./PrintTableCellSelector.js";
+import PrintTableRow from "./PrintTableRow.js";
+import IdGenerator from "./IdGenerator.js";
+import PrintLib from "./PrintLib.js"
 
   
 class PrintTableOption {

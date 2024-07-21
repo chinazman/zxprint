@@ -1,10 +1,10 @@
 import {$} from "../../hiprint.comm.js";
-import hinnn from "../00hinnn.js";
-import PrintConfig from "../01PrintConfig.js";
-import BasePrintElement from "../04BasePrintElement.js";
-import PrintElementOption from "../03PrintElementOption.js";
-import PrintReferenceElement from "../08PrintReferenceElement.js";
-import PaperHtmlResult from "../06PaperHtmlResult.js";
+import hinnn from "../hinnn.js";
+import PrintConfig from "../PrintConfig.js";
+import BasePrintElement from "../BasePrintElement.js";
+import PrintElementOption from "../PrintElementOption.js";
+import PrintReferenceElement from "../PrintReferenceElement.js";
+import PaperHtmlResult from "../PaperHtmlResult.js";
 import PrintPage from "../PrintPage.js";
 
 // 长文本打印元素选项类

@@ -4,13 +4,13 @@
  * 基础打印对象
  */
 import { $,} from "../hiprint.comm.js";
-import PrintElementEntity from "./17PrintElementEntity";
-import PrintConfig from "./01PrintConfig.js";
-import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";
-import PaperHtmlResult from "./06PaperHtmlResult.js";
-import hinnn from "./00hinnn.js";
-import PrintReferenceElement from "./08PrintReferenceElement.js";
-import PrintLib from "./02PrintLib.js";
+import PrintElementEntity from "./PrintElementEntity.js";
+import PrintConfig from "./PrintConfig.js";
+import PrintElementOptionItemManager from "./PrintElementOptionItemManager.js";
+import PaperHtmlResult from "./PaperHtmlResult.js";
+import hinnn from "./hinnn.js";
+import PrintReferenceElement from "./PrintReferenceElement.js";
+import PrintLib from "./PrintLib.js";
 
 class BasePrintElement {
   constructor(printElementType) {

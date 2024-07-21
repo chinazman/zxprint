@@ -4,17 +4,10 @@ import watermark from "../plugins/watermark.js";
 //引入标尺
 import lImg from "../css/image/l_img.svg";
 import vImg from "../css/image/v_img.svg";
-
-import "../plugins/22jquery.hidraggable.js";
-import "../plugins/23jquery.hidroppable.js";
-import "../plugins/24jquery.hiprintparser.js";
-import "../plugins/25jquery.hireizeable.js";
-import hinnn from "../components/00hinnn.js";
-import "../plugins/26hiwebSocket.js";
-import "../plugins/32jquery.hicontextMenu.js";
-import PrintConfig from "./01PrintConfig.js";
-import PrintLib from "./02PrintLib.js";
-import PrintReferenceElement from "./08PrintReferenceElement.js";
+import hinnn from "./hinnn.js";
+import PrintConfig from "./PrintConfig.js";
+import PrintLib from "./PrintLib.js";
+import PrintReferenceElement from "./PrintReferenceElement.js";
 
 /**
  * 打印页面

@@ -5,19 +5,18 @@ import html2canvas from "@wtto00/html2canvas";
 // 解析svg 到 canvas, 二维码条形码需要
 import Canvg from 'canvg';
 
-import "../plugins/22jquery.hidraggable.js";
-import "../plugins/23jquery.hidroppable.js";
-import "../plugins/24jquery.hiprintparser.js";
-import "../plugins/25jquery.hireizeable.js";
-import hinnn from "../components/00hinnn.js";
-import "../plugins/26hiwebSocket.js";
+import "../plugins/jquery.hidraggable.js";
+import "../plugins/jquery.hidroppable.js";
+import "../plugins/jquery.hiprintparser.js";
+import "../plugins/jquery.hireizeable.js";
+import hinnn from "./hinnn.js";
+import "../plugins/hiwebSocket.js";
 //import "../plugins/27css.js";
-import "../plugins/32jquery.hicontextMenu.js";
-import PrintConfig from "./01PrintConfig.js";
-import PrintLib from "./02PrintLib.js";
-import TablePrintElement from "./15TablePrintElement.js";
-import PrintReferenceElement from "./08PrintReferenceElement.js";
-import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";
+import "../plugins/jquery.hicontextMenu.js";
+import PrintConfig from "./PrintConfig.js";
+import PrintLib from "./PrintLib.js";
+import PrintReferenceElement from "./PrintReferenceElement.js";
+import PrintElementOptionItemManager from "./PrintElementOptionItemManager.js";
 
 import "../plugins/hiLocalStorage.js"
 
@@ -34,6 +33,7 @@ import RectPrintElement from "./elements/RectPrintElement.js";
 import OvalPrintElement from "./elements/OvalPrintElement.js";
 import BarcodePrintElement from "./elements/BarcodePrintElement.js";
 import QrcodePrintElement from "./elements/QrcodePrintElement.js";
+import TablePrintElement from "./elements/TablePrintElement.js";
 
 // 打印元素工厂类
 class PrintElementFactory {

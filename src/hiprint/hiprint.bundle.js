@@ -26,7 +26,7 @@ import { io } from "socket.io-client";
 
 // 默认自定义拖拽列表
 import defaultTypeProvider from "./etypes/default-etyps-provider";
-import hiprint from "./components/33hiprint.js"
+import hiprint from "./components/hiprint.js"
 
 window.$ = window.jQuery = $;
 window.autoConnect = true;

@@ -1,8 +1,8 @@
 "use strict";
 
 import { $ } from "../hiprint.comm";
-import hinnn from "./00hinnn";
-import PrintElementOptionItemManager from "./09PrintElementOptionItemManager";
+import hinnn from "./hinnn";
+import PrintElementOptionItemManager from "./PrintElementOptionItemManager";
 
 /**
  * PrintConfig类用于管理打印配置。

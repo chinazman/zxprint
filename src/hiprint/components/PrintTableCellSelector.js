@@ -1,7 +1,7 @@
 /**
  * 表格元素
  */
-import TableRectHelper from "./14TableRectHelper";
+import TableRectHelper from "./TableRectHelper";
 
 class PrintTableCellSelector {
   constructor(rows, tableTarget) {

@@ -1,12 +1,6 @@
 import {$} from "../hiprint.comm.js";
-import "../plugins/22jquery.hidraggable.js";
-import "../plugins/23jquery.hidroppable.js";
-import "../plugins/24jquery.hiprintparser.js";
-import "../plugins/25jquery.hireizeable.js";
-import "../plugins/26hiwebSocket.js";
-import "../plugins/32jquery.hicontextMenu.js";
-import PrintTableCell from "./05PrintTableCell.js";
-import TablePrintElement from "./15TablePrintElement.js";
+import PrintTableCell from "./PrintTableCell.js";
+import TablePrintElement from "./elements/TablePrintElement.js";
 
   // 打印元素类型管理器
 class PrintElementTypeContext {

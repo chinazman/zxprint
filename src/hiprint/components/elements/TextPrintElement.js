@@ -1,10 +1,10 @@
 import {i18n,$} from "../../hiprint.comm.js";
 // 条形码
 import JsBarcode from "jsbarcode";
-import hinnn from "../00hinnn.js";
-import PrintConfig from "../01PrintConfig.js";
-import BasePrintElement from "../04BasePrintElement.js";
-import PrintElementOption from "../03PrintElementOption.js";
+import hinnn from "../hinnn.js";
+import PrintConfig from "../PrintConfig.js";
+import BasePrintElement from "../BasePrintElement.js";
+import PrintElementOption from "../PrintElementOption.js";
 
 class PrintTextHelper {
     static replaceEnterAndNewline(text, replacement) {

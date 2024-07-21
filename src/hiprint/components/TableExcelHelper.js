@@ -6,8 +6,8 @@
 import { i18n, $ } from "../hiprint.comm.js";
 // 条形码
 import JsBarcode from "jsbarcode";
-import ReconsitutionTableColumns from "./19ReconsitutionTableColumns";
-import hinnn from "./00hinnn.js";
+import ReconsitutionTableColumns from "./ReconsitutionTableColumns.js";
+import hinnn from "./hinnn.js";
 
 /**
  * 表格Excel辅助类

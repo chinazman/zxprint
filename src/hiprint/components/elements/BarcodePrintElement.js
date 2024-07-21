@@ -1,9 +1,9 @@
 import {i18n,$} from "../../hiprint.comm.js";
 import bwipjs from "bwip-js";
-import hinnn from "../00hinnn.js";
-import PrintConfig from "../01PrintConfig.js";
-import BasePrintElement from "../04BasePrintElement.js";
-import PrintElementOption from "../03PrintElementOption.js";
+import hinnn from "../hinnn.js";
+import PrintConfig from "../PrintConfig.js";
+import BasePrintElement from "../BasePrintElement.js";
+import PrintElementOption from "../PrintElementOption.js";
 //条形码打印元素
 class BarcodePrintElement extends BasePrintElement {
   constructor(options, config) {

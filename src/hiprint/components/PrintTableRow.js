@@ -4,8 +4,8 @@
  * import 相关资源
  */
 import {$} from "../hiprint.comm.js";
-import IdGenerator from "./11IdGenerator.js";
-import PrintTableCell from "./05PrintTableCell.js";
+import IdGenerator from "./IdGenerator.js";
+import PrintTableCell from "./PrintTableCell.js";
 
 class PrintTableRow {
   constructor() {
