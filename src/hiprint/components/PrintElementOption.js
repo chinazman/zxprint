@@ -40,9 +40,6 @@
 整体来看，这个类主要用于管理图形元素的属性，包括位置、尺寸、旋转等，并提供了一些辅助方法来处理这些属性的显示和打印。
 
  */
-import {_typeof} from "../hiprint.comm.js";
-
-  
     // 定义一个空的类，用于元素选项实体
 class ElementOptionEntity {
   constructor() {}
@@ -211,7 +208,7 @@ class PrintElementOption {
   getPrintElementOptionEntity() {
     const entity = new ElementOptionEntity();
     Object.keys(this).filter((key) => key !== "topInDesign").forEach((key) => {
-      if (typeof this[key] === "number" || typeof this[key] === "string" || ["fields"].includes(key) || _typeof(this[key]) === _typeof(true)) {
+      if (typeof this[key] === "number" || typeof this[key] === "string" || ["fields"].includes(key) || typeof this[key] === "boolean") {
         entity[key] = this[key];
       }
       if (key === "style") {

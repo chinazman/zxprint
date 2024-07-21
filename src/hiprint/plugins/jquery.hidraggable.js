@@ -1,523 +1,567 @@
-"use strict";
+/*
+这段代码实现了一个名为 hidraggable 的 jQuery 插件,用于实现元素的拖拽功能。主要功能包括:
 
-/**
-这个函数是一个jQuery插件,名为hidraggable,用于实现元素的拖拽功能。它的主要功能包括:
+拖拽开始、拖拽过程中和拖拽结束的处理。
+支持对齐线的创建和移除。
+支持元素在特定区域内的拖拽限制。
+支持缩放和旋转后的拖拽。
+提供了一系列可配置的选项和回调函数。
 
-1. 初始化拖拽功能:
-   - 设置拖拽选项
-   - 绑定鼠标事件处理程序
+主要的方法包括:
 
-2. 拖拽过程处理:
-   - 计算拖拽位置
-   - 限制拖拽范围
-   - 处理吸附对齐
-   - 更新元素位置
+updateDraggablePosition: 更新拖拽元素的位置
+applyDraggablePosition: 应用拖拽元素的位置
+startDrag: 开始拖拽
+onDrag: 拖拽过程中的处理
+stopDrag: 停止拖拽
+createVerLine 和 createHorLine: 创建垂直和水平对齐线
+removeVerLine 和 removeHorLine: 移除垂直和水平对齐线
 
-3. 拖拽结束处理:
-   - 处理拖放(drop)逻辑
-   - 复位元素位置(如果设置了revert选项)
-   - 清理临时对象
-
-4. 提供一些方法:
-   - 获取/更新选项
-   - 启用/禁用拖拽
-
-5. 定义默认选项和事件回调
-
-主要的拖拽逻辑在v12019(拖拽开始)、v12020(拖拽中)和v12021(拖拽结束)这三个函数中实现。
-
-此外,还实现了元素间的吸附对齐功能,通过计算元素边界位置来创建辅助线。
-
-总的来说,这是一个功能较为完善的拖拽插件,支持自定义选项、事件回调,并考虑了一些细节处理如缩放、旋转等。
- */
+这个插件还提供了一些额外的方法如 options, update, proxy, enable, disable 等,用于操作和配置拖拽行为。
+整体来说,这是一个功能丰富的拖拽插件,适用于复杂的拖拽需求,特别是在需要精确对齐、缩放、旋转等场景下。
+*/
 import {jQuery} from "../hiprint.comm.js";
 
+!function ($) {
+  // 更新拖拽元素位置
+  function updateDraggablePosition(event) {
+    var draggableData = $.data(event.data.target, "hidraggable"),
+      options = draggableData.options,
+      proxy = draggableData.proxy,
+      startData = event.data,
+      newLeft = startData.startLeft + (event.pageX - startData.startX) / (draggableData.options.getScale() || 1),
+      newTop = startData.startTop + (event.pageY - startData.startY) / (draggableData.options.getScale() || 1);
+    proxy && (proxy.parent()[0] == document.body ? (newLeft = null != options.deltaX && null != options.deltaX ? event.pageX + options.deltaX : event.pageX - event.data.offsetWidth, newTop = null != options.deltaY && null != options.deltaY ? event.pageY + options.deltaY : event.pageY - event.data.offsetHeight) : (null != options.deltaX && null != options.deltaX && (newLeft += event.data.offsetWidth + options.deltaX), null != options.deltaY && null != options.deltaY && (newTop += event.data.offsetHeight + options.deltaY))),
+    event.data.parent != document.body && (newLeft += $(event.data.parent).scrollLeft(), newTop += $(event.data.parent).scrollTop()),
+    "h" == options.axis ? startData.left = newLeft : "v" == options.axis ? startData.top = newTop : event.shiftKey && event.altKey ? startData.top = newTop : event.shiftKey ? startData.left = newLeft : (startData.left = newLeft, startData.top = newTop);
+  }
 
-    !function ($) {
-      function v11948(v11931) {
-        var v11932 = $.data(v11931.data.target, "hidraggable"),
-          v11933 = v11932.options,
-          v11934 = v11932.proxy,
-          v11935 = v11931.data,
-          v11936 = v11935.startLeft + (v11931.pageX - v11935.startX) / (v11932.options.getScale() || 1),
-          v11937 = v11935.startTop + (v11931.pageY - v11935.startY) / (v11932.options.getScale() || 1);
-        v11934 && (v11934.parent()[0] == document.body ? (v11936 = null != v11933.deltaX && null != v11933.deltaX ? v11931.pageX + v11933.deltaX : v11931.pageX - v11931.data.offsetWidth, v11937 = null != v11933.deltaY && null != v11933.deltaY ? v11931.pageY + v11933.deltaY : v11931.pageY - v11931.data.offsetHeight) : (null != v11933.deltaX && null != v11933.deltaX && (v11936 += v11931.data.offsetWidth + v11933.deltaX), null != v11933.deltaY && null != v11933.deltaY && (v11937 += v11931.data.offsetHeight + v11933.deltaY))),
-        v11931.data.parent != document.body && (v11936 += $(v11931.data.parent).scrollLeft(), v11937 += $(v11931.data.parent).scrollTop()),
-        "h" == v11933.axis ? v11935.left = v11936 : "v" == v11933.axis ? v11935.top = v11937 : v11931.shiftKey && v11931.altKey ? v11935.top = v11937 : v11931.shiftKey ? v11935.left = v11936 : (v11935.left = v11936, v11935.top = v11937);
+  // 应用拖拽元素位置
+  function applyDraggablePosition(event) {
+    var draggableData = $.data(event.data.target, "hidraggable"),
+      options = draggableData.options,
+      proxy = draggableData.proxy;
+    proxy || (proxy = $(event.data.target)), proxy.css({
+      left: $.fn.dragLengthC(event.data.left, options),
+      top: $.fn.dragLengthC(event.data.top, options)
+    }), $("body").css("cursor", options.cursor);
+  }
+
+  // 开始拖拽
+  function startDrag(event) {
+    $.fn.hidraggable.isDragging = !0;
+    var draggableData = $.data(event.data.target, "hidraggable"),
+      options = draggableData.options,
+      droppables = $(".hidroppable").filter(function () {
+        return event.data.target != this;
+      }).filter(function () {
+        var accept = $.data(this, "hidroppable").options.accept;
+        return !accept || $(accept).filter(function () {
+          return this == event.data.target;
+        }).length > 0;
+      });
+    draggableData.hidroppables = droppables;
+    var proxy = draggableData.proxy;
+    return proxy || (options.proxy ? (proxy = "clone" == options.proxy ? $(event.data.target).clone().insertAfter(event.data.target) : options.proxy.call(event.data.target, event.data.target), draggableData.proxy = proxy) : proxy = $(event.data.target)), proxy.css("position", "absolute"), updateDraggablePosition(event), applyDraggablePosition(event), options.onStartDrag.call(event.data.target, event), !1;
+  }
+
+  // 创建垂直对齐线
+  function createVerLine(originPosition, currentPosition, originKey, targetKey, height, paperContent) {
+    if (Math.abs(originPosition[originKey] - currentPosition[targetKey]) <= HIPRINT_CONFIG.adsorbLineMin) {
+      if (originPosition.v.length) {
+        originPosition.v.css("left", originPosition[originKey] + "pt");
+      } else {
+        originPosition.v = $(`<div class='verLine id-${originPosition.id}'></div>`);
+        originPosition.v.css("height", height + "pt");
+        originPosition.v.css("left", originPosition[originKey] + "pt");
+        paperContent.append(originPosition.v);
       }
-  
-      function v11949(v11939) {
-        var v11938 = $.data(v11939.data.target, "hidraggable"),
-          v11940 = v11938.options,
-          v11941 = v11938.proxy;
-        v11941 || (v11941 = $(v11939.data.target)), v11941.css({
-          left: $.fn.dragLengthC(v11939.data.left, v11940),
-          top: $.fn.dragLengthC(v11939.data.top, v11940)
-        }), $("body").css("cursor", v11940.cursor);
+    } else {
+      originPosition.v && originPosition.v.remove();
+    }
+  }
+
+  // 移除垂直对齐线
+  function removeVerLine(originPosition) {
+    if (originPosition) originPosition.v && originPosition.v.remove();
+    $(".verLine").remove();
+  }
+
+  // 创建水平对齐线
+  function createHorLine(originPosition, currentPosition, originKey, targetKey, width, paperContent) {
+    if (Math.abs(originPosition[originKey] - currentPosition[targetKey]) <= HIPRINT_CONFIG.adsorbLineMin) {
+      if (originPosition.h.length) {
+        originPosition.h.css("top", originPosition[originKey] + "pt");
+      } else {
+        originPosition.h = $(`<div class='horLine id-${originPosition.id}'></div>`);
+        originPosition.h.css("width", width + "pt");
+        originPosition.h.css("top", originPosition[originKey] + "pt");
+        paperContent.append(originPosition.h);
       }
-  
-      function v12019(v11942) {
-        $.fn.hidraggable.isDragging = !0;
-        var v11943 = $.data(v11942.data.target, "hidraggable"),
-          v11944 = v11943.options,
-          v11945 = $(".hidroppable").filter(function () {
-            return v11942.data.target != this;
-          }).filter(function () {
-            var v11946 = $.data(this, "hidroppable").options.accept;
-            return !v11946 || $(v11946).filter(function () {
-              return this == v11942.data.target;
-            }).length > 0;
-          });
-        v11943.hidroppables = v11945;
-        var v11947 = v11943.proxy;
-        return v11947 || (v11944.proxy ? (v11947 = "clone" == v11944.proxy ? $(v11942.data.target).clone().insertAfter(v11942.data.target) : v11944.proxy.call(v11942.data.target, v11942.data.target), v11943.proxy = v11947) : v11947 = $(v11942.data.target)), v11947.css("position", "absolute"), v11948(v11942), v11949(v11942), v11944.onStartDrag.call(v11942.data.target, v11942), !1;
-      }
-  
-      function createVerLine(op, cp, v11950, tt, v11951, pc) {
-        if (Math.abs(op[v11950] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
-          if (op.v.length) {
-            op.v.css("left", op[v11950] + "pt");
-          } else {
-            op.v = $("<div class='verLine id-" + op.id + "'></div>");
-            op.v.css("height", v11951 + "pt");
-            op.v.css("left", op[v11950] + "pt");
-            pc.append(op.v);
-          }
-        } else {
-          op.v && op.v.remove();
-        }
-      }
-  
-      function removeVerLine(op) {
-        if (op) op.v && op.v.remove();
-        $(".verLine").remove();
-      }
-  
-      function createHorLine(op, cp, v11962, tt, v11963, pc) {
-        if (Math.abs(op[v11962] - cp[tt]) <= HIPRINT_CONFIG.adsorbLineMin) {
-          if (op.h.length) {
-            op.h.css("top", op[v11962] + "pt");
-          } else {
-            op.h = $("<div class='horLine id-" + op.id + "'></div>");
-            op.h.css("width", v11963 + "pt");
-            op.h.css("top", op[v11962] + "pt");
-            pc.append(op.h);
-          }
-        } else {
-          op.h && op.h.remove();
-        }
-      }
-  
-      function removeHorLine(op) {
-        if (op) op.h && op.h.remove();
-        $(".horLine").remove();
-      }
-  
-      function v12020(v11975) {
-        // 移动开始动作
-        var v11974 = $.data(v11975.data.target, "hidraggable");
-        v11948(v11975);
-        if (!(v11975.ctrlKey || v11975.metaKey) && (v11975.data.target.className.startsWith('resize-panel') || "2" == v11975.data.target.style.zIndex || v11975.data.target.className.startsWith('hiprint-printElement'))) {
-          var data = v11975.data;
-          if ($(".mouseRect").length == 0 && v11974.options.designTarget && v11974.options.designTarget.panel.printElements.filter(function (el) {
-            return "block" == el.designTarget.children().last().css("display") && !el.printElementType.type.includes("table");
-          }).length <= 1) {
-            let left = window.hinnn.px.toPt(data.left);
-            let top = window.hinnn.px.toPt(data.top);
-            let cPosition = v11974.options.designTarget.options;
-            cPosition.left = left;
-            cPosition.top = top;
-            cPosition.right = left + cPosition.width;
-            cPosition.bottom = top + cPosition.height;
-            cPosition.vCenter = left + cPosition.width / 2;
-            cPosition.hCenter = top + cPosition.height / 2;
-            (() => {
-              let oPositions = v11974.options.designTarget.panel.printElements.filter((el) => el.id != v11974.options.designTarget.id).map((el) => {
-                let { left, top, width, height } = el.options;
-                let right = left + width,vCenter = left + width / 2,hCenter = top + height / 2;
-                let cVCenter = cPosition.left + cPosition.width / 2,cHCenter = cPosition.top + cPosition.height / 2,
-                  cRight = cPosition.left + cPosition.width;
-                let distance, d1, d2, d3;
-                d1 = Math.sqrt(Math.pow(left - cPosition.left, 2) + Math.pow(hCenter - cHCenter, 2));
-                d2 = Math.sqrt(Math.pow(vCenter - cVCenter, 2) + Math.pow(hCenter - cHCenter, 2));
-                d3 = Math.sqrt(Math.pow(right - cRight, 2) + Math.pow(hCenter - cHCenter, 2));
-                distance = Math.min(d1, d2, d3);
-                return {
-                  ...el.options,
-                  distance,
-                  h: $(".horLine.id-" + el.id),
-                  v: $(".verLine.id-" + el.id),
-                  bottom: top + height,
-                  right: left + width,
-                  vCenter,
-                  hCenter
-                };
-              }).sort((v11978, v11979) => v11978.distance - v11979.distance).slice(0, 1);
-              let paper = v11974.options.designTarget.designPaper;
-              let paperContent = paper.target.find(".hiprint-printPaper-content");
-              let paperW = paper.width,paperH = paper.height;
-              let showAline = HIPRINT_CONFIG.showAdsorbLine,aMin = HIPRINT_CONFIG.adsorbMin,aLMin = HIPRINT_CONFIG.adsorbLineMin;
-              oPositions.forEach((item, idx) => {
-                // 元素左边线
-                if (Math.abs(oPositions[idx].left - cPosition.left) <= aMin) {
-                  cPosition.left = oPositions[idx].left;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].vCenter - cPosition.left) <= aMin) {
-                  cPosition.left = oPositions[idx].vCenter;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].right - cPosition.left) <= aMin) {
-                  cPosition.left = oPositions[idx].right;
-                  removeVerLine(oPositions[idx]);
-                }
-                // 元素垂直中线
-                if (Math.abs(oPositions[idx].left - cPosition.vCenter) <= aMin) {
-                  cPosition.left = oPositions[idx].left - cPosition.width / 2;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].vCenter - cPosition.vCenter) <= aMin) {
-                  cPosition.left = oPositions[idx].vCenter - cPosition.width / 2;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].right - cPosition.vCenter) <= aMin) {
-                  cPosition.left = oPositions[idx].right - cPosition.width / 2;
-                  removeVerLine(oPositions[idx]);
-                }
-                // 元素右边线
-                if (Math.abs(oPositions[idx].left - cPosition.right) <= aMin) {
-                  cPosition.left = oPositions[idx].left - cPosition.width;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].vCenter - cPosition.right) <= aMin) {
-                  cPosition.left = oPositions[idx].vCenter - cPosition.width;
-                  removeVerLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].right - cPosition.right) <= aMin) {
-                  cPosition.left = oPositions[idx].right - cPosition.width;
-                  removeVerLine(oPositions[idx]);
-                }
-                // 元素顶边线
-                if (Math.abs(oPositions[idx].top - cPosition.top) <= aMin) {
-                  cPosition.top = oPositions[idx].top;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].hCenter - cPosition.top) <= aMin) {
-                  cPosition.top = oPositions[idx].hCenter;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].bottom - cPosition.top) <= aMin) {
-                  cPosition.top = oPositions[idx].bottom;
-                  removeHorLine(oPositions[idx]);
-                }
-                // 元素水平中线
-                if (Math.abs(oPositions[idx].top - cPosition.hCenter) <= aMin) {
-                  cPosition.top = oPositions[idx].top - cPosition.height / 2;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].hCenter - cPosition.hCenter) <= aMin) {
-                  cPosition.top = oPositions[idx].hCenter - cPosition.height / 2;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].bottom - cPosition.hCenter) <= aMin) {
-                  cPosition.top = oPositions[idx].bottom - cPosition.height / 2;
-                  removeHorLine(oPositions[idx]);
-                }
-                // 元素底边线
-                if (Math.abs(oPositions[idx].top - cPosition.bottom) <= aMin) {
-                  cPosition.top = oPositions[idx].top - cPosition.height;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].hCenter - cPosition.bottom) <= aMin) {
-                  cPosition.top = oPositions[idx].hCenter - cPosition.height;
-                  removeHorLine(oPositions[idx]);
-                } else if (Math.abs(oPositions[idx].bottom - cPosition.bottom) <= aMin) {
-                  cPosition.top = oPositions[idx].bottom - cPosition.height;
-                  removeHorLine(oPositions[idx]);
-                }
-  
-                if (showAline) {
-                  if (Math.abs(oPositions[idx].left - cPosition.left) > aMin && Math.abs(oPositions[idx].left - cPosition.left) <= aLMin) {// 左
-                    createVerLine(oPositions[idx], cPosition, "left", "left", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].vCenter - cPosition.left) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.left) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "vCenter", "left", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].right - cPosition.left) > aMin && Math.abs(oPositions[idx].right - cPosition.left) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "right", "left", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].left - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].left - cPosition.vCenter) <= aLMin) {// 中
-                    createVerLine(oPositions[idx], cPosition, "left", "vCenter", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].vCenter - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.vCenter) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "vCenter", "vCenter", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].right - cPosition.vCenter) > aMin && Math.abs(oPositions[idx].right - cPosition.vCenter) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "right", "vCenter", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].left - cPosition.right) > aMin && Math.abs(oPositions[idx].left - cPosition.right) <= aLMin) {// 右
-                    createVerLine(oPositions[idx], cPosition, "left", "right", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].vCenter - cPosition.right) > aMin && Math.abs(oPositions[idx].vCenter - cPosition.right) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "vCenter", "right", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].right - cPosition.right) > aMin && Math.abs(oPositions[idx].right - cPosition.right) <= aLMin) {
-                    createVerLine(oPositions[idx], cPosition, "right", "right", paperH, paperContent);
-                  } else if (Math.abs(oPositions[idx].top - cPosition.top) > aMin && Math.abs(oPositions[idx].top - cPosition.top) <= aLMin) {// 上
-                    createHorLine(oPositions[idx], cPosition, "top", "top", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].hCenter - cPosition.top) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.top) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "hCenter", "top", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].bottom - cPosition.top) > aMin && Math.abs(oPositions[idx].bottom - cPosition.top) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "bottom", "top", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].top - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].top - cPosition.hCenter) <= aLMin) {// 中
-                    createHorLine(oPositions[idx], cPosition, "top", "hCenter", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].hCenter - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.hCenter) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "hCenter", "hCenter", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].bottom - cPosition.hCenter) > aMin && Math.abs(oPositions[idx].bottom - cPosition.hCenter) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "bottom", "hCenter", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].top - cPosition.bottom) > aMin && Math.abs(oPositions[idx].top - cPosition.bottom) <= aLMin) {// 下
-                    createHorLine(oPositions[idx], cPosition, "top", "bottom", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].hCenter - cPosition.bottom) > aMin && Math.abs(oPositions[idx].hCenter - cPosition.bottom) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "hCenter", "bottom", paperW, paperContent);
-                  } else if (Math.abs(oPositions[idx].bottom - cPosition.bottom) > aMin && Math.abs(oPositions[idx].bottom - cPosition.bottom) <= aLMin) {
-                    createHorLine(oPositions[idx], cPosition, "bottom", "bottom", paperW, paperContent);
-                  } else {
-                    removeVerLine(oPositions[idx]);
-                    removeHorLine(oPositions[idx]);
-                  }
-                }
-              });
-            })();
-            v11975.data.left = window.hinnn.pt.toPx(cPosition.left);
-            v11975.data.top = window.hinnn.pt.toPx(cPosition.top);
-          }
-          // 当前纸张宽高
-          var parent = data.parent.className.endsWith('design') ? data.parent : data.parent.offsetParent;
-          var paperW = parent.clientWidth,paperH = parent.clientHeight;
-          // 当前元素宽高
-          var elementW = data.target.clientWidth,elementH = data.target.clientHeight,
-            diffLeft = 0,diffTop = 0;
-          if (v11974.options.designTarget && v11974.options.designTarget.options.transform) {
-            var info = v11974.options.designTarget.options.getRectInfo();
-            diffLeft = window.hinnn.pt.toPx(info.diffW), diffTop = window.hinnn.pt.toPx(info.diffH);
-          }
-          // 左右
-          if (data.left < 0 - diffLeft) {
-            data.left = 0 - diffLeft;
-          } else if (data.left >= paperW - elementW + diffLeft) {
-            data.left = paperW - elementW + diffLeft;
-          }
-          // 上下
-          if (data.top < 0 - diffTop) {
-            data.top = 0 - diffTop;
-          } else if (data.top >= paperH - elementH + diffTop) {
-            data.top = paperH - elementH + diffTop;
-          }
-          v11975.data = data;
-        }
-        0 != v11974.options.onDrag.call(v11975.data.target, v11975, $.fn.dragLengthCNum(v11975.data.left, v11974.options), $.fn.dragLengthCNum(v11975.data.top, v11974.options)) && v11949(v11975);
-        var v11980 = v11975.data.target;
-        return v11974.hidroppables.each(function () {
-          var v11981 = $(this);
-  
-          if (!v11981.hidroppable("options").disabled) {
-            var v11982 = v11981.offset();
-            v11975.pageX > v11982.left && v11975.pageX < v11982.left + v11981.outerWidth() && v11975.pageY > v11982.top && v11975.pageY < v11982.top + v11981.outerHeight() ? (this.entered || ($(this).trigger("_dragenter", [v11980]), this.entered = !0), $(this).trigger("_dragover", [v11980])) : this.entered && ($(this).trigger("_dragleave", [v11980]), this.entered = !1);
-          }
-        }), !1;
-      }
-  
-      function v12021(v11984) {
-        // 这里原 mouseup时, 回调了 o(e) ==> onDrag
-        $.fn.hidraggable.isDragging = !1;
-        removeVerLine(), removeHorLine();
-        var v11985,
-          v11986,
-          v11983 = $.data(v11984.data.target, "hidraggable"),
-          v11987 = v11983.proxy,
-          v11988 = v11983.options;
-        v11988.revert ? 1 == v11989() ? $(v11984.data.target).css({
-          position: v11984.data.startPosition,
-          left: v11984.data.startLeft,
-          top: v11984.data.startTop
-        }) : v11987 ? (v11987.parent()[0] == document.body ? (v11985 = v11984.data.startX - v11984.data.offsetWidth, v11986 = v11984.data.startY - v11984.data.offsetHeight) : (v11985 = v11984.data.startLeft, v11986 = v11984.data.startTop), v11987.animate({
-          left: v11985,
-          top: v11986
-        }, function () {
-          v11990();
-        })) : $(v11984.data.target).animate({
-          left: v11984.data.startLeft,
-          top: v11984.data.startTop
-        }, function () {
-          $(v11984.data.target).css("position", v11984.data.startPosition);
-        }) : ($(v11984.data.target).css({
-          position: "absolute",
-          left: $.fn.dragLengthC(v11984.data.left, v11988),
-          top: $.fn.dragLengthC(v11984.data.top, v11988)
-        }), v11989());
-  
-        function v11990() {
-          v11987 && v11987.remove(), v11983.proxy = null;
-        }
-  
-        function v11989() {
-          var v11991 = !1;
-          return v11983.hidroppables.each(function () {
-            var v11992 = $(this);
-  
-            if (!v11992.hidroppable("options").disabled) {
-              var v11993 = v11992.offset();
-              var ptr = this.style.transform && parseFloat(this.style.transform.slice(6, -1)) || 1;
-              return v11984.pageX > v11993.left && v11984.pageX < v11993.left + v11992.outerWidth() * ptr && v11984.pageY > v11993.top && v11984.pageY < v11993.top + v11992.outerHeight() * ptr ? (v11988.revert && $(v11984.data.target).css({
-                position: v11984.data.startPosition,
-                left: v11984.data.startLeft,
-                top: v11984.data.startTop
-              }), $(this).trigger("_drop", [v11984.data.target]), v11990(), v11991 = !0, this.entered = !1, !1) : void 0;
+    } else {
+      originPosition.h && originPosition.h.remove();
+    }
+  }
+
+  // 移除水平对齐线
+  function removeHorLine(originPosition) {
+    if (originPosition) originPosition.h && originPosition.h.remove();
+    $(".horLine").remove();
+  }
+
+  // 拖拽过程中
+  function onDrag(event) {
+    // 移动开始动作
+    var draggableData = $.data(event.data.target, "hidraggable");
+    updateDraggablePosition(event);
+    if (!(event.ctrlKey || event.metaKey) && (event.data.target.className.startsWith('resize-panel') || "2" == event.data.target.style.zIndex || event.data.target.className.startsWith('hiprint-printElement'))) {
+      var data = event.data;
+      if ($(".mouseRect").length == 0 && draggableData.options.designTarget && draggableData.options.designTarget.panel.printElements.filter(function (el) {
+        return "block" == el.designTarget.children().last().css("display") && !el.printElementType.type.includes("table");
+      }).length <= 1) {
+        let left = window.hinnn.px.toPt(data.left);
+        let top = window.hinnn.px.toPt(data.top);
+        let currentPosition = draggableData.options.designTarget.options;
+        currentPosition.left = left;
+        currentPosition.top = top;
+        currentPosition.right = left + currentPosition.width;
+        currentPosition.bottom = top + currentPosition.height;
+        currentPosition.vCenter = left + currentPosition.width / 2;
+        currentPosition.hCenter = top + currentPosition.height / 2;
+        (() => {
+          let otherPositions = draggableData.options.designTarget.panel.printElements.filter((el) => el.id != draggableData.options.designTarget.id).map((el) => {
+            let { left, top, width, height } = el.options;
+            let right = left + width,vCenter = left + width / 2,hCenter = top + height / 2;
+            let cVCenter = currentPosition.left + currentPosition.width / 2,cHCenter = currentPosition.top + currentPosition.height / 2,
+              cRight = currentPosition.left + currentPosition.width;
+            let distance, d1, d2, d3;
+            d1 = Math.sqrt(Math.pow(left - currentPosition.left, 2) + Math.pow(hCenter - cHCenter, 2));
+            d2 = Math.sqrt(Math.pow(vCenter - cVCenter, 2) + Math.pow(hCenter - cHCenter, 2));
+            d3 = Math.sqrt(Math.pow(right - cRight, 2) + Math.pow(hCenter - cHCenter, 2));
+            distance = Math.min(d1, d2, d3);
+            return {
+              ...el.options,
+              distance,
+              h: $(".horLine.id-" + el.id),
+              v: $(".verLine.id-" + el.id),
+              bottom: top + height,
+              right: left + width,
+              vCenter,
+              hCenter
+            };
+          }).sort((a, b) => a.distance - b.distance).slice(0, 1);
+          let paper = draggableData.options.designTarget.designPaper;
+          let paperContent = paper.target.find(".hiprint-printPaper-content");
+          let paperW = paper.width,paperH = paper.height;
+          let showAline = HIPRINT_CONFIG.showAdsorbLine,aMin = HIPRINT_CONFIG.adsorbMin,aLMin = HIPRINT_CONFIG.adsorbLineMin;
+          otherPositions.forEach((item, idx) => {
+            // 元素左边线
+            if (Math.abs(otherPositions[idx].left - currentPosition.left) <= aMin) {
+              currentPosition.left = otherPositions[idx].left;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.left) <= aMin) {
+              currentPosition.left = otherPositions[idx].vCenter;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].right - currentPosition.left) <= aMin) {
+              currentPosition.left = otherPositions[idx].right;
+              removeVerLine(otherPositions[idx]);
             }
-          }), v11991 || v11988.revert || v11990(), v11991;
-        }
-  
-        return v11988.onStopDrag.call(v11984.data.target, v11984), $(document).unbind(".hidraggable"), setTimeout(function () {
-          $("body").css("cursor", "");
-        }, 100), !1;
+            // 元素垂直中线
+            if (Math.abs(otherPositions[idx].left - currentPosition.vCenter) <= aMin) {
+              currentPosition.left = otherPositions[idx].left - currentPosition.width / 2;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.vCenter) <= aMin) {
+              currentPosition.left = otherPositions[idx].vCenter - currentPosition.width / 2;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].right - currentPosition.vCenter) <= aMin) {
+              currentPosition.left = otherPositions[idx].right - currentPosition.width / 2;
+              removeVerLine(otherPositions[idx]);
+            }
+            // 元素右边线
+            if (Math.abs(otherPositions[idx].left - currentPosition.right) <= aMin) {
+              currentPosition.left = otherPositions[idx].left - currentPosition.width;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.right) <= aMin) {
+              currentPosition.left = otherPositions[idx].vCenter - currentPosition.width;
+              removeVerLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].right - currentPosition.right) <= aMin) {
+              currentPosition.left = otherPositions[idx].right - currentPosition.width;
+              removeVerLine(otherPositions[idx]);
+            }
+            // 元素顶边线
+            if (Math.abs(otherPositions[idx].top - currentPosition.top) <= aMin) {
+              currentPosition.top = otherPositions[idx].top;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.top) <= aMin) {
+              currentPosition.top = otherPositions[idx].hCenter;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].bottom - currentPosition.top) <= aMin) {
+              currentPosition.top = otherPositions[idx].bottom;
+              removeHorLine(otherPositions[idx]);
+            }
+            // 元素水平中线
+            if (Math.abs(otherPositions[idx].top - currentPosition.hCenter) <= aMin) {
+              currentPosition.top = otherPositions[idx].top - currentPosition.height / 2;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.hCenter) <= aMin) {
+              currentPosition.top = otherPositions[idx].hCenter - currentPosition.height / 2;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].bottom - currentPosition.hCenter) <= aMin) {
+              currentPosition.top = otherPositions[idx].bottom - currentPosition.height / 2;
+              removeHorLine(otherPositions[idx]);
+            }
+            // 元素底边线
+            if (Math.abs(otherPositions[idx].top - currentPosition.bottom) <= aMin) {
+              currentPosition.top = otherPositions[idx].top - currentPosition.height;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.bottom) <= aMin) {
+              currentPosition.top = otherPositions[idx].hCenter - currentPosition.height;
+              removeHorLine(otherPositions[idx]);
+            } else if (Math.abs(otherPositions[idx].bottom - currentPosition.bottom) <= aMin) {
+              currentPosition.top = otherPositions[idx].bottom - currentPosition.height;
+              removeHorLine(otherPositions[idx]);
+            }
+
+            if (showAline) {
+              if (Math.abs(otherPositions[idx].left - currentPosition.left) > aMin && Math.abs(otherPositions[idx].left - currentPosition.left) <= aLMin) {// 左
+                createVerLine(otherPositions[idx], currentPosition, "left", "left", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.left) > aMin && Math.abs(otherPositions[idx].vCenter - currentPosition.left) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "vCenter", "left", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].right - currentPosition.left) > aMin && Math.abs(otherPositions[idx].right - currentPosition.left) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "right", "left", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].left - currentPosition.vCenter) > aMin && Math.abs(otherPositions[idx].left - currentPosition.vCenter) <= aLMin) {// 中
+                createVerLine(otherPositions[idx], currentPosition, "left", "vCenter", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.vCenter) > aMin && Math.abs(otherPositions[idx].vCenter - currentPosition.vCenter) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "vCenter", "vCenter", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].right - currentPosition.vCenter) > aMin && Math.abs(otherPositions[idx].right - currentPosition.vCenter) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "right", "vCenter", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].left - currentPosition.right) > aMin && Math.abs(otherPositions[idx].left - currentPosition.right) <= aLMin) {// 右
+                createVerLine(otherPositions[idx], currentPosition, "left", "right", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].vCenter - currentPosition.right) > aMin && Math.abs(otherPositions[idx].vCenter - currentPosition.right) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "vCenter", "right", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].right - currentPosition.right) > aMin && Math.abs(otherPositions[idx].right - currentPosition.right) <= aLMin) {
+                createVerLine(otherPositions[idx], currentPosition, "right", "right", paperH, paperContent);
+              } else if (Math.abs(otherPositions[idx].top - currentPosition.top) > aMin && Math.abs(otherPositions[idx].top - currentPosition.top) <= aLMin) {// 上
+                createHorLine(otherPositions[idx], currentPosition, "top", "top", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.top) > aMin && Math.abs(otherPositions[idx].hCenter - currentPosition.top) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "hCenter", "top", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].bottom - currentPosition.top) > aMin && Math.abs(otherPositions[idx].bottom - currentPosition.top) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "bottom", "top", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].top - currentPosition.hCenter) > aMin && Math.abs(otherPositions[idx].top - currentPosition.hCenter) <= aLMin) {// 中
+                createHorLine(otherPositions[idx], currentPosition, "top", "hCenter", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.hCenter) > aMin && Math.abs(otherPositions[idx].hCenter - currentPosition.hCenter) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "hCenter", "hCenter", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].bottom - currentPosition.hCenter) > aMin && Math.abs(otherPositions[idx].bottom - currentPosition.hCenter) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "bottom", "hCenter", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].top - currentPosition.bottom) > aMin && Math.abs(otherPositions[idx].top - currentPosition.bottom) <= aLMin) {// 下
+                createHorLine(otherPositions[idx], currentPosition, "top", "bottom", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].hCenter - currentPosition.bottom) > aMin && Math.abs(otherPositions[idx].hCenter - currentPosition.bottom) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "hCenter", "bottom", paperW, paperContent);
+              } else if (Math.abs(otherPositions[idx].bottom - currentPosition.bottom) > aMin && Math.abs(otherPositions[idx].bottom - currentPosition.bottom) <= aLMin) {
+                createHorLine(otherPositions[idx], currentPosition, "bottom", "bottom", paperW, paperContent);
+              } else {
+                removeVerLine(otherPositions[idx]);
+                removeHorLine(otherPositions[idx]);
+              }
+            }
+          });
+        })();
+        event.data.left = window.hinnn.pt.toPx(currentPosition.left);
+        event.data.top = window.hinnn.pt.toPx(currentPosition.top);
       }
-  
-      $.fn.hidraggable = function (v11994, v11995) {
-        return "string" == typeof v11994 ? $.fn.hidraggable.methods[v11994](this, v11995) : this.each(function () {
-          var v11996,
-            v11997 = $.data(this, "hidraggable");
-          v11997 ? (v11997.handle.unbind(".hidraggable"), v11996 = $.extend(v11997.options, v11994)) : v11996 = $.extend({}, $.fn.hidraggable.defaults, $.fn.hidraggable.parseOptions(this), v11994 || {});
-          var v11998 = v11996.handle ? "string" == typeof v11996.handle ? $(v11996.handle, this) : v11996.handle : $(this);
-  
-          function v12011(v12000) {
-            var v12001 = $.data(v12000.data.target, "hidraggable"),
-              v12002 = v12001.handle,
-              v12003 = $(v12002).offset(),
-              tr = $(v12002)[0].style.transform && parseInt($(v12002)[0].style.transform.slice(7, -1)),
-              ptr = v12001.options.getScale(),
-              v12004 = $(v12002).outerWidth();
-            var v12005 = $(v12002).outerHeight();
-            if (tr) {
-              var rad = tr * Math.PI / 180,
-                width = $(v12002).outerWidth(),
-                height = $(v12002).outerHeight(),
+      // 当前纸张宽高
+      var parent = data.parent.className.endsWith('design') ? data.parent : data.parent.offsetParent;
+      var paperW = parent.clientWidth,paperH = parent.clientHeight;
+      // 当前元素宽高
+      var elementW = data.target.clientWidth,elementH = data.target.clientHeight,
+        diffLeft = 0,diffTop = 0;
+      if (draggableData.options.designTarget && draggableData.options.designTarget.options.transform) {
+        var info = draggableData.options.designTarget.options.getRectInfo();
+        diffLeft = window.hinnn.pt.toPx(info.diffW), diffTop = window.hinnn.pt.toPx(info.diffH);
+      }
+      // 左右
+      if (data.left < 0 - diffLeft) {
+        data.left = 0 - diffLeft;
+      } else if (data.left >= paperW - elementW + diffLeft) {
+        data.left = paperW - elementW + diffLeft;
+      }
+      // 上下
+      if (data.top < 0 - diffTop) {
+        data.top = 0 - diffTop;
+      } else if (data.top >= paperH - elementH + diffTop) {
+        data.top = paperH - elementH + diffTop;
+      }
+      event.data = data;
+    }
+    0 != draggableData.options.onDrag.call(event.data.target, event, $.fn.dragLengthCNum(event.data.left, draggableData.options), $.fn.dragLengthCNum(event.data.top, draggableData.options)) && applyDraggablePosition(event);
+    var target = event.data.target;
+    return draggableData.hidroppables.each(function () {
+      var droppable = $(this);
+
+      if (!droppable.hidroppable("options").disabled) {
+        var p = droppable.offset();
+        if (event.pageX > p.left && event.pageX < p.left + droppable.outerWidth() &&
+            event.pageY > p.top && event.pageY < p.top + droppable.outerHeight()) {
+          if (!this.entered) {
+            $(this).trigger("_dragenter", [target]);
+            this.entered = true;
+          }
+          $(this).trigger("_dragover", [target]);
+        } else {
+          if (this.entered) {
+            $(this).trigger("_dragleave", [target]);
+            this.entered = false;
+          }
+        }
+      }
+    }), !1;
+  }
+
+  // 停止拖拽
+  function stopDrag(event) {
+    $.fn.hidraggable.isDragging = !1;
+    removeVerLine(), removeHorLine();
+    var newLeft,
+      newTop,
+      draggableData = $.data(event.data.target, "hidraggable"),
+      proxy = draggableData.proxy,
+      options = draggableData.options;
+    options.revert ? 1 == checkDroppable() ? $(event.data.target).css({
+      position: event.data.startPosition,
+      left: event.data.startLeft,
+      top: event.data.startTop
+    }) : proxy ? (proxy.parent()[0] == document.body ? (newLeft = event.data.startX - event.data.offsetWidth, newTop = event.data.startY - event.data.offsetHeight) : (newLeft = event.data.startLeft, newTop = event.data.startTop), proxy.animate({
+      left: newLeft,
+      top: newTop
+    }, function () {
+      removeProxy();
+    })) : $(event.data.target).animate({
+      left: event.data.startLeft,
+      top: event.data.startTop
+    }, function () {
+      $(event.data.target).css("position", event.data.startPosition);
+    }) : ($(event.data.target).css({
+      position: "absolute",
+      left: $.fn.dragLengthC(event.data.left, options),
+      top: $.fn.dragLengthC(event.data.top, options)
+    }), checkDroppable());
+
+    function removeProxy() {
+      proxy && proxy.remove(), draggableData.proxy = null;
+    }
+
+    function checkDroppable() {
+      var droppable = false;
+      return draggableData.hidroppables.each(function () {
+        var droppableObj = $(this);
+
+        if (!droppableObj.hidroppable("options").disabled) {
+          var p = droppableObj.offset();
+          var ptr = this.style.transform && parseFloat(this.style.transform.slice(6, -1)) || 1;
+          if (event.pageX > p.left && event.pageX < p.left + droppableObj.outerWidth() * ptr &&
+              event.pageY > p.top && event.pageY < p.top + droppableObj.outerHeight() * ptr) {
+            if (options.revert) {
+              $(event.data.target).css({
+                position: event.data.startPosition,
+                left: event.data.startLeft,
+                top: event.data.startTop
+              });
+            }
+            $(this).trigger("_drop", [event.data.target]);
+            removeProxy();
+            droppable = true;
+            this.entered = false;
+            return false;
+          }
+        }
+      }), droppable || options.revert || removeProxy(), droppable;
+    }
+
+    return options.onStopDrag.call(event.data.target, event), $(document).unbind(".hidraggable"), setTimeout(function () {
+      $("body").css("cursor", "");
+    }, 100), !1;
+  }
+
+  // hidraggable插件定义
+  $.fn.hidraggable = function (options, param) {
+    if (typeof options == "string") {
+      return $.fn.hidraggable.methods[options](this, param);
+    }
+
+    return this.each(function () {
+      var opts;
+      var state = $.data(this, "hidraggable");
+      if (state) {
+        state.handle.unbind(".hidraggable");
+        opts = $.extend(state.options, options);
+      } else {
+        opts = $.extend({}, $.fn.hidraggable.defaults, $.fn.hidraggable.parseOptions(this), options || {});
+      }
+      var handle = opts.handle ? (typeof opts.handle == "string" ? $(opts.handle, this) : opts.handle) : $(this);
+
+      function checkArea(e) {
+        var state = $.data(e.data.target, "hidraggable"),
+          handle = state.handle,
+          offset = $(handle).offset(),
+          transformAngle = $(handle)[0].style.transform && parseInt($(handle)[0].style.transform.slice(7, -1)),
+          scalePercentage = state.options.getScale(),
+          width = $(handle).outerWidth();
+        var height = $(handle).outerHeight();
+        if (transformAngle) {
+          var rad = transformAngle * Math.PI / 180,
+            originalWidth = $(handle).outerWidth(),
+            originalHeight = $(handle).outerHeight(),
+            sin = Math.sin(rad),
+            cos = Math.cos(rad);
+          width = Math.abs(originalWidth * cos) + Math.abs(originalHeight * sin),
+          height = Math.abs(originalWidth * sin) + Math.abs(originalHeight * cos);
+        }
+        if (scalePercentage) {
+          width *= scalePercentage, height *= scalePercentage;
+        }
+        var t = e.pageY - offset.top,
+          r = offset.left + width - e.pageX,
+          b = offset.top + height - e.pageY,
+          l = e.pageX - offset.left;
+        return Math.min(t, r, b, l) > state.options.edge;
+      }
+
+      $.data(this, "hidraggable", {
+        options: opts,
+        handle: handle
+      });
+
+      if (opts.disabled) {
+        $(this).css("cursor", "");
+      } else {
+        handle.unbind(".hidraggable").bind("mousemove.hidraggable", {target: this}, function (e) {
+          if (!$.fn.hidraggable.isDragging) {
+            var opts = $.data(e.data.target, "hidraggable").options;
+            if (checkArea(e)) {
+              $(this).css("cursor", opts.cursor);
+            } else {
+              $(this).css("cursor", "");
+            }
+          }
+        }).bind("mouseleave.hidraggable", {target: this}, function (e) {
+          $(this).css("cursor", "");
+        }).bind("mousedown.hidraggable", {target: this}, function (e) {
+          if (checkArea(e) != 0) {
+            $(this).css("cursor", "");
+            var position = $(e.data.target).position();
+            var offset = $(e.data.target).offset();
+            var data = {
+              startPosition: $(e.data.target).css("position"),
+              startLeft: position.left,
+              startTop: position.top,
+              left: position.left,
+              top: position.top,
+              startX: e.pageX,
+              startY: e.pageY,
+              offsetWidth: (e.pageX - offset.left),
+              offsetHeight: (e.pageY - offset.top),
+              target: e.data.target,
+              parent: $(e.data.target).parent()[0]
+            };
+            var state = $.data(e.data.target, "hidraggable");
+            // item禁止移动
+            if (state.options.draggable === false) {
+              return;
+            }
+            // 旋转时不允许移动
+            if ('r resizebtn' == e.target.className) {
+              return;
+            }
+            var scalePercentage = state.options.getScale();
+            if (scalePercentage) {
+              data.left /= scalePercentage;
+              data.top /= scalePercentage;
+              data.startLeft /= scalePercentage;
+              data.startTop /= scalePercentage;
+            }
+            var transformAngle = data.target.style.transform && parseInt(data.target.style.transform.slice(7, -1));
+            if (transformAngle) {
+              var rad = transformAngle * Math.PI / 180,
+                width = $(e.data.target).outerWidth(),
+                height = $(e.data.target).outerHeight(),
                 sin = Math.sin(rad),
                 cos = Math.cos(rad);
-              v12004 = Math.abs(width * cos) + Math.abs(height * sin),
-              v12005 = Math.abs(width * sin) + Math.abs(height * cos);
+              var transformedWidth = Math.abs(width * cos) + Math.abs(height * sin),
+                transformedHeight = Math.abs(width * sin) + Math.abs(height * cos);
+              var diffW = (transformedWidth - width) / 2,diffH = (transformedHeight - height) / 2;
+              data.left += diffW;
+              data.top += diffH;
+              data.startLeft += diffW;
+              data.startTop += diffH;
             }
-            if (ptr) {
-              v12004 *= ptr, v12005 *= ptr;
+            $.extend(e.data, data);
+            if (state.options.onBeforeDrag.call(e.data.target, e) != false) {
+              $(document).bind("mousedown.hidraggable", e.data, startDrag);
+              $(document).bind("mousemove.hidraggable", e.data, onDrag);
+              $(document).bind("mouseup.hidraggable", e.data, stopDrag);
             }
-            var v12006 = v12000.pageY - v12003.top,
-              v11999 = v12003.left + v12004 - v12000.pageX,
-              v12007 = v12003.top + v12005 - v12000.pageY,
-              v12008 = v12000.pageX - v12003.left;
-            return Math.min(v12006, v11999, v12007, v12008) > v12001.options.edge;
           }
-  
-          $.data(this, "hidraggable", {
-            options: v11996,
-            handle: v11998
-          }), v11996.disabled ? $(this).css("cursor", "") : v11998.unbind(".hidraggable").bind("mousemove.hidraggable", {
-            target: this
-          }, function (v12009) {
-            if (!$.fn.hidraggable.isDragging) {
-              var v12010 = $.data(v12009.data.target, "hidraggable").options;
-              v12011(v12009) ? $(this).css("cursor", v12010.cursor) : $(this).css("cursor", "");
-            }
-          }).bind("mouseleave.hidraggable", {
-            target: this
-          }, function (v12012) {
-            $(this).css("cursor", "");
-          }).bind("mousedown.hidraggable", {
-            target: this
-          }, function (v12013) {
-            if (0 != v12011(v12013)) {
-              $(this).css("cursor", "");
-              var v12014 = $(v12013.data.target).position(),
-                v12015 = $(v12013.data.target).offset(),
-                v12016 = {
-                  startPosition: $(v12013.data.target).css("position"),
-                  startLeft: v12014.left,
-                  startTop: v12014.top,
-                  left: v12014.left,
-                  top: v12014.top,
-                  startX: v12013.pageX,
-                  startY: v12013.pageY,
-                  offsetWidth: v12013.pageX - v12015.left,
-                  offsetHeight: v12013.pageY - v12015.top,
-                  target: v12013.data.target,
-                  parent: $(v12013.data.target).parent()[0]
-                };
-              var ops = $.data(v12013.data.target, "hidraggable");
-              // item禁止移动
-              if (ops.options.draggable === false) {
-                return;
-              }
-              // 旋转时不允许移动
-              if ('r resizebtn' == v12013.target.className) {
-                return;
-              }
-              var ptr = ops.options.getScale();
-              if (ptr) {
-                v12016.left /= ptr, v12016.top /= ptr, v12016.startLeft /= ptr, v12016.startTop /= ptr;
-              }
-              var tr = v12016.target.style.transform && parseInt(v12016.target.style.transform.slice(7, -1));
-              if (tr) {
-                var rad = tr * Math.PI / 180,
-                  width = $(v12013.data.target).outerWidth(),
-                  height = $(v12013.data.target).outerHeight(),
-                  sin = Math.sin(rad),
-                  cos = Math.cos(rad);
-                var v12017 = Math.abs(width * cos) + Math.abs(height * sin),
-                  v12018 = Math.abs(width * sin) + Math.abs(height * cos);
-                var diffW = (v12017 - width) / 2,diffH = (v12018 - height) / 2;
-                v12016.left += diffW, v12016.top += diffH, v12016.startLeft += diffW, v12016.startTop += diffH;
-              }
-              $.extend(v12013.data, v12016);
-              0 != $.data(v12013.data.target, "hidraggable").options.onBeforeDrag.call(v12013.data.target, v12013) && ($(document).bind("mousedown.hidraggable", v12013.data, v12019), $(document).bind("mousemove.hidraggable", v12013.data, v12020), $(document).bind("mouseup.hidraggable", v12013.data, v12021));
-            }
-          });
         });
-      }, $.fn.hidraggable.methods = {
-        options: function options(v12022) {
-          return $.data(v12022[0], "hidraggable").options;
-        },
-        update: function update(v12023, v12024) {
-          if (v12024 && "object" == typeof v12024) {
-            $.data(v12023[0], "hidraggable") && Object.keys(v12024).forEach(function (v12025) {
-              $.data(v12023[0], "hidraggable").options[v12025] = v12024[v12025];
-            });
-          }
-        },
-        proxy: function proxy(v12026) {
-          return $.data(v12026[0], "hidraggable").proxy;
-        },
-        enable: function enable(v12027) {
-          return v12027.each(function () {
-            $(this).hidraggable({
-              disabled: !1
-            });
-          });
-        },
-        disable: function disable(v12028) {
-          return v12028.each(function () {
-            $(this).hidraggable({
-              disabled: !0
-            });
+      }
+    });
+  };
+
+  $.fn.hidraggable.methods = {
+    options: function (jq) {
+      return $.data(jq[0], "hidraggable").options;
+    },
+    update: function (jq, param) {
+      if (param && typeof param === "object") {
+        var state = $.data(jq[0], "hidraggable");
+        if (state) {
+          Object.keys(param).forEach(function (key) {
+            state.options[key] = param[key];
           });
         }
-      }, $.fn.hidraggable.parseOptions = function (v12029) {
-        var v12030 = $(v12029);
-        return $.extend({}, $.hiprintparser.parseOptions(v12029, ["cursor", "handle", "axis", {
-          revert: "boolean",
-          deltaX: "number",
-          deltaY: "number",
-          edge: "number"
-        }]), {
-          disabled: !!v12030.attr("disabled") || void 0
-        });
-      }, $.fn.hidraggable.defaults = {
-        proxy: null,
-        revert: !1,
-        cursor: "move",
-        deltaX: null,
-        deltaY: null,
-        handle: null,
-        disabled: !1,
-        edge: 0,
-        axis: null,
-        getScale: function getScale(v12031) {},
-        onBeforeDrag: function onBeforeDrag(v12032) {
-        },
-        onStartDrag: function onStartDrag(v12033) {
-        },
-        onDrag: function onDrag(v12034) {
-        },
-        onStopDrag: function onStopDrag(v12035) {
-        }
-      }, $.fn.hidraggable.isDragging = !1;
-    }(jQuery);
-  
+      }
+    },
+    proxy: function (jq) {
+      return $.data(jq[0], "hidraggable").proxy;
+    },
+    enable: function (jq) {
+      return jq.each(function () {
+        $(this).hidraggable({disabled: false});
+      });
+    },
+    disable: function (jq) {
+      return jq.each(function () {
+        $(this).hidraggable({disabled: true});
+      });
+    }
+  };
+
+  $.fn.hidraggable.parseOptions = function (target) {
+    var $target = $(target);
+    return $.extend({}, $.hiprintparser.parseOptions(target, [
+      "cursor", "handle", "axis",
+      {revert: "boolean", deltaX: "number", deltaY: "number", edge: "number"}
+    ]), {
+      disabled: !!$target.attr("disabled") || undefined
+    });
+  };
+
+  // hidraggable默认配置
+  $.fn.hidraggable.defaults = {
+    proxy: null,
+    revert: false,
+    cursor: "move",
+    deltaX: null,
+    deltaY: null,
+    handle: null,
+    disabled: false,
+    edge: 0,
+    axis: null,
+    getScale: function (e) {},
+    onBeforeDrag: function (e) {},
+    onStartDrag: function (e) {},
+    onDrag: function (e) {},
+    onStopDrag: function (e) {}
+  };
+
+  $.fn.hidraggable.isDragging = false;
+}(jQuery);
