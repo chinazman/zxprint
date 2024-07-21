@@ -64,529 +64,10 @@ import BorderWidthOption from "./options/BorderWidthOption.js";
 import BarcodeModeOption from "./options/BarcodeModeOption.js";
 import BarWidthOption from "./options/BarWidthOption.js";
 import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
+import BarcodeTypeOption from "./options/BarcodeTypeOption.js";
+import QrcodeTypeOption from "./options/QrcodeTypeOption.js";
+import QrCodeLevelOption from "./options/QrCodeLevelOption.js";
     var 
-      barcodeType = function () {
-        function v10830() {
-          this.name = "barcodeType";
-        }
-  
-        return v10830.prototype.createTarget = function () {
-          var options = [{
-            label: `${i18n.__('默认')}(Code 128)`,
-            value: ""
-          },
-          {
-            label: `${i18n.__('商品条码')}`,
-            children: [
-            {
-              label: "EAN-13",
-              value: "ean13"
-            },
-            {
-              label: "EAN-8",
-              value: "ean8"
-            },
-            {
-              label: "UPC-A",
-              value: "upca"
-            },
-            {
-              label: "UPC-E",
-              value: "upce"
-            },
-            {
-              label: "ISBN",
-              value: "isbn"
-            },
-            {
-              label: "ISMN",
-              value: "ismn"
-            },
-            {
-              label: "ISSN",
-              value: "issn"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('条形码')}`,
-            children: [
-            {
-              label: "Code 39",
-              value: "code39"
-            },
-            {
-              label: "Code 39 Extended",
-              value: "code39ext"
-            },
-            {
-              label: "Code 93",
-              value: "code93"
-            },
-            {
-              label: "Code 93 Extended",
-              value: "code93ext"
-            },
-            {
-              label: "Code 128",
-              value: "code128"
-            },
-            {
-              label: "Interleaved 2 of 5 (ITF)",
-              value: "interleaved2of5"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('物流')}`,
-            children: [
-            {
-              label: "EAN-14",
-              value: "ean14"
-            },
-            {
-              label: "GS1-128",
-              value: "gs1-128"
-            },
-            {
-              label: "ITF-14",
-              value: "itf14"
-            },
-            {
-              label: "SSCC-18",
-              value: "sscc18"
-            }]
-  
-          },
-          {
-            label: "GS1 DataBar",
-            children: [
-            {
-              label: "扩展式 GS1 DataBar",
-              value: "databarexpanded"
-            },
-            {
-              label: "层排扩展式 GS1 DataBar",
-              value: "databarexpandedstacked"
-            },
-            {
-              label: "限定式 GS1 DataBar",
-              value: "databarlimited"
-            },
-            {
-              label: "全向式 GS1 DataBar",
-              value: "databaromni"
-            },
-            {
-              label: "层排式 GS1 DataBar",
-              value: "databarstacked"
-            },
-            {
-              label: "全向层排式 GS1 DataBar",
-              value: "databarstackedomni"
-            },
-            {
-              label: "截短式 GS1 DataBar",
-              value: "databartruncated"
-            },
-            {
-              label: "GS1 北美优惠券码",
-              value: "gs1northamericancoupon"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('邮政和快递编码')}`,
-            children: [
-            {
-              label: "AusPost 4 State Customer Code",
-              value: "auspost"
-            },
-            {
-              label: "Deutsche Post Identcode",
-              value: "identcode"
-            },
-            {
-              label: "Deutsche Post Leitcode",
-              value: "leitcode"
-            },
-            {
-              label: "Japan Post 4 State Customer Code",
-              value: "japanpost"
-            },
-            {
-              label: "Royal TNT Post",
-              value: "kix"
-            },
-            {
-              label: "Royal Mail 4 State Customer Code",
-              value: "royalmail"
-            },
-            {
-              label: "Royal Mail Mailmark",
-              value: "mailmark"
-            },
-            {
-              label: "MaxiCode",
-              value: "maxicode"
-            },
-            {
-              label: "USPS FIM symbols",
-              value: "symbol"
-            },
-            {
-              label: "USPS Intelligent Mail",
-              value: "onecode"
-            },
-            {
-              label: "USPS PLANET",
-              value: "planet"
-            },
-            {
-              label: "USPS POSTNET",
-              value: "postnet"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('医疗产品编码')}`,
-            children: [
-            {
-              label: "Italian Pharmacode",
-              value: "code32"
-            },
-            {
-              label: "Pharmaceutical Binary Code",
-              value: "pharmacode"
-            },
-            {
-              label: "Pharmazentralnummer (PZN)",
-              value: "pzn"
-            },
-            {
-              label: "Two-track Pharmacode",
-              value: "pharmacode2"
-            },
-            {
-              label: "HIBC Aztec Code",
-              value: "hibcazteccode"
-            },
-            {
-              label: "HIBC Codablock F",
-              value: "hibccodablockf"
-            },
-            {
-              label: "HIBC Code 128",
-              value: "hibccode128"
-            },
-            {
-              label: "HIBC Code 39",
-              value: "hibccode39"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('不常用编码')}`,
-            children: [
-            {
-              label: "Code 11",
-              value: "code11"
-            },
-            {
-              label: "Code 16K",
-              value: "code16k"
-            },
-            {
-              label: "Code 2 of 5",
-              value: "code2of5"
-            },
-            {
-              label: "Code 49",
-              value: "code49"
-            },
-            {
-              label: "Code One",
-              value: "codeone"
-            },
-            {
-              label: "Codabar",
-              value: "rationalizedCodabar"
-            },
-            {
-              label: "Codablock F",
-              value: "codablockf"
-            },
-            {
-              label: "BC412",
-              value: "bc412"
-            },
-            {
-              label: "COOP 2 of 5",
-              value: "coop2of5"
-            },
-            {
-              label: "Channel Code",
-              value: "channelcode"
-            },
-            {
-              label: "Datalogic 2 of 5",
-              value: "datalogic2of5"
-            },
-            {
-              label: "DotCode",
-              value: "dotcode"
-            },
-            {
-              label: "IATA 2 of 5",
-              value: "iata2of5"
-            },
-            {
-              label: "MSI Plessey",
-              value: "msi"
-            },
-            {
-              label: "Matrix 2 of 5",
-              value: "matrix2of5"
-            },
-            {
-              label: "Plessey UK",
-              value: "plessey"
-            },
-            {
-              label: "PosiCode",
-              value: "posicode"
-            },
-            {
-              label: "Telepen",
-              value: "telepen"
-            },
-            {
-              label: "Telepen Numeric",
-              value: "telepennumeric"
-            }]
-  
-          },
-          {
-            label: "GS1 复合编码",
-            children: [
-            {
-              label: "复合 EAN-13",
-              value: "ean13composite"
-            },
-            {
-              label: "复合 EAN-8",
-              value: "ean8composite"
-            },
-            {
-              label: "复合 UPC-A",
-              value: "upcacomposite"
-            },
-            {
-              label: "复合 UPC-E",
-              value: "upcecomposite"
-            },
-            {
-              label: "层排扩展式复合 GS1 DataBar",
-              value: "databarexpandedstackedcomposite"
-            },
-            {
-              label: "扩展式复合 GS1 DataBar",
-              value: "databarexpandedcomposite"
-            },
-            {
-              label: "限定式复合 GS1 DataBar",
-              value: "databarlimitedcomposite"
-            },
-            {
-              label: "全向式复合 GS1 DataBar",
-              value: "databaromnicomposite"
-            },
-            {
-              label: "层排式复合 GS1 DataBar",
-              value: "databarstackedcomposite"
-            },
-            {
-              label: "全向层排式复合 GS1 DataBar",
-              value: "databarstackedomnicomposite"
-            },
-            {
-              label: "截短式复合 GS1 DataBar",
-              value: "databartruncatedcomposite"
-            },
-            {
-              label: "复合 GS1-128",
-              value: "gs1-128composite"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('附加组件')}`,
-            children: [
-            {
-              label: "EAN-2 (2 位附加码)",
-              value: "ean2"
-            },
-            {
-              label: "EAN-5 (5 位附加码)",
-              value: "ean5"
-            },
-            {
-              label: "GS1 复合 2D 组件",
-              value: "gs1-cc"
-            }]
-  
-          },
-          {
-            label: `${i18n.__('实验编码')}`,
-            children: [
-            {
-              label: "Raw",
-              value: "raw"
-            },
-            {
-              label: "Custom 4 state symbology",
-              value: "daft"
-            },
-            {
-              label: "Flattermarken",
-              value: "flattermarken"
-            }]
-  
-          }];
-          this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('条码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`);
-          var select = this.target.find('select.auto-submit');
-          options.forEach((item) => {
-            if (item.children) {
-              var optgroup = $(`<optgroup label="${item.label}"></optgroup`);
-              item.children.forEach((chil) => {
-                optgroup.append($(`<option value="${chil.value}">${chil.label}</option>`));
-              });
-              select.append(optgroup);
-            } else {
-              select.append(`<option value="${item.value}">${item.label}</option>`);
-            }
-          });
-          return this.target;
-        }, v10830.prototype.getValue = function () {
-          return this.target.find("select").val() || void 0;
-        }, v10830.prototype.setValue = function (v10831) {
-          this.target.find("select").val(v10831);
-        }, v10830.prototype.destroy = function () {
-          this.target.remove();
-        }, v10830;
-      }(),
-      qrcodeType = function () {
-        function v10832() {
-          this.name = "qrcodeType";
-        }
-  
-        return v10832.prototype.createTarget = function () {
-          var options = [{
-            label: `${i18n.__('默认')}(qrcode)`,
-            value: ""
-          },
-          {
-            label: "QR Code",
-            value: "qrcode"
-          },
-          {
-            label: "Micro QR Code",
-            value: "microqrcode"
-          },
-          {
-            label: "Swiss QR Code",
-            value: "swissqrcode"
-          },
-          {
-            label: "Rectangular Micro QR Code",
-            value: "rectangularmicroqrcode"
-          },
-          {
-            label: "Aztec Code",
-            value: "azteccode"
-          },
-          {
-            label: "Aztec Runes",
-            value: "aztecrune"
-          },
-          {
-            label: "Compact Aztec Code",
-            value: "azteccodecompact"
-          },
-          {
-            label: "Data Matrix",
-            value: "datamatrix"
-          },
-          {
-            label: "Data Matrix Rectangular",
-            value: "datamatrixrectangular"
-          },
-          {
-            label: "汉信码",
-            value: "hanxin"
-          },
-          {
-            label: "GS1 Data Matrix",
-            value: "gs1datamatrix"
-          },
-          {
-            label: "GS1 Data Matrix Rectangular",
-            value: "gs1datamatrixrectangular"
-          },
-          {
-            label: "GS1 QR Code",
-            value: "gs1qrcode"
-          },
-          {
-            label: "HIBC Data Matrix",
-            value: "hibcdatamatrix"
-          },
-          {
-            label: "HIBC Data Matrix Rectangular",
-            value: "hibcdatamatrixrectangular"
-          },
-          {
-            label: "HIBC MicroPDF417",
-            value: "hibcmicropdf417"
-          },
-          {
-            label: "HIBC PDF417",
-            value: "hibcpdf417"
-          },
-          {
-            label: "HIBC QR Code",
-            value: "hibcqrcode"
-          }];
-          this.target = $(`<div class="hiprint-option-item hiprint-option-item-row"><div class="hiprint-option-item-label">${i18n.__('二维码类型')}</div><div class="hiprint-option-item-field"><select class="auto-submit"></select></div></div>`);
-          var select = this.target.find('select.auto-submit');
-          options.forEach((item) => {
-            select.append(`<option value="${item.value}">${item.label}</option>`);
-          });
-          return this.target;
-        }, v10832.prototype.getValue = function () {
-          return this.target.find("select").val() || void 0;
-        }, v10832.prototype.setValue = function (v10833) {
-          this.target.find("select").val(v10833);
-        }, v10832.prototype.destroy = function () {
-          this.target.remove();
-        }, v10832;
-      }(),
-      qrCodeLevel = function () {
-        function v10834() {
-          this.name = "qrCodeLevel";
-        }
-  
-        return v10834.prototype.createTarget = function () {
-          return this.target = $(`<div class="hiprint-option-item">\n        <div class="hiprint-option-item-label">\n        ${i18n.__('二维码容错率')}\n        </div>\n        <div class="hiprint-option-item-field">\n        <select class="auto-submit">\n        <option value="" >${i18n.__('默认')}</option>\n        <option value="1" >7% L</option>\n        <option value="0" >15% M</option>\n        <option value="3" >25% Q</option>\n        <option value="2" >30% H</option>\n        </select>\n        </div>\n    </div>`), this.target;
-        }, v10834.prototype.getValue = function () {
-          var v10835 = this.target.find("select").val();
-          return parseInt(v10835 || 0);
-        }, v10834.prototype.setValue = function (v10836) {
-          this.target.find("select").val(v10836);
-        }, v10834.prototype.destroy = function () {
-          this.target.remove();
-        }, v10834;
-      }(),
       v10837 = function () {
         function v10838() {
           this.name = "color";
@@ -1342,7 +823,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v10980;
       }(),
-      v10985 = function () {
+      TransformOption = function () {
         function v10986() {
           this.name = "transform";
         }
@@ -1542,7 +1023,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11030;
       }(),
-      v11036 = function () {
+      ContentPaddingTopOption = function () {
         function v11037() {
           this.name = "contentPaddingTop";
         }
@@ -1901,7 +1382,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11124;
       }(),
-      tableColumnH = function () {
+      TableColumnHeightOption = function () {
         function v11127() {
           this.name = "tableColumnHeight";
         }
@@ -1919,7 +1400,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11127;
       }(),
-      tableSummaryTitle = function () {
+      TableSummaryTitleOption = function () {
         function v11130() {
           this.name = "tableSummaryTitle";
         }
@@ -1934,7 +1415,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11130;
       }(),
-      tableSummaryText = function () {
+      TableSummaryTextOption = function () {
         function v11132() {
           this.name = "tableSummaryText";
         }
@@ -1950,7 +1431,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11132;
       }(),
-      tableSummaryColspan = function () {
+      TableSummaryColspanOption = function () {
         function v11135() {
           this.name = "tableSummaryColspan";
         }
@@ -1966,7 +1447,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11135;
       }(),
-      tableSummaryAlign = function () {
+      TableSummaryAlignOption = function () {
         function v11138() {
           this.name = "tableSummaryAlign";
         }
@@ -1982,7 +1463,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11138;
       }(),
-      tableSummaryNumFormat = function () {
+      TableSummaryNumFormatOption = function () {
         function v11141() {
           this.name = "tableSummaryNumFormat";
         }
@@ -2008,7 +1489,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           this.target.remove();
         }, v11141;
       }(),
-      showCodeTitle = function () {
+      ShowCodeTitleOption = function () {
         function v11153() {
           this.name = 'showCodeTitle';
         }
@@ -2033,7 +1514,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
           v11153);
   
       }(),
-      tableSummaryFormatter = function () {
+      TableSummaryFormatterOption = function () {
         function v11155() {
           this.name = "tableSummaryFormatter";
         }
@@ -2049,7 +1530,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
         }, v11155;
       }(),
   
-      upperCase = function () {
+      UpperCaseOption = function () {
         function v11158() {
           this.name = "upperCase";
         }
@@ -2084,7 +1565,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
       }(),
   
       // 表格底部合计栏
-      tableSummary = function () {
+      TableSummaryOption = function () {
         function v11181() {
           this.name = "tableSummary";
         }
@@ -2628,7 +2109,7 @@ import BarAutoWidthOption from "./options/BarAutoWidthOption.js";
         v11283.init(), v11283.printElementOptionItems[v11285.name] = v11285;
       }, v11283.getItem = function (v11286) {
         return v11283.init(), v11283.printElementOptionItems[v11286];
-      }, v11283._printElementOptionItems = [new FontFamilyOption(), new FontSizeOption(), new FontWeightOption(), new LetterSpacingOption(), new LineHeightOption(), new TextAlignOption(), new HideTitleOption(), new pt(), new TableBorderOption(), new TableHeaderBorderOption(), new TableHeaderCellBorderOption(), new TableHeaderRowHeightOption(), new TableHeaderFontSizeOption(), new TableHeaderFontWeightOption(), new TableBodyCellBorderOption(), new TableFooterBorderOption(), new TableFooterCellBorderOption(), new TableBodyRowHeightOption(), new TableHeaderBackgroundOption(), new BorderWidthOption(), new BarcodeModeOption(), new qrCodeLevel(), new v10837(), new v10843(), new v10849(), new v10857(), new v10861(), new coordinate(), new widthHeight(), new v10885(), new imageFit(), new v10899(), new v10909(), new v10913(), new paperNumberContinue(), new watermarkOptions(), new v10918(), new v10924(), new pageBreak(), new v10934(), new M2(), new v10941(), new v10944(), new v10948(), new v10952(), new v10956(), new v10960(), new v10963(), new st(), new v10967(), new v10971(), new v10975(), new v10979(), new v10985(), new borderRadius(), new zIndex(), new v11002(), new v11005(), new v11011(), new v11017(), new v11023(), new v11036(), new v11029(), new v11043(), new tt(), new et(), new nt(), new it(), new ot(), new textWrap(), new at(), new lt(), new panelLayoutOptions(), new ut(), new ith(), new dt(), new ct(), new ht(), new ft(), new gt(), new mt(), new rowcolumns(), new rowsColumnsMergeClean(), new groupFieldsFormatter(), new groupFormatter(), new groupFooterFormatter(), new vt(), new yt(), new bt(), new Tt(), new Et(), new Pt(), new stylerHeader(), new renderFormatter(), new _t(), new wt(), new maxRows(), new xt(), new tableColumnH(), new tableE(), new tableQRCodeLevel(), new tablept(), new tableSummaryTitle(), new tableSummaryText(), new tableSummaryColspan(), new tableSummary(), new tableSummaryAlign(), new tableSummaryNumFormat(), new tableSummaryFormatter(), new showCodeTitle(), new upperCase(), new barcodeType(), new qrcodeType(), new barColor(), new BarWidthOption(), new BarAutoWidthOption()], v11283;
+      }, v11283._printElementOptionItems = [new FontFamilyOption(), new FontSizeOption(), new FontWeightOption(), new LetterSpacingOption(), new LineHeightOption(), new TextAlignOption(), new HideTitleOption(), new pt(), new TableBorderOption(), new TableHeaderBorderOption(), new TableHeaderCellBorderOption(), new TableHeaderRowHeightOption(), new TableHeaderFontSizeOption(), new TableHeaderFontWeightOption(), new TableBodyCellBorderOption(), new TableFooterBorderOption(), new TableFooterCellBorderOption(), new TableBodyRowHeightOption(), new TableHeaderBackgroundOption(), new BorderWidthOption(), new BarcodeModeOption(), new QrCodeLevelOption(), new v10837(), new v10843(), new v10849(), new v10857(), new v10861(), new coordinate(), new widthHeight(), new v10885(), new imageFit(), new v10899(), new v10909(), new v10913(), new paperNumberContinue(), new watermarkOptions(), new v10918(), new v10924(), new pageBreak(), new v10934(), new M2(), new v10941(), new v10944(), new v10948(), new v10952(), new v10956(), new v10960(), new v10963(), new st(), new v10967(), new v10971(), new v10975(), new v10979(), new TransformOption(), new borderRadius(), new zIndex(), new v11002(), new v11005(), new v11011(), new v11017(), new v11023(), new ContentPaddingTopOption(), new v11029(), new v11043(), new tt(), new et(), new nt(), new it(), new ot(), new textWrap(), new at(), new lt(), new panelLayoutOptions(), new ut(), new ith(), new dt(), new ct(), new ht(), new ft(), new gt(), new mt(), new rowcolumns(), new rowsColumnsMergeClean(), new groupFieldsFormatter(), new groupFormatter(), new groupFooterFormatter(), new vt(), new yt(), new bt(), new Tt(), new Et(), new Pt(), new stylerHeader(), new renderFormatter(), new _t(), new wt(), new maxRows(), new xt(), new TableColumnHeightOption(), new tableE(), new tableQRCodeLevel(), new tablept(), new TableSummaryTitleOption(), new TableSummaryTextOption(), new TableSummaryColspanOption(), new TableSummaryOption(), new TableSummaryAlignOption(), new TableSummaryNumFormatOption(), new TableSummaryFormatterOption(), new ShowCodeTitleOption(), new UpperCaseOption(), new BarcodeTypeOption(), new QrcodeTypeOption(), new barColor(), new BarWidthOption(), new BarAutoWidthOption()], v11283;
     }();
   
 export default PrintElementOptionItemManager;
