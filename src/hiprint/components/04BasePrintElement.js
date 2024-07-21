@@ -3,7 +3,7 @@
 /**
  * 基础打印对象
  */
-import { $, _typeof } from "../hiprint.comm.js";
+import { $,} from "../hiprint.comm.js";
 import PrintElementEntity from "./17PrintElementEntity";
 import PrintConfig from "./01PrintConfig.js";
 import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";

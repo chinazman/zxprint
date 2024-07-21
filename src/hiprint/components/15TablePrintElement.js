@@ -3,7 +3,7 @@
 /**
  * import 相关资源
  */
-import {i18n,$,_instanceof} from "../hiprint.comm.js";
+import {i18n,$} from "../hiprint.comm.js";
 import BasePrintElement from "./04BasePrintElement.js";
 import PrintConfig from "./01PrintConfig.js";
 import PaperHtmlResult from "./06PaperHtmlResult.js";

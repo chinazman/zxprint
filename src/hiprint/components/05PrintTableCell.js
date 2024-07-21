@@ -3,7 +3,7 @@
 /**
  * import 相关资源
  */
-import {i18n,$,_instanceof} from "../hiprint.comm.js";
+import {i18n,$} from "../hiprint.comm.js";
 import TableRect from "./10TableRect.js";
 import TableRectHelper from "./14TableRectHelper.js";
 import IdUtil from "./11IdGenerator.js";

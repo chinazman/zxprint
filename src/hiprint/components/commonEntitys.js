@@ -1,37 +1,12 @@
-import {languages,i18n,$,_instanceof,_typeof} from "../hiprint.comm.js";
-// 条形码
-import JsBarcode from "jsbarcode";
-import bwipjs from "bwip-js";
-// 水印
-import watermark from "../plugins/watermark.js";
-//引入标尺
-import lImg from "../css/image/l_img.svg";
-import vImg from "../css/image/v_img.svg";
-// pdf
-import { jsPDF } from "jspdf";
-import html2canvas from "@wtto00/html2canvas";
-// 解析svg 到 canvas, 二维码条形码需要
-import Canvg from 'canvg';
-
+import {$} from "../hiprint.comm.js";
 import "../plugins/22jquery.hidraggable.js";
 import "../plugins/23jquery.hidroppable.js";
 import "../plugins/24jquery.hiprintparser.js";
 import "../plugins/25jquery.hireizeable.js";
-import hinnn from "../components/00hinnn.js";
 import "../plugins/26hiwebSocket.js";
-//import "../plugins/27css.js";
 import "../plugins/32jquery.hicontextMenu.js";
-import PrintConfig from "./01PrintConfig.js";
-import PrintLib from "./02PrintLib.js";
 import PrintTableCell from "./05PrintTableCell.js";
 import TablePrintElement from "./15TablePrintElement.js";
-import BasePrintElement from "./04BasePrintElement.js";
-import PrintElementOption from "./03PrintElementOption.js";
-import PrintReferenceElement from "./08PrintReferenceElement.js";
-import PaperHtmlResult from "./06PaperHtmlResult.js";
-// import PrintTable from "./16PrintTable.js";
-import PrintElementTableRow from "./12PrintElementTableRow.js";
-import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";
 
   // 打印元素类型管理器
 class PrintElementTypeContext {

@@ -1,4 +1,3 @@
-import { _instanceof } from "../hiprint.comm.js";
 import PrintElementOption from "./03PrintElementOption.js";
 import PrintElementTableRow from "./12PrintElementTableRow.js";
 import PrintTableCell from "./05PrintTableCell.js";

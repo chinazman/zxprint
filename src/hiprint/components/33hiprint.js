@@ -1,12 +1,4 @@
-import {languages,i18n,$,_instanceof,_typeof} from "../hiprint.comm.js";
-// 条形码
-import JsBarcode from "jsbarcode";
-import bwipjs from "bwip-js";
-// 水印
-import watermark from "../plugins/watermark.js";
-//引入标尺
-import lImg from "../css/image/l_img.svg";
-import vImg from "../css/image/v_img.svg";
+import {languages,i18n,$} from "../hiprint.comm.js";
 // pdf
 import { jsPDF } from "jspdf";
 import html2canvas from "@wtto00/html2canvas";
@@ -23,14 +15,8 @@ import "../plugins/26hiwebSocket.js";
 import "../plugins/32jquery.hicontextMenu.js";
 import PrintConfig from "./01PrintConfig.js";
 import PrintLib from "./02PrintLib.js";
-import PrintTableCell from "./05PrintTableCell.js";
 import TablePrintElement from "./15TablePrintElement.js";
-import BasePrintElement from "./04BasePrintElement.js";
-import PrintElementOption from "./03PrintElementOption.js";
 import PrintReferenceElement from "./08PrintReferenceElement.js";
-import PaperHtmlResult from "./06PaperHtmlResult.js";
-// import PrintTable from "./16PrintTable.js";
-import PrintElementTableRow from "./12PrintElementTableRow.js";
 import PrintElementOptionItemManager from "./09PrintElementOptionItemManager.js";
 
 import "../plugins/hiLocalStorage.js"
