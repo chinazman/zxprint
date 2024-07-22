@@ -1,4 +1,5 @@
-import {i18n,$} from "../../hiprint.comm.js";
+import {$} from "../../hiprint.comm.js";
+import PrintTableCell from "../PrintTableCell.js";
 
 // 列选项类
 class ColumnsOption {

@@ -39,9 +39,6 @@
 /**
  * 打印设置
  */
-import {i18n,$} from "../hiprint.comm.js";
-import PrintTableCell from "./PrintTableCell.js";
-  
 import LineHeightOption from "./options/LineHeightOption.js";
 import FontFamilyOption from "./options/FontFamilyOption.js";
 import FontSizeOption from "./options/FontSizeOption.js";
