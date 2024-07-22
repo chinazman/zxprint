@@ -2477,137 +2477,177 @@ class PrintTemplate {
 
      
   
-    function print(v13550) {
-      this.getHtml(v13550).hiwprint();
+    function print(printData) {
+      this.getHtml(printData).hiwprint();
     }
   
-    function print2(v13551, v13552, v13553) {
-      $.extend({}, v13551 || {}).imgToBase64 = !0;
-      var v13554 = new PrintTemplate({});
-      v13554.on("printSuccess", v13552), v13554.on("printError", v13553), v13554.printByHtml2(this.getHtml(v13551), v13551.options);
+    function print2(printData, printSuccessCallback, printErrorCallback) {
+      $.extend({}, printData || {}).imgToBase64 = !0;
+      var printTemplate = new PrintTemplate({});
+      printTemplate.on("printSuccess", printSuccessCallback), printTemplate.on("printError", printErrorCallback), printTemplate.printByHtml2(this.getHtml(printData), printData.options);
     }
   
-    function getHtml(v13555) {
-      var v13556 = void 0;
-      return v13555 && v13555.templates.forEach(function (v13557, v13558) {
-        var v13559 = $.extend({}, v13557.options || {});
-        v13555.imgToBase64 && (v13559.imgToBase64 = !0), v13556 ? v13556.append(v13557.template.getHtml(v13557.data, v13559).html()) : v13556 = v13557.template.getHtml(v13557.data, v13559);
-      }), v13556;
+        // 获取HTML函数
+    function getHtml(printData){
+      let htmlResult = undefined;
+      
+      if (printData && printData.templates) {
+        printData.templates.forEach((templateItem, templateIndex) => {
+          const templateOptions = {...(templateItem.options || {})};
+          
+          if (printData.imgToBase64) {
+            templateOptions.imgToBase64 = true;
+          }
+          
+          if (htmlResult) {
+            htmlResult.append(templateItem.template.getHtml(templateItem.data, templateOptions).html());
+          } else {
+            htmlResult = templateItem.template.getHtml(templateItem.data, templateOptions);
+          }
+        });
+      }
+      
+      return htmlResult;
     }
-  
-    function init(v13560) {
-      PrintConfig.instance.init(v13560), PrintConfig.instance.providers && PrintConfig.instance.providers.forEach(function (v13564) {
-        v13564.addElementTypes(PrintElementTypeContext.instance);
-      });
+
+    // 初始化函数
+    function init(config){
+      PrintConfig.instance.init(config);
+      
+      if (PrintConfig.instance.providers) {
+        PrintConfig.instance.providers.forEach((provider) => {
+          provider.addElementTypes(PrintElementTypeContext.instance);
+        });
+      }
+
+      // 自动连接WebSocket
       if (window.autoConnect && (PrintConfig.instance.host != hiwebSocket.host || PrintConfig.instance.token != hiwebSocket.token)) {
         hiwebSocket.stop();
-        PrintConfig.instance.host && (hiwebSocket.host = PrintConfig.instance.host);
-        PrintConfig.instance.token && (hiwebSocket.token = PrintConfig.instance.token);
+        
+        if (PrintConfig.instance.host) {
+          hiwebSocket.host = PrintConfig.instance.host;
+        }
+        
+        if (PrintConfig.instance.token) {
+          hiwebSocket.token = PrintConfig.instance.token;
+        }
+        
         hiwebSocket.start();
       }
+
+      // 设置语言
       if (PrintConfig.instance.lang && Object.keys(languages).includes(PrintConfig.instance.lang)) {
         i18n.lang = PrintConfig.instance.lang;
       } else {
         i18n.lang = 'cn';
       }
     }
-  
-    function setConfig(v13574) {
-      if (v13574) {
-        v13574 && Object.keys(v13574).forEach(function (v13575) {
-          if (v13575 == "optionItems" && v13574.optionItems && v13574.optionItems.length) {
-            PrintConfig.instance.registerItems(v13574.optionItems);
-          } else
-          if (v13574[v13575].tabs && v13574[v13575].tabs.length) {
-            v13574[v13575].tabs.forEach(function (tab, idx) {
+
+    // 设置配置函数
+    function setConfig (customConfig){
+      if (customConfig) {
+        Object.keys(customConfig).forEach((configKey) => {
+          if (configKey == "optionItems" && customConfig.optionItems && customConfig.optionItems.length) {
+            PrintConfig.instance.registerItems(customConfig.optionItems);
+          } else if (customConfig[configKey].tabs && customConfig[configKey].tabs.length) {
+            customConfig[configKey].tabs.forEach((tab, tabIndex) => {
               if (tab.replace) {
-                $.extend(PrintConfig.instance[v13575].tabs[idx], tab);
+                Object.assign(PrintConfig.instance[configKey].tabs[tabIndex], tab);
               } else {
-                var options = tab.options,list = PrintConfig.instance[v13575].tabs[idx].options;
-                options.forEach(function (v13579) {
-                  var idx = list.findIndex(function (v13580) {
-                    return v13580.name == v13579.name;
-                  });
-                  if (idx > -1) list[idx].hidden = v13579.hidden;else
-                  {
-                    if (v13579.after) {
-                      idx = list.findIndex(function (v13581) {
-                        return v13581.name == v13579.after;
-                      });
-                      if (idx > -1) list.splice(idx + 1, 0, v13579);
-                    } else list.push(v13579);
+                const newOptions = tab.options;
+                const existingList = PrintConfig.instance[configKey].tabs[tabIndex].options;
+                
+                newOptions.forEach((newOption) => {
+                  const existingIndex = existingList.findIndex((existingOption) => existingOption.name == newOption.name);
+                  
+                  if (existingIndex > -1) {
+                    existingList[existingIndex].hidden = newOption.hidden;
+                  } else {
+                    if (newOption.after) {
+                      const afterIndex = existingList.findIndex((existingOption) => existingOption.name == newOption.after);
+                      if (afterIndex > -1) {
+                        existingList.splice(afterIndex + 1, 0, newOption);
+                      }
+                    } else {
+                      existingList.push(newOption);
+                    }
                   }
                 });
-                $.extend(PrintConfig.instance[v13575].tabs[idx], {
+                
+                Object.assign(PrintConfig.instance[configKey].tabs[tabIndex], {
                   name: tab.name,
-                  options: list
+                  options: existingList
                 });
               }
             });
-            delete v13574[v13575].tabs;
-          } else
-          if (v13574[v13575].supportOptions) {
-            var options = v13574[v13575].supportOptions,list = PrintConfig.instance[v13575].supportOptions;
-            options.forEach(function (v13584) {
-              var idx = list.findIndex(function (v13585) {
-                return v13585.name == v13584.name;
-              });
-              if (idx > -1) list[idx].hidden = v13584.hidden;else
-              {
-                if (v13584.after) {
-                  idx = list.findIndex(function (v13586) {
-                    return v13586.name == v13584.after;
-                  });
-                  if (idx > -1) list.splice(idx + 1, 0, v13584);
-                } else list.push(v13584);
+            delete customConfig[configKey].tabs;
+          } else if (customConfig[configKey].supportOptions) {
+            const newOptions = customConfig[configKey].supportOptions;
+            const existingList = PrintConfig.instance[configKey].supportOptions;
+            
+            newOptions.forEach((newOption) => {
+              const existingIndex = existingList.findIndex((existingOption) => existingOption.name == newOption.name);
+              
+              if (existingIndex > -1) {
+                existingList[existingIndex].hidden = newOption.hidden;
+              } else {
+                if (newOption.after) {
+                  const afterIndex = existingList.findIndex((existingOption) => existingOption.name == newOption.after);
+                  if (afterIndex > -1) {
+                    existingList.splice(afterIndex + 1, 0, newOption);
+                  }
+                } else {
+                  existingList.push(newOption);
+                }
               }
             });
-            $.extend(PrintConfig.instance[v13575].supportOptions, list);
-            delete v13574[v13575].supportOptions;
+            
+            Object.assign(PrintConfig.instance[configKey].supportOptions, existingList);
+            delete customConfig[configKey].supportOptions;
           } else {
-            var keyMap = {};
-            keyMap[v13575] = v13574[v13575];
-            $.extend(PrintConfig.instance, keyMap);
+            const keyMap = {};
+            keyMap[configKey] = customConfig[configKey];
+            Object.assign(PrintConfig.instance, keyMap);
           }
         });
       } else {
-        $.extend(PrintConfig.instance, HIPRINT_CONFIG);
+        Object.assign(PrintConfig.instance, HIPRINT_CONFIG);
       }
     }
   
-    function updateElementType(v13590, v13591) {
-      return PrintElementTypeContext.instance.updateElementType(v13590, v13591);
+    function updateElementType(typeId, updateFunction) {
+      return PrintElementTypeContext.instance.updateElementType(typeId, updateFunction);
     }
   
-    function refreshPrinterList(v13592) {
+    function refreshPrinterList(printerListCallback) {
       PrintConfig.instance.clear("printerList");
-      PrintConfig.instance.on("printerList", v13592);
+      PrintConfig.instance.on("printerList", printerListCallback);
       hiwebSocket.refreshPrinterList();
     }
   
-    function getClients(v13595) {
+    function getClients(clientsCallback) {
       PrintConfig.instance.clear("clients");
-      PrintConfig.instance.on("clients", v13595);
+      PrintConfig.instance.on("clients", clientsCallback);
       hiwebSocket.getClients();
     }
   
-    function getClientInfo(v13598) {
+    function getClientInfo(getClientInfoCallback) {
       PrintConfig.instance.clear("clientInfo");
-      PrintConfig.instance.on("getClientInfo", v13598);
+      PrintConfig.instance.on("getClientInfo", getClientInfoCallback);
       hiwebSocket.getClientInfo();
     }
   
-    function getAddress(type, v13601, ...args) {
+    function getAddress(type, addressCallback, ...args) {
       PrintConfig.instance.clear("address_" + type);
-      PrintConfig.instance.on("address_" + type, v13601);
+      PrintConfig.instance.on("address_" + type, addressCallback);
       hiwebSocket.getAddress(type, ...args);
     }
   
-    function ippPrint(options, callback, connected) {
+    function ippPrint(options, callback, connectedCallback) {
       PrintConfig.instance.clear("ippPrinterCallback");
       PrintConfig.instance.on("ippPrinterCallback", callback);
       PrintConfig.instance.clear("ippPrinterConnected");
-      PrintConfig.instance.on("ippPrinterConnected", connected);
+      PrintConfig.instance.on("ippPrinterConnected", connectedCallback);
       hiwebSocket.ippPrint(options);
     }
   
