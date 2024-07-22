@@ -6,7 +6,7 @@
 
     // WebSocket 客户端类
 var CONNECTED = "connected", RECONNECTING = "reconnecting";
-window.hiwebSocket = {
+let hiwebSocket = {
   opened: false,
   name: "webSockets",
   host: "http://localhost:17521",
@@ -229,3 +229,6 @@ window.hiwebSocket = {
     return this.state === RECONNECTING;
   }
 };
+
+window.hiwebSocket = hiwebSocket;
+export default hiwebSocket;

@@ -1,7 +1,7 @@
 // 初始化本地存储对象
 const localStorageObject = window.localStorage || null;
 
-window.hiLocalStorage = {
+let hiLocalStorage = {
   /**
    * 保存本地数据
    * @param {string} key - 存储的键
@@ -34,3 +34,7 @@ window.hiLocalStorage = {
     }
   }
 };
+
+window.hiLocalStorage = hiLocalStorage;
+
+export default hiLocalStorage;
