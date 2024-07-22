@@ -666,25 +666,25 @@ class PrintPanel {
       let elementHtmls = [];
       let page = pageList[pageList.length - 1];
       if (page.referenceElement.isPositionLeftOrRight(element.options.getTop())) {
-        currentPage = pageList[page.referenceElement.beginPrintPaperIndex];
+        lastPage = pageList[page.referenceElement.beginPrintPaperIndex];
       } else {
-        currentPage = pageList[page.referenceElement.endPrintPaperIndex];
+        lastPage = pageList[page.referenceElement.endPrintPaperIndex];
       }
-      elementHtmls = element.getHtml(currentPage, printData);
+      elementHtmls = element.getHtml(lastPage, printData);
       elementHtmls.forEach((elementHtml, index) => {
         elementHtml.referenceElement && (elementHtml.referenceElement.endPrintPaperIndex = elementHtml.referenceElement.beginPrintPaperIndex + elementHtmls.length - 1);
         if (index > 0) {
-          if (currentPage.index < pageList.length - 1) {
-            currentPage = pageList[currentPage.index + 1];
+          if (lastPage.index < pageList.length - 1) {
+            lastPage = pageList[lastPage.index + 1];
           } else {
-            currentPage = widget.createNewPage(pageList.length, currentPage.referenceElement);
-            pageList.push(currentPage);
+            lastPage = widget.createNewPage(pageList.length, lastPage.referenceElement);
+            pageList.push(lastPage);
           }
-          currentPage.append(currentPage.getTarget());
+          currentPage.append(lastPage.getTarget());
         }
         // 元素隐藏时不添加到html内
-        elementHtml.target && ("none" != element.options.showInPage && currentPage.append(elementHtml.target), currentPage.updatePrintLine(elementHtml.printLine), element.onRendered(currentPage, elementHtml.target));
-        index == elementHtmls.length - 1 && elementHtml.referenceElement && currentPage.updateReferenceElement(elementHtml.referenceElement);
+        elementHtml.target && ("none" != element.options.showInPage && lastPage.append(elementHtml.target), lastPage.updatePrintLine(elementHtml.printLine), element.onRendered(lastPage, elementHtml.target));
+        index == elementHtmls.length - 1 && elementHtml.referenceElement && lastPage.updateReferenceElement(elementHtml.referenceElement);
       });
     });
     settingInfo && settingInfo.templates.forEach((template, index) => {
