@@ -112,11 +112,15 @@ class EditorManager {
   }
 
   createEditor(type) {
-    return $.extend({}, EditorFactory.Instance[type]);
+    var editor = $.extend({}, EditorFactory.Instance[type]);
+    Object.setPrototypeOf(editor, Object.getPrototypeOf(EditorFactory.Instance[type]));
+    return editor;
   }
 
   createSelect(type) {
-    return $.extend({}, SelectorFactory.Instance[type]);
+    var editor = $.extend({}, SelectorFactory.Instance[type]);
+    Object.setPrototypeOf(editor, Object.getPrototypeOf(SelectorFactory.Instance[type]));
+    return editor;
   }
 }
 
