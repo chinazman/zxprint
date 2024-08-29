@@ -206,9 +206,11 @@ class PrintElementTypeGroup {
                     }
                   }
                 });
-                
+                //如果没有设置新的名称，就用原来的
+                let name = tab.name || PrintConfig.instance[configKey].tabs[tabIndex].name;
+
                 Object.assign(PrintConfig.instance[configKey].tabs[tabIndex], {
-                  name: tab.name,
+                  name,
                   options: existingList
                 });
               }
