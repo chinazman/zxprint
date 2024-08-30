@@ -119,7 +119,7 @@ class PrintElementTypeGroup {
       var printTemplate = new PrintTemplate({});
       printTemplate.on("printSuccess", printSuccessCallback);
       printTemplate.on("printError", printErrorCallback);
-       printTemplate.printByHtml2((typeof value === "string" ?printData : this.getHtml(printData)[0].outerHTML), printData.options);
+      printTemplate.printByHtml2((typeof printData === "string" ?printData : this.getHtml(printData)[0].outerHTML), printData.options);
     }
   
         // 获取HTML函数

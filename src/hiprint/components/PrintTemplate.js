@@ -695,7 +695,6 @@ class PrintTemplate {
       }
       if (printCss.length <= 0) {
         throw new Error("请在 入口文件(index.html) 中引入 print-lock.css. 注意: link[media=\"print\"]");
-        return;
       }
       printCss.each(function(index, item) {
         let xhr = new XMLHttpRequest();
@@ -758,7 +757,7 @@ class PrintTemplate {
     let printOptions = $.extend({}, options || {});
     printOptions.imgToBase64 = true;
     //支持直接传入html
-    let html = css + (typeof value === "string" ?data : this.getHtml(data, printOptions)[0].outerHTML);
+    let html = css + (typeof data === "string" ?data : this.getHtml(data, printOptions)[0].outerHTML);
     printOptions.id = PrintLib.instance.guid();
     printOptions.html = html;
     printOptions.templateId = this.id;
