@@ -3,8 +3,8 @@ let webpack = require('webpack')
 const fs = require("fs");
 
 module.exports = {
-  publicPath: '/vue-plugin-hiprint',
-  outputDir: 'vue-plugin-hiprint',
+  publicPath: '/zxprint',
+  outputDir: 'zxprint',
   assetsDir: 'static',
   productionSourceMap: false,
   chainWebpack: config => {

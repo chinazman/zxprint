@@ -5,13 +5,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    'vue-plugin-hiprint.js': './src/index.js',
+    'zxprint.js': './src/index.js',
   },
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: '[name]',
-    library: 'vue-plugin-hiprint',
+    library: 'zxprint',
     libraryTarget: "umd",
     // libraryTarget: "commonjs2",
     umdNamedDefine: true

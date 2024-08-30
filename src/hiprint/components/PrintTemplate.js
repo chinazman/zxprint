@@ -60,6 +60,11 @@ class SettingContainerEventManager {
     this.settingContainer.html("");
   }
 
+  //获取最后的打印对象
+  getLastPrintElement(){
+    return this.lastPrintElement;
+  }
+
   // 清除上一个打印元素
   clearLastPrintElement() {
     if (this.lastPrintElement) {
@@ -428,12 +433,19 @@ class PrintTemplate {
     if (initOptions.fields) this.fields = initOptions.fields;
     if (initOptions.onImageChooseClick) this.onImageChooseClick = initOptions.onImageChooseClick;
     if (initOptions.onPanelAddClick) this.onPanelAddClick = initOptions.onPanelAddClick;
-    if (initOptions.settingContainer) new SettingContainerEventManager(this, initOptions.settingContainer);
+    if (initOptions.settingContainer){
+      this.settingContainerEventManager = new SettingContainerEventManager(this, initOptions.settingContainer);
+    } 
     if (initOptions.paginationContainer) {
       this.printPaginationCreator = new PrintPaginationCreator(initOptions.paginationContainer, this);
       this.printPaginationCreator.buildPagination();
     }
     this.initAutoSave();
+  }
+
+  //获取最后的打印对象
+  getLastPrintElement(){
+    return this.settingContainerEventManager?.getLastPrintElement();
   }
 
   // 设计方法
@@ -745,7 +757,8 @@ class PrintTemplate {
     if (!data) data = {};
     let printOptions = $.extend({}, options || {});
     printOptions.imgToBase64 = true;
-    let html = css + this.getHtml(data, printOptions)[0].outerHTML;
+    //支持直接传入html
+    let html = css + (typeof value === "string" ?data : this.getHtml(data, printOptions)[0].outerHTML);
     printOptions.id = PrintLib.instance.guid();
     printOptions.html = html;
     printOptions.templateId = this.id;
@@ -780,7 +793,7 @@ class PrintTemplate {
               for (let i = 0; i < printCss.length; i++) {
                 allCss += cssMap[i + ""];
               }
-              let fullHtml = allCss + $(html)[0].outerHTML;
+              let fullHtml = allCss + html;
               let sendOptions = $.extend({}, options || {});
               sendOptions.id = PrintLib.instance.guid();
               sendOptions.html = fullHtml;

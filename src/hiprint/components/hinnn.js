@@ -238,7 +238,7 @@ hinnn.orderBy = function(array, iteratee) {
 hinnn.dateFormat = (date, format) => {
   if (date) {
     try {
-      const dateObj = typeof date === "string" ? new Date(date) : date;
+      const dateObj = date instanceof Date ? date : new Date(date);
       const map = {
         "y+": dateObj.getFullYear(),
         "M+": dateObj.getMonth() + 1,

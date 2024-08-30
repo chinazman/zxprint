@@ -117,7 +117,9 @@ class PrintElementTypeGroup {
     function print2(printData, printSuccessCallback, printErrorCallback) {
       $.extend({}, printData || {}).imgToBase64 = !0;
       var printTemplate = new PrintTemplate({});
-      printTemplate.on("printSuccess", printSuccessCallback), printTemplate.on("printError", printErrorCallback), printTemplate.printByHtml2(this.getHtml(printData), printData.options);
+      printTemplate.on("printSuccess", printSuccessCallback);
+      printTemplate.on("printError", printErrorCallback);
+       printTemplate.printByHtml2((typeof value === "string" ?printData : this.getHtml(printData)[0].outerHTML), printData.options);
     }
   
         // 获取HTML函数

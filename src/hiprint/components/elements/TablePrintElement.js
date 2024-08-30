@@ -378,7 +378,7 @@ getPaperHtmlResult(paper, isDesign) {
         topPosition = beginPrintTop;
         rowResult.target.css("top", `${beginPrintTop}pt`);
       }
-      beginPrintTop = isEnd && this.options.lHeight !== null ? beginPrintTop + Math.max(rowResult.height, this.options.lHeight) : beginPrintTop + rowResult.height;
+      beginPrintTop = isEnd && this.options.lHeight != null ? beginPrintTop + Math.max(rowResult.height, this.options.lHeight) : beginPrintTop + rowResult.height;
     } else {
       if (rowResult.target) {
         topPosition = paper.paperHeader;
