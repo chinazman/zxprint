@@ -53,7 +53,7 @@ class TableColumnOption {
  * 表格打印元素选项类
  */
 class TablePrintElementOption extends PrintElementOption {
-  constructor(options, printElement) {
+  constructor(options, printElementType) {
     options = options || {};
     super(options);
     
@@ -61,15 +61,15 @@ class TablePrintElementOption extends PrintElementOption {
     this.autoCompletion = options.autoCompletion;
     this.tableFooterRepeat = options.tableFooterRepeat;
 
-    if (printElement) {
+    if (printElementType) {
       this.columns = [];
       // 如果是可编辑的并且有列定义
-      if (printElement.editable && options.columns && options.columns.length) {
+      if (printElementType.editable && options.columns && options.columns.length) {
         options.columns.forEach(row => {
           const rowColumns = [];
           row.forEach(col => {
             const columnOption = new TableColumnOption(col);
-            const existingColumn = printElement.getColumnByColumnId(columnOption.columnId);
+            const existingColumn = printElementType.getColumnByColumnId(columnOption.columnId);
             // 如果列已存在，则扩展它，否则创建新的列
             const column = existingColumn ? $.extend(existingColumn, columnOption) : new PrintTableCell(columnOption);
             rowColumns.push(column);
@@ -78,7 +78,7 @@ class TablePrintElementOption extends PrintElementOption {
         });
       } else {
         // 否则直接使用打印元素的列
-        printElement.columns.forEach(row => {
+        printElementType.columns.forEach(row => {
           this.columns.push(new PrintElementTableRow(row));
         });
       }
