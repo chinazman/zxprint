@@ -8,6 +8,7 @@ import { i18n, $ } from "../hiprint.comm.js";
 import JsBarcode from "jsbarcode";
 import ReconsitutionTableColumns from "./ReconsitutionTableColumns.js";
 import hinnn from "./hinnn.js";
+import ExpressionEngine from "./ExpressionEngine.js";
 
 /**
  * 表格Excel辅助类
@@ -18,9 +19,11 @@ class TableExcelHelper {
   /**
    * 创建表格头部
    */
-  static createTableHead(columns, tableWidth) {
-    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns);
-    const thead = $("<thead></thead>");
+  static createTableHead(columns, tableWidth, isFoot) {
+
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => column.columns[0].isFoot == !!isFoot));
+
+    const thead = isFoot ? $("<tfoot></tfoot>") : $("<thead></thead>");
     let colgroup = $("<colgroup></colgroup>");
     const columnsWidth = TableExcelHelper.getColumnsWidth(reconstitutedColumns, tableWidth);
     
@@ -71,11 +74,76 @@ class TableExcelHelper {
   /**
    * 创建表格页脚
    */
-  static createTableFooter(tableData,allData, options, printData,  index, groupData) {
+  static createTableFooter2(columns, allData, pageData, isLastPage) {
+
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => column.columns[0].isFoot));
+
+    const thead = $("<tfoot></tfoot>") ;
+    // const columnsWidth = TableExcelHelper.getColumnsWidth(reconstitutedColumns, tableWidth);
+    
+    const createRow = (layerIndex) => {
+      const isLastStat = TableExcelHelper.isLastPageStat(reconstitutedColumns[layerIndex]);
+      if (isLastStat && !isLastPage) {
+        return;
+      }
+      const context = {
+        data: isLastStat?allData:pageData,
+        allData: allData
+      };
+
+      const row = $("<tr></tr>");
+      reconstitutedColumns[layerIndex].filter(column => column.checked).forEach(column => {
+        const cell = $("<td></td>");
+        column.id && cell.attr("id", column.id);
+        column.columnId && cell.attr("column-id", column.columnId);
+        (column.align || column.halign) && cell.css("text-align", column.halign || column.align);
+        column.vAlign && cell.css("vertical-align", column.vAlign);
+        column.colspan > 1 && cell.attr("colspan", column.colspan);
+        column.rowspan > 1 && cell.attr("rowspan", column.rowspan);
+        const value = column.title && column.title.startsWith("=")?ExpressionEngine.execute(column.title.substring(1), context):column.title;
+        cell.html(value);
+        column.columnId && cell.attr("column-id", column.columnId);
+
+        column.hasWidth = false;
+        const headerStyler = TableExcelHelper.getHeaderStyler(column);
+        if (headerStyler) {
+          const style = headerStyler(column);
+          if (style) {
+            Object.keys(style).forEach(key => {
+              cell.css(key, style[key]);
+            });
+          }
+        }
+        row.append(cell);
+      });
+      thead.append(row);
+    };
+
+    for (let layerIndex = 0; layerIndex < reconstitutedColumns.totalLayer; layerIndex++) {
+      createRow(layerIndex);
+    }
+
+    //TableExcelHelper.syncTargetWidthToOption(columns);
+    return thead;
+  }
+
+  /**
+   * 判断存在“==”开头表示最后统计
+   * @param {*} columns 
+   * @returns 
+   */
+  static isLastPageStat(columns){
+    return columns.some(column => column.title && column.title.startsWith("=="));
+  }
+
+  /**
+   * 创建表格页脚
+   */
+  static createTableFooter(columns,allData, options, printElementType,  srcData, pageData) {
     const tfoot = $("<tfoot></tfoot>");
-    const footerFormatter = this.getFooterFormatter(options, printData);
+    const footerFormatter = this.getFooterFormatter(options, printElementType);
     const tableSummaryTitle = this.tableSummaryTitle;
-    const summaryData = options.tableFooterRepeat === "last" ? allData : groupData;
+    const summaryData = options.tableFooterRepeat === "last" ? allData : pageData;
     const lastIndex = options.columns.length - 1;
     const rowColumns = this.rowColumns || options.columns[lastIndex].columns;
 
@@ -100,35 +168,35 @@ class TableExcelHelper {
 
         switch (column.tableSummary) {
           case "count":
-            const countTitle = tableSummaryTitle(column, text || `${i18n.__('计数')}:`, index);
+            const countTitle = tableSummaryTitle(column, text || `${i18n.__('计数')}:`, srcData);
             const count = toUpperCase(upperCaseType, summaryData.filter(row => row).length || 0);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${countTitle}${count}</td>`);
             break;
           case "sum":
             const sum = parseFloat(Number(fieldData.reduce((prev, cur) => prev + cur, 0)));
             const sumFormatted = toUpperCase(upperCaseType, numFormat(sum, numF));
-            const sumTitle = tableSummaryTitle(column, text || `${i18n.__('合计')}:`, index);
+            const sumTitle = tableSummaryTitle(column, text || `${i18n.__('合计')}:`, srcData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${sumTitle}${sumFormatted}</td>`);
             break;
           case "avg":
             const avgSum = parseFloat(Number(fieldData.reduce((prev, cur) => prev + cur, 0)));
             const avg = parseFloat(Number(avgSum / (fieldData.length || 1)));
             const avgFormatted = toUpperCase(upperCaseType, numFormat(avg, numF));
-            const avgTitle = tableSummaryTitle(column, text || `${i18n.__('平均值')}:`, index);
+            const avgTitle = tableSummaryTitle(column, text || `${i18n.__('平均值')}:`, srcData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${avgTitle}${avgFormatted}</td>`);
             break;
           case "min":
             let min = Math.min(...fieldData) || 0;
             min = min === Infinity ? 0 : min;
             const minFormatted = toUpperCase(upperCaseType, numFormat(min, numF));
-            const minTitle = tableSummaryTitle(column, text || `${i18n.__('最小值')}:`, index);
+            const minTitle = tableSummaryTitle(column, text || `${i18n.__('最小值')}:`, srcData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${minTitle}${minFormatted || 0}</td>`);
             break;
           case "max":
             let max = Math.max(...fieldData);
             max = max === -Infinity ? 0 : max;
             const maxFormatted = toUpperCase(upperCaseType, numFormat(max, numF));
-            const maxTitle = tableSummaryTitle(column, text || `${i18n.__('最大值')}:`, index);
+            const maxTitle = tableSummaryTitle(column, text || `${i18n.__('最大值')}:`, srcData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${maxTitle}${maxFormatted || 0}</td>`);
             break;
           case "text":
@@ -145,7 +213,7 @@ class TableExcelHelper {
     }
 
     if (footerFormatter) {
-      tfoot.append(footerFormatter(options, allData, index, groupData));
+      tfoot.append(footerFormatter(options, allData, srcData, pageData));
     }
 
     return tfoot;
@@ -162,25 +230,25 @@ class TableExcelHelper {
   /**
    * 创建表格行
    */
-  static createTableRow(columns, data, printData, options, tablePrintElementType) {
+  static createTableRow(columns, allData, srcData, options, tablePrintElementType) {
     const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns);
     const tbody = $("<tbody></tbody>");
     const groupFieldsFormatter = this.getGroupFieldsFormatter(options, tablePrintElementType);
-    const groupFields = groupFieldsFormatter ? options.groupFields = groupFieldsFormatter(tablePrintElementType, options, data) : tablePrintElementType.groupFields ? tablePrintElementType.groupFields : [];
+    const groupFields = groupFieldsFormatter ? options.groupFields = groupFieldsFormatter(tablePrintElementType, options, allData) : tablePrintElementType.groupFields ? tablePrintElementType.groupFields : [];
 
-    if (!data) {
-      data = [];
+    if (!allData) {
+      allData = [];
     }
 
     if (groupFields.length) {
-      hinnn.groupBy(data, groupFields, item => {
+      hinnn.groupBy(allData, groupFields, item => {
         const groupKey = {};
         groupFields.forEach(field => groupKey[field] = item[field]);
         return groupKey;
       }).forEach(group => {
         const groupFormatter = this.getGroupFormatter(options, tablePrintElementType);
         if (groupFormatter) {
-          const result = groupFormatter(reconstitutedColumns.colspan, data, printData, group, options);
+          const result = groupFormatter(reconstitutedColumns.colspan, allData, srcData, group, options);
           if ($(result).is("tr")) {
             tbody.append(result);
           } else if ($(result).is("td")) {
@@ -192,12 +260,12 @@ class TableExcelHelper {
 
         const groupFooterFormatter = this.getGroupFooterFormatter(options, tablePrintElementType);
         group.rows.forEach((rowData, rowIndex) => {
-          const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, group.rows, printData);
+          const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, group.rows, srcData);
           tbody.append(row);
         });
 
         if (groupFooterFormatter) {
-          const result = groupFooterFormatter(reconstitutedColumns.colspan, data, printData, group, options);
+          const result = groupFooterFormatter(reconstitutedColumns.colspan, allData, srcData, group, options);
           if ($(result).is("tr")) {
             tbody.append(result);
           } else if ($(result).is("td")) {
@@ -208,8 +276,8 @@ class TableExcelHelper {
         }
       });
     } else {
-      data.forEach((rowData, rowIndex) => {
-        const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, data, printData);
+      allData.forEach((rowData, rowIndex) => {
+        const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, allData, srcData);
         tbody.append(row);
       });
     }

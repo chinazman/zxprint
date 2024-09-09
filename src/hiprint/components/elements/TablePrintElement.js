@@ -46,6 +46,7 @@ class TableColumnOption {
     this.tableSummaryFormatter = options.tableSummaryFormatter;
     this.showCodeTitle = options.showCodeTitle;
     this.upperCase = options.upperCase;
+    this.isFoot = !!options.isFoot;
   }
 }
 
@@ -246,11 +247,11 @@ createTempEmptyRowsTargetStructure() {
 
 /**
  * 获取表格的HTML
- * @param {Object} data - 表格数据
- * @param {Object} options - 额外的选项
+ * @param {Object} allTableData - 表格数据
+ * @param {Object} srcData - 额外的选项
  * @returns {jQuery} 生成的表格jQuery对象
  */
-getTableHtml(data, options) {
+getTableHtml(allTableData, srcData) {
   let containerDiv, tableElement;
 
   // 如果没有设置字段且有内容选项，直接返回内容
@@ -262,7 +263,7 @@ getTableHtml(data, options) {
 
   // 如果有格式化函数，使用格式化函数处理
   if (this.printElementType.formatter) {
-    containerDiv = $("<div></div>").append(this.printElementType.formatter(data));
+    containerDiv = $("<div></div>").append(this.printElementType.formatter(allTableData));
     tableElement = containerDiv.find("table").addClass("hiprint-printElement-tableTarget");
     return tableElement;
   }
@@ -272,7 +273,7 @@ getTableHtml(data, options) {
   
   // 创建表头
   let columnWidth = this.options.getWidth() / this.options.getGridColumns();
-  let headerList = TableExcelHelper.createTableHead(this.getColumns(), columnWidth);
+  let headerList = TableExcelHelper.createTableHead(this.getColumns(), columnWidth, false);
 
   // 根据是否为设计模式决定如何添加表头
   if (this.isNotDesign) {
@@ -282,15 +283,40 @@ getTableHtml(data, options) {
   }
 
   // 创建表格主体
-  table.append(TableExcelHelper.createTableRow(this.getColumns(), data, options, this.options, this.printElementType));
+  table.append(TableExcelHelper.createTableRow(this.getColumns(), allTableData, srcData, this.options, this.printElementType));
 
   // 处理表格脚注
-  if (this.options.tableFooterRepeat !== "no") {
-    let footer = TableExcelHelper.createTableFooter(this.printElementType.columns, data, this.options, this.printElementType, options, data);
-    footer.insertBefore(table.find("tbody"));
-  }
-
+  // if (this.options.tableFooterRepeat !== "no") {
+  //   let footer = TableExcelHelper.createTableFooter(this.printElementType.columns, allTableData, this.options, this.printElementType, srcData, tableData);
+  //   footer.insertBefore(table.find("tbody"));
+  // }
+  // if (this.options.tableFooterRepeat == "yes") {
+  //   let hasFooter = this.getColumns().some(column => column.columns[0].isFoot);
+  //   if (!hasFooter) {
+  //     this.newEmptyFooter();
+  //   }
+  //   let footer = TableExcelHelper.createTableFooter2(this.getColumns(), allTableData, allTableData, true);
+  //   table.append(footer);
+  // }
   return table;
+}
+//新建空行
+newEmptyFooter = function() {
+  let row = this.getColumns()[this.getColumns().length - 1]
+  const rowColumns = [];
+  row.columns.forEach(col => {
+    let newcol = {...col};
+    newcol.title = "";
+    newcol.field = "";
+    newcol.isFoot = true;
+    const columnOption = new TableColumnOption(newcol);
+    rowColumns.push(new PrintTableCell(columnOption));
+  });
+  let newRow = new PrintElementTableRow(rowColumns);
+  // let newRow = new PrintElementTableRow();
+  // newRow.isFoot = true;
+  this.getColumns().push(newRow);
+ 
 }
 // 获取空行目标
 getEmptyRowTarget() {
@@ -298,54 +324,54 @@ getEmptyRowTarget() {
 }
 
 // 获取HTML
-getHtml(paper, isDesign) {
+getHtml(printPage, data) {
   this.createTempContainer();
-  this.isNotDesign = isDesign !== undefined;
-  let htmlResult = this.getPaperHtmlResult(paper, isDesign);
+  this.isNotDesign = data !== undefined;
+  let htmlResult = this.getPaperHtmlResult(printPage, data);
   this.removeTempContainer();
   return htmlResult;
 }
 
 // 获取纸张HTML结果
-getPaperHtmlResult(paper, isDesign) {
+getPaperHtmlResult(printPage, srcData) {
   let paperHtmlResults = [],
-      data = this.getData(isDesign),
-      tableHtml = this.getTableHtml(data, isDesign),
-      tempEmptyRowsTarget = this.createTempEmptyRowsTargetStructure(isDesign);
+      tableData = this.getData(srcData),
+      tableHtml = this.getTableHtml(tableData, srcData),
+      tempEmptyRowsTarget = this.createTempEmptyRowsTargetStructure(srcData);
   
-  if (isDesign) {
+  if (srcData) {
     this.updateTargetWidth(tempEmptyRowsTarget);
   } else {
     this.updateTargetSize(tempEmptyRowsTarget);
   }
   
-  this.css(tempEmptyRowsTarget, data);
-  this.css(tableHtml, data);
+  this.css(tempEmptyRowsTarget, tableData);
+  this.css(tableHtml, tableData);
   this.getTempContainer().html("");
   this.getTempContainer().append(tempEmptyRowsTarget);
   
   // 页脚导致分页高度的问题, -> 获取到表格脚高度后移除避免重复
   let tableFooterHeight = tempEmptyRowsTarget.find('tfoot').outerHeight() || 0;
-  tempEmptyRowsTarget.find('tfoot').remove();
+ // tempEmptyRowsTarget.find('tfoot').remove();
   
-  let beginPrintTop = this.getBeginPrintTopInPaperByReferenceElement(paper),
+  let beginPrintTop = this.getBeginPrintTopInPaperByReferenceElement(printPage),
       pageIndex = 0,
       isEnd = false;
   
   while (!isEnd) {
     let availableHeight = 0,
-        paperFooterHeight = paper.getPaperFooter(pageIndex);
+        paperFooterHeight = printPage.getPaperFooter(pageIndex);
     
-    if (pageIndex === 0 && beginPrintTop > paperFooterHeight && paper.panelPageRule !== "none") {
-      beginPrintTop = beginPrintTop - paperFooterHeight + paper.paperHeader;
+    if (pageIndex === 0 && beginPrintTop > paperFooterHeight && printPage.panelPageRule !== "none") {
+      beginPrintTop = beginPrintTop - paperFooterHeight + printPage.paperHeader;
       paperHtmlResults.push(new PaperHtmlResult({ target: undefined, printLine: undefined }));
-      availableHeight = paper.getContentHeight(pageIndex) - (beginPrintTop - paper.paperHeader);
+      availableHeight = printPage.getContentHeight(pageIndex) - (beginPrintTop - printPage.paperHeader);
       pageIndex++;
-      paperFooterHeight = paper.getPaperFooter(pageIndex);
+      paperFooterHeight = printPage.getPaperFooter(pageIndex);
     }
     
     let previousTarget = paperHtmlResults.length > 0 ? paperHtmlResults[paperHtmlResults.length - 1].target : undefined,
-        rowResult = this.getRowsInSpecificHeight(isDesign, availableHeight > 0 ? availableHeight : (pageIndex === 0 ? paperFooterHeight - beginPrintTop : paper.getContentHeight(pageIndex)), tempEmptyRowsTarget, tableHtml, pageIndex, previousTarget, tableFooterHeight);
+        rowResult = this.getRowsInSpecificHeight(srcData, availableHeight > 0 ? availableHeight : (pageIndex === 0 ? paperFooterHeight - beginPrintTop : printPage.getContentHeight(pageIndex)), tempEmptyRowsTarget, tableHtml, pageIndex, previousTarget, tableFooterHeight);
     
     isEnd = rowResult.isEnd;
     
@@ -357,7 +383,7 @@ getPaperHtmlResult(paper, isDesign) {
         left: this.options.getLeft(),
         height: this.options.getHeight(),
         width: this.options.getWidth(),
-        beginPrintPaperIndex: paper.index,
+        beginPrintPaperIndex: printPage.index,
         bottomInLastPaper: beginPrintTop + this.options.lHeight,
         printTopInPaper: beginPrintTop
       });
@@ -381,10 +407,10 @@ getPaperHtmlResult(paper, isDesign) {
       beginPrintTop = isEnd && this.options.lHeight != null ? beginPrintTop + Math.max(rowResult.height, this.options.lHeight) : beginPrintTop + rowResult.height;
     } else {
       if (rowResult.target) {
-        topPosition = paper.paperHeader;
-        rowResult.target.css("top", `${paper.paperHeader}pt`);
+        topPosition = printPage.paperHeader;
+        rowResult.target.css("top", `${printPage.paperHeader}pt`);
       }
-      beginPrintTop = paper.paperHeader + rowResult.height;
+      beginPrintTop = printPage.paperHeader + rowResult.height;
     }
     
     paperHtmlResults.push(new PaperHtmlResult({
@@ -395,7 +421,7 @@ getPaperHtmlResult(paper, isDesign) {
         left: this.options.getLeft(),
         height: this.options.getHeight(),
         width: this.options.getWidth(),
-        beginPrintPaperIndex: paper.index,
+        beginPrintPaperIndex: printPage.index,
         bottomInLastPaper: beginPrintTop,
         printTopInPaper: topPosition
       })
@@ -403,8 +429,8 @@ getPaperHtmlResult(paper, isDesign) {
     
     pageIndex++;
     
-    if (isDesign) {
-      this.updatePanelHeight(beginPrintTop + this.options.getHeight(), paper);
+    if (srcData) {
+      this.updatePanelHeight(beginPrintTop + this.options.getHeight(), printPage);
     }
   }
 
@@ -413,7 +439,7 @@ getPaperHtmlResult(paper, isDesign) {
 
 /**
  * 获取特定高度内的行
- * @param {boolean} isRealData - 是否为真实数据
+ * @param {boolean} srcData - 是否为真实数据
  * @param {number} specificHeight - 指定高度
  * @param {jQuery} tableContainer - 表格容器
  * @param {jQuery} tableElement - 表格元素
@@ -422,7 +448,7 @@ getPaperHtmlResult(paper, isDesign) {
  * @param {number} footerHeight - 页脚高度
  * @returns {Object} 包含目标、长度、高度和是否结束的对象
  */
-getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement, pageIndex, isEnding, footerHeight) {
+getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, pageIndex, isEnding, footerHeight) {
   var that = this;
   var tbody = tableElement.find("tbody");
   var heightInPx = hinnn.pt.toPx(specificHeight);
@@ -437,7 +463,7 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
     tableContainer.find(".hiprint-printElement-tableTarget thead").remove();
   } else if ("none" == this.options.tableHeaderRepeat) {
     // 有数据（不是design）
-    if (isRealData) {
+    if (srcData) {
       tableContainer.find(".hiprint-printElement-tableTarget thead").remove();
     } else {
       tableContainer.find(".hiprint-printElement-tableTarget thead").css("background", "firebrick");
@@ -447,7 +473,7 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
   var noPaging = "none" == this.panel.panelPageRule;
   // 不分页, 且不是设计时, 移除 thead
   var headTr;
-  if (isRealData && noPaging) {
+  if (srcData && noPaging) {
     var headStyle = tableContainer.find(".hiprint-printElement-tableTarget thead").attr("style");
     headTr = tableContainer.find(".hiprint-printElement-tableTarget thead tr").clone();
     if (headStyle) {
@@ -469,7 +495,7 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
   for (var columnIndex = 0; columnIndex < gridColumns; columnIndex++) {
     var currentTable = tableContainer.find(".hiprint-printElement-tableTarget:eq(" + columnIndex + ")");
     var result;
-    var currentRowsData = [];
+    var pageData = [];
     for (;;) {
       // 不分页处理
       if (noPaging) {
@@ -479,24 +505,24 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
             height: hinnn.px.toPt(containerHeight),
             isEnd: true
           };
-          if (isRealData && this.options.autoCompletion) {
+          if (srcData && this.options.autoCompletion) {
             this.autoCompletion(heightInPx, currentTable, footerHeight);
             containerHeight = tableContainer.outerHeight();
           }
         } else {
           let currentRow = tbody.find("tr:lt(1)");
-          if (currentRowsData.length == 0 && headTr) {
+          if (pageData.length == 0 && headTr) {
             currentTable.find("tbody").append(headTr);
           }
           currentTable.find("tbody").append(currentRow);
           var rowData = currentRow.data("rowData");
           allRowsData.push(rowData);
-          currentRowsData.push(rowData);
+          pageData.push(rowData);
           containerHeight = tableContainer.outerHeight();
           if (0 == trLen) {
             tbody.prepend(currentRow);
             allRowsData.pop();
-            currentRowsData.pop();
+            pageData.pop();
             result = {
               height: hinnn.px.toPt(containerHeight),
               isEnd: false
@@ -510,24 +536,24 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
               height: hinnn.px.toPt(containerHeight),
               isEnd: true
             };
-            if (isRealData && this.options.autoCompletion) {
+            if (srcData && this.options.autoCompletion) {
               this.autoCompletion(heightInPx, currentTable, footerHeight);
               containerHeight = currentTable.outerHeight();
             }
           } else {
             let currentRow = tbody.find("tr:lt(1)");
-            if (that.options.rowsColumnsMerge && (pageIndex > 0 || columnIndex > 0) && currentRowsData.length == 0) {
+            if (that.options.rowsColumnsMerge && (pageIndex > 0 || columnIndex > 0) && pageData.length == 0) {
               currentRow = that.fixMergeSpan(currentRow, tbody);
             }
             currentTable.find("tbody").append(currentRow);
             var rowData = currentRow.data("rowData");
             allRowsData.push(rowData);
-            currentRowsData.push(rowData);
+            pageData.push(rowData);
             containerHeight = currentTable.outerHeight();
-            if (("last" == this.options.tableFooterRepeat ? containerHeight : containerHeight += footerHeight) > heightInPx || (this.options.maxRows && currentRowsData.length > +this.options.maxRows)) {
+            if (("last" == this.options.tableFooterRepeat ? containerHeight : containerHeight += footerHeight) > heightInPx || (this.options.maxRows && pageData.length > +this.options.maxRows)) {
               tbody.prepend(currentRow);
               allRowsData.pop();
-              currentRowsData.pop();
+              pageData.pop();
               containerHeight = currentTable.outerHeight();
               result = {
                 height: hinnn.px.toPt(containerHeight),
@@ -542,12 +568,21 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
         // 这里是table 没有tfoot, 后面再看什么原因...
         if ("last" == this.options.tableFooterRepeat && !result.isEnd) break;
         if ("no" !== this.options.tableFooterRepeat) {
-          if (noPaging) {
-            currentTable.find("tbody").append(TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(isRealData), this.options, this.printElementType, isRealData, currentRowsData).children());
-          } else {
-            TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(isRealData), this.options, this.printElementType, isRealData, currentRowsData).insertBefore(currentTable.find("tbody"));
-          }
-          that.css(currentTable, isRealData);
+          // let columnWidth = this.options.getWidth() / this.options.getGridColumns();
+          // let headerList2 = TableExcelHelper.createTableHead2(this.options.footerRows, columnWidth);
+          // if (noPaging) {
+          //   currentTable.find("tbody").append(headerList2[0].children());
+          // } else {
+          //   headerList2[0].insertBefore(currentTable.find("tbody"));
+          // }
+          // if (noPaging) {
+          //   currentTable.find("tbody").append(TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).children());
+          // } else {
+          //   TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).insertBefore(currentTable.find("tbody"));
+          // }
+          let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, result.isEnd);
+          footer.insertBefore(currentTable.find("tbody"));
+          that.css(currentTable, srcData);
         }
         break;
       }
@@ -557,7 +592,7 @@ getRowsInSpecificHeight(isRealData, specificHeight, tableContainer, tableElement
   var rowCount = tableContainer.find(".hiprint-printElement-tableTarget tbody tr").length;
   var footerFormatter = this.getGridColumnsFooterFormatter();
   if (footerFormatter) {
-    tableContainer.find(this.gridColumnsFooterCss).html(footerFormatter(this.options, this.getData(isRealData), isRealData, allRowsData));
+    tableContainer.find(this.gridColumnsFooterCss).html(footerFormatter(this.options, this.getData(srcData), srcData, allRowsData));
   }
   containerHeight = tableContainer.outerHeight();
   // 当每一页数据,都无法容纳表格行内容时:
@@ -638,8 +673,8 @@ autoCompletion(maxHeight, table, footerHeight) {
 }
 
 // 获取数据
-getData(isDesign) {
-  if (!isDesign) {
+getData(tableData) {
+  if (!tableData) {
     // 设计时表格 测试数据
     try {
       const testData = this.options.testData || '[{}]';
@@ -651,13 +686,13 @@ getData(isDesign) {
   }
 
   const field = this.getField();
-  const data = field ? field.split('.').reduce((obj, key) => obj ? obj[key] : (isDesign ? isDesign[key] : ""), false) || "" : "";
+  const data = field ? field.split('.').reduce((obj, key) => obj ? obj[key] : (tableData ? tableData[key] : ""), false) || "" : "";
   return data ? JSON.parse(JSON.stringify(data)) : [];
 }
 
 // 调整大小
-onResize(newWidth, newHeight, oldWidth, oldHeight, updateOptions) {
-  super.updateSizeAndPositionOptions(updateOptions, oldHeight, oldWidth, newHeight);
+onResize(event, height, width, top, left) {
+  super.updateSizeAndPositionOptions(left, top, width, height);
   TableExcelHelper.resizeTableCellWidth(this.designTarget, this.getColumns(), this.options.getWidth());
 }
 
@@ -673,8 +708,8 @@ design(designTarget, callback) {
     handle: this.designTarget.find(".hiprint-printElement-table-handle"),
     axis: that.options.axis || undefined,
     designTarget: that,
-    onDrag: function onDrag(event, ui, position) {
-      that.updateSizeAndPositionOptions(ui, position);
+    onDrag: function onDrag(event, left, top) {
+      that.updateSizeAndPositionOptions(left, top);
       that.createLineOfPosition(callback);
       PrintLib.instance.changed = true;
     },
@@ -709,8 +744,8 @@ design(designTarget, callback) {
     getScale: function getScale() {
       return that.designPaper.scale || 1;
     },
-    onResize: function onResize(event, ui, oldSize, newSize) {
-      that.onResize(event, ui, oldSize, newSize, callback);
+    onResize: function onResize(event, height, width, top, left) {
+      that.onResize(event, height, width, top, left);
       if (that.hitable) that.hitable.updateColumnGrips();
       that.createLineOfPosition(callback);
     },
@@ -734,8 +769,9 @@ setHitable() {
     resizeRow: false,
     resizeColumn: true,
     fields: this.options.fields,
+    testData: this.getData(),
     trs: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("tbody tr"),
-    handle: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead"),
+    handle: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead,tfoot"),
     isEnableEdit: this.printElementType.editable || true,
     columnDisplayEditable: this.printElementType.columnDisplayEditable !== undefined ? this.printElementType.columnDisplayEditable : true,
     columnDisplayIndexEditable: this.printElementType.columnDisplayIndexEditable !== undefined ? this.printElementType.columnDisplayIndexEditable : true,
@@ -750,6 +786,30 @@ setHitable() {
     isEnableDeleteColumn: this.printElementType.isEnableDeleteColumn !== undefined ? this.printElementType.isEnableDeleteColumn : true,
     isEnableMergeCell: this.printElementType.isEnableMergeCell !== undefined ? this.printElementType.isEnableMergeCell : true
   });
+
+  // this.hitable2 = new PrintTable({
+  //   templateId: that.templateId,
+  //   table: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)"),
+  //   rows: this.options.footerRows,
+  //   resizeRow: false,
+  //   resizeColumn: true,
+  //   fields: this.options.fields,
+  //   trs: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("tbody tr"),
+  //   handle: this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("tfoot"),
+  //   isEnableEdit: this.printElementType.editable || true,
+  //   columnDisplayEditable: this.printElementType.columnDisplayEditable !== undefined ? this.printElementType.columnDisplayEditable : true,
+  //   columnDisplayIndexEditable: this.printElementType.columnDisplayIndexEditable !== undefined ? this.printElementType.columnDisplayIndexEditable : true,
+  //   columnResizable: this.printElementType.columnResizable !== undefined ? this.printElementType.columnResizable : true,
+  //   columnAlignEditable: this.printElementType.columnAlignEditable !== undefined ? this.printElementType.columnAlignEditable : true,
+  //   isEnableEditText: this.printElementType.columnTitleEditable !== undefined ? this.printElementType.columnTitleEditable : true,
+  //   isEnableEditField: this.printElementType.isEnableEditField !== undefined ? this.printElementType.isEnableEditField : true,
+  //   isEnableContextMenu: this.printElementType.isEnableContextMenu !== undefined ? this.printElementType.isEnableContextMenu : true,
+  //   isEnableInsertRow: this.printElementType.isEnableInsertRow !== undefined ? this.printElementType.isEnableInsertRow : true,
+  //   isEnableDeleteRow: this.printElementType.isEnableDeleteRow !== undefined ? this.printElementType.isEnableDeleteRow : true,
+  //   isEnableInsertColumn: this.printElementType.isEnableInsertColumn !== undefined ? this.printElementType.isEnableInsertColumn : true,
+  //   isEnableDeleteColumn: this.printElementType.isEnableDeleteColumn !== undefined ? this.printElementType.isEnableDeleteColumn : true,
+  //   isEnableMergeCell: this.printElementType.isEnableMergeCell !== undefined ? this.printElementType.isEnableMergeCell : true
+  // });
 
   hinnn.event.on("updateTable" + this.hitable.id, function () {
     that.updateDesignViewFromOptions();

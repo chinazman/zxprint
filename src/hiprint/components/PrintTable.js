@@ -39,6 +39,7 @@ class PrintTableOption {
     this.table = config.table;
     this.templateId = config.templateId;
     this.fields = config.fields;
+    this.testData = config.testData;
     this.isEnableEdit = config.isEnableEdit;
     this.trs = config.trs;
     this.resizeRow = config.resizeRow;
@@ -360,7 +361,7 @@ class PrintTable {
     const rowIndex = singleSelect.rowIndex;
     const cellGrid = this.getCellGrid();
     const newRow = new PrintTableRow();
-
+    // newRow.isFoot = currentRow.isFoot;
     newRow.init(this.optionsCoat, undefined, currentRow.isHead);
     if (className) {
       newRow.getTarget().addClass(className);
@@ -373,6 +374,7 @@ class PrintTable {
 
         if (gridCell.columnLevel === 0) {
           const newCell = newRow.createTableCell();
+          newCell.isFoot = targetCell.isFoot;
           newCell.width = cellWidth;
           newRow.insertCellToLast(newCell);
         } else if (gridCell.linkType === "column") {
@@ -393,6 +395,7 @@ class PrintTable {
 
         if (gridCell.bottom) {
           const newCell = newRow.createTableCell();
+          newCell.isFoot = targetCell.isFoot;
           newCell.width = cellWidth;
           newRow.insertCellToLast(newCell);
         } else {
@@ -664,7 +667,7 @@ class PrintTable {
 
     this.initContext();
 
-    this.target.on("mousemove", e => {
+    this.handle.on("mousemove", e => {
       if (e.buttons === 1) {
         this.tableCellSelector.multipleSelectByXY(e.pageX, e.pageY);
       }
@@ -684,8 +687,11 @@ class PrintTable {
 
     if (rows) {
       this.rows = rows;
-      rows.forEach((row, index) => {
-        row.init(this.optionsCoat, this.target.find("tr:eq(" + index + ")"), true);
+      rows.filter((row) => !row.columns[0].isFoot).forEach((row, index) => {
+        row.init(this.optionsCoat, this.handle.filter("thead").find("tr:eq(" + index + ")"), true);
+      });
+      rows.filter((row) => row.columns[0].isFoot).forEach((row, index) => {
+          row.init(this.optionsCoat, this.handle.filter("tfoot").find("tr:eq(" + index + ")"), true);
       });
 
       const trs = this.optionsCoat.options.trs;

@@ -15,8 +15,9 @@ class TableFooterRepeatOption {
         <select class="auto-submit">
         <option value="" >${i18n.__('默认')}</option>
         <option value="no" >${i18n.__('不显示')}</option>
-        <option value="page" >${i18n.__('每页显示')}</option>
-        <option value="last" >${i18n.__('最后显示')}</option>
+        <!--<option value="page" >${i18n.__('每页显示')}</option>
+        <option value="last" >${i18n.__('最后显示')}</option>-->
+        <option value="yes" >${i18n.__('显示')}</option>
         </select>
         </div>
     </div>`);

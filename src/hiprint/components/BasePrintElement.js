@@ -1155,6 +1155,7 @@ class BasePrintElement {
     }
     this.designTarget.parents(".hiprint-printPaper-content").append(leftPos);
     leftPos.css("left", this.options.posLeft() - leftPos.width() + "pt");
+    console.log("xxxxxxxxxxxxxxxxx:" + this.options.posLeft());
   }
   // 移除位置线条
   removeLineOfPosition() {

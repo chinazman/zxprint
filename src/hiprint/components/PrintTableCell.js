@@ -7,6 +7,7 @@ import {i18n,$} from "../hiprint.comm.js";
 import TableRect from "./TableRect.js";
 import TableRectHelper from "./TableRectHelper.js";
 import IdUtil from "./IdGenerator.js";
+import ExpressionEngine from "./ExpressionEngine.js";
 
 // 文本编辑器类
 class TextEditor {
@@ -162,7 +163,7 @@ class InnerElement {
       cell.getTarget().html("");
       this.editor.init(cell);
       if (this.title || this.field) {
-        this.tableOptions.options.isEnableEditField
+        this.tableOptions.options.isEnableEditField && !cell.isFoot
           ? this.editor.setValue(`${this.title || ""}#${this.field || ""}`)
           : this.editor.setValue(this.title || "");
       }
@@ -183,7 +184,15 @@ class InnerElement {
     cell.isEditing = false;
     const value = this.editor.getValue();
     if (value) {
-      if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
+      if(cell.isFoot){
+        cell.title = value;
+        const context = {
+          data: this.tableOptions.options.testData,
+          allData: this.tableOptions.options.testData
+        };
+        this.title = value.startsWith("=")?ExpressionEngine.execute(value.substring(1), context):value;
+        cell.field = this.field = "";
+      }else if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
         const splitValue = value.split("#");
         cell.title = this.title = splitValue[0];
         if (splitValue.length > 0) {
@@ -238,6 +247,7 @@ class CellEntity {
     this.tableTextType = cell.tableTextType;
     this.tableBarcodeMode = cell.tableBarcodeMode;
     this.tableQRCodeLevel = cell.tableQRCodeLevel;
+    this.isFoot = cell.isFoot;
   }
 }
 
@@ -427,6 +437,7 @@ class PrintTableCell extends TableCell {
     this.tableSummaryFormatter = options.tableSummaryFormatter;
     this.showCodeTitle = options.showCodeTitle;
     this.upperCase = options.upperCase;
+    this.isFoot = !!options.isFoot;
   }
 
   css(styles) {

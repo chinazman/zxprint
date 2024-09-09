@@ -10,6 +10,8 @@ import PrintTableCell from "./PrintTableCell.js";
 class PrintTableRow {
   constructor() {
     this.id = IdGenerator.createId();
+    //是不是表格底部
+    // this.isFoot = false;
   }
 
   /**
