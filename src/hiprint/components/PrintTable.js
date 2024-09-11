@@ -32,6 +32,7 @@ import PrintTableCellSelector from "./PrintTableCellSelector.js";
 import PrintTableRow from "./PrintTableRow.js";
 import IdGenerator from "./IdGenerator.js";
 import PrintLib from "./PrintLib.js"
+import TableExcelHelper from "./TableExcelHelper.js";
 
   
 class PrintTableOption {
@@ -687,10 +688,10 @@ class PrintTable {
 
     if (rows) {
       this.rows = rows;
-      rows.filter((row) => !row.columns[0].isFoot).forEach((row, index) => {
+      rows.filter((row) => !TableExcelHelper.isFooterRow(row)).forEach((row, index) => {
         row.init(this.optionsCoat, this.handle.filter("thead").find("tr:eq(" + index + ")"), true);
       });
-      rows.filter((row) => row.columns[0].isFoot).forEach((row, index) => {
+      rows.filter((row) => TableExcelHelper.isFooterRow(row)).forEach((row, index) => {
           row.init(this.optionsCoat, this.handle.filter("tfoot").find("tr:eq(" + index + ")"), true);
       });
 

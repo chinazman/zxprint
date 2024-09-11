@@ -273,7 +273,7 @@ getTableHtml(allTableData, srcData) {
   
   // 创建表头
   let columnWidth = this.options.getWidth() / this.options.getGridColumns();
-  let headerList = TableExcelHelper.createTableHead(this.getColumns(), columnWidth, false);
+  let headerList = TableExcelHelper.createTableHead(this.getColumns(), columnWidth);
 
   // 根据是否为设计模式决定如何添加表头
   if (this.isNotDesign) {
@@ -567,7 +567,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
       if (result) {
         // 这里是table 没有tfoot, 后面再看什么原因...
         if ("last" == this.options.tableFooterRepeat && !result.isEnd) break;
-        if ("no" !== this.options.tableFooterRepeat) {
+        if ("yes" == this.options.tableFooterRepeat) {
           // let columnWidth = this.options.getWidth() / this.options.getGridColumns();
           // let headerList2 = TableExcelHelper.createTableHead2(this.options.footerRows, columnWidth);
           // if (noPaging) {
@@ -580,9 +580,19 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
           // } else {
           //   TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).insertBefore(currentTable.find("tbody"));
           // }
+          let hasFooter = this.getColumns().some(column => TableExcelHelper.isFooterRow(column));
+          if (!hasFooter && !this.isNotDesign) {
+            this.newEmptyFooter();
+          }
           let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, result.isEnd);
           footer.insertBefore(currentTable.find("tbody"));
           that.css(currentTable, srcData);
+        // }else{
+        //   //移除掉避免出现不必要
+        //   let index = this.getColumns().findIndex(column => TableExcelHelper.isFooterRow(column));
+        //   if(index > -1){
+        //     this.getColumns().splice(index, this.getColumns() - index);
+        //   }
         }
         break;
       }

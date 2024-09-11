@@ -16,14 +16,18 @@ import ExpressionEngine from "./ExpressionEngine.js";
 class TableExcelHelper {
   constructor() {}
 
+  static isFooterRow(column){
+    return (column.columns||column.allColumns)[0].isFoot;
+  }
+
   /**
    * 创建表格头部
    */
-  static createTableHead(columns, tableWidth, isFoot) {
+  static createTableHead(columns, tableWidth) {
 
-    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => column.columns[0].isFoot == !!isFoot));
+   const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => !TableExcelHelper.isFooterRow(column)));
 
-    const thead = isFoot ? $("<tfoot></tfoot>") : $("<thead></thead>");
+    const thead = $("<thead></thead>");
     let colgroup = $("<colgroup></colgroup>");
     const columnsWidth = TableExcelHelper.getColumnsWidth(reconstitutedColumns, tableWidth);
     
@@ -76,7 +80,7 @@ class TableExcelHelper {
    */
   static createTableFooter2(columns, allData, pageData, isLastPage) {
 
-    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => column.columns[0].isFoot));
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => TableExcelHelper.isFooterRow(column)));
 
     const thead = $("<tfoot></tfoot>") ;
     // const columnsWidth = TableExcelHelper.getColumnsWidth(reconstitutedColumns, tableWidth);
@@ -231,7 +235,7 @@ class TableExcelHelper {
    * 创建表格行
    */
   static createTableRow(columns, allData, srcData, options, tablePrintElementType) {
-    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns);
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => !TableExcelHelper.isFooterRow(column)));
     const tbody = $("<tbody></tbody>");
     const groupFieldsFormatter = this.getGroupFieldsFormatter(options, tablePrintElementType);
     const groupFields = groupFieldsFormatter ? options.groupFields = groupFieldsFormatter(tablePrintElementType, options, allData) : tablePrintElementType.groupFields ? tablePrintElementType.groupFields : [];

@@ -1788,32 +1788,32 @@
         },
         {
           name: 'tableSummaryTitle',
-          hidden: false
+          hidden: true
         },
         {
           name: 'tableSummaryText',
-          hidden: false
+          hidden: true
         },
         {
           name: 'tableSummaryColspan',
-          hidden: false
+          hidden: true
         },
         {
           name: 'tableSummary',
-          hidden: false
+          hidden: true
         },
         {
           name: 'tableSummaryAlign',
-          hidden: false
+          hidden: true
         },
         {
           name: 'tableSummaryNumFormat',
-          hidden: false
+          hidden: true
         },
        
         {
           name: 'tableSummaryFormatter',
-          hidden: false
+          hidden: true
         },
         {
           name: 'upperCase',

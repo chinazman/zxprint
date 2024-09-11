@@ -96,7 +96,7 @@ class PrintTableCellSelector {
     let targetCell;
     this.rows.forEach((row, rowIndex) => {
       const matchedColumns = (row.columns || [])
-        .filter((column) => column.checked)
+        .filter((column) => column.checked && column.target.length > 0)
         .filter((column) => column.isXYinCell(x, y));
       
       if (matchedColumns.length) {
