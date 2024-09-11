@@ -87,8 +87,8 @@ class TableExcelHelper {
         return;
       }
       const context = {
-        data: isLastStat?allData:pageData,
-        allData: allData
+        rows: isLastStat?allData:pageData,
+        allRows: allData
       };
 
       const row = $("<tr></tr>");

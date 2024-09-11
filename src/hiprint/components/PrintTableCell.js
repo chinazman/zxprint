@@ -183,18 +183,19 @@ class InnerElement {
   endEdit(cell) {
     cell.isEditing = false;
     const value = this.editor.getValue();
+    let title = "";
     if (value) {
       if(cell.isFoot){
-        cell.title = value;
+        cell.title = this.title = value;
         const context = {
-          data: this.tableOptions.options.testData,
-          allData: this.tableOptions.options.testData
+          rows: this.tableOptions.options.testData,
+          allRows: this.tableOptions.options.testData
         };
-        this.title = value.startsWith("=")?ExpressionEngine.execute(value.substring(1), context):value;
+        title = value.startsWith("=")?ExpressionEngine.execute(value.substring(1), context):value;
         cell.field = this.field = "";
       }else if (this.tableOptions.options.isEnableEditField || this.tableOptions.options.fields) {
         const splitValue = value.split("#");
-        cell.title = this.title = splitValue[0];
+        title = cell.title = this.title = splitValue[0];
         if (splitValue.length > 0) {
           cell.columnId = cell.field = this.field = splitValue[1];
         }
@@ -202,18 +203,18 @@ class InnerElement {
         if (cell.columnId) cell.target.attr("column-id", cell.columnId);
         hinnn.event.trigger(`hiprintTemplateDataChanged_${this.tableOptions.options.templateId}`, "调整表格列字段");
       } else {
-        cell.title = this.title = value;
+        title = cell.title = this.title = value;
       }
     } else {
       if (this.tableOptions.options.isEnableEditField) {
-        cell.title = this.title = "";
+        title = cell.title = this.title = "";
         cell.field = this.field = "";
       } else {
-        cell.title = this.title = "";
+        title = cell.title = this.title = "";
       }
     }
     this.editor.destroy();
-    cell.getTarget().html(this.title);
+    cell.getTarget().html(title);
   }
 }
 

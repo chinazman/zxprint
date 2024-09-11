@@ -236,6 +236,8 @@ hinnn.orderBy = function(array, iteratee) {
 
 // 日期格式化
 hinnn.dateFormat = (date, format) => {
+  format = format || "yyyy-MM-dd";
+
   if (date) {
     try {
       const dateObj = date instanceof Date ? date : new Date(date);
@@ -315,6 +317,12 @@ hinnn.toUpperCase = (type, value) => {
       break;
     case "7":
       result = Nzh.cn.toMoney(value, { complete: true, outSymbol: false });
+      break;
+    case "8":
+      result = Nzh.cn.toMoney(value, {outSymbol: false});
+      break;
+    case "9":
+      result = Nzh.cn.toMoney(value, { tenMin: true , outSymbol: false});
       break;
   }
   return result;

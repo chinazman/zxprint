@@ -1,23 +1,42 @@
 "use strict";
+import _hinnn from "./hinnn.js"
 var _context = {
-    data:[]
+    rows:[],
+    allRows:[],
+    srcData:{}
 };
+var _regMap = {};
+var _funcMap = {};
 /**
  * 表达式引擎
  */
 class ExpressionEngine {
     static execute(expstr, context) {
-        //const func = new Function("context", "with (context) { return " + expstr + "; }") {
         if (!expstr){
             return "";
         }
         if (expstr.startsWith("=")){
             expstr = expstr.substring(1);
         }
-        _context = context;
-        let ret = eval(expstr);
-        return ret;
+        Object.assign(_context, context);
+        try{
+            let ret = _eval(expstr);
+            return ret;
+        }catch (error) {
+            console.log(error);
+            return "异常："+ error;
+        }
     }
+    /**
+     * 注册一个函数到上下文对象
+     *
+     * @param {string} name - 要注册的函数名称
+     * @param {function} func - 要注册的函数
+     */
+    static register(name, func){
+        _regMap[name] = func;
+    }
+
 }
 
 /**
@@ -26,20 +45,19 @@ class ExpressionEngine {
  * @returns 
  */
 function MIN(fields, isAll){
-    const data = isAll ? _context.allData : _context.data ;
+    const data = isAll ? _context.allRows : _context.rows ;
     if (data.length == 0){
         return 0;
     }
     if (!fields){
         return 0;
     }
-    let arrFields = fields.split(",");
-    let obj = data.reduce((lastObj, currentObj) => {
-        const currentSum = _sum(currentObj, arrFields);
-        const lastSum = _sum(lastObj, arrFields);
-        return currentSum < lastSum ? currentObj : lastObj;
+    let obj = data.reduce((lastRow, row) => {
+        const currentSum = _sum(row, fields);
+        const lastSum = _sum(lastRow, fields);
+        return currentSum < lastSum ? row : lastRow;
       });
-    return _sum(obj, arrFields);
+    return _sum(obj, fields);
 }
 
 /**
@@ -48,97 +66,124 @@ function MIN(fields, isAll){
  * @returns 
  */
 function MAX(fields, isAll){
-    const data = isAll ? _context.allData : _context.data ;
+    const data = isAll ? _context.allRows : _context.rows ;
     if (data.length == 0){
         return 0;
     }
     if (!fields){
         return 0;
     }
-    let arrFields = fields.split(",");
-    let maxObj = data.reduce((lastObj, currentObj) => {
-        const currentSum = _sum(currentObj, arrFields);
-        const lastSum = _sum(lastObj, arrFields);
-        return currentSum > lastSum ? currentObj : lastObj;
+    let maxObj = data.reduce((lastRow, row) => {
+        const currentSum = _sum(row, fields);
+        const lastSum = _sum(lastRow, fields);
+        return currentSum > lastSum ? row : lastRow;
       });
-    return _sum(maxObj, arrFields);
+    return _sum(maxObj, fields);
 }
 
 function SUM(fields, isAll){
-    const data = isAll ? _context.allData : _context.data ;
+    const data = isAll ? _context.allRows : _context.rows ;
     if (data.length == 0){
         return 0;
     }
     if (!fields){
         return 0;
     }
-    let arrFields = fields.split(",");
-    let sum = data.reduce((lastSum, currentObj) => {
-        return lastSum + _sum(currentObj, arrFields);
+    let sum = data.reduce((lastSum, row) => {
+        return lastSum + _sum(row, fields);
       }, 0);
     return sum;
 }
 
 function AVG(fields, isAll){
-    const data = isAll ? _context.allData : _context.data ;
+    const data = isAll ? _context.allRows : _context.rows ;
     if (data.length == 0){
         return 0;
     }
     if (!fields){
         return 0;
     }
-    let arrFields = fields.split(",");
-    let sum = data.reduce((lastSum, currentObj) => {
-        return lastSum + _sum(currentObj, arrFields);
+    let sum = data.reduce((lastSum, row) => {
+        return lastSum + _sum(row, fields);
       }, 0);
     return sum/data.length;
 }
 
 function COUNT(fields, isAll){
-    const data = isAll ? _context.allData : _context.data ;
+    const data = isAll ? _context.allRows : _context.rows ;
     if (data.length == 0){
         return 0;
     }
-    fields = fields || "*";
-
-    let arrFields = fields.split(",");
-    let sum = data.reduce((lastSum, currentObj) => {
-        if (fields == "*"){
+    let sum = data.reduce((lastSum, row) => {
+        if (!fields || _eval(fields, row)){
             return lastSum + 1;
         }
-        for (let i = 0; i < arrFields.length; i++){
-            //0或空不计算
-            if(!currentObj[arrFields[i]]){
-                return lastSum;
-            }
-        }
-        return lastSum + 1;
+        return lastSum;
       }, 0);
     return sum;
 }
-
-function CN_MONEY(data, type){
-
+/**
+ * 转大写汉字
+ * @param {*} data 
+ * @param {*} type 
+ */
+ function CN_MONEY(data, type){
+    type = type === undefined ?  "9" : type+"";
+    return _hinnn.toUpperCase(type, data);
 }
 
+/**
+ * 转大写汉字
+ * @param {*} data 
+ * @param {*} type 
+ */
 function DATE_FORMAT(data, format){
-    return data;
+    return _hinnn.dateFormat(data, format);
 }
 
 /**
  * 字段求和
- * @param {*} obj 
- * @param {*} arrFields 
+ * @param {*} row 
+ * @param {*} fields 
  * @returns 
  */
-function _sum(obj, arrFields){
-    let num = 0;
-    for (let i = 0; i < arrFields.length; i++){
-        if(obj[arrFields[i]]){
-            num += obj[arrFields[i]] * 1;
-        }
+function _sum(row, fields){
+    if (fields.startsWith("(")){
+        return _eval(fields, row)*1;
+    }else{
+        return row[fields]*1;
     }
-    return num;
+}
+
+ExpressionEngine.register("MIN", MIN);
+ExpressionEngine.register("MAX", MAX);
+ExpressionEngine.register("SUM", SUM);
+ExpressionEngine.register("AVG", AVG);
+ExpressionEngine.register("COUNT", COUNT);
+ExpressionEngine.register("CN_MONEY", CN_MONEY);
+ExpressionEngine.register("DATE_FORMAT", DATE_FORMAT);
+/**
+ * 执行表达式
+ * 有待优化，可以考虑将Function缓存
+ * @param {*} expstr 
+ * @param {*} row 
+ * @returns 
+ */
+function _eval(expstr, row){
+    if (!_funcMap[expstr]){
+        let arr = [];
+        Object.keys(_regMap).forEach(function(key) {
+            arr.push("var "+key + "= regMap." + key);
+        });
+        arr.push("return " + expstr + ";");
+        let varstr = arr.join(";");
+        // console.log(varstr);
+        _funcMap[expstr] = new Function("regMap", "rows","allRows","srcData","row",varstr);
+    }
+    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.srcData, row);
+
+    //最好不用with
+    // const func = new Function("context", "with (context) { return " + expstr + "; }")
 }
 
 export default ExpressionEngine;
