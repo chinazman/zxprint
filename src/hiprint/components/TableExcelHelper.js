@@ -294,10 +294,12 @@ class TableExcelHelper {
    */
   static createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, tableData, printData) {
     const row = $("<tr></tr>");
-    const columns = reconstitutedColumns.rowColumns.filter(column => column.checked);
+    //改掉这个可能有问题
+    const rowColumns = reconstitutedColumns[reconstitutedColumns.totalLayer -1];//reconstitutedColumns.rowColumns;
+    const columns = rowColumns.filter(column => column.checked);
     row.data("rowData", rowData);
 
-    reconstitutedColumns.rowColumns.filter(column => column.checked).forEach((column, columnIndex) => {
+    rowColumns.filter(column => column.checked).forEach((column, columnIndex) => {
       if (!column.checked) return;
 
       let rowsColumnsMerge = '';
@@ -308,7 +310,7 @@ class TableExcelHelper {
         const rowsColumnsArr = rowsColumnsMerge(rowData, column, columnIndex, rowIndex, tableData, printData) || [1, 1];
         cell = $(`<td style='display:${!(rowsColumnsArr[0] && rowsColumnsArr[1]) ? "none" : ""}' rowspan='${rowsColumnsArr[0]}' colspan='${rowsColumnsArr[1]}'></td>`);
       } else {
-        cell = $("<td></td>");
+        cell = $("<td colspan="+ column.colspan +"></td>");
       }
 
       // 设计时不去计算宽度
