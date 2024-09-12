@@ -73,6 +73,7 @@ import CoordinateOption from "./options/CoordinateOption.js";
 import WidthHeightOption from "./options/WidthHeightOption.js";
 import ImageSourceOption from "./options/ImageSourceOption.js";
 import ImageFitOption from "./options/ImageFitOption.js";
+import ImageIsBackgroundOption from "./options/ImageIsBackgroundOption.js";
 import BorderColorOption from "./options/BorderColorOption.js";
 import WatermarkOptionsOption from "./options/WatermarkOptionsOption.js";
 import PaperNumberFormatOption from "./options/PaperNumberFormatOption.js";
@@ -219,6 +220,7 @@ class PrintElementOptionItemManager {
 , new WidthHeightOption()
 , new ImageSourceOption()
 , new ImageFitOption()
+, new ImageIsBackgroundOption()
 , new BorderColorOption()
 , new PaperNumberFormatOption()
 , new PaperNumberDisabledOption()

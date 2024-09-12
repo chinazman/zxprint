@@ -776,6 +776,9 @@ class BasePrintElement {
             element,
             this.options.getValueFromOptionsOrDefault(optionItem.name)
           );
+          if (option.target){
+            option.target.attr("option-name",option.name);
+          }
           if (cssResult) {
             cssList.push(cssResult);
           }

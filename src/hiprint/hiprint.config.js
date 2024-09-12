@@ -464,6 +464,10 @@
               hidden: false
             },
             {
+              name: 'isBackground',
+              hidden: false
+            },
+            {
               name: 'fit',
               hidden: false
             },
@@ -533,6 +537,10 @@
         },
         {
           name: 'src',
+          hidden: false
+        },
+        {
+          name: 'isBackground',
           hidden: false
         },
         {

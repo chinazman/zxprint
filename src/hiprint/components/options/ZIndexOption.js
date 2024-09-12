@@ -8,7 +8,7 @@ class ZIndexOption {
 
   css(element, value) {
     if (element && element.length) {
-      if (value) return element.css('z-index', value);
+      if (value !== undefined) return element.css('z-index', value);
     }
     return null;
   }
@@ -27,7 +27,7 @@ class ZIndexOption {
 
   getValue() {
     const inputValue = this.target.find("input").val();
-    if (inputValue) return parseInt(inputValue.toString());
+    if (inputValue) return inputValue.toString();
   }
 
   setValue(value) {

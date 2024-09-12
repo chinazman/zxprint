@@ -9,7 +9,6 @@ class ImageSourceOption {
   // 创建目标元素
   createTarget(element) {
     this.el = element;
-    let onImageChooseClick;
     const self = this;
     this.target = $(`<div class="hiprint-option-item hiprint-option-item-row">
         <div class="hiprint-option-item-label">
@@ -17,32 +16,47 @@ class ImageSourceOption {
         </div>
         <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">
         <input type="text" placeholder="${i18n.__('请输入图片地址')}" class="auto-submit" style="width:70%">
-    <button class="hiprint-option-item-settingBtn" style="padding:0 10px;margin:0 0 0 5px" type="button">${i18n.__('选择')}</button>        </div>
+    <button class="hiprint-option-item-settingBtn" style="padding:0 10px;margin:0 0 0 5px" type="button">${i18n.__('选择')}</button> <input type="file" class="hiprint-option-item-file" style="display:none"/>       </div>
     </div>`);
-    if (element && (onImageChooseClick = element.getOnImageChooseClick())) {
+    if (element) {
       this.target.find('button').click(() => {
-        onImageChooseClick && onImageChooseClick(self);
+        const onImageChooseClick = element.getOnImageChooseClick();
+        if (onImageChooseClick){
+          onImageChooseClick(self);
+        }else{
+          this.target.find('.hiprint-option-item-file').click();
+        }
       });
+      this.target.find('.hiprint-option-item-file').on("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            self.refresh(e.target.result);
+          };
+          reader.readAsDataURL(file); // 读取文件内容并转换成Base64编码
+        }
+      })
     }
     return this.target;
   }
 
   // 获取值
   getValue() {
-    const value = this.target.find("input").val();
+    const value = this.target.find("input[type=text]").val();
     if (value) return value.toString();
   }
 
   // 设置值
   setValue(value) {
-    this.target.find("input").val(value);
+    this.target.find("input[type=text]").val(value);
   }
 
   // 刷新
   refresh(value, opt, cb) {
     const that = this;
     this.setValue(value);
-    this.target.find("input").change();
+    this.target.find("input[type=text]").change();
     if (this.el && opt) {
       const img = new Image();
       img.src = value;

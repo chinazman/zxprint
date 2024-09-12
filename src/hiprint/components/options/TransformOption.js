@@ -8,11 +8,8 @@ class TransformOption {
 
   css(element, value) {
     if (element && element.length) {
-      const targetElement = element.find(".hiprint-printElement-content").parent(".hiprint-printElement");
-      if (!targetElement.length) {
-        const targetElement = element;
-      }
-      if (value) {
+      const targetElement = element.find(".hiprint-printElement-content,.hiprint-printElement-image-content").parent(".hiprint-printElement");
+      if (value && targetElement.length > 0) {
         targetElement.css("transform", "rotate(" + value + "deg)");
         targetElement.css("-ms-transform", "rotate(" + value + "deg)");
         targetElement.css("-moz-transform", "rotate(" + value + "deg)");
@@ -20,7 +17,6 @@ class TransformOption {
         targetElement.css("-o-transform", "rotate(" + value + "deg)");
         return "transform:rotate(" + value + "deg)";
       }
-      targetElement.length && (targetElement[0].style.transform = "");
     }
     return null;
   }
@@ -39,7 +35,7 @@ class TransformOption {
 
   getValue() {
     const inputValue = this.target.find("input").val();
-    if (inputValue) return parseFloat(inputValue.toString());
+    if (inputValue) return inputValue.toString();
   }
 
   setValue(value) {
