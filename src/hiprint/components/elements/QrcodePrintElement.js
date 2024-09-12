@@ -50,9 +50,13 @@ class QrcodePrintElement extends BasePrintElement {
     }
   
     // 初始化二维码
-    initQrcode(designTarget, title, text) {
-      designTarget = designTarget || this.designTarget;
-      const content = designTarget.find('.hiprint-printElement-qrcode-content');
+    initQrcode(target, title, value) {
+      target = target || this.designTarget;
+      if(this.execHiddenExpression(target, value)){
+        return ;
+      }
+      value = this.execFormatterExpression(value);
+      const content = target.find('.hiprint-printElement-qrcode-content');
       try {
         const width = hinnn.pt.toPx(this.options.getWidth());
         // 计算 qrcode 的高度，判断是否需要减去 title，使 title 包含在元素内部
@@ -62,7 +66,7 @@ class QrcodePrintElement extends BasePrintElement {
         const paddingHeight = width >= height ? 0 : Math.abs(parseInt((height - width) / 2));
         const qrcode = bwipjs.toSVG({
           bcid: this.options.qrcodeType || 'qrcode',
-          text: text || this.options.testData || this.options.title,
+          text: value || this.options.testData || this.options.title,
           scale: 1,
           paddingwidth: paddingWidth,
           paddingheight: paddingHeight,
@@ -75,11 +79,11 @@ class QrcodePrintElement extends BasePrintElement {
         });
         content.html($(qrcode));
         if (!this.options.hideTitle) {
-          const titleText = title ? title + (text ? ':' : '') : '';
+          const titleText = title ? title + (value ? ':' : '') : '';
           const textAlign = this.options.textAlign || 'center';
           // 支持type为qrcode的textAlign属性
           const textStyle = textAlign === 'justify' ? 'text-align-last: justify;text-justify: distribute-all-lines;' : `text-align: ${textAlign};`;
-          content.append($(`<div class="hiprint-printElement-qrcode-content-title" style="${textStyle}">${titleText}${text}</div>`));
+          content.append($(`<div class="hiprint-printElement-qrcode-content-title" style="${textStyle}">${titleText}${value}</div>`));
         }
       } catch (error) {
         console.error(error);

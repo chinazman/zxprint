@@ -51,6 +51,8 @@ class PrintElementTypeEntity {
       this.title = options.title;
       this.tid = options.tid;
       this.data = options.data;
+      this.hiddenExpression = options.hiddenExpression;
+      this.formatterExpression = options.formatterExpression;
       this.styler = options.styler;
       this.formatter = options.formatter;
       this.type = options.type;
@@ -207,6 +209,8 @@ class PrintElementTypeBase {
     this.text = config.text;
     this.tid = config.tid;
     this.data = config.data;
+    this.hiddenExpression = config.hiddenExpression;
+    this.formatterExpression = config.formatterExpression;
     this.styler = config.styler;
     this.formatter = config.formatter;
     this.type = config.type;

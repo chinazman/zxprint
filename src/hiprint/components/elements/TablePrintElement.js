@@ -30,6 +30,8 @@ class TableColumnOption {
     this.halign = options.halign;
     this.vAlign = options.vAlign;
     this.renderFormatter = options.renderFormatter;
+    this.hiddenExpression = options.hiddenExpression;
+    this.formatterExpression = options.formatterExpression;
     this.formatter2 = options.formatter2;
     this.styler2 = options.styler2;
     this.stylerHeader = options.stylerHeader;
@@ -168,7 +170,9 @@ updateDesignViewFromOptions() {
     }
     this.setColumnsOptions();
     // 渲染完再处理样式 ==> fix 表脚边框参数设置问题
-    this.css(this.designTarget, this.getData());
+    const value = this.getData();
+    this.css(this.designTarget, value);
+    this.execHiddenExpression(this.designTarget, value);
   }
 }
 
@@ -203,16 +207,17 @@ getConfigOptions() {
 }
 
 // 创建目标元素
-createTarget(title, data, gridColumns) {
-  let targetElement = $('<div class="hiprint-printElement hiprint-printElement-table" style="position: absolute;"><div class="hiprint-printElement-table-handle"></div><div class="hiprint-printElement-table-content" style="height:100%;width:100%"></span></div>'),
-      gridColumnsStructure = this.createGridColumnsStructure(gridColumns);
-  
+createTarget(title, value, srcData) {
+  let target = $('<div class="hiprint-printElement hiprint-printElement-table" style="position: absolute;"><div class="hiprint-printElement-table-handle"></div><div class="hiprint-printElement-table-content" style="height:100%;width:100%"></span></div>');
+  let gridColumnsStructure = this.createGridColumnsStructure(srcData);
+  this.execHiddenExpression(target, value);
+  value = this.execFormatterExpression(value);
   for (let i = 0; i < gridColumnsStructure.gridColumns; i++) {
-    gridColumnsStructure.getByIndex(i).append(this.getTableHtml(data, gridColumns));
+    gridColumnsStructure.getByIndex(i).append(this.getTableHtml(value, srcData));
   }
 
-  targetElement.find(".hiprint-printElement-table-content").append(gridColumnsStructure.target);
-  return targetElement;
+  target.find(".hiprint-printElement-table-content").append(gridColumnsStructure.target);
+  return target;
 }
 
 // 创建网格列结构

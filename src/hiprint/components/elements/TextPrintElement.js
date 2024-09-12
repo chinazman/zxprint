@@ -145,13 +145,18 @@ class PrintTextHelper {
     }
   
     // 更新目标文本
-    updateTargetText(target, title, data, extraParam, rowIndex) {
+    updateTargetText(target, title, value, extraParam, rowIndex) {
+      if(this.execHiddenExpression(target, value)){
+        return ;
+      }
+      value = this.execFormatterExpression(value);
+
       const formatter = this.getFormatter();
       const contentElement = target.find(".hiprint-printElement-text-content");
       let text = "";
       text = this.getField()
         ? (this.options.getHideTitle() ? "" : title ? `${title}：` : "") +
-          hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, data, this.options, this._currenttemplateData, target) : data)
+          hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, value, this.options, this._currenttemplateData, target) : value)
         : hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, title, this.options, this._currenttemplateData, target) : title);
       const textType = this.options.getTextType();
       if (textType === "text") {
@@ -164,8 +169,8 @@ class PrintTextHelper {
           });
           contentElement.html('<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg>');
           try {
-            if (data) {
-              JsBarcode(contentElement.find(".hibarcode_imgcode")[0], data, {
+            if (value) {
+              JsBarcode(contentElement.find(".hibarcode_imgcode")[0], value, {
                 format: this.options.getBarcodeMode(),
                 width: this.options.getBarWidth(),
                 textMargin: -1,
@@ -195,7 +200,7 @@ class PrintTextHelper {
         if (textType === "qrcode") {
           contentElement.html("");
           try {
-            if (data) {
+            if (value) {
               contentElement.css({
                 display: "flex",
                 "flex-direction": "column"
@@ -213,10 +218,10 @@ class PrintTextHelper {
                 colorDark: this.options.color || "#000000",
                 useSVG: true,
                 correctLevel: this.options.getQRcodeLevel()
-              }).makeCode(data);
+              }).makeCode(value);
               contentElement.html(box);
               if (!this.options.hideTitle) {
-                contentElement.append(`<div class="hiqrcode_displayValue" style="white-space:nowrap">${data}</div>`);
+                contentElement.append(`<div class="hiqrcode_displayValue" style="white-space:nowrap">${value}</div>`);
               }
             }
           } catch (error) {

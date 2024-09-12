@@ -75,9 +75,13 @@ class LongTextPrintElement extends BasePrintElement {
   }
 
   // 更新目标文本
-  updateTargetText(target, title, data) {
+  updateTargetText(target, title, value) {
+    if(this.execHiddenExpression(target, value)){
+      return ;
+    }
+    value = this.execFormatterExpression(value);
     const contentElement = target.find(".hiprint-printElement-longText-content");
-    const text = this.getText(title, data);
+    const text = this.getText(title, value);
     contentElement.html(text);
   }
 

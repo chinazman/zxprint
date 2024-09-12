@@ -178,9 +178,9 @@ function _eval(expstr, row){
         arr.push("return " + expstr + ";");
         let varstr = arr.join(";");
         // console.log(varstr);
-        _funcMap[expstr] = new Function("regMap", "rows","allRows","srcData","row",varstr);
+        _funcMap[expstr] = new Function("regMap", "rows","allRows","srcData","row","value",varstr);
     }
-    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.srcData, row);
+    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.srcData, row||_context.row, _context.value);
 
     //最好不用with
     // const func = new Function("context", "with (context) { return " + expstr + "; }")

@@ -261,6 +261,14 @@
               hidden: false
             },
             {
+              name: 'hiddenExpression',
+              hidden: false
+            },
+            {
+              name: 'formatterExpression',
+              hidden: false
+            },
+            {
               name: 'formatter',
               hidden: false
             },
@@ -437,6 +445,14 @@
           hidden: false
         },
         {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
+          hidden: false
+        },
+        {
           name: 'formatter',
           hidden: false
         },
@@ -520,6 +536,14 @@
               hidden: false
             },
             {
+              name: 'hiddenExpression',
+              hidden: false
+            },
+            {
+              name: 'formatterExpression',
+              hidden: false
+            },
+            {
               name: 'formatter',
               hidden: false
             },
@@ -585,6 +609,14 @@
         },
         {
           name: 'zIndex',
+          hidden: false
+        },
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
           hidden: false
         },
         {
@@ -700,6 +732,14 @@
             },
             {
               name: 'axis',
+              hidden: false
+            },
+            {
+              name: 'hiddenExpression',
+              hidden: false
+            },
+            {
+              name: 'formatterExpression',
               hidden: false
             },
             {
@@ -855,6 +895,14 @@
           hidden: false
         },
         {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
+          hidden: false
+        },
+        {
           name: 'formatter',
           hidden: false
         },
@@ -998,6 +1046,14 @@
           name: '高级', options: [
             {
               name: 'axis',
+              hidden: false
+            },
+            {
+              name: 'hiddenExpression',
+              hidden: false
+            },
+            {
+              name: 'formatterExpression',
               hidden: false
             },
             {
@@ -1146,6 +1202,14 @@
         },
         {
           name: 'columns',
+          hidden: false
+        },
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
           hidden: false
         },
         {
@@ -1698,6 +1762,14 @@
               hidden: false
             },
             {
+              name: 'hiddenExpression',
+              hidden: false
+            },
+            {
+              name: 'formatterExpression',
+              hidden: false
+            },
+            {
               name: 'formatter',
               hidden: false
             }
@@ -1735,6 +1807,14 @@
         },
         {
           name: 'axis',
+          hidden: false
+        },
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
           hidden: false
         },
         {
@@ -1827,7 +1907,14 @@
           name: 'upperCase',
           hidden: false
         },
-       
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
+          hidden: false
+        },
         {
           name: 'renderFormatter',
           hidden: false
@@ -1938,6 +2025,14 @@
         }, {
           name: 'axis',
           hidden: false
+        },
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
+          hidden: false
         }, {
           name: 'formatter',
           hidden: false
@@ -2024,6 +2119,14 @@
       }, {
         name: 'axis',
         hidden:false
+      },
+      {
+        name: 'hiddenExpression',
+        hidden: false
+      },
+      {
+        name: 'formatterExpression',
+        hidden: false
       }, {
         name: 'formatter',
         hidden:false
@@ -2124,6 +2227,14 @@
         }, {
           name: 'axis',
           hidden: false
+        },
+        {
+          name: 'hiddenExpression',
+          hidden: false
+        },
+        {
+          name: 'formatterExpression',
+          hidden: false
         }, {
           name: 'formatter',
           hidden: false
@@ -2207,6 +2318,12 @@
       }, {
         name: 'axis',
         hidden:false
+      },{
+        name: 'hiddenExpression',
+        hidden: false
+      },{
+        name: 'formatterExpression',
+        hidden: false
       }, {
         name: 'formatter',
         hidden:false

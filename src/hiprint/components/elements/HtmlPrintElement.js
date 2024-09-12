@@ -26,22 +26,30 @@ class HtmlPrintElement extends BasePrintElement {
     if (this.designTarget) {
       const data = this.getData();
       this.css(this.designTarget, data);
-      this.updateTargetHtml();
+      this.updateTargetHtml(this.designTarget, data);
     }
   }
 
   // 更新目标 HTML
-  updateTargetHtml() {
+  updateTargetHtml(target, value) {
+    if(this.execHiddenExpression(target, value)){
+      return ;
+    }
+    value = this.execFormatterExpression(value);
     const formatter = this.getFormatter();
     if (formatter) {
       const htmlContent = formatter(
-        this.getData(),
+        value,
         this.options,
         this._currenttemplateData
       );
-      this.designTarget
+      target
         .find(".hiprint-printElement-html-content")
         .html(htmlContent);
+    }else{
+      target
+        .find(".hiprint-printElement-html-content")
+        .append(this.options.content);
     }
   }
 
@@ -55,19 +63,7 @@ class HtmlPrintElement extends BasePrintElement {
     const target = $(
       '<div class="hiprint-printElement hiprint-printElement-html" style="position: absolute;"><div class="hiprint-printElement-html-content" style="height:100%;width:100%"></div></div>'
     );
-    const formatter = this.getFormatter();
-    if (formatter) {
-      const htmlContent = formatter(
-        this.getData(),
-        this.options,
-        this._currenttemplateData
-      );
-      target.find(".hiprint-printElement-html-content").append(htmlContent);
-    } else if (this.options.content) {
-      target
-        .find(".hiprint-printElement-html-content")
-        .append(this.options.content);
-    }
+    this.updateTargetHtml(target, data);
     return target;
   }
 

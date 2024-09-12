@@ -11,6 +11,7 @@ import PaperHtmlResult from "./PaperHtmlResult.js";
 import hinnn from "./hinnn.js";
 import PrintReferenceElement from "./PrintReferenceElement.js";
 import PrintLib from "./PrintLib.js";
+import ExpressionEngine from "./ExpressionEngine.js";
 
 class BasePrintElement {
   constructor(printElementType) {
@@ -1158,7 +1159,6 @@ class BasePrintElement {
     }
     this.designTarget.parents(".hiprint-printPaper-content").append(leftPos);
     leftPos.css("left", this.options.posLeft() - leftPos.width() + "pt");
-    console.log("xxxxxxxxxxxxxxxxx:" + this.options.posLeft());
   }
   // 移除位置线条
   removeLineOfPosition() {
@@ -1307,6 +1307,26 @@ class BasePrintElement {
     }
     return fnstyler;
   }
+  //执行隐藏表达式
+  execHiddenExpression(target, value){
+    const context = {srcData:this._currenttemplateData,value};
+    if (this.options.hiddenExpression){
+      if (ExpressionEngine.execute(this.options.hiddenExpression, context)) {
+        target.addClass('alwaysHide');
+        return true;
+      }
+    }
+    return false;
+  }
+  //执行格式化表达式
+  execFormatterExpression(value){
+    const context = {srcData:this._currenttemplateData,value};
+    if (this.options.formatterExpression){
+      return ExpressionEngine.execute(this.options.formatterExpression, context);
+    }
+    return value;
+  }
+
 
   // 绑定键盘移动事件
   bindKeyboardMoveEvent(targetElement, isMultiple) {

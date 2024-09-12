@@ -38,9 +38,9 @@ class ImagePrintElement extends BasePrintElement {
   }
 
   // 创建目标元素
-  createTarget(title, data) {
+  createTarget(title, value) {
     const target = $('<div class="hiprint-printElement hiprint-printElement-image" style="position: absolute;"><div class="hiprint-printElement-image-content" style="height:100%;width:100%"></div></div>');
-    this.updateTargetImage(target, title, data);
+    this.updateTargetImage(target, title, value);
     return target;
   }
 
@@ -64,16 +64,20 @@ class ImagePrintElement extends BasePrintElement {
   }
 
   // 更新目标图片
-  updateTargetImage(target, title, imageUrl) {
+  updateTargetImage(target, title, value) {
+    if(this.execHiddenExpression(target, value)){
+      return ;
+    }
+    value = this.execFormatterExpression(value);
     const contentElement = target.find(".hiprint-printElement-image-content");
     if (contentElement.find("img").length) {
-      contentElement.find("img").attr("src", imageUrl);
+      contentElement.find("img").attr("src", value);
     } else {
-      contentElement.html('<img style="width:100%;height:100%;" src="' + imageUrl + '">');
+      contentElement.html('<img style="width:100%;height:100%;" src="' + value + '">');
     }
     
-    if (imageUrl.length) {
-      contentElement.find("img").css('cssText', `width:100%;height:100%;content:url("${imageUrl}")!important`);
+    if (value.length) {
+      contentElement.find("img").css('cssText', `width:100%;height:100%;content:url("${value}")!important`);
     } else {
       contentElement.find("img").css('cssText', 'width:100%;height:100%;');
     }

@@ -17,6 +17,7 @@ class VLinePrintElement extends BasePrintElement {
     if (this.designTarget) {
       const data = this.getData();
       this.css(this.designTarget, data);
+      this.execHiddenExpression(this.designTarget, data);
     }
   }
 
@@ -26,8 +27,10 @@ class VLinePrintElement extends BasePrintElement {
   }
 
   // 创建目标元素
-  createTarget(title, data) {
-    return $('<div class="hiprint-printElement hiprint-printElement-vline" style="border-left:1px solid;position: absolute;"></div>');
+  createTarget(title, value) {
+    const target = $('<div class="hiprint-printElement hiprint-printElement-vline" style="border-left:1px solid;position: absolute;"></div>');
+    this.execHiddenExpression(target, value);
+    return target;
   }
 
   // 获取可调整大小的显示点

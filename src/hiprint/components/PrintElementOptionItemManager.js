@@ -156,6 +156,8 @@ import RenderFormatterOption from "./options/RenderFormatterOption.js";
 import AutoCompletionOption from "./options/AutoCompletionOption.js";
 import MaxRowsOption from "./options/MaxRowsOption.js";
 import TableFooterRepeatOption from "./options/TableFooterRepeatOption.js";
+import HiddenExpressionOption from "./options/HiddenExpressionOption.js";
+import FormatterExpressionOption from "./options/FormatterExpressionOption.js";
    
   
     // 打印元素选项项管理器类
@@ -306,6 +308,8 @@ class PrintElementOptionItemManager {
 , new BarColorOption()
 , new BarWidthOption()
 , new BarAutoWidthOption()
+, new HiddenExpressionOption()
+, new FormatterExpressionOption()
   ];
 }
 

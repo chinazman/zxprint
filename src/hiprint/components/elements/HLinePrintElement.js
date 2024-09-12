@@ -18,8 +18,9 @@ class HLinePrintElement extends BasePrintElement {
   // 从选项更新设计视图
   updateDesignViewFromOptions() {
     if (this.designTarget) {
-      const data = this.getData();
-      this.css(this.designTarget, data);
+      const value = this.getData();
+      this.css(this.designTarget, value);
+      this.execHiddenExpression(this.designTarget, value);
     }
   }
 
@@ -29,10 +30,12 @@ class HLinePrintElement extends BasePrintElement {
   }
 
   // 创建目标元素
-  createTarget(title, data) {
-    return $(
+  createTarget(title, value) {
+    const target = $(
       '<div class="hiprint-printElement hiprint-printElement-hline" style="border-top:1px solid;position: absolute;"></div>'
     );
+    this.execHiddenExpression(target, value);
+    return target;
   }
 
   // 获取可调整大小的显示点

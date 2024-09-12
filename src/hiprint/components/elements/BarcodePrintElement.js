@@ -44,14 +44,18 @@ class BarcodePrintElement extends BasePrintElement {
     return data;
   }
 
-  initBarcode(designTarget, title, text) {
-    designTarget = designTarget || this.designTarget;
-    const content = designTarget.find('.hiprint-printElement-barcode-content');
+  initBarcode(target, title, value) {
+    target = target || this.designTarget;
+    if(this.execHiddenExpression(target, value)){
+      return ;
+    }
+    value = this.execFormatterExpression(value);
+    const content = target.find('.hiprint-printElement-barcode-content');
     try {
       const height = hinnn.pt.toMm(this.options.height - (!this.options.hideTitle ? this.options.lineHeight ?? (this.options.fontSize ?? 10.5) * 1.5 : 0));
       let barcode = bwipjs.toSVG({
         bcid: this.options.barcodeType || 'code128',
-        text: text || this.options.testData || this.options.title,
+        text: value || this.options.testData || this.options.title,
         scale: this.options.barWidth || 1,
         width: !this.getBarAutoWidth() ? parseInt(hinnn.pt.toMm(this.options.getWidth())) : '',
         height: parseInt(height),

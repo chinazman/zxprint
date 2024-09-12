@@ -340,9 +340,22 @@ class TableExcelHelper {
         column.align && cell.css("text-align", column.align);
         column.vAlign && cell.css("vertical-align", column.vAlign);
       }
+      let value = rowData[column.field];
+      const context = {
+        data: tableData,
+        allData: tableData,
+        srcData: printData,
+        row: rowData,
+        value: value
+      }
+      if (column.hiddenExpression && ExpressionEngine.execute(column.hiddenExpression, context)){
+        value = "";
+      }else if(column.formatterExpression){
+        value = ExpressionEngine.execute(column.formatterExpression, context);
+      }
 
       const formatter = TableExcelHelper.getColumnFormatter(column);
-      const formattedValue = formatter ? formatter(rowData[column.field], rowData, columnIndex, options) : rowData[column.field];
+      const formattedValue = formatter ? formatter(rowData[column.field], rowData, columnIndex, options) : value;
 
       const renderFormatter = TableExcelHelper.getColumnRenderFormatter(column);
       if (renderFormatter) {
