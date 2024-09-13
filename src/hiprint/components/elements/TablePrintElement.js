@@ -591,7 +591,6 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
           }
           let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, result.isEnd);
           footer.insertBefore(currentTable.find("tbody"));
-          that.css(currentTable, srcData);
         // }else{
         //   //移除掉避免出现不必要
         //   let index = this.getColumns().findIndex(column => TableExcelHelper.isFooterRow(column));
@@ -599,6 +598,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
         //     this.getColumns().splice(index, this.getColumns() - index);
         //   }
         }
+        that.css(currentTable, srcData);
         break;
       }
     }
