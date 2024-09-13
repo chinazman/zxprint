@@ -462,15 +462,16 @@ class TableExcelHelper {
   /**
    * 创建空行目标
    */
-  static createEmptyRowTarget(options, tableElement) {
-    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(options);
-    const row = $("<tr></tr>");
+  static createEmptyRowTarget(columns, tableElement) {
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => !TableExcelHelper.isFooterRow(column)));
 
-    reconstitutedColumns.rowColumns.filter(column => column.checked).forEach((column, columnIndex) => {
+    const row = $("<tr></tr>");
+    //reconstitutedColumns.rowColumns
+    reconstitutedColumns[reconstitutedColumns.totalLayer -1].filter(column => column.checked).forEach((column, columnIndex) => {
       const cell = $("<td></td>");
       column.field && cell.attr("field", column.field);
       column.align && cell.css("text-align", column.align);
-      column.vAlign && cell.css("vertical-align", column.vAlign);
+      column.colspan && cell.attr("colspan", column.colspan);
       row.append(cell);
     });
 

@@ -160,7 +160,7 @@ class PrintTextHelper {
         : hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, title, this.options, this._currenttemplateData, target) : title);
       const textType = this.options.getTextType();
       if (textType === "text") {
-        contentElement.html(text);
+        contentElement.html(hinnn.textToHtml(text));
       } else {
         if (textType === "barcode") {
           contentElement.css({

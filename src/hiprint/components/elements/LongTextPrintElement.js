@@ -82,7 +82,7 @@ class LongTextPrintElement extends BasePrintElement {
     value = this.execFormatterExpression(value);
     const contentElement = target.find(".hiprint-printElement-longText-content");
     const text = this.getText(title, value);
-    contentElement.html(text);
+    contentElement.html(hinnn.textToHtml(text));
   }
 
   // 创建目标
@@ -107,12 +107,13 @@ class LongTextPrintElement extends BasePrintElement {
   }
 
   // 获取 HTML 内容
-  getHtml(paper, templateData) {
-    this.setCurrentTemplateData(templateData);
-    this.createTempContainer();
-    const paperHtmlResult = this.getPaperHtmlResult(paper, templateData);
-    this.removeTempContainer();
-    return paperHtmlResult;
+  getHtml(paper, templateData, extraParam) {
+    return this.getHtml2(paper, templateData, extraParam);
+    // this.setCurrentTemplateData(templateData);
+    // this.createTempContainer();
+    // const paperHtmlResult = this.getPaperHtmlResult(paper, templateData);
+    // this.removeTempContainer();
+    // return paperHtmlResult;
   }
 
   // 通过数据获取高度

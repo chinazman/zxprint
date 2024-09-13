@@ -499,6 +499,11 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
   var allRowsData = [];
   for (var columnIndex = 0; columnIndex < gridColumns; columnIndex++) {
     var currentTable = tableContainer.find(".hiprint-printElement-tableTarget:eq(" + columnIndex + ")");
+    //先合进去算下高度
+    if ("yes" == this.options.tableFooterRepeat) {
+      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, false);
+      footer.insertBefore(currentTable.find("tbody"));
+    }
     var result;
     var pageData = [];
     for (;;) {
@@ -585,6 +590,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
           // } else {
           //   TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).insertBefore(currentTable.find("tbody"));
           // }
+          currentTable.find("tfoot").remove();
           let hasFooter = this.getColumns().some(column => TableExcelHelper.isFooterRow(column));
           if (!hasFooter && !this.isNotDesign) {
             this.newEmptyFooter();

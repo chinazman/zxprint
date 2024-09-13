@@ -327,6 +327,17 @@ hinnn.toUpperCase = (type, value) => {
   }
   return result;
 };
+//将普通文本转换为html文本
+hinnn.textToHtml = (text, enc) => {
+  if (!text){
+    return;
+  }
+  text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/ /g, "&nbsp;").replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+  if (enc) {
+    text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  return text;
 
+}
 window.hinnn = hinnn;
 export default hinnn;
