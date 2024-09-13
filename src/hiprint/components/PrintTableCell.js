@@ -241,8 +241,8 @@ class CellEntity {
     this.showCodeTitle = cell.showCodeTitle;
     this.upperCase = cell.upperCase;
     this.renderFormatter = cell.renderFormatter && cell.renderFormatter.toString();
-    this.hiddenExpression = cell.hiddenExpression;
-    this.formatterExpression = cell.formatterExpression;
+    this.cellHiddenExpression = cell.cellHiddenExpression;
+    this.cellFormatterExpression = cell.cellFormatterExpression;
     this.formatter2 = cell.formatter2 && cell.formatter2.toString();
     this.styler2 = cell.styler2 && cell.styler2.toString();
     this.stylerHeader = cell.stylerHeader && cell.stylerHeader.toString();
@@ -418,8 +418,8 @@ class PrintTableCell extends TableCell {
     this.align = options.align;
     this.halign = options.halign;
     this.vAlign = options.vAlign;
-    this.hiddenExpression = options.hiddenExpression;
-    this.formatterExpression = options.formatterExpression;
+    this.cellHiddenExpression = options.cellHiddenExpression;
+    this.cellFormatterExpression = options.cellFormatterExpression;
     this.formatter = options.formatter;
     this.styler = options.styler;
     this.renderFormatter = options.renderFormatter;

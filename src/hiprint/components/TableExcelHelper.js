@@ -348,10 +348,10 @@ class TableExcelHelper {
         row: rowData,
         value: value
       }
-      if (column.hiddenExpression && ExpressionEngine.execute(column.hiddenExpression, context)){
+      if (column.cellHiddenExpression && ExpressionEngine.execute(column.cellHiddenExpression, context)){
         value = "";
-      }else if(column.formatterExpression){
-        value = ExpressionEngine.execute(column.formatterExpression, context);
+      }else if(column.cellFormatterExpression){
+        value = ExpressionEngine.execute(column.cellFormatterExpression, context);
       }
 
       const formatter = TableExcelHelper.getColumnFormatter(column);

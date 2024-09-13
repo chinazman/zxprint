@@ -1,15 +1,15 @@
 import {i18n,$} from "../../hiprint.comm.js";
 
-// 格式化表达式
-class FormatterExpressionOption {
+// 单元格格式化表达式
+class CellFormatterExpressionOption {
   constructor() {
-    this.name = "formatterExpression";
+    this.name = "cellFormatterExpression";
   }
 
   createTarget() {
     const html = `<div class="hiprint-option-item hiprint-option-item-row">
         <div class="hiprint-option-item-label">
-        ${i18n.__('格式化表达式')}
+        ${i18n.__('单元格格式化表达式')}
         </div>
         <div class="hiprint-option-item-field">
         <input type="text" placeholder="row.price*value + '吨'" class="auto-submit"/>
@@ -33,4 +33,4 @@ class FormatterExpressionOption {
   }
 }
 
-export default FormatterExpressionOption;
+export default CellFormatterExpressionOption;

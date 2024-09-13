@@ -1204,14 +1204,14 @@
           name: 'columns',
           hidden: false
         },
-        {
-          name: 'hiddenExpression',
-          hidden: false
-        },
-        {
-          name: 'formatterExpression',
-          hidden: false
-        },
+        // {
+        //   name: 'hiddenExpression',
+        //   hidden: false
+        // },
+        // {
+        //   name: 'formatterExpression',
+        //   hidden: false
+        // },
         {
           name: 'styler',
           hidden: false
@@ -1908,11 +1908,11 @@
           hidden: false
         },
         {
-          name: 'hiddenExpression',
+          name: 'cellHiddenExpression',
           hidden: false
         },
         {
-          name: 'formatterExpression',
+          name: 'cellFormatterExpression',
           hidden: false
         },
         {

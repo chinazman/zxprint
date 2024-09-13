@@ -30,8 +30,8 @@ class TableColumnOption {
     this.halign = options.halign;
     this.vAlign = options.vAlign;
     this.renderFormatter = options.renderFormatter;
-    this.hiddenExpression = options.hiddenExpression;
-    this.formatterExpression = options.formatterExpression;
+    this.cellHiddenExpression = options.cellHiddenExpression;
+    this.cellFormatterExpression = options.cellFormatterExpression;
     this.formatter2 = options.formatter2;
     this.styler2 = options.styler2;
     this.stylerHeader = options.stylerHeader;
