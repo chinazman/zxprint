@@ -12,7 +12,7 @@ class HiddenExpressionOption {
         ${i18n.__('隐藏表达式')}
         </div>
         <div class="hiprint-option-item-field">
-        <input type="text" placeholder="srcData.type>1 && value>0" class="auto-submit"></input>
+        <input type="text" placeholder="templateData.type>1 && value>0" class="auto-submit"></input>
         </div>
     </div>`;
     this.target = $(html);

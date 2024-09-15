@@ -143,7 +143,7 @@ class TableExcelHelper {
   /**
    * 创建表格页脚
    */
-  static createTableFooter(columns,allData, options, printElementType,  srcData, pageData) {
+  static createTableFooter(columns,allData, options, printElementType,  templateData, pageData) {
     const tfoot = $("<tfoot></tfoot>");
     const footerFormatter = this.getFooterFormatter(options, printElementType);
     const tableSummaryTitle = this.tableSummaryTitle;
@@ -172,35 +172,35 @@ class TableExcelHelper {
 
         switch (column.tableSummary) {
           case "count":
-            const countTitle = tableSummaryTitle(column, text || `${i18n.__('计数')}:`, srcData);
+            const countTitle = tableSummaryTitle(column, text || `${i18n.__('计数')}:`, templateData);
             const count = toUpperCase(upperCaseType, summaryData.filter(row => row).length || 0);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${countTitle}${count}</td>`);
             break;
           case "sum":
             const sum = parseFloat(Number(fieldData.reduce((prev, cur) => prev + cur, 0)));
             const sumFormatted = toUpperCase(upperCaseType, numFormat(sum, numF));
-            const sumTitle = tableSummaryTitle(column, text || `${i18n.__('合计')}:`, srcData);
+            const sumTitle = tableSummaryTitle(column, text || `${i18n.__('合计')}:`, templateData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${sumTitle}${sumFormatted}</td>`);
             break;
           case "avg":
             const avgSum = parseFloat(Number(fieldData.reduce((prev, cur) => prev + cur, 0)));
             const avg = parseFloat(Number(avgSum / (fieldData.length || 1)));
             const avgFormatted = toUpperCase(upperCaseType, numFormat(avg, numF));
-            const avgTitle = tableSummaryTitle(column, text || `${i18n.__('平均值')}:`, srcData);
+            const avgTitle = tableSummaryTitle(column, text || `${i18n.__('平均值')}:`, templateData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${avgTitle}${avgFormatted}</td>`);
             break;
           case "min":
             let min = Math.min(...fieldData) || 0;
             min = min === Infinity ? 0 : min;
             const minFormatted = toUpperCase(upperCaseType, numFormat(min, numF));
-            const minTitle = tableSummaryTitle(column, text || `${i18n.__('最小值')}:`, srcData);
+            const minTitle = tableSummaryTitle(column, text || `${i18n.__('最小值')}:`, templateData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${minTitle}${minFormatted || 0}</td>`);
             break;
           case "max":
             let max = Math.max(...fieldData);
             max = max === -Infinity ? 0 : max;
             const maxFormatted = toUpperCase(upperCaseType, numFormat(max, numF));
-            const maxTitle = tableSummaryTitle(column, text || `${i18n.__('最大值')}:`, srcData);
+            const maxTitle = tableSummaryTitle(column, text || `${i18n.__('最大值')}:`, templateData);
             tableFooter.append(`<td style="${style}" colspan="${colspan}">${maxTitle}${maxFormatted || 0}</td>`);
             break;
           case "text":
@@ -217,7 +217,7 @@ class TableExcelHelper {
     }
 
     if (footerFormatter) {
-      tfoot.append(footerFormatter(options, allData, srcData, pageData));
+      tfoot.append(footerFormatter(options, allData, templateData, pageData));
     }
 
     return tfoot;
@@ -234,7 +234,7 @@ class TableExcelHelper {
   /**
    * 创建表格行
    */
-  static createTableRow(columns, allData, srcData, options, tablePrintElementType) {
+  static createTableRow(columns, allData, templateData, options, tablePrintElementType) {
     const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => !TableExcelHelper.isFooterRow(column)));
     const tbody = $("<tbody></tbody>");
     const groupFieldsFormatter = this.getGroupFieldsFormatter(options, tablePrintElementType);
@@ -252,7 +252,7 @@ class TableExcelHelper {
       }).forEach(group => {
         const groupFormatter = this.getGroupFormatter(options, tablePrintElementType);
         if (groupFormatter) {
-          const result = groupFormatter(reconstitutedColumns.colspan, allData, srcData, group, options);
+          const result = groupFormatter(reconstitutedColumns.colspan, allData, templateData, group, options);
           if ($(result).is("tr")) {
             tbody.append(result);
           } else if ($(result).is("td")) {
@@ -264,12 +264,12 @@ class TableExcelHelper {
 
         const groupFooterFormatter = this.getGroupFooterFormatter(options, tablePrintElementType);
         group.rows.forEach((rowData, rowIndex) => {
-          const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, group.rows, srcData);
+          const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, group.rows, templateData);
           tbody.append(row);
         });
 
         if (groupFooterFormatter) {
-          const result = groupFooterFormatter(reconstitutedColumns.colspan, allData, srcData, group, options);
+          const result = groupFooterFormatter(reconstitutedColumns.colspan, allData, templateData, group, options);
           if ($(result).is("tr")) {
             tbody.append(result);
           } else if ($(result).is("td")) {
@@ -281,7 +281,7 @@ class TableExcelHelper {
       });
     } else {
       allData.forEach((rowData, rowIndex) => {
-        const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, allData, srcData);
+        const row = TableExcelHelper.createRowTarget(reconstitutedColumns, rowData, options, tablePrintElementType, rowIndex, allData, templateData);
         tbody.append(row);
       });
     }
@@ -344,7 +344,7 @@ class TableExcelHelper {
       const context = {
         data: tableData,
         allData: tableData,
-        srcData: printData,
+        templateData: printData,
         row: rowData,
         value: value
       }

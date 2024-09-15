@@ -3,7 +3,7 @@ import _hinnn from "./hinnn.js"
 var _context = {
     rows:[],
     allRows:[],
-    srcData:{}
+    templateData:{}
 };
 var _regMap = {};
 var _funcMap = {};
@@ -178,9 +178,9 @@ function _eval(expstr, row){
         arr.push("return " + expstr + ";");
         let varstr = arr.join(";");
         // console.log(varstr);
-        _funcMap[expstr] = new Function("regMap", "rows","allRows","srcData","row","value",varstr);
+        _funcMap[expstr] = new Function("regMap", "rows","allRows","templateData","row","value",varstr);
     }
-    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.srcData, row||_context.row, _context.value);
+    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.templateData, row||_context.row, _context.value);
 
     //最好不用with
     // const func = new Function("context", "with (context) { return " + expstr + "; }")

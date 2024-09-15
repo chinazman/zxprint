@@ -207,13 +207,13 @@ getConfigOptions() {
 }
 
 // 创建目标元素
-createTarget(title, value, srcData) {
+createTarget(title, value, templateData) {
   let target = $('<div class="hiprint-printElement hiprint-printElement-table" style="position: absolute;"><div class="hiprint-printElement-table-handle"></div><div class="hiprint-printElement-table-content" style="height:100%;width:100%"></span></div>');
-  let gridColumnsStructure = this.createGridColumnsStructure(srcData);
+  let gridColumnsStructure = this.createGridColumnsStructure(templateData);
   this.execHiddenExpression(target, value);
   value = this.execFormatterExpression(value);
   for (let i = 0; i < gridColumnsStructure.gridColumns; i++) {
-    gridColumnsStructure.getByIndex(i).append(this.getTableHtml(value, srcData));
+    gridColumnsStructure.getByIndex(i).append(this.getTableHtml(value, templateData));
   }
 
   target.find(".hiprint-printElement-table-content").append(gridColumnsStructure.target);
@@ -253,10 +253,10 @@ createTempEmptyRowsTargetStructure() {
 /**
  * 获取表格的HTML
  * @param {Object} allTableData - 表格数据
- * @param {Object} srcData - 额外的选项
+ * @param {Object} templateData - 额外的选项
  * @returns {jQuery} 生成的表格jQuery对象
  */
-getTableHtml(allTableData, srcData) {
+getTableHtml(allTableData, templateData) {
   let containerDiv, tableElement;
 
   // 如果没有设置字段且有内容选项，直接返回内容
@@ -288,11 +288,11 @@ getTableHtml(allTableData, srcData) {
   }
 
   // 创建表格主体
-  table.append(TableExcelHelper.createTableRow(this.getColumns(), allTableData, srcData, this.options, this.printElementType));
+  table.append(TableExcelHelper.createTableRow(this.getColumns(), allTableData, templateData, this.options, this.printElementType));
 
   // 处理表格脚注
   // if (this.options.tableFooterRepeat !== "no") {
-  //   let footer = TableExcelHelper.createTableFooter(this.printElementType.columns, allTableData, this.options, this.printElementType, srcData, tableData);
+  //   let footer = TableExcelHelper.createTableFooter(this.printElementType.columns, allTableData, this.options, this.printElementType, templateData, tableData);
   //   footer.insertBefore(table.find("tbody"));
   // }
   // if (this.options.tableFooterRepeat == "yes") {
@@ -338,13 +338,13 @@ getHtml(printPage, data) {
 }
 
 // 获取纸张HTML结果
-getPaperHtmlResult(printPage, srcData) {
+getPaperHtmlResult(printPage, templateData) {
   let paperHtmlResults = [],
-      tableData = this.getData(srcData),
-      tableHtml = this.getTableHtml(tableData, srcData),
-      tempEmptyRowsTarget = this.createTempEmptyRowsTargetStructure(srcData);
+      tableData = this.getData(templateData),
+      tableHtml = this.getTableHtml(tableData, templateData),
+      tempEmptyRowsTarget = this.createTempEmptyRowsTargetStructure(templateData);
   
-  if (srcData) {
+  if (templateData) {
     this.updateTargetWidth(tempEmptyRowsTarget);
   } else {
     this.updateTargetSize(tempEmptyRowsTarget);
@@ -376,7 +376,7 @@ getPaperHtmlResult(printPage, srcData) {
     }
     
     let previousTarget = paperHtmlResults.length > 0 ? paperHtmlResults[paperHtmlResults.length - 1].target : undefined,
-        rowResult = this.getRowsInSpecificHeight(srcData, availableHeight > 0 ? availableHeight : (pageIndex === 0 ? paperFooterHeight - beginPrintTop : printPage.getContentHeight(pageIndex)), tempEmptyRowsTarget, tableHtml, pageIndex, previousTarget, tableFooterHeight);
+        rowResult = this.getRowsInSpecificHeight(templateData, availableHeight > 0 ? availableHeight : (pageIndex === 0 ? paperFooterHeight - beginPrintTop : printPage.getContentHeight(pageIndex)), tempEmptyRowsTarget, tableHtml, pageIndex, previousTarget, tableFooterHeight);
     
     isEnd = rowResult.isEnd;
     
@@ -434,7 +434,7 @@ getPaperHtmlResult(printPage, srcData) {
     
     pageIndex++;
     
-    if (srcData) {
+    if (templateData) {
       this.updatePanelHeight(beginPrintTop + this.options.getHeight(), printPage);
     }
   }
@@ -444,7 +444,7 @@ getPaperHtmlResult(printPage, srcData) {
 
 /**
  * 获取特定高度内的行
- * @param {boolean} srcData - 是否为真实数据
+ * @param {boolean} templateData - 是否为真实数据
  * @param {number} specificHeight - 指定高度
  * @param {jQuery} tableContainer - 表格容器
  * @param {jQuery} tableElement - 表格元素
@@ -453,7 +453,7 @@ getPaperHtmlResult(printPage, srcData) {
  * @param {number} footerHeight - 页脚高度
  * @returns {Object} 包含目标、长度、高度和是否结束的对象
  */
-getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, pageIndex, isEnding, footerHeight) {
+getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableElement, pageIndex, isEnding, footerHeight) {
   var that = this;
   var tbody = tableElement.find("tbody");
   var heightInPx = hinnn.pt.toPx(specificHeight);
@@ -468,7 +468,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
     tableContainer.find(".hiprint-printElement-tableTarget thead").remove();
   } else if ("none" == this.options.tableHeaderRepeat) {
     // 有数据（不是design）
-    if (srcData) {
+    if (templateData) {
       tableContainer.find(".hiprint-printElement-tableTarget thead").remove();
     } else {
       tableContainer.find(".hiprint-printElement-tableTarget thead").css("background", "firebrick");
@@ -478,7 +478,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
   var noPaging = "none" == this.panel.panelPageRule;
   // 不分页, 且不是设计时, 移除 thead
   var headTr;
-  if (srcData && noPaging) {
+  if (templateData && noPaging) {
     var headStyle = tableContainer.find(".hiprint-printElement-tableTarget thead").attr("style");
     headTr = tableContainer.find(".hiprint-printElement-tableTarget thead tr").clone();
     if (headStyle) {
@@ -501,7 +501,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
     var currentTable = tableContainer.find(".hiprint-printElement-tableTarget:eq(" + columnIndex + ")");
     //先合进去算下高度
     if ("yes" == this.options.tableFooterRepeat) {
-      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, false);
+      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, false);
       footer.insertBefore(currentTable.find("tbody"));
     }
     var result;
@@ -515,7 +515,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
             height: hinnn.px.toPt(containerHeight),
             isEnd: true
           };
-          if (srcData && this.options.autoCompletion) {
+          if (templateData && this.options.autoCompletion) {
             this.autoCompletion(heightInPx, currentTable, footerHeight);
             containerHeight = tableContainer.outerHeight();
           }
@@ -546,7 +546,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
               height: hinnn.px.toPt(containerHeight),
               isEnd: true
             };
-            if (srcData && this.options.autoCompletion) {
+            if (templateData && this.options.autoCompletion) {
               this.autoCompletion(heightInPx, currentTable, footerHeight);
               containerHeight = currentTable.outerHeight();
             }
@@ -586,16 +586,16 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
           //   headerList2[0].insertBefore(currentTable.find("tbody"));
           // }
           // if (noPaging) {
-          //   currentTable.find("tbody").append(TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).children());
+          //   currentTable.find("tbody").append(TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(templateData), this.options, this.printElementType, templateData, pageData).children());
           // } else {
-          //   TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(srcData), this.options, this.printElementType, srcData, pageData).insertBefore(currentTable.find("tbody"));
+          //   TableExcelHelper.createTableFooter(this.printElementType.columns, this.getData(templateData), this.options, this.printElementType, templateData, pageData).insertBefore(currentTable.find("tbody"));
           // }
           currentTable.find("tfoot").remove();
           let hasFooter = this.getColumns().some(column => TableExcelHelper.isFooterRow(column));
           if (!hasFooter && !this.isNotDesign) {
             this.newEmptyFooter();
           }
-          let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(srcData), pageData, result.isEnd);
+          let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, result.isEnd);
           footer.insertBefore(currentTable.find("tbody"));
         // }else{
         //   //移除掉避免出现不必要
@@ -604,7 +604,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
         //     this.getColumns().splice(index, this.getColumns() - index);
         //   }
         }
-        that.css(currentTable, srcData);
+        that.css(currentTable, templateData);
         break;
       }
     }
@@ -613,7 +613,7 @@ getRowsInSpecificHeight(srcData, specificHeight, tableContainer, tableElement, p
   var rowCount = tableContainer.find(".hiprint-printElement-tableTarget tbody tr").length;
   var footerFormatter = this.getGridColumnsFooterFormatter();
   if (footerFormatter) {
-    tableContainer.find(this.gridColumnsFooterCss).html(footerFormatter(this.options, this.getData(srcData), srcData, allRowsData));
+    tableContainer.find(this.gridColumnsFooterCss).html(footerFormatter(this.options, this.getData(templateData), templateData, allRowsData));
   }
   containerHeight = tableContainer.outerHeight();
   // 当每一页数据,都无法容纳表格行内容时:

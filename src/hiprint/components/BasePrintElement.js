@@ -1309,7 +1309,7 @@ class BasePrintElement {
   }
   //执行隐藏表达式
   execHiddenExpression(target, value){
-    const context = {srcData:this._currenttemplateData,value};
+    const context = {templateData:this._currenttemplateData,value};
     if (this.options.hiddenExpression){
       if (ExpressionEngine.execute(this.options.hiddenExpression, context)) {
         target.addClass('alwaysHide');
@@ -1320,7 +1320,7 @@ class BasePrintElement {
   }
   //执行格式化表达式
   execFormatterExpression(value){
-    const context = {srcData:this._currenttemplateData,value};
+    const context = {templateData:this._currenttemplateData,value};
     if (this.options.formatterExpression){
       return ExpressionEngine.execute(this.options.formatterExpression, context);
     }
