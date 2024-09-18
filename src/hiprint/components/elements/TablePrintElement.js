@@ -841,7 +841,7 @@ setHitable() {
 // 设置列选项
 setColumnsOptions() {
   const that = this;
-  this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead td").on("click.hiprint", function (event) {
+  this.designTarget.find(".hiprint-printElement-tableTarget:eq(0)").find("thead td,tfoot td").on("click.hiprint", function (event) {
     const columnId = $(event.target).attr("id") || $(event.target).attr("column-id");
     const column = that.getColumnByColumnId(columnId);
 
