@@ -108,12 +108,12 @@ class LongTextPrintElement extends BasePrintElement {
 
   // 获取 HTML 内容
   getHtml(paper, templateData, extraParam) {
-    return this.getHtml2(paper, templateData, extraParam);
-    // this.setCurrentTemplateData(templateData);
-    // this.createTempContainer();
-    // const paperHtmlResult = this.getPaperHtmlResult(paper, templateData);
-    // this.removeTempContainer();
-    // return paperHtmlResult;
+    // return this.getHtml2(paper, templateData, extraParam);
+    this.setCurrentTemplateData(templateData);
+    this.createTempContainer();
+    const paperHtmlResult = this.getPaperHtmlResult(paper, templateData);
+    this.removeTempContainer();
+    return paperHtmlResult;
   }
 
   // 通过数据获取高度
@@ -192,24 +192,32 @@ class LongTextPrintElement extends BasePrintElement {
         remainingHeight = paper.getContentHeight(paperIndex) - (beginPrintTop - paper.paperHeader);
         footerHeight = paper.getPaperFooter(paperIndex);
       }
-      const paginationResult = this.getStringBySpecificHeight(contentArray, remainingHeight > 0 ? remainingHeight : paperIndex === 0 ? footerHeight - beginPrintTop : paper.getContentHeight(paperIndex), target);
-      contentArray.splice(0, paginationResult.length);
+      const pageResult = this.getStringBySpecificHeight(contentArray, remainingHeight > 0 ? remainingHeight : paperIndex === 0 ? footerHeight - beginPrintTop : paper.getContentHeight(paperIndex), target);
+      contentArray.splice(0, pageResult.length);
       let topPosition;
       let printLine;
-      paginationResult.target.css("left", this.options.displayLeft());
-      paginationResult.target[0].height = "";
+      pageResult.target.css("left", this.options.displayLeft());
+      pageResult.target[0].height = "";
       if (paperIndex === 0 || remainingHeight > 0) {
         topPosition = beginPrintTop;
-        paginationResult.target.css("top", `${topPosition}pt`);
-        printLine = contentArray.length > 0 ? beginPrintTop + paginationResult.height : this.options.lHeight !== null ? beginPrintTop + (paginationResult.height > this.options.lHeight ? paginationResult.height : this.options.lHeight) : beginPrintTop + paginationResult.height;
+        pageResult.target.css("top", `${topPosition}pt`);
+        // printLine = contentArray.length > 0 ? beginPrintTop + pageResult.height : this.options.lHeight !== null ? beginPrintTop + (pageResult.height > this.options.lHeight ? pageResult.height : this.options.lHeight) : beginPrintTop + pageResult.height;
+        if (contentArray.length > 0) {
+            printLine = beginPrintTop + pageResult.height;
+        } else if (this.options.lHeight != null) {
+            printLine = beginPrintTop + (pageResult.height > this.options.lHeight? pageResult.height : this.options.lHeight);
+        } else {
+            printLine = beginPrintTop + pageResult.height;
+        }
+      
       } else {
         topPosition = paper.paperHeader;
-        paginationResult.target.css("top", `${topPosition}pt`);
-        printLine = topPosition + paginationResult.height;
+        pageResult.target.css("top", `${topPosition}pt`);
+        printLine = topPosition + pageResult.height;
       }
       results.push(
         new PaperHtmlResult({
-          target: paginationResult.target,
+          target: pageResult.target,
           printLine: printLine,
           referenceElement: new PrintReferenceElement({
             top: this.options.getTop(),

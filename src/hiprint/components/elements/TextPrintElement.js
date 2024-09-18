@@ -157,7 +157,7 @@ class PrintTextHelper {
       const textType = this.options.getTextType();
       if (textType === "text") {
         title = hinnn.textToHtml(title);
-        value = hinnn.textToHtml(value);
+        value = value === undefined? "":hinnn.textToHtml(value);
         let styles = "display:inline-block";
         if (this.options.titleWidth){
           styles += ";width:"+this.options.titleWidth+"pt";
