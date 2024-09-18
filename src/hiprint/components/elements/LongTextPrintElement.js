@@ -17,7 +17,7 @@ class LongTextPrintElementOption extends PrintElementOption {
 
   // 获取隐藏标题选项
   getHideTitle() {
-    return this.hideTitle === null ? this.defaultOptions.hideTitle : this.hideTitle;
+    return this.hideTitle == null ? this.defaultOptions.hideTitle : this.hideTitle;
   }
 }
 

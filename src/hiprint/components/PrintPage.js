@@ -276,7 +276,7 @@ class PrintPage {
       this.createWaterMark(true, this.panelIdx, this.watermarkOptions);
       this.resetPaperNumber(this.paperNumberTarget);
       $(this.paperNumberTarget).bind("dblclick.hiprint", function () {
-        self.paperNumberDisabled = self.paperNumberDisabled === null ? false : !self.paperNumberDisabled;
+        self.paperNumberDisabled = self.paperNumberDisabled == null ? false : !self.paperNumberDisabled;
         self.resetPaperNumber(self.paperNumberTarget);
         self.triggerOnPaperBaseInfoChanged("初始");
       });

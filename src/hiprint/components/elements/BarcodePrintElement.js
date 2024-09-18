@@ -25,7 +25,7 @@ class BarcodePrintElement extends BasePrintElement {
   }
 
   getBarAutoWidth() {
-    return (this.options.barAutoWidth === null ? this.options.defaultOptions.barAutoWidth === "true" : this.options.barAutoWidth === "true") ?? true;
+    return (this.options.barAutoWidth == null ? this.options.defaultOptions.barAutoWidth === "true" : this.options.barAutoWidth === "true") ?? true;
   }
 
   onResize(arg1, arg2, arg3, arg4, arg5) {
