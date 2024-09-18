@@ -171,6 +171,50 @@
           ]
         },
         {
+          name: '标题', options: [
+            {
+              name: 'titleWidthHeight',
+              hidden: false
+            },
+            {
+              name: 'titleFontFamily',
+              hidden: false
+            },
+            {
+              name: 'titleFontSize',
+              hidden: false
+            },
+            {
+              name: 'titleFontWeight',
+              hidden: false
+            },
+            {
+              name: 'titleLetterSpacing',
+              hidden: false
+            },
+            {
+              name: 'titleColor',
+              hidden: false
+            },
+            {
+              name: 'titleBackgroundColor',
+              hidden: false
+            },
+            {
+              name: 'titleTextDecoration',
+              hidden: false
+            },
+            {
+              name: 'titleTextAlign',
+              hidden: false
+            },
+            {
+              name: 'titleShowColon',
+              hidden: false
+            }
+          ]
+        },
+        {
           name: '边框', options: [
             {
               name: 'optionsGroup',
@@ -280,6 +324,46 @@
         },
       ],
       supportOptions: [
+        {
+          name: 'titleWidthHeight',
+          hidden: false
+        },
+        {
+          name: 'titleFontFamily',
+          hidden: false
+        },
+        {
+          name: 'titleFontSize',
+          hidden: false
+        },
+        {
+          name: 'titleFontWeight',
+          hidden: false
+        },
+        {
+          name: 'titleLetterSpacing',
+          hidden: false
+        },
+        {
+          name: 'titleColor',
+          hidden: false
+        },
+        {
+          name: 'titleBackgroundColor',
+          hidden: false
+        },
+        {
+          name: 'titleTextDecoration',
+          hidden: false
+        },
+        {
+          name: 'titleTextAlign',
+          hidden: false
+        },
+        {
+          name: 'titleShowColon',
+          hidden: false
+        },
         {
           name: 'title',
           hidden: false
@@ -464,6 +548,9 @@
       default: {
         width: 120,
         height: 9.75,
+        titleWidth: 0,
+        titleHeight: 0,
+        titleFontWeight: "bold",
         // barAutoWidth: 'true' 这里必须使用字符串
       }
     },

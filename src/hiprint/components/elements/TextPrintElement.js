@@ -101,8 +101,8 @@ class PrintTextHelper {
       // })
       if (this.designTarget) {
         const data = this.getData();
-        this.css(this.designTarget, data);
         this.updateTargetText(this.designTarget, this.getTitle(), data);
+        this.css(this.designTarget, data);
       }
     }
   
@@ -153,14 +153,23 @@ class PrintTextHelper {
 
       const formatter = this.getFormatter();
       const contentElement = target.find(".hiprint-printElement-text-content");
-      let text = "";
-      text = this.getField()
-        ? (this.options.getHideTitle() ? "" : title ? `${title}：` : "") +
-          hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, value, this.options, this._currenttemplateData, target) : value)
-        : hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, title, this.options, this._currenttemplateData, target) : title);
+      
       const textType = this.options.getTextType();
       if (textType === "text") {
-        contentElement.html(hinnn.textToHtml(text));
+        title = hinnn.textToHtml(title);
+        value = hinnn.textToHtml(value);
+        let styles = "display:inline-block";
+        if (this.options.titleWidth){
+          styles += ";width:"+this.options.titleWidth+"pt";
+        }
+        if (this.options.titleHeight){
+          styles += ";height:"+this.options.titleHeight+"pt";
+        }
+        const text = this.getField()
+        ? (this.options.getHideTitle() ? "" : title ? '<span style="'+styles+'">'+ title + (this.options.titleShowColon === false?'':'：') +'</span>' : "") +
+          '<span>'+hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, value, this.options, this._currenttemplateData, target) : value) +'</span>'
+        : '<span>'+hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, title, this.options, this._currenttemplateData, target) : title)+'</span>';
+        contentElement.html(text);
       } else {
         if (textType === "barcode") {
           contentElement.css({

@@ -116,7 +116,7 @@ class SettingContainerEventManager {
           // 设置选项值
           if (['columns', 'dataType'].includes(optionItem.name)) {
             optionItem.setValue(printElement.options[optionItem.name], printElement.options, printElement.printElementType);
-          } else if (['coordinate', 'widthHeight'].includes(optionItem.name)) {
+          } else if (['coordinate', 'widthHeight', 'titleWidthHeight'].includes(optionItem.name)) {
             optionItem.setValue(printElement.options, printElement);
           } else {
             optionItem.setValue(printElement.options[optionItem.name] || printElement.printElementType[optionItem.name]);
@@ -181,7 +181,7 @@ class SettingContainerEventManager {
         // 设置选项值
         if (['columns', 'dataType'].includes(optionItem.name)) {
           optionItem.setValue(printElement.options[optionItem.name], printElement.options, printElement.printElementType);
-        } else if (['coordinate', 'widthHeight'].includes(optionItem.name)) {
+        } else if (['coordinate', 'widthHeight', 'titleWidthHeight'].includes(optionItem.name)) {
           optionItem.setValue(printElement.options, printElement);
         } else {
           optionItem.setValue(printElement.options[optionItem.name] || printElement.printElementType[optionItem.name]);

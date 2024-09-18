@@ -160,6 +160,17 @@ import HiddenExpressionOption from "./options/HiddenExpressionOption.js";
 import FormatterExpressionOption from "./options/FormatterExpressionOption.js";
 import CellHiddenExpressionOption from "./options/CellHiddenExpressionOption.js";
 import CellFormatterExpressionOption from "./options/CellFormatterExpressionOption.js";
+import TitleBackgroundColorOption from "./options/TitleBackgroundColorOption.js";
+import TitleColorOption from "./options/TitleColorOption.js";
+import TitleFontFamilyOption from "./options/TitleFontFamilyOption.js";
+import TitleFontSizeOption from "./options/TitleFontSizeOption.js";
+import TitleFontWeightOption from "./options/TitleFontWeightOption.js";
+import TitleLetterSpacingOption from "./options/TitleLetterSpacingOption.js";
+import TitleTextAlignOption from "./options/TitleTextAlignOption.js";
+import TitleTextDecorationOption from "./options/TitleTextDecorationOption.js";
+import TitleShowColonOption from "./options/TitleShowColonOption.js";
+import TitleWidthHeightOption from "./options/TitleWidthHeightOption.js";
+
    
   
     // 打印元素选项项管理器类
@@ -314,6 +325,16 @@ class PrintElementOptionItemManager {
 , new FormatterExpressionOption()
 , new CellHiddenExpressionOption()
 , new CellFormatterExpressionOption()
+, new TitleBackgroundColorOption()
+, new TitleColorOption()
+, new TitleFontFamilyOption()
+, new TitleFontSizeOption()
+, new TitleFontWeightOption()
+, new TitleLetterSpacingOption()
+, new TitleTextAlignOption()
+, new TitleTextDecorationOption()
+, new TitleShowColonOption()
+, new TitleWidthHeightOption()
   ];
 }
 
