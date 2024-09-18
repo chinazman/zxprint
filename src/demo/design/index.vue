@@ -668,7 +668,7 @@ export default {
       try {
         if (Object.keys(this.paperTypes).includes(type)) {
           this.curPaper = {type: type, width: value.width, height: value.height}
-          hiprintTemplate.setPaper(value.width, value.height)
+          hiprintTemplate.setPaper(type)
         } else {
           this.curPaper = {type: 'other', width: value.width, height: value.height}
           hiprintTemplate.setPaper(value.width, value.height)
@@ -803,8 +803,19 @@ export default {
     print() {
       if (window.hiwebSocket.opened) {
         const printerList = hiprintTemplate.getPrinterList();
-        console.log(printerList)
-        hiprintTemplate.print2(printData, {printer: '', title: 'hiprint测试打印'});
+        console.log(printerList);
+        let pageSize = this.curPaper.type;
+        let landscape = false;
+        if (this.curPaper.type === 'other'){
+          pageSize = {
+            width: this.curPaper.width * 1000,
+            height: this.curPaper.height * 1000
+          }
+        }
+        if (this.curPaper.width > this.curPaper.height){
+          landscape = true;
+        }
+        hiprintTemplate.print2(printData, {printer: '', title: 'hiprint测试打印', pageSize:pageSize,landscape:landscape, margins:{ left: 0,top: 0,bottom: 0,right: 0,marginType:"custom"}});//, pageSize:"A5", type:"pdf",landscape:true
         return
       }
       this.$error({

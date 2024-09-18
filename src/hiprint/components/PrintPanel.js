@@ -749,7 +749,7 @@ class PrintPanel {
         </style>
       `;
     }
-    return layoutStyle + " <style printStyle>\n        @page\n        {\n             border:0;\n             padding:0cm;\n             margin:0cm;\n             " + this.getPrintSizeStyle() + "\n        }\n        </style>\n";
+    return layoutStyle + " <style printStyle>\n        @page\n        {\n             border:0;\n             padding:0cm;\n                 " + this.getPrintSizeStyle() + "\n        }\n        </style>\n";
   }
 
   // 获取打印尺寸样式

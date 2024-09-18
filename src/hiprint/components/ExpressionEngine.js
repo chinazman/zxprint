@@ -46,7 +46,7 @@ class ExpressionEngine {
  */
 function MIN(fields, isAll){
     const data = isAll ? _context.allRows : _context.rows ;
-    if (data.length == 0){
+    if (!data||data.length == 0){
         return 0;
     }
     if (!fields){
@@ -67,7 +67,7 @@ function MIN(fields, isAll){
  */
 function MAX(fields, isAll){
     const data = isAll ? _context.allRows : _context.rows ;
-    if (data.length == 0){
+    if (!data||data.length == 0){
         return 0;
     }
     if (!fields){
@@ -83,7 +83,7 @@ function MAX(fields, isAll){
 
 function SUM(fields, isAll){
     const data = isAll ? _context.allRows : _context.rows ;
-    if (data.length == 0){
+    if (!data||data.length == 0){
         return 0;
     }
     if (!fields){
@@ -97,7 +97,7 @@ function SUM(fields, isAll){
 
 function AVG(fields, isAll){
     const data = isAll ? _context.allRows : _context.rows ;
-    if (data.length == 0){
+    if (!data||data.length == 0){
         return 0;
     }
     if (!fields){
@@ -111,7 +111,7 @@ function AVG(fields, isAll){
 
 function COUNT(fields, isAll){
     const data = isAll ? _context.allRows : _context.rows ;
-    if (data.length == 0){
+    if (!data||data.length == 0){
         return 0;
     }
     let sum = data.reduce((lastSum, row) => {

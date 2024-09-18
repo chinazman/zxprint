@@ -3,11 +3,14 @@
     margin: 0px;
     padding: 0px;
   }
+  .no-print {
+    visibility: hidden;
+  }
 }
 
-@page {
+/* @page {
   margin: 0;
-}
+} */
 
 .hiprint-printPaper * {
   box-sizing: border-box;
