@@ -8,10 +8,10 @@ import {i18n,$} from "../../hiprint.comm.js";
     css(element, fontWeight) {
       if (element.find("thead").length) {
         if (fontWeight) {
-          element.find("thead tr td").css("font-weight", fontWeight);
+          element.find("thead tr td[hfontweight!='1']").css("font-weight", fontWeight);
           return `font-weight:${fontWeight}`;
         }
-        element.find("thead tr td").map(function(index, cell) {
+        element.find("thead tr td[hfontweight!='1']").map(function(index, cell) {
           cell.style.fontWeight = "";
         });
       }

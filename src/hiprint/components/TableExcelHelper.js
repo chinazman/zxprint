@@ -40,12 +40,9 @@ class TableExcelHelper {
         column.id && cell.attr("id", column.id);
         column.columnId && cell.attr("column-id", column.columnId);
         (column.align || column.halign) && cell.css("text-align", column.halign || column.align);
-        if(column.hFontWeight){
-          cell.css("font-weight", column.hFontWeight);
-        }
-        column.hFontWeight &&cell.css("font-weight", column.hFontWeight);
-        column.hFontSize && cell.css("font-size", column.hFontSize + "pt");
-        column.hColor && cell.css("color", column.hColor);
+        column.hFontWeight && cell.css("font-weight", column.hFontWeight).attr("hfontweight", "1");
+        column.hFontSize && cell.css("font-size", column.hFontSize + "pt").attr("hfontsize", "1");
+        column.hColor && cell.css("color", column.hColor).attr("hcolor", "1");
         column.vAlign && cell.css("vertical-align", column.vAlign);
         column.colspan > 1 && cell.attr("colspan", column.colspan);
         column.rowspan > 1 && cell.attr("rowspan", column.rowspan);
