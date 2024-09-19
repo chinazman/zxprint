@@ -166,7 +166,7 @@ class PrintTextHelper {
           styles += ";height:"+this.options.titleHeight+"pt";
         }
         const text = this.getField()
-        ? (this.options.getHideTitle() ? "" : title ? '<span style="'+styles+'">'+ title + (this.options.titleShowColon === false?'':'：') +'</span>' : "") +
+        ? (this.options.getHideTitle() ? "" : title ? '<b style="'+styles+'">'+ title + (this.options.titleShowColon === false?'':'：') +'</b>' : "") +
           '<span>'+hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, value, this.options, this._currenttemplateData, target) : value) +'</span>'
         : '<span>'+hinnn.toUpperCase(this.options.upperCase, formatter ? formatter(title, title, this.options, this._currenttemplateData, target) : title)+'</span>';
         contentElement.html(text);

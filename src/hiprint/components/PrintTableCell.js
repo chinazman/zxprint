@@ -226,6 +226,9 @@ class CellEntity {
     this.width = cell.width;
     this.align = cell.align;
     this.halign = cell.halign;
+    this.hFontWeight = cell.hFontWeight;
+    this.hFontSize = cell.hFontSize;
+    this.hColor = cell.hColor;
     this.vAlign = cell.vAlign;
     this.colspan = cell.colspan;
     this.rowspan = cell.rowspan;
@@ -417,6 +420,9 @@ class PrintTableCell extends TableCell {
     this.colspan = options.colspan ? parseInt(options.colspan) : 1;
     this.align = options.align;
     this.halign = options.halign;
+    this.hFontWeight = options.hFontWeight;
+    this.hFontSize = options.hFontSize;
+    this.hColor = options.hColor;
     this.vAlign = options.vAlign;
     this.cellHiddenExpression = options.cellHiddenExpression;
     this.cellFormatterExpression = options.cellFormatterExpression;

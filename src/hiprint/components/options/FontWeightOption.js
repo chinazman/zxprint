@@ -25,6 +25,7 @@ class FontWeightOption {
           <div class="hiprint-option-item-field">
             <select class="auto-submit">
               <option value="">${i18n.__('默认')}</option>
+              <option value="normal">${i18n.__('普通')}</option>
               <option value="lighter">${i18n.__('更细')}</option>
               <option value="bold">${i18n.__('粗体')}</option>
               <option value="bolder">${i18n.__('粗体+')}</option>

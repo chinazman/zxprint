@@ -10,7 +10,7 @@ class TitleColorOption extends ColorOption {
   }
   css(element, value) {
     if (element && element.length) {
-      return super.css(element.find(".hiprint-printElement-text-content>span:first"), value);
+      return super.css(element.find(".hiprint-printElement-text-content>b:first"), value);
     }
   }
 }

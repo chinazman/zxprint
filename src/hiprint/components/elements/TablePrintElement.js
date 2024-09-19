@@ -28,6 +28,9 @@ class TableColumnOption {
     this.colspan = options.colspan || 1;
     this.align = options.align;
     this.halign = options.halign;
+    this.hFontWeight = options.hFontWeight;
+    this.hFontSize = options.hFontSize;
+    this.hColor = options.hColor;
     this.vAlign = options.vAlign;
     this.renderFormatter = options.renderFormatter;
     this.cellHiddenExpression = options.cellHiddenExpression;

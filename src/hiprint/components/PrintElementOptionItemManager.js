@@ -170,6 +170,9 @@ import TitleTextAlignOption from "./options/TitleTextAlignOption.js";
 import TitleTextDecorationOption from "./options/TitleTextDecorationOption.js";
 import TitleShowColonOption from "./options/TitleShowColonOption.js";
 import TitleWidthHeightOption from "./options/TitleWidthHeightOption.js";
+import HFontWeightOption from "./options/HFontWeightOption.js";
+import HColorOption from "./options/HColorOption.js";
+import HFontSizeOption from "./options/HFontSizeOption.js";
 
    
   
@@ -335,7 +338,9 @@ class PrintElementOptionItemManager {
 , new TitleTextDecorationOption()
 , new TitleShowColonOption()
 , new TitleWidthHeightOption()
+, new HFontWeightOption()
+, new HColorOption()
+, new HFontSizeOption()
   ];
 }
-
 export default PrintElementOptionItemManager;

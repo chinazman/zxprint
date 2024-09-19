@@ -18,8 +18,9 @@ class TitleWidthHeightOption  {
       <div class="hiprint-option-item-label">
       ${i18n.__('宽高大小')}
       </div>
-      <input type="number" style="width:49%" placeholder="${i18n.__('宽')}" class="auto-submit" />
-      <input type="number" style="width:49%" placeholder="${i18n.__('高')}" class="auto-submit" />
+      <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">
+      <input type="number" style="width:48%" placeholder="${i18n.__('宽')}" class="auto-submit" /><label style="margin: 0 4px;text-align:center;" > </label>
+      <input type="number" style="width:48%" placeholder="${i18n.__('高')}" class="auto-submit" />
       </div>
       </div>`);
     return self.target;

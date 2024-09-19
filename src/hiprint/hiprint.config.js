@@ -550,7 +550,6 @@
         height: 9.75,
         titleWidth: 0,
         titleHeight: 0,
-        titleFontWeight: "bold",
         // barAutoWidth: 'true' 这里必须使用字符串
       }
     },
@@ -1921,11 +1920,23 @@
           hidden: false
         },
         {
-          name: 'align',
+          name: 'halign',
           hidden: false
         },
         {
-          name: 'halign',
+          name: 'hFontWeight',
+          hidden: false
+        },
+        {
+          name: 'hFontSize',
+          hidden: false
+        },
+        {
+          name: 'hColor',
+          hidden: false
+        },
+        {
+          name: 'align',
           hidden: false
         },
         {
