@@ -1,5 +1,7 @@
 import {$} from "../../hiprint.comm.js";
 import PrintTableCell from "../PrintTableCell.js";
+import TableExcelHelper from "../TableExcelHelper.js";
+
 
 // 列选项类
 class ColumnsOption {
@@ -25,6 +27,8 @@ class ColumnsOption {
 
   // 设置值
   setValue(value, options, printElementType) {
+    const self = this;
+    value = value.filter(column => !TableExcelHelper.isFooterRow(column));
     this.value = value;
     this.options = options;
     this.printElementType = printElementType;
@@ -75,10 +79,10 @@ class ColumnsOption {
           onDragLeave: function (event, dragElement) {
             $(this).css("border-top-color", "");
           },
-          onDrop: (event, dragElement) => {
+          onDrop: function (event, dragElement) {
             $(dragElement).insertBefore(this);
             $(this).css("border-top-color", "");
-            this.submit();
+            self.submit();
           }
         });
       }
