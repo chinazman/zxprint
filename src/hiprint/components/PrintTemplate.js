@@ -688,7 +688,7 @@ class PrintTemplate {
       let templateOptions = this;
       let cssIndex = 0;
       let cssMap = {};
-      let printCss = $('link[media=print][href*="print-lock.css"]');
+      let printCss = $('link[media=print]');
       let css = '';
       if (options.styleHandler) {
         css += options.styleHandler();
