@@ -110,6 +110,7 @@ class TableExcelHelper {
         column.vAlign && cell.css("vertical-align", column.vAlign);
         column.colspan > 1 && cell.attr("colspan", column.colspan);
         column.rowspan > 1 && cell.attr("rowspan", column.rowspan);
+        //如果包含=开头的，表示表达式计算
         const value = column.title && column.title.startsWith("=")?ExpressionEngine.execute(column.title.substring(1), context):column.title;
         cell.html(value);
         column.columnId && cell.attr("column-id", column.columnId);
@@ -125,6 +126,9 @@ class TableExcelHelper {
           }
         }
         row.append(cell);
+        //只要有==开头的，表示该行是总计行，需要打标,计算高度需要用到
+
+        column.title && column.title.startsWith("==")&&row.attr("islaststat", "1");
       });
       thead.append(row);
     };

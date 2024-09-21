@@ -504,7 +504,7 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
     var currentTable = tableContainer.find(".hiprint-printElement-tableTarget:eq(" + columnIndex + ")");
     //先合进去算下高度
     if ("yes" == this.options.tableFooterRepeat) {
-      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, false);
+      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, true);
       footer.insertBefore(currentTable.find("tbody"));
     }
     var result;
@@ -564,14 +564,22 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
             pageData.push(rowData);
             containerHeight = currentTable.outerHeight();
             if (("last" == this.options.tableFooterRepeat ? containerHeight : containerHeight += footerHeight) > heightInPx || (this.options.maxRows && pageData.length > +this.options.maxRows)) {
-              tbody.prepend(currentRow);
-              allRowsData.pop();
-              pageData.pop();
-              containerHeight = currentTable.outerHeight();
-              result = {
-                height: hinnn.px.toPt(containerHeight),
-                isEnd: false
-              };
+              //如果分页没有结束，那就要把总计行给移除后重新计算
+              //如果又刚刚好多了总计行就超了，那就把最后一行数据还是移回去，给最后一页，但是这样会导致倒数第二行少了总计行的高度
+              const lastStatRows = currentTable.find("tfoot tr[islaststat='1']");
+              if (lastStatRows.length && 0 != tbody.find("tr").length) {
+                containerHeight = 0;
+                lastStatRows.remove();
+              }else{
+                tbody.prepend(currentRow);
+                allRowsData.pop();
+                pageData.pop();
+                containerHeight = currentTable.outerHeight();
+                result = {
+                  height: hinnn.px.toPt(containerHeight),
+                  isEnd: false
+                };
+              }
             }
           }
         }
