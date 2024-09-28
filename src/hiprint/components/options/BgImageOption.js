@@ -15,7 +15,7 @@ class BgImageOption {
         ${i18n.__('背景图片')}
         </div>
         <div class="hiprint-option-item-field" style="display: flex;align-items: baseline;">
-        <input type="text" placeholder="${i18n.__('请输入图片地址')}" class="auto-submit" style="width:70%">
+        <input type="text" placeholder="${i18n.__('请输入图片地址')}"  style="width:70%">
     <button class="hiprint-option-item-settingBtn" style="padding:0 10px;margin:0 0 0 5px" type="button">${i18n.__('选择')}</button> <input type="file" class="hiprint-option-item-file" style="display:none"/>       </div>
     </div>`);
 
@@ -41,61 +41,31 @@ class BgImageOption {
                 self.setValue(data);
                 // self.refresh(data);
                 self.submit();
-                panel.addBgImage(data);
+                panel.addBgImage();
             })
             .catch((error) => {
                 console.error('图片压缩失败:', error);
             });
-            // const reader = new FileReader();
-            // reader.onload = function(e) {
-            //     const panel = self.el.editingPanel;
-            //     const data = {
-            //         "filename": file.name,
-            //         "x": 0,
-            //         "y": 0,
-            //         "width": hinnn.mm.toPt(panel.width),
-            //         "height": hinnn.mm.toPt(panel.height),
-            //         "src": e.target.result
-            //     }
-
-            //     self.setValue(data);
-            //     self.refresh(data);
-
-            //     // self.refresh(e.target.result);
-            // };
-            // reader.readAsDataURL(file); // 读取文件内容并转换成Base64编码
         }
-        })
-        // this.target.find('button').click(() => {
-        //     const panel = printTemplate.editingPanel;
-        //     const elementType = PrintElementTypeFactory.createPrintElementType({
-        //         "title": "BgImage",
-        //         "type": "image"
-        //     });
-        //     const bgElement = elementType.createPrintElement({
-        //         "x": 0,
-        //         "y": 0,
-        //         "width": hinnn.mm.toPt(panel.width),
-        //         "height": hinnn.mm.toPt(panel.height),
-        //         "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAIIAQMAAAB99EudAAAABlBMVEUmf8vG2O41LStnAAABD0lEQVR42u3XQQqCQBSAYcWFS4/QUTpaHa2jdISWLUJjjMpclJoPGvq+1WsYfiJCZ4oCAAAAAAAAAAAAAAAAAHin6pL9c6H/fOzHbRrP0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0u/SY9LS0tLS0tLS0tLS0n+edm+UlpaWlpaWlpaWlpaW/tl0Ndyzbno7/+tPTJdd1wal69dNa6abx+Lq6TSeYtK7BX/Diek0XULSZZrakPRtV0i6Hu/KIt30q4fM0pvBqvR9mvsQkZaW9gyJT+f5lsnzjR54xAk8mAUeJyMPwYFH98ALx5Jr0kRLLndT7b64UX9QR/0eAAAAAAAAAAAAAAAAAAD/4gpryzr/bja4QgAAAABJRU5ErkJggg=="
-        //     });
-        //     bgElement.setTemplateId(panel.templateId);
-        //     bgElement.setPanel(panel);
-        //     panel.printElements.unshift(bgElement);
-        //     panel.appendDesignPrintElement(panel.designPaper, bgElement);
-        //     bgElement.design(null, panel.designPaper);
-        //     bgElement.designTarget.prependTo(bgElement.designTarget.parent());
-        // });
+        });
+        //class="auto-submit"
+        this.target.find('input[type=text]').on("change", function () {
+            self.submit();
+            self.el.editingPanel.addBgImage();
+        });
+
     }
     return this.target;
   }
 
   getValue() {
-    const value = this.target.find("input[type=text]").data("value");
-    if (value){
-      value.filename = this.target.find("input[type=text]").val();
-      return value;
+    const data = this.target.find("input[type=text]").data("value");
+    const filename = this.target.find("input[type=text]").val();
+    if (data && filename){
+        data.filename = filename;
+      return data;
     }
+    return undefined;
   }
 
   setValue(value) {

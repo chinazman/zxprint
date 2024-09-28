@@ -163,30 +163,36 @@ class PrintPanel {
  * 向面板添加背景图像
  * 如果面板有背景图像，则创建一个图像打印元素并将其添加到面板的设计纸上
  */
-  addBgImage(data) {
+  addBgImage(paper, data) {
     const panel = this;
     const imageData = data || panel.bgImage;
+    const thisPaper = paper|| panel.designPaper;
     // 移除之前的图像打印元素
-    panel.designPaper.target.children(".hiprint-printElement-image").remove();
+    // thisPaper.target.children(".hiprint-printElement-image").remove();
+    // if (imageData){
+    //   const elementType = PrintElementTypeFactory.createPrintElementType({
+    //       "title": "BgImage",
+    //       "type": "image"
+    //   });
+    //   const bgElement = elementType.createPrintElement({
+    //       "x": 0,
+    //       "y": 0,
+    //       "width": hinnn.mm.toPt(panel.width),
+    //       "height": hinnn.mm.toPt(panel.height),
+    //       "src": imageData.src
+    //   });
+    //   bgElement.setTemplateId(panel.templateId);
+    //   bgElement.setPanel(panel);
+    //   // panel.printElements.unshift(bgElement);
+    //   panel.appendDesignPrintElement(thisPaper, bgElement);
+    //   // bgElement.design(null, panel.designPaper);
+    //   bgElement.designTarget.prependTo(thisPaper.target);//bgElement.designTarget.parent().parent()
+    //   bgElement.designTarget.addClass("no-print");
+    // }
+    thisPaper.target.children(".bgimage").remove();
     if (imageData){
-      const elementType = PrintElementTypeFactory.createPrintElementType({
-          "title": "BgImage",
-          "type": "image"
-      });
-      const bgElement = elementType.createPrintElement({
-          "x": 0,
-          "y": 0,
-          "width": hinnn.mm.toPt(panel.width),
-          "height": hinnn.mm.toPt(panel.height),
-          "src": imageData.src
-      });
-      bgElement.setTemplateId(panel.templateId);
-      bgElement.setPanel(panel);
-      // panel.printElements.unshift(bgElement);
-      panel.appendDesignPrintElement(panel.designPaper, bgElement);
-      // bgElement.design(null, panel.designPaper);
-      bgElement.designTarget.prependTo(panel.designPaper.target);//bgElement.designTarget.parent().parent()
-      bgElement.designTarget.addClass("no-print");
+      $(`<div class="no-print bgimage" style="position:absolute;user-select:none;top:0;left:0;width: ${panel.width}mm; height: ${panel.height}mm;;z-index:0;pointer-events:none !important;background-repeat:repeat;background-image:url('${imageData.src}')"></div>`)
+      .prependTo(thisPaper.target);
     }
   }
 
@@ -489,6 +495,7 @@ class PrintPanel {
       if (config.paperNumberContinue) {
         hinnn._paperList.forEach((page, index) => {
           page.updatePaperNumber(index + 1, hinnn._paperList.length);
+          panel.addBgImage(page)
         });
       }
     }
