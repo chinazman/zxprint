@@ -22,6 +22,10 @@
           hidden: false
         },
         {
+          name: 'bgImage',
+          hidden: false
+        },
+        {
           name: 'firstPaperFooter',
           hidden: false
         },
@@ -567,7 +571,7 @@
             },
             {
               name: 'isBackground',
-              hidden: false
+              hidden: true
             },
             {
               name: 'fit',
@@ -651,7 +655,7 @@
         },
         {
           name: 'isBackground',
-          hidden: false
+          hidden: true
         },
         {
           name: 'fit',

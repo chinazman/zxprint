@@ -32,6 +32,7 @@ class PrintPanelOption {
     this.paperNumberFormat = options.paperNumberFormat;
     this.panelPaperRule = options.panelPaperRule;
     this.panelPageRule = options.panelPageRule;
+    this.bgImage = options.bgImage;
     this.rotate = options.rotate || undefined;
     this.firstPaperFooter = options.firstPaperFooter;
     this.evenPaperFooter = options.evenPaperFooter;

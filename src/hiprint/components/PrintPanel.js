@@ -66,6 +66,7 @@ class PrintPanel {
     this.paperNumberFormat = panelOptions.paperNumberFormat;
     this.panelPaperRule = panelOptions.panelPaperRule;
     this.panelPageRule = panelOptions.panelPageRule;
+    this.bgImage = panelOptions.bgImage;
     this.firstPaperFooter = panelOptions.firstPaperFooter;
     this.evenPaperFooter = panelOptions.evenPaperFooter;
     this.oddPaperFooter = panelOptions.oddPaperFooter;
@@ -106,6 +107,7 @@ class PrintPanel {
       let panelOptions = {
         panelPaperRule: panel.panelPaperRule,
         panelPageRule: panel.panelPageRule,
+        bgImage: panel.bgImage,
         firstPaperFooter: panel.firstPaperFooter,
         evenPaperFooter: panel.evenPaperFooter,
         oddPaperFooter: panel.oddPaperFooter,
@@ -131,6 +133,7 @@ class PrintPanel {
           updatedOptions.watermarkOptions && panel.designPaper.createWaterMark(true, 1, updatedOptions.watermarkOptions);
           panel.panelPaperRule = updatedOptions.panelPaperRule;
           panel.panelPageRule = updatedOptions.panelPageRule;
+          panel.bgImage = updatedOptions.bgImage;
           panel.firstPaperFooter = updatedOptions.firstPaperFooter;
           panel.evenPaperFooter = updatedOptions.evenPaperFooter;
           panel.oddPaperFooter = updatedOptions.oddPaperFooter;
@@ -154,7 +157,39 @@ class PrintPanel {
     this.bindShortcutKeyEvent();
     this.bingPasteEvent();
     this.bindBatchMoveElement();
+    this.addBgImage();
   }
+  /**
+ * 向面板添加背景图像
+ * 如果面板有背景图像，则创建一个图像打印元素并将其添加到面板的设计纸上
+ */
+  addBgImage(data) {
+    const panel = this;
+    const imageData = data || panel.bgImage;
+    // 移除之前的图像打印元素
+    panel.designPaper.target.children(".hiprint-printElement-image").remove();
+    if (imageData){
+      const elementType = PrintElementTypeFactory.createPrintElementType({
+          "title": "BgImage",
+          "type": "image"
+      });
+      const bgElement = elementType.createPrintElement({
+          "x": 0,
+          "y": 0,
+          "width": hinnn.mm.toPt(panel.width),
+          "height": hinnn.mm.toPt(panel.height),
+          "src": imageData.src
+      });
+      bgElement.setTemplateId(panel.templateId);
+      bgElement.setPanel(panel);
+      // panel.printElements.unshift(bgElement);
+      panel.appendDesignPrintElement(panel.designPaper, bgElement);
+      // bgElement.design(null, panel.designPaper);
+      bgElement.designTarget.prependTo(panel.designPaper.target);//bgElement.designTarget.parent().parent()
+      bgElement.designTarget.addClass("no-print");
+    }
+  }
+
 
   // 更新面板
   update(panelOptions) {
@@ -214,6 +249,7 @@ class PrintPanel {
       this.panelLayoutOptions = panelOptions.panelLayoutOptions;
       this.panelPaperRule = panelOptions.panelPaperRule;
       this.panelPageRule = panelOptions.panelPageRule;
+      this.bgImage = panelOptions.bgImage;
       this.firstPaperFooter = panelOptions.firstPaperFooter;
       this.evenPaperFooter = panelOptions.evenPaperFooter;
       this.oddPaperFooter = panelOptions.oddPaperFooter;
@@ -520,6 +556,7 @@ class PrintPanel {
       paperNumberFormat: this.paperNumberFormat ? this.paperNumberFormat : undefined,
       panelPaperRule: this.panelPaperRule ? this.panelPaperRule : undefined,
       panelPageRule: this.panelPageRule ? this.panelPageRule : undefined,
+      bgImage: this.bgImage ? this.bgImage : undefined,
       paperNumberLeft: this.paperNumberLeft,
       paperNumberTop: this.paperNumberTop,
       printElements: printElements,

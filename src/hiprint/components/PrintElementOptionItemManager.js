@@ -173,6 +173,7 @@ import TitleWidthHeightOption from "./options/TitleWidthHeightOption.js";
 import HFontWeightOption from "./options/HFontWeightOption.js";
 import HColorOption from "./options/HColorOption.js";
 import HFontSizeOption from "./options/HFontSizeOption.js";
+import BgImageOption from "./options/BgImageOption.js";
 
    
   
@@ -341,6 +342,7 @@ class PrintElementOptionItemManager {
 , new HFontWeightOption()
 , new HColorOption()
 , new HFontSizeOption()
+, new BgImageOption()
   ];
 }
 export default PrintElementOptionItemManager;

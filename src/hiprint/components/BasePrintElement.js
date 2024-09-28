@@ -775,8 +775,7 @@ class BasePrintElement {
         if (option && option.css) {
           const cssResult = option.css(
             element,
-            this.options.getValueFromOptionsOrDefault(optionItem.name),
-            this.options
+            this.options.getValueFromOptionsOrDefault(optionItem.name)
           );
           if (option.target){
             option.target.attr("option-name",option.name);
