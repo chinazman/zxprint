@@ -63,6 +63,9 @@ class BgImageOption {
     const filename = this.target.find("input[type=text]").val();
     if (data && filename){
         data.filename = filename;
+        if (filename.startsWith("https://") || filename.startsWith("http://")){
+            data.src = filename;
+        }
       return data;
     }
     return undefined;
@@ -77,27 +80,6 @@ class BgImageOption {
 
   destroy() {
     this.target.remove();
-  }
-
-  refresh(data) {
-    const panel = this.el.editingPanel;
-    const elementType = PrintElementTypeFactory.createPrintElementType({
-        "title": "BgImage",
-        "type": "image"
-    });
-    const bgElement = elementType.createPrintElement({
-        "x": 0,
-        "y": 0,
-        "width": hinnn.mm.toPt(panel.width),
-        "height": hinnn.mm.toPt(panel.height),
-        "src": data.src
-    });
-    bgElement.setTemplateId(panel.templateId);
-    bgElement.setPanel(panel);
-    // panel.printElements.unshift(bgElement);
-    panel.appendDesignPrintElement(panel.designPaper, bgElement);
-    // bgElement.design(null, panel.designPaper);
-    bgElement.designTarget.prependTo(bgElement.designTarget.parent());
   }
 }
 
