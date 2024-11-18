@@ -378,11 +378,41 @@ getPaperHtmlResult(printPage, templateData) {
       paperFooterHeight = printPage.getPaperFooter(pageIndex);
     }
     
-    let previousTarget = paperHtmlResults.length > 0 ? paperHtmlResults[paperHtmlResults.length - 1].target : undefined,
-        rowResult = this.getRowsInSpecificHeight(templateData, availableHeight > 0 ? availableHeight : (pageIndex === 0 ? paperFooterHeight - beginPrintTop : printPage.getContentHeight(pageIndex)), tempEmptyRowsTarget, tableHtml, pageIndex, previousTarget, tableFooterHeight);
-    
+    // 首先确定 previousTarget
+    let previousTarget;
+    if (paperHtmlResults.length > 0) {
+        previousTarget = paperHtmlResults[paperHtmlResults.length - 1].target;
+    } else {
+        previousTarget = undefined;
+    }
+
+    // 然后确定要使用的高度
+    let heightToUse;
+    if (availableHeight > 0) {
+        heightToUse = availableHeight;
+    } else {
+        if (pageIndex === 0) {
+            heightToUse = paperFooterHeight - beginPrintTop;
+        } else {
+            heightToUse = printPage.getContentHeight(pageIndex);
+        }
+    }
+
+    // 最后调用方法获取结果
+    let rowResult = this.getRowsInSpecificHeight(
+        templateData,
+        heightToUse,
+        tempEmptyRowsTarget,
+        tableHtml,
+        pageIndex,
+        previousTarget,
+        tableFooterHeight
+    );
     isEnd = rowResult.isEnd;
-    
+    if (pageIndex === 0 && !isEnd && !rowResult.target && rowResult.height == 0){
+      console.error("没有足够空间进行表格分页，请调整页眉/页脚线");
+      break;
+    }
     if (availableHeight < 0) {
       paperHtmlResults[0].target = $(`<div style="position:absolute;background: red;color: white;padding: 0px 4px;">${i18n.__('没有足够空间进行表格分页，请调整页眉/页脚线')}</div>`);
       paperHtmlResults[0].printLine = beginPrintTop;

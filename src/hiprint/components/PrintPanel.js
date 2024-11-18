@@ -291,7 +291,7 @@ class PrintPanel {
       console.log('插入面板 end', end);
       console.log('插入面板 time:', end - start);
     } catch (error) {
-      console.log('???????');
+      console.log('更新面板异常');
       console.log(error);
     }
   }
