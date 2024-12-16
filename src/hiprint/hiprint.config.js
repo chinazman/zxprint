@@ -1067,6 +1067,10 @@
               hidden: false
             },
             {
+              name: 'textContentWrap',
+              hidden: false
+            },
+            {
               name: 'gridColumns',
               hidden: false
             },
@@ -1212,6 +1216,10 @@
         },
         {
           name: 'textAlign',
+          hidden: false
+        },
+        {
+          name: 'textContentWrap',
           hidden: false
         },
         {

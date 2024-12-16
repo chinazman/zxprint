@@ -371,7 +371,13 @@ class TableExcelHelper {
       if (renderFormatter) {
         cell.html(renderFormatter(rowData[column.field], rowData, columnIndex, options, rowIndex));
       } else if (column.tableTextType === "text" || column.tableTextType === undefined) {
-        cell.html(formattedValue);
+        if (formattedValue && options.textContentWrap){
+          cell.addClass("hiprint-text-content-wrap");
+          cell.html('<span class="hiprint-text-content-wrap-'+options.textContentWrap+'">'+formattedValue+'</span>');
+        }else{
+          cell.html(formattedValue);
+        }
+        
       } else {
         if (column.tableTextType === "barcode") {
           cell.html('<svg width="100%" display="block" height="100%" class="hibarcode_imgcode" preserveAspectRatio="none slice"></svg><div class="hibarcode_displayValue"></div>');

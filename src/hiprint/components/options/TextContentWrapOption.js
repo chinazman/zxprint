@@ -18,6 +18,7 @@ class TextContentWrapOption {
         <option value="nowrap" >${i18n.__('不换行')}</option>
         <option value="clip" >${i18n.__('不换行&隐藏')}</option>
         <option value="ellipsis" >${i18n.__('不换行&省略')}</option>
+        <option value="shrink" >${i18n.__('不换行&缩小')}</option>
        </select>
         </div>
     </div>`);
@@ -26,11 +27,12 @@ class TextContentWrapOption {
 
   // 设置CSS样式
   css(element, value) {
-    if (element && element.length) {
+    if (element && element.length && !element.is("table") && !element.hasClass("hiprint-printElement-table")) {
       element.removeClass("hiprint-text-content-wrap");
       element.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-nowrap");
       element.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-clip");
       element.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-ellipsis");
+      element.find(".hiprint-printElement-text-content").removeClass("hiprint-text-content-wrap-shrink");
       if (value) {
         element.addClass("hiprint-text-content-wrap");
         element.find(".hiprint-printElement-text-content").addClass("hiprint-text-content-wrap-" + value);

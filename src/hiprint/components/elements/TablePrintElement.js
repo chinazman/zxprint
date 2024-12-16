@@ -589,6 +589,8 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
               currentRow = that.fixMergeSpan(currentRow, tbody);
             }
             currentTable.find("tbody").append(currentRow);
+            //处理不换行
+            hinnn.noWrapAndShrink(currentRow);
             var rowData = currentRow.data("rowData");
             allRowsData.push(rowData);
             pageData.push(rowData);

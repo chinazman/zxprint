@@ -339,5 +339,20 @@ hinnn.textToHtml = (text, enc) => {
   return text;
 
 }
+//不换行并缩小字体
+hinnn.noWrapAndShrink = ($element) => {
+  $element.find(".hiprint-text-content-wrap-shrink").each(function (index, item) {
+    let srcHeight = $(item).height();
+    const nowrapHeight = $(item).css("white-space","nowrap").height();
+    $(item).css("white-space","");
+    //暂时先写死从16pt开始
+    let fontsize = 16;
+    while (srcHeight > nowrapHeight && fontsize >= 6){
+      item.style.fontSize = (fontsize--) + "pt";
+      srcHeight = $(item).height();
+    }
+  });
+}
+
 window.hinnn = hinnn;
 export default hinnn;

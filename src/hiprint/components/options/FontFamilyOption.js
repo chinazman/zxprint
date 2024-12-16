@@ -49,6 +49,16 @@ class FontFamilyOption {
               <option value="">${i18n.__('默认')}</option>
               <option value="SimSun">${i18n.__('宋体')}</option>
               <option value="Microsoft YaHei">${i18n.__('微软雅黑')}</option>
+              <option value="SimHei">${i18n.__('黑体')}</option>
+              <option value="KaiTi">${i18n.__('楷体')}</option>
+              <option value="FangSong">${i18n.__('仿宋')}</option>
+              <option value="Arial">${i18n.__('Arial')}</option>
+              <option value="Verdana">${i18n.__('Verdana')}</option>
+              <option value="Times New Roman">${i18n.__('Times New Roman')}</option>
+              <option value="Tahoma">${i18n.__('Tahoma')}</option>
+              <option value="Georgia">${i18n.__('Georgia')}</option>
+              <option value="Impact">${i18n.__('Impact')}</option>
+              <option value="Comic Sans MS">${i18n.__('Comic Sans MS')}</option>
             </select>
           </div>
         </div>
