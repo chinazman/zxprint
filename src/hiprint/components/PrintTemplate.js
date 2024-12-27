@@ -843,7 +843,7 @@ class PrintTemplate {
         unit: "pt",
         format: this.printPanels[0].paperType ? this.printPanels[0].paperType.toLocaleLowerCase() : [width, height]
       });
-      let htmlContent = this.getHtml(data, options);
+      let htmlContent = typeof data === "string" ? $(data) : this.getHtml(data, options);
       if (options && options.isDownload !== undefined) {
         isDownload = options.isDownload;
       }
