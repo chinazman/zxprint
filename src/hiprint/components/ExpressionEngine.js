@@ -140,6 +140,46 @@ function COUNT(fields, isAll){
 function DATE_FORMAT(data, format){
     return _hinnn.dateFormat(data, format);
 }
+/**
+ * 判断是否相同
+ * @param {*} fields 
+ * @param {*} isAll 
+ * @returns 
+ */
+function IS_SAME(fields, isAll){
+    const data = isAll ? _context.allRows : _context.rows ;
+    if (!data||data.length == 0){
+        return true;
+    }
+    if (!fields){
+        return false;
+    }
+    const firstValue = data[0][fields];  // 获取首个对象的指定字段值
+
+  return data.every(obj => obj[fields] === firstValue); // 比较后续对象的指定字段值是否与首个相同
+}
+/**
+ * 取单行字段值，默认取第一行
+ * @param {*} fields 
+ * @param {*} rownum 
+ * @returns 
+ */
+function FIELD_VALUE(fields, rownum){
+    const data = _context.rows ;
+    if (!data||data.length == 0){
+        return "";
+    }
+    if (!fields){
+        return "请填字段";
+    }
+    if (rownum === undefined || rownum === null){
+        rownum = 0;
+    }
+    if (rownum >= data.length){
+        return "";
+    }
+    return data[rownum][fields];
+}
 
 /**
  * 字段求和
@@ -162,6 +202,8 @@ ExpressionEngine.register("AVG", AVG);
 ExpressionEngine.register("COUNT", COUNT);
 ExpressionEngine.register("CN_MONEY", CN_MONEY);
 ExpressionEngine.register("DATE_FORMAT", DATE_FORMAT);
+ExpressionEngine.register("IS_SAME", IS_SAME);
+ExpressionEngine.register("FIELD_VALUE", FIELD_VALUE);
 /**
  * 执行表达式
  * 有待优化，可以考虑将Function缓存
