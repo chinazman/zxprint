@@ -81,7 +81,7 @@ class TableExcelHelper {
   /**
    * 创建表格页脚
    */
-  static createTableFooter2(columns, allData, pageData, isLastPage) {
+  static createTableFooter2(columns, allData, pageData, isLastPage, templateData) {
 
     const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => TableExcelHelper.isFooterRow(column)));
 
@@ -95,7 +95,8 @@ class TableExcelHelper {
       }
       const context = {
         rows: isLastStat?allData:pageData,
-        allRows: allData
+        allRows: allData,
+        templateData: templateData
       };
 
       const row = $("<tr></tr>");

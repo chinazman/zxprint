@@ -222,7 +222,7 @@ function _eval(expstr, row){
         // console.log(varstr);
         _funcMap[expstr] = new Function("regMap", "rows","allRows","templateData","row","value",varstr);
     }
-    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.templateData, row||_context.row, _context.value);
+    return _funcMap[expstr](_regMap, _context.rows, _context.allRows, _context.templateData||{}, row||_context.row, _context.value);
 
     //最好不用with
     // const func = new Function("context", "with (context) { return " + expstr + "; }")

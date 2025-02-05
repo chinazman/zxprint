@@ -303,7 +303,7 @@ getTableHtml(allTableData, templateData) {
   //   if (!hasFooter) {
   //     this.newEmptyFooter();
   //   }
-  //   let footer = TableExcelHelper.createTableFooter2(this.getColumns(), allTableData, allTableData, true);
+  //   let footer = TableExcelHelper.createTableFooter2(this.getColumns(), allTableData, allTableData, true, templateData);
   //   table.append(footer);
   // }
   return table;
@@ -534,7 +534,7 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
     var currentTable = tableContainer.find(".hiprint-printElement-tableTarget:eq(" + columnIndex + ")");
     //先合进去算下高度
     if ("yes" == this.options.tableFooterRepeat) {
-      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, true);
+      let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, true, templateData);
       footer.insertBefore(currentTable.find("tbody"));
     }
     var result;
@@ -638,7 +638,7 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
           if (!hasFooter && !this.isNotDesign) {
             this.newEmptyFooter();
           }
-          let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, result.isEnd);
+          let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, result.isEnd, templateData);
           footer.insertBefore(currentTable.find("tbody"));
         // }else{
         //   //移除掉避免出现不必要
