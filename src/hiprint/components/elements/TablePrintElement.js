@@ -166,6 +166,9 @@ updateDesignViewFromOptions() {
   if (this.designTarget) {
     let contentElement = this.designTarget.find(".hiprint-printElement-table-content"),
         htmlContent = this.getHtml(this.designPaper);
+    if (!htmlContent[0] || !htmlContent[0].target){
+      return;
+    }
     contentElement.html("");
     contentElement.append(htmlContent[0].target.find(".table-grid-row"));
     if (this.printElementType.editable) {
