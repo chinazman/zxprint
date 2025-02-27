@@ -483,7 +483,7 @@ class TableExcelHelper {
 
     const row = $("<tr></tr>");
     //reconstitutedColumns.rowColumns
-    reconstitutedColumns[reconstitutedColumns.totalLayer -1].filter(column => column.checked).forEach((column, columnIndex) => {
+    reconstitutedColumns.rowColumns.filter(column => column.checked).forEach((column, columnIndex) => {
       const cell = $("<td></td>");
       column.field && cell.attr("field", column.field);
       column.align && cell.css("text-align", column.align);
