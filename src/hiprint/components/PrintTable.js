@@ -204,10 +204,21 @@ class PrintGripResizer {
     let gripsList = [];
     let columnGripsContainer = $('<div class="columngrips"/>');
     columnGripsContainer.width(this.target.width());
-
+    //解决顺序不对问题
+    let colMap = {};
     this.rows.forEach(row => {
       (row.columns || []).filter(column => column.checked).forEach((column, index) => {
         if (column.getTarget().attr("haswidth")) {
+          colMap[column.id] = column;
+        }
+      })
+    });
+    const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(this.rows.filter(column => !TableExcelHelper.isFooterRow(column)));
+    reconstitutedColumns.rowColumns.filter(column => column.checked).forEach(columnx => {
+          let column = colMap[columnx.id];
+          if (!column) {
+            return;
+          }
           let columnGrip = $('<div class="columngrip"><div class="gripResizer"></div></div>');
           columnGripsContainer.append(columnGrip);
           let newGrip = new Grips(columnGrip);
@@ -225,7 +236,14 @@ class PrintGripResizer {
               return $('.hiprint-printPaper')[0].style.transform && parseFloat($('.hiprint-printPaper')[0].style.transform.slice(6, -1)) || 1;
             },
             onBeforeDrag: (event) => {
-              if (PrintLib.instance.draging = !0, !newGrip.nextGrip) return !1;
+              // 标记当前正在进行拖动操作
+              PrintLib.instance.draging = true;
+              
+              // 检查是否存在下一个调整手柄
+              if (!newGrip.nextGrip) {
+                  // 如果不存在下一个调整手柄，终止当前操作
+                  return false;
+              }
               this.dragingGrip = newGrip;
               this.dragingGrip.left = parseFloat(this.dragingGrip.target.css("left").replace("px", ""));
               newGrip.target.addClass("columngripDraging");
@@ -247,8 +265,8 @@ class PrintGripResizer {
               this.updateColumnGrips();
             }
           });
-        }
-      });
+      //   }
+      // });
     });
 
     this.target.before(columnGripsContainer);
@@ -448,6 +466,10 @@ class PrintTable {
         if (currentCell.rowLevel === 0) {
           const currentRow = allRows[rowIdx];
           const newCell = allRows[rowIdx].createTableCell();
+          //表尾要保持一致
+          if(currentCell.cell){
+            newCell.isFoot = currentCell.cell.isFoot;
+          }
           
           if (className) {
             newCell.getTarget().addClass(className);
@@ -479,7 +501,10 @@ class PrintTable {
         if (currentCell.rightMost) {
           const currentRow = allRows[rowIdx];
           const newCell = currentRow.createTableCell();
-          
+          //表尾要保持一致
+          if(currentCell.cell){
+            newCell.isFoot = currentCell.cell.isFoot;
+          }
           if (className) {
             newCell.getTarget().addClass(className);
           }
