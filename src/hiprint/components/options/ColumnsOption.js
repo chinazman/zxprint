@@ -28,8 +28,8 @@ class ColumnsOption {
   // 设置值
   setValue(value, options, printElementType) {
     const self = this;
-    value = value.filter(column => !TableExcelHelper.isFooterRow(column));
     this.value = value;
+    value = value.filter(column => !TableExcelHelper.isFooterRow(column));
     this.options = options;
     this.printElementType = printElementType;
 
@@ -45,7 +45,7 @@ class ColumnsOption {
 
     if (value && value.length == 1) {
       this.target.find("ul").html(this.allColumns.map((column, index) => 
-        `<li  class="hiprint-option-table-selected-item"> <div class="hi-pretty p-default">
+        `<li  class="hiprint-option-table-selected-item" column-id="${column.id || column.columnId}"> <div class="hi-pretty p-default">
                 ${column.checked ? 
                   `<input type="checkbox"   checked column-id="${column.id || column.columnId}" />` : 
                   `<input type="checkbox"  column-id="${column.id || column.columnId}" />`}
@@ -58,11 +58,12 @@ class ColumnsOption {
       this.target.find("input").change(e => {
         const checked = e.target.checked;
         const id = e.target.attributes['column-id'].nodeValue || '';
-        const idx = this.allColumns.findIndex(col => col.field == id || col.id == id);
+        const idx = self.allColumns.findIndex(col => col.field == id || col.id == id);
         if (idx >= 0) {
-          this.allColumns[idx]['checked'] = checked;
+          self.allColumns[idx]['checked'] = checked;
+          checked?self.showColumns(self.getSelectedIdx(id), self.allColumns[idx]) :self.hideColumns(self.getSelectedIdx(id));
         }
-        this.submit();
+        self.submit();
       });
 
       if (this.printElementType.columnDisplayIndexEditable) {
@@ -80,6 +81,16 @@ class ColumnsOption {
             $(this).css("border-top-color", "");
           },
           onDrop: function (event, dragElement) {
+            const id = dragElement.attributes['column-id'].nodeValue;
+            const dragIdx = self.getSelectedIdx(id);
+            let thisIdx = self.getSelectedIdx(this.attributes['column-id'].nodeValue);
+            if (dragIdx < thisIdx) {
+              thisIdx--;
+            }
+            self.hideColumns(dragIdx);
+            const oldColumn = self.allColumns.find(col => col.field == id || col.id == id)
+            self.showColumns(thisIdx, oldColumn);
+
             $(dragElement).insertBefore(this);
             $(this).css("border-top-color", "");
             self.submit();
@@ -88,11 +99,94 @@ class ColumnsOption {
       }
     }
   }
+  //找到位置，这个位置是有勾选的问题，没有勾选不算。
+  getSelectedIdx(id) {
+    let selIdx = 0; 
+    for (let i = 0; i < this.allColumns.length; i++) {
+      const col = this.allColumns[i];
+      if (col.field == id || col.id == id) {
+        break;
+      }else if (col.checked) {
+        selIdx++; 
+      }
+    }
+    return selIdx;
+  }
+  //显示列
+  showColumns(idx, oldColumn) {
+    for (let i = 1; i < this.value.length; i++) {
+      let newColumns = [];
+      if (idx == 0) {
+        const tableColumn = new PrintTableCell(oldColumn);
+        tableColumn.checked = true;
+        newColumns.push(tableColumn); 
+      }
+      let colIdx = 0;
+      for (let j = 0; j < this.value[i].columns.length; j++) {
+        let column = this.value[i].columns[j];
+        let colspan = column.colspan || 1;
+        //没有选中的列，跳过
+        if (!column.checked){
+          continue;
+        }
+        if (colspan > 1 && colIdx < idx && colIdx + colspan > idx) {
+          column.colspan = colspan + 1;
+          const tableColumn = new PrintTableCell(column);
+          tableColumn.checked = column.checked;
+          newColumns.push(tableColumn);
+        }else{
+          const tableColumn = new PrintTableCell(column);
+          tableColumn.checked = column.checked;
+          newColumns.push(tableColumn);
+        }
+        if (colspan == 1 && colIdx == idx - 1) {
+          const tableColumn = new PrintTableCell(oldColumn);
+          tableColumn.checked = true;
+          tableColumn.title = "";
+          tableColumn.descTitle = "";
+          tableColumn.field = "";
+          newColumns.push(tableColumn); 
+        }
+        colIdx = colIdx + colspan;
+      }
+      this.value[i].columns = newColumns;
+    }
+  }
+  //隐藏列
+  hideColumns(idx) {
+    for (let i = 1; i < this.value.length; i++) {
+      let newColumns = [];
+      let colIdx = 0;
+      for (let j = 0; j < this.value[i].columns.length; j++) {
+        let column = this.value[i].columns[j];
+        let colspan = column.colspan || 1;
+        //没有选中的列，跳过
+        if (!column.checked){
+          continue;
+        }
+
+        if (colspan == 1 && colIdx == idx) {
+          
+        }else if (colspan > 1 && colIdx <= idx && colIdx + colspan > idx) {
+          column.colspan = colspan - 1;
+          const tableColumn = new PrintTableCell(column);
+          tableColumn.checked = true;
+          newColumns.push(tableColumn);
+        }else{
+          const tableColumn = new PrintTableCell(column);
+          tableColumn.checked = true;
+          newColumns.push(tableColumn);
+        }
+        colIdx = colIdx + colspan;
+      }
+      this.value[i].columns = newColumns;
+    }
+  }
 
   // 构建数据
   buildData() {
     const columns = [];
-    if (this.options.columns.length > 1) {
+    if (this.options.columns.filter(column => !TableExcelHelper.isFooterRow(column)).length > 1) {
       return this.value;
     }
     this.printElementType.makeColumnObj(this.allColumns);
