@@ -112,42 +112,44 @@ class ColumnsOption {
     }
     return selIdx;
   }
+  // 提取创建新 PrintTableCell 对象的逻辑到一个单独的函数
+  createTableCell(column, checked = true, isFoot = true, title = "", descTitle = "", field = "") {
+    const tableColumn = new PrintTableCell(column);
+    tableColumn.checked = checked;
+    tableColumn.isFoot = isFoot;
+    tableColumn.title = title;
+    tableColumn.descTitle = descTitle;
+    tableColumn.field = field;
+    return tableColumn;
+  }
+
   //显示列
   showColumns(idx, oldColumn) {
     for (let i = 1; i < this.value.length; i++) {
       let newColumns = [];
-      if (idx == 0) {
-        const tableColumn = new PrintTableCell(oldColumn);
-        tableColumn.checked = true;
-        newColumns.push(tableColumn); 
+      // 处理 idx 为 0 的情况
+      if (idx === 0) {
+        newColumns.push(this.createTableCell(oldColumn));
       }
       let colIdx = 0;
       for (let j = 0; j < this.value[i].columns.length; j++) {
         let column = this.value[i].columns[j];
         let colspan = column.colspan || 1;
-        //没有选中的列，跳过
-        if (!column.checked){
+        // 跳过未选中的列
+        if (!column.checked) {
           continue;
         }
         if (colspan > 1 && colIdx < idx && colIdx + colspan > idx) {
           column.colspan = colspan + 1;
-          const tableColumn = new PrintTableCell(column);
-          tableColumn.checked = column.checked;
-          newColumns.push(tableColumn);
-        }else{
-          const tableColumn = new PrintTableCell(column);
-          tableColumn.checked = column.checked;
-          newColumns.push(tableColumn);
+          newColumns.push(this.createTableCell(column, column.checked));
+        } else {
+          newColumns.push(this.createTableCell(column, column.checked));
         }
-        if (colspan == 1 && colIdx == idx - 1) {
-          const tableColumn = new PrintTableCell(oldColumn);
-          tableColumn.checked = true;
-          tableColumn.title = "";
-          tableColumn.descTitle = "";
-          tableColumn.field = "";
-          newColumns.push(tableColumn); 
+        // 在指定位置插入新列
+        if (colspan === 1 && colIdx === idx - 1) {
+          newColumns.push(this.createTableCell(oldColumn));
         }
-        colIdx = colIdx + colspan;
+        colIdx += colspan;
       }
       this.value[i].columns = newColumns;
     }
@@ -156,28 +158,24 @@ class ColumnsOption {
   hideColumns(idx) {
     for (let i = 1; i < this.value.length; i++) {
       let newColumns = [];
-      let colIdx = 0;
+      let currentColIndex = 0;
       for (let j = 0; j < this.value[i].columns.length; j++) {
-        let column = this.value[i].columns[j];
-        let colspan = column.colspan || 1;
-        //没有选中的列，跳过
-        if (!column.checked){
+        const currentColumn = this.value[i].columns[j];
+        const colSpan = currentColumn.colspan || 1;
+        // 跳过未选中的列
+        if (!currentColumn.checked) {
           continue;
         }
-
-        if (colspan == 1 && colIdx == idx) {
-          
-        }else if (colspan > 1 && colIdx <= idx && colIdx + colspan > idx) {
-          column.colspan = colspan - 1;
-          const tableColumn = new PrintTableCell(column);
-          tableColumn.checked = true;
-          newColumns.push(tableColumn);
-        }else{
-          const tableColumn = new PrintTableCell(column);
-          tableColumn.checked = true;
-          newColumns.push(tableColumn);
+  
+        if (colSpan === 1 && currentColIndex === idx) {
+          // 隐藏此列，不添加到新列数组中
+        } else if (colSpan > 1 && currentColIndex <= idx && currentColIndex + colSpan > idx) {
+          currentColumn.colspan = colSpan - 1;
+          newColumns.push(this.createTableCell(currentColumn));
+        } else {
+          newColumns.push(this.createTableCell(currentColumn));
         }
-        colIdx = colIdx + colspan;
+        currentColIndex += colSpan;
       }
       this.value[i].columns = newColumns;
     }
