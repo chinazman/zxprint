@@ -51,6 +51,10 @@ import TableHeaderBorderOption from "./options/TableHeaderBorderOption.js";
 import TableHeaderCellBorderOption from "./options/TableHeaderCellBorderOption.js";
 import TableFooterBorderOption from "./options/TableFooterBorderOption.js";
 import TableFooterCellBorderOption from "./options/TableFooterCellBorderOption.js"; 
+import TableFooterBackgroundOption from "./options/TableFooterBackgroundOption.js"; 
+import TableFooterFontSizeOption from "./options/TableFooterFontSizeOption.js"; 
+import TableFooterFontWeightOption from "./options/TableFooterFontWeightOption.js"; 
+import TableFooterRowHeightOption from "./options/TableFooterRowHeightOption.js";
 import TableHeaderRowHeightOption from "./options/TableHeaderRowHeightOption.js";
 import TableHeaderFontWeightOption from "./options/TableHeaderFontWeightOption.js";
 import TableHeaderFontSizeOption from "./options/TableHeaderFontSizeOption.js";
@@ -225,6 +229,11 @@ class PrintElementOptionItemManager {
 , new TableBodyCellBorderOption()
 , new TableFooterBorderOption()
 , new TableFooterCellBorderOption()
+, new TableFooterRowHeightOption()
+, new TableFooterBackgroundOption()
+, new TableFooterFontSizeOption()
+, new TableFooterFontWeightOption()
+, new TableFooterRowHeightOption()
 , new TableBodyRowHeightOption()
 , new TableHeaderBackgroundOption()
 , new BorderWidthOption()

@@ -2,16 +2,18 @@ import {i18n,$} from "../../hiprint.comm.js";
   class TableHeaderFontWeightOption {
     constructor() {
       this.name = "tableHeaderFontWeight";
+      this.type = "thead";
+      this.label = i18n.__('表头字体粗细');
     }
 
     // 设置表头字体粗细
     css(element, fontWeight) {
-      if (element.find("thead").length) {
+      if (element.find(this.type).length) {
         if (fontWeight) {
-          element.find("thead tr td[hfontweight!='1']").css("font-weight", fontWeight);
+          element.find(this.type + " tr td[hfontweight!='1']").css("font-weight", fontWeight);
           return `font-weight:${fontWeight}`;
         }
-        element.find("thead tr td[hfontweight!='1']").map(function(index, cell) {
+        element.find(this.type + " tr td[hfontweight!='1']").map(function(index, cell) {
           cell.style.fontWeight = "";
         });
       }
@@ -22,7 +24,7 @@ import {i18n,$} from "../../hiprint.comm.js";
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头字体粗细')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <select class="auto-submit">

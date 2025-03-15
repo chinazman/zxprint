@@ -2,21 +2,23 @@ import {i18n,$} from "../../hiprint.comm.js";
 class TableHeaderCellBorderOption {
     constructor() {
       this.name = "tableHeaderCellBorder";
+      this.type = "thead";
+      this.label = i18n.__('表头单元格边框');
     }
 
     // 设置表头单元格边框样式
     css(element, borderType) {
-      if (element.find("thead tr").length) {
+      if (element.find(this.type + " tr").length) {
         switch (borderType) {
           case "border":
           case undefined:
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-all");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-td-all");
             break;
           case "noBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-td-none");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-td-none");
             break;
           default:
-            element.find("thead tr").removeClass();
+            element.find(this.type + " tr").removeClass();
         }
       }
 
@@ -27,7 +29,7 @@ class TableHeaderCellBorderOption {
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头单元格边框')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <select class="auto-submit">

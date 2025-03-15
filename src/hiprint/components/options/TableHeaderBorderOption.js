@@ -2,39 +2,41 @@ import {i18n,$} from "../../hiprint.comm.js";
 class TableHeaderBorderOption {
     constructor() {
       this.name = "tableHeaderBorder";
+      this.type = "thead";
+      this.label = i18n.__('表头边框');
     }
 
     // 设置表头边框样式
     css(element, borderType) {
-      if (element.find("thead tr").length) {
+      if (element.find(this.type + " tr").length) {
         switch (borderType) {
           case "border":
           case undefined:
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-all");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-all");
             break;
           case "noBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-none");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-none");
             break;
           case "leftBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-left");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-left");
             break;
           case "rightBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-right");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-right");
             break;
           case "leftRightBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-lr");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-lr");
             break;
           case "topBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-top");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-top");
             break;
           case "bottomBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-bottom");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-bottom");
             break;
           case "topBottomBorder":
-            element.find("thead tr").addClass("hiprint-printElement-tableTarget-border-tb");
+            element.find(this.type + " tr").addClass("hiprint-printElement-tableTarget-border-tb");
             break;
           default:
-            element.find("thead tr").removeClass();
+            element.find(this.type + " tr").removeClass();
         }
       }
 
@@ -45,7 +47,7 @@ class TableHeaderBorderOption {
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头边框')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <select class="auto-submit">

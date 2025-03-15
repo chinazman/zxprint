@@ -2,16 +2,18 @@ import {i18n,$} from "../../hiprint.comm.js";
   class TableHeaderFontSizeOption {
     constructor() {
       this.name = "tableHeaderFontSize";
+      this.type = "thead";
+      this.label = i18n.__('表头字体大小');
     }
 
     // 设置表头字体大小
     css(element, fontSize) {
-      if (element.find("thead").length) {
+      if (element.find(this.type).length) {
         if (fontSize) {
-          element.find("thead").css("font-size", `${fontSize}pt`);
+          element.find(this.type).css("font-size", `${fontSize}pt`);
           return `font-size:${fontSize}pt`;
         }
-        element.find("thead").map(function(index, header) {
+        element.find(this.type).map(function(index, header) {
           header.style.fontSize = "";
         });
       }
@@ -22,7 +24,7 @@ import {i18n,$} from "../../hiprint.comm.js";
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头字体大小')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <select class="auto-submit">

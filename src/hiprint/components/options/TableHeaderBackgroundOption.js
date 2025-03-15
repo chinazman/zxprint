@@ -2,16 +2,18 @@ import {i18n,$} from "../../hiprint.comm.js";
   class TableHeaderBackgroundOption {
     constructor() {
       this.name = "tableHeaderBackground";
+      this.type = "thead";
+      this.label = i18n.__('表头背景');
     }
 
     // 设置表头背景颜色
     css(element, backgroundColor) {
-      if (element.find("thead").length) {
+      if (element.find(this.type).length) {
         if (backgroundColor) {
-          element.find("thead").css("background", backgroundColor);
+          element.find(this.type).css("background", backgroundColor);
           return `background:${backgroundColor}`;
         }
-        element.find("thead").map(function(index, header) {
+        element.find(this.type).map(function(index, header) {
           header.style.background = "";
         });
       }
@@ -22,7 +24,7 @@ import {i18n,$} from "../../hiprint.comm.js";
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头背景')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <input type="text" class="auto-submit" />

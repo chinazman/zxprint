@@ -2,16 +2,18 @@ import {i18n,$} from "../../hiprint.comm.js";
   class TableHeaderRowHeightOption {
     constructor() {
       this.name = "tableHeaderRowHeight";
+      this.type = "thead";
+      this.label = i18n.__('表头字体粗细');
     }
 
     // 设置表头行高
     css(element, rowHeight) {
-      if (element.find("thead tr td").length) {
+      if (element.find(this.type + " tr td").length) {
         if (rowHeight) {
-          element.find("thead tr td:not([rowspan])").css("height", `${rowHeight}pt`);
+          element.find(this.type + " tr td:not([rowspan])").css("height", `${rowHeight}pt`);
           return `height:${rowHeight}pt`;
         }
-        element.find("thead tr td").map(function(index, cell) {
+        element.find(this.type + " tr td").map(function(index, cell) {
           cell.style.height = "";
         });
       }
@@ -22,7 +24,7 @@ import {i18n,$} from "../../hiprint.comm.js";
     createTarget() {
       this.target = $(`<div class="hiprint-option-item">
         <div class="hiprint-option-item-label">
-        ${i18n.__('表头行高')}
+        ${this.label}
         </div>
         <div class="hiprint-option-item-field">
         <select class="auto-submit">
