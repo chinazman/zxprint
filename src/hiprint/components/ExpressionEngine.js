@@ -44,7 +44,7 @@ class ExpressionEngine {
  * @param {*} fields 
  * @returns 
  */
-function MIN(fields, isAll){
+function MIN(fields, isAll, precision){
     const data = isAll ? _context.allRows : _context.rows ;
     if (!data||data.length == 0){
         return 0;
@@ -57,7 +57,7 @@ function MIN(fields, isAll){
         const lastSum = _sum(lastRow, fields);
         return currentSum < lastSum ? row : lastRow;
       });
-    return _sum(obj, fields);
+    return ROUND(_sum(obj, fields), precision);
 }
 
 /**
@@ -65,7 +65,7 @@ function MIN(fields, isAll){
  * @param {*} fields 
  * @returns 
  */
-function MAX(fields, isAll){
+function MAX(fields, isAll, precision){
     const data = isAll ? _context.allRows : _context.rows ;
     if (!data||data.length == 0){
         return 0;
@@ -78,10 +78,10 @@ function MAX(fields, isAll){
         const lastSum = _sum(lastRow, fields);
         return currentSum > lastSum ? row : lastRow;
       });
-    return _sum(maxObj, fields);
+    return ROUND(_sum(maxObj, fields), precision);
 }
 
-function SUM(fields, isAll){
+function SUM(fields, isAll, precision){
     const data = isAll ? _context.allRows : _context.rows ;
     if (!data||data.length == 0){
         return 0;
@@ -92,10 +92,10 @@ function SUM(fields, isAll){
     let sum = data.reduce((lastSum, row) => {
         return lastSum + _sum(row, fields);
       }, 0);
-    return sum;
+    return ROUND(sum, precision);
 }
 
-function AVG(fields, isAll){
+function AVG(fields, isAll, precision){
     const data = isAll ? _context.allRows : _context.rows ;
     if (!data||data.length == 0){
         return 0;
@@ -106,7 +106,7 @@ function AVG(fields, isAll){
     let sum = data.reduce((lastSum, row) => {
         return lastSum + _sum(row, fields);
       }, 0);
-    return sum/data.length;
+    return ROUND(sum/data.length, precision);
 }
 
 function COUNT(fields, isAll){
@@ -179,6 +179,21 @@ function FIELD_VALUE(fields, rownum){
         return "";
     }
     return data[rownum][fields];
+}
+/**
+ * 四舍五入
+ * @param {*} num
+ * @param {*} precision
+ */
+function ROUND(num, precision){
+    if (precision === undefined || precision === null){
+        //默认保留6位小数,解决精度问题
+        precision = 6;
+    }
+    var times = Math.pow(10, precision);
+    var des = num * times + 0.5;
+    des = parseInt(des, 10) / times;
+    return des;
 }
 
 /**
