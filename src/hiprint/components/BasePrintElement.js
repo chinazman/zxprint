@@ -1249,18 +1249,21 @@ class BasePrintElement {
       const json = JSON.stringify(copyElements);
       copyArea.text(json);
       copyArea.css("visibility", "visible");
-
-      if (copyArea.setSelectionRange) {
-        copyArea.setSelectionRange(0, copyArea.value.length);
-      } else {
-        copyArea.select();
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText("zprint://" + json);
+      // }else{
+      //   if (copyArea.setSelectionRange) {
+      //     copyArea.setSelectionRange(0, copyArea.value.length);
+      //   } else {
+      //     copyArea.select();
+      //   }
+      //   document.execCommand("copy");
       }
-
-      const flag = document.execCommand("copy");
       copyArea.css("visibility", "hidden");
       this.designTarget.focus();
       console.log("copyJson success");
-      return flag;
+      return true;
     } catch (error) {
       console.log("copyJson error", error);
       return false;

@@ -328,11 +328,22 @@ class PrintPanel {
   }
 
   // 粘贴JSON
-  pasteJson(event) {
-    const copyArea = $('#copyArea');
-    if (!copyArea.length) return;
+  async pasteJson(event) {
+    let json = null;
+    // 从剪切板获取JSON数据
+    if (navigator.clipboard){
+      json = await navigator.clipboard.readText();
+      console.log('pasteJson', json);
+      if (json && json.startsWith("zprint://")){
+        json = json.substring(9);
+      }
+    }
+    if (!json){
+      const copyArea = $('#copyArea');
+      if (!copyArea.length) return;
+      json = copyArea.text();
+    }
     try {
-      const json = copyArea.text();
       const objList = JSON.parse(json);
       let operationPasterPosition = null;
       let replacePosition = null;
@@ -344,9 +355,11 @@ class PrintPanel {
         // todo: 使用参数创建
         const panel = this;
         const options = obj.options;
-        const element = panel.getElementById(obj.id);
-        if (!element) return;
-        const clonedElement = element.clone(obj);
+        // const element = panel.getElementById(obj.id);
+        // if (!element) return;
+        // const clonedElement = element.clone(obj);
+        const elementType = this.getPrintElementTypeByEntity(obj);
+        const clonedElement = elementType == null? null : elementType.createPrintElement(obj.options);
         if (!clonedElement) return;
         // 判断是否是在元素上进行paste
         if (index === 0) {
