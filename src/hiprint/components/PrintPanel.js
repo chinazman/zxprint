@@ -334,8 +334,8 @@ class PrintPanel {
     if (navigator.clipboard){
       json = await navigator.clipboard.readText();
       console.log('pasteJson', json);
-      if (json && json.startsWith("zprint://")){
-        json = json.substring(9);
+      if (json && json.startsWith(hinnn.config.clipboardPrefix)){
+        json = json.substring(hinnn.config.clipboardPrefix.length);
       }
     }
     if (!json){

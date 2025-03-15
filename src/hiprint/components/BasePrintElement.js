@@ -1251,7 +1251,7 @@ class BasePrintElement {
       copyArea.css("visibility", "visible");
       
       if (navigator.clipboard) {
-        navigator.clipboard.writeText("zprint://" + json);
+        navigator.clipboard.writeText(hinnn.config.clipboardPrefix + json);
       // }else{
       //   if (copyArea.setSelectionRange) {
       //     copyArea.setSelectionRange(0, copyArea.value.length);

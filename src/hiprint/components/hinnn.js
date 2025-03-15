@@ -353,6 +353,11 @@ hinnn.noWrapAndShrink = ($element) => {
     }
   });
 }
+//配置对象
+hinnn.config = {
+  // 打印预览模式
+  clipboardPrefix: "zxprint://", 
+}
 
 window.hinnn = hinnn;
 export default hinnn;
