@@ -6,7 +6,7 @@ class TableFooterRowHeightOption extends TableHeaderRowHeightOption{
         super();
       this.name = "tableFooterRowHeight";
       this.type = "tfoot";
-      this.label = i18n.__('表尾字体粗细');
+      this.label = i18n.__('表尾行高');
     }
   }
 

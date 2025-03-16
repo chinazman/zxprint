@@ -3,7 +3,7 @@ import {i18n,$} from "../../hiprint.comm.js";
     constructor() {
       this.name = "tableHeaderRowHeight";
       this.type = "thead";
-      this.label = i18n.__('表头字体粗细');
+      this.label = i18n.__('表头行高');
     }
 
     // 设置表头行高

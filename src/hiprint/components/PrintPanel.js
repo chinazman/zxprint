@@ -333,7 +333,6 @@ class PrintPanel {
     // 从剪切板获取JSON数据
     if (navigator.clipboard){
       json = await navigator.clipboard.readText();
-      console.log('pasteJson', json);
       if (json && json.startsWith(hinnn.config.clipboardPrefix)){
         json = json.substring(hinnn.config.clipboardPrefix.length);
       }

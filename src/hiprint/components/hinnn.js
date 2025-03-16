@@ -357,6 +357,8 @@ hinnn.noWrapAndShrink = ($element) => {
 hinnn.config = {
   // 打印预览模式
   clipboardPrefix: "zxprint://", 
+  helpLink: "https://github.com/chinazman/zxprint/blob/main/help.md",
+  defaultPrecision: 6,
 }
 
 window.hinnn = hinnn;

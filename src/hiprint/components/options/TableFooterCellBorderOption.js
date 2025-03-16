@@ -1,7 +1,7 @@
 import {i18n,$} from "../../hiprint.comm.js";
-import TableHeaderBorderOption from "./TableHeaderBorderOption.js";
+import TableHeaderCellBorderOption from "./TableHeaderCellBorderOption.js";
 // 表尾单元格边框类
-class TableFooterCellBorderOption extends TableHeaderBorderOption{
+class TableFooterCellBorderOption extends TableHeaderCellBorderOption{
     constructor() {
       super();
       this.name = "tableFooterCellBorder";

@@ -441,6 +441,13 @@ font-weight: normal;*/
     background: red;
 }
 
+.hiprint-option-item-helpBtn {
+	height: 19pt;
+    line-height: 19pt;
+    font-size: 12px;
+    padding: 0 24px;
+}
+
 .hiprint-option-items .minicolors {
     position: relative;
 }
@@ -1067,3 +1074,44 @@ font-weight: normal;*/
     .hicontextmenuroot .disable> a:hover {
         background-color:#fff;
     }
+
+    .hiprint-grid-menu {
+        background: #fff;
+        border: 0.75pt solid #ccc;
+        box-shadow: 1.5pt 1.5pt 3.75pt rgba(0,0,0,0.2);
+        padding: 3.75pt 0;
+    }
+    
+    .hiprint-grid-menu .menu-item {
+        padding: 3.75pt 15pt;
+        cursor: pointer;
+    }
+    
+    .hiprint-grid-menu .menu-item:hover {
+        background: #f0f0f0;
+    }
+    
+    .hiprint-grid-table .hiprint-resize-handle {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 4.5pt;
+        height: 4.5pt;
+        background: #ccc;
+        cursor: se-resize;
+    }
+    
+    .hiprint-grid-table .hiprint-selected-cell {
+        background-color: #e6f3ff !important;
+        border: 0.75pt solid #1890ff !important;
+    }
+    
+    /* 添加表格单元格边框样式 */
+    .hiprint-grid-table td,
+    .hiprint-grid-table th {
+        border: 1pt solid black;
+    }
+    
+    .hiprint-grid-table {
+        border-collapse: collapse;
+    } 

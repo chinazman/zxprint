@@ -194,6 +194,9 @@ class SettingContainerEventManager {
     const deleteButton = $(`<button class="hiprint-option-item-settingBtn hiprint-option-item-deleteBtn" type="button">${i18n.__('删除')}</button>`);
     settingContent.append(submitButton);
     printElement.options.draggable !== false && settingContent.append(deleteButton);
+    //加入帮助链接
+    const helpLink = $(`<a class="hiprint-option-item-helpBtn" href="${hinnn.config.helpLink}#${printElement.printElementType.type}" target="_blank">${i18n.__('帮助')}</a>`);
+    settingContent.append(helpLink);
 
     // 为选项卡添加点击事件
     if (tabs.length) {

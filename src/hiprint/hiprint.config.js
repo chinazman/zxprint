@@ -1107,10 +1107,6 @@
               hidden: false
             },
             {
-              name: 'tableBodyRowHeight',
-              hidden: false
-            },
-            {
               name: 'tableBodyRowBorder',
               hidden: false
             },
@@ -1124,6 +1120,26 @@
             },
             {
               name: 'tableFooterCellBorder',
+              hidden: false
+            },
+            {
+              name: 'tableFooterRowHeight',
+              hidden: false
+            },
+            {
+              name: 'tableFooterBackground',
+              hidden: false
+            },
+            {
+              name: 'tableFooterFontSize',
+              hidden: false
+            },
+            {
+              name: 'tableFooterFontWeight',
+              hidden: false
+            },
+            {
+              name: 'tableBodyRowHeight',
               hidden: false
             },
             {
@@ -1280,6 +1296,22 @@
         },
         {
           name: 'tableFooterCellBorder',
+          hidden: false
+        },
+        {
+          name: 'tableFooterRowHeight',
+          hidden: false
+        },
+        {
+          name: 'tableFooterBackground',
+          hidden: false
+        },
+        {
+          name: 'tableFooterFontSize',
+          hidden: false
+        },
+        {
+          name: 'tableFooterFontWeight',
           hidden: false
         },
         {

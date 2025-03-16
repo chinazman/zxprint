@@ -188,7 +188,7 @@ function FIELD_VALUE(fields, rownum){
 function ROUND(num, precision){
     if (precision === undefined || precision === null){
         //默认保留6位小数,解决精度问题
-        precision = 6;
+        precision = _hinnn.config.defaultPrecision;
     }
     var times = Math.pow(10, precision);
     var des = num * times + 0.5;
@@ -219,6 +219,7 @@ ExpressionEngine.register("CN_MONEY", CN_MONEY);
 ExpressionEngine.register("DATE_FORMAT", DATE_FORMAT);
 ExpressionEngine.register("IS_SAME", IS_SAME);
 ExpressionEngine.register("FIELD_VALUE", FIELD_VALUE);
+ExpressionEngine.register("ROUND", ROUND);
 /**
  * 执行表达式
  * 有待优化，可以考虑将Function缓存
