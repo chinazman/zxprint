@@ -221,6 +221,14 @@
                     </a>
                   </div>
                 </a-col>
+                <a-col :span="12" class="drag_item_box">
+                  <div>
+                    <a class="ep-draggable-item" tid="defaultModule.grid" style>
+                      <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                      <p class="glyphicon-class">Gird</p>
+                    </a>
+                  </div>
+                </a-col>
               </a-row>
               <a-row style="height: 100px;">
                 <a-col :span="12" class="drag_item_box">

@@ -1348,7 +1348,8 @@ class BasePrintElement {
       const elements = this.panel.printElements.filter(
         (el) =>
           "block" === el.designTarget.children().last().css("display") &&
-          !el.printElementType.type.includes("table")
+          !el.printElementType.type.includes("table") &&
+          !el.printElementType.type.includes("grid")
       );
       const isMultiple = elements.length > 1;
       const movingDistance = PrintConfig.instance.movingDistance;

@@ -97,6 +97,11 @@ export default function (hiprint) {
             ],
           },
           {
+            tid: "defaultModule.grid",
+            title: "Grid",
+            type: "grid"
+          },
+          {
             tid: "defaultModule.html",
             title: "html",
             formatter: function (data, options) {

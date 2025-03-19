@@ -11,6 +11,7 @@ import OvalPrintElement from "./elements/OvalPrintElement.js";
 import BarcodePrintElement from "./elements/BarcodePrintElement.js";
 import QrcodePrintElement from "./elements/QrcodePrintElement.js";
 import TablePrintElement from "./elements/TablePrintElement.js";
+import GridPrintElement from "./elements/GridPrintElement.js";
 
 // 打印元素实体类
 class PrintElementTypeEntity {
@@ -194,6 +195,8 @@ class PrintElementFactory {
         return new BarcodePrintElement(elementType, options);
       case "qrcode":
         return new QrcodePrintElement(elementType, options);
+        case "grid":
+          return new GridPrintElement(elementType, options);
       default:
         return undefined;
     }

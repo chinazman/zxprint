@@ -2480,6 +2480,182 @@
         qrcodeType: 'qrcode',
         testData: 'qrcode'
       }
+    },
+    grid: {
+      tabs: [{
+        name: '基础',
+        options: [{
+          name: 'field',
+          hidden: false
+        }, {
+          name: 'testData',
+          hidden: false
+        }, {
+          name: 'coordinate',
+          hidden: false
+        }, {
+          name: 'widthHeight',
+          hidden: false
+        }, {
+          name: 'axis',
+          hidden:false
+        }]
+      }, {
+        name: '样式',
+        options: [{
+          name: 'fontFamily',
+          hidden: false
+        }, {
+          name: 'fontSize',
+          hidden: false
+        }, {
+          name: 'fontWeight',
+          hidden: false
+        }, {
+          name: 'letterSpacing',
+          hidden: false
+        }, {
+          name: 'color',
+          hidden: false
+        }, {
+          name: 'backgroundColor',
+          hidden: false
+        }, {
+          name: 'barColor',
+          hidden: false
+        }, {
+          name: 'textAlign',
+          hidden: false
+        }, {
+          name: 'textContentVerticalAlign',
+          hidden: false
+        }, {
+          name: 'lineHeight',
+          hidden: false
+        }, {
+          name: 'zIndex',
+          hidden: false
+        }]
+      },
+      // 留空即显示 单元格 属性
+      {
+        name: '单元格', options: []
+      }],
+      supportOptions: [{
+        name: 'field',
+        hidden:false
+      }, {
+        name: 'testData',
+        hidden:false
+      }, {
+        name: 'coordinate',
+        hidden:false
+      }, {
+        name: 'widthHeight',
+        hidden:false
+      }, {
+        name: 'axis',
+        hidden:false
+      }, {
+        name: 'hideTitle',
+        hidden:false
+      }, {
+        name: 'fixed',
+        hidden:false
+      }, {
+        name: 'fontFamily',
+        hidden:false
+      }, {
+        name: 'fontSize',
+        hidden:false
+      }, {
+        name: 'fontWeight',
+        hidden:false
+      }, {
+        name: 'letterSpacing',
+        hidden:false
+      }, {
+        name: 'color',
+        hidden:false
+      }, {
+        name: 'backgroundColor',
+        hidden:false
+      }, {
+        name: 'barColor',
+        hidden: false
+      }, {
+        name: 'textAlign',
+        hidden:false
+      }, {
+        name: 'textContentVerticalAlign',
+        hidden:false
+      }, {
+        name: 'lineHeight',
+        hidden:false
+      }, {
+        name: 'transform',
+        hidden:false
+      }, {
+        name: 'zIndex',
+        hidden:false
+      }, {
+        name: 'styler',
+        hidden:false
+      },{
+        name: 'gridHtml',
+        hidden: false
+      }],
+      default: {
+        width: 200,
+        height: 100,
+        testData: '{}',
+        gridHtml:'<table><tr><td style="width:100pt;height:20pt"></td><td></td></tr><tr><td></td><td style="width:100pt;height:20pt"></td></tr></table>'
+      }
+    },
+    gridCell: {
+      supportOptions: [
+        {
+          name: 'title',
+          hidden: false
+        },
+        {
+          name: 'columnField',
+          hidden: false
+        },
+        {
+          name: 'hFontWeight',
+          hidden: false
+        },
+        {
+          name: 'hFontSize',
+          hidden: false
+        },
+        {
+          name: 'hColor',
+          hidden: false
+        },
+        {
+          name: 'align',
+          hidden: false
+        },
+        {
+          name: 'vAlign',
+          hidden: false
+        },
+        {
+          name: 'paddingLeft',
+          hidden: false
+        },
+        {
+          name: 'paddingRight',
+          hidden: false
+        }
+   
+      ],
+      default: {
+        height: 90,
+        width: 90
+      }
     }
   }
 })();
