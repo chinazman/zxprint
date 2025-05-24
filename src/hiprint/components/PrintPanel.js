@@ -191,7 +191,7 @@ class PrintPanel {
     // }
     thisPaper.target.children(".bgimage").remove();
     if (imageData){
-      $(`<div class="no-print bgimage" style="position:absolute;user-select:none;top:0;left:0;width: ${panel.width}mm; height: ${panel.height}mm;;z-index:0;pointer-events:none !important;background-repeat:repeat;background-image:url('${imageData.src}')"></div>`)
+      $(`<div class="no-print bgimage" style="position:absolute;user-select:none;top:0;left:0;width: ${panel.width}mm; height: ${panel.height}mm;opacity: 0.3;z-index:0;pointer-events:none !important;background-repeat:repeat;background-image:url('${imageData.src}')"></div>`)
       .prependTo(thisPaper.target);
     }
   }
