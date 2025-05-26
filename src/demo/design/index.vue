@@ -524,7 +524,7 @@ export default {
       // 替换配置
       hiprint.setConfig({
         optionItems: [
-          fontSize,
+          // fontSize,
           scale,
           // function () {
           //   function t() {
