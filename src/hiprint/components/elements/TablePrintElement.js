@@ -525,12 +525,17 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
     tableContainer.find(".hiprint-printElement-tableTarget thead").remove();
   }
   var containerHeight = tableContainer.outerHeight();
-  if (!noPaging && containerHeight > heightInPx) return {
-    target: void 0,
-    length: 0,
-    height: 0,
-    isEnd: false
-  };
+  if (!noPaging && containerHeight > heightInPx){
+    alert("表格高度超出页脚，请调整表格高度或页脚位置");
+    tableContainer.css("height", `${heightInPx}px`);
+    containerHeight = heightInPx;
+  }
+  // if (!noPaging && containerHeight > heightInPx) return {
+  //   target: void 0,
+  //   length: 0,
+  //   height: 0,
+  //   isEnd: false
+  // };
   var gridColumns = this.options.getGridColumns();
   var allRowsData = [];
   for (var columnIndex = 0; columnIndex < gridColumns; columnIndex++) {
