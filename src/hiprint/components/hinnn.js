@@ -361,5 +361,16 @@ hinnn.config = {
   defaultPrecision: 6,
 }
 
+hinnn.openHtmlInNewWindow = (htmlString) => {
+  const newWindow = window.open('', '_blank'); // 打开一个空白的新窗口/标签页
+
+  if (newWindow) {
+      newWindow.document.write(htmlString); // 将 HTML 字符串写入新窗口
+      newWindow.document.close(); // 关闭文档流，确保内容显示
+  } else {
+      alert('无法打开新窗口。请检查浏览器是否阻止了弹出窗口。');
+  }
+}
+
 window.hinnn = hinnn;
 export default hinnn;

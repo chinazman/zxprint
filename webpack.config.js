@@ -89,6 +89,20 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.md$/,
+        use: [
+          {
+            loader: './markdown-loader',
+            options: {
+              // Marked options 可以在这里配置
+              // gfm: true,
+              // breaks: true,
+              // highlight: function(code, lang) { ... }
+            }
+          }
+        ],
+      },
+      {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url-loader',
         options: {

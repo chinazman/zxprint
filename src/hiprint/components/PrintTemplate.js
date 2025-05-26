@@ -10,6 +10,7 @@ import PrintLib from "./PrintLib.js";
 import PrintElementOptionItemManager from "./PrintElementOptionItemManager.js";
 import PrintPanelOption from "./PrintPanelOption.js";
 import PrintPanel from "./PrintPanel.js"
+import helpHtml from "/help.md";
 
 //打印面板选项集合
 class PanelOptionCollection {
@@ -195,8 +196,11 @@ class SettingContainerEventManager {
     settingContent.append(submitButton);
     printElement.options.draggable !== false && settingContent.append(deleteButton);
     //加入帮助链接
-    const helpLink = $(`<a class="hiprint-option-item-helpBtn" href="${hinnn.config.helpLink}#${printElement.printElementType.type}" target="_blank">${i18n.__('帮助')}</a>`);
+    const helpLink = $(`<a class="hiprint-option-item-helpBtn" href="#">${i18n.__('帮助')}</a>`);
     settingContent.append(helpLink);
+    helpLink.click(function(event) {
+      hinnn.openHtmlInNewWindow(helpHtml);
+    })
 
     // 为选项卡添加点击事件
     if (tabs.length) {
