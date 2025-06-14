@@ -85,7 +85,7 @@ class TableExcelHelper {
 
     const reconstitutedColumns = TableExcelHelper.reconsitutionTableColumnTree(columns.filter(column => TableExcelHelper.isFooterRow(column)));
 
-    const thead = $("<tfoot></tfoot>") ;
+    const tfoot = $("<tfoot></tfoot>") ;
     // const columnsWidth = TableExcelHelper.getColumnsWidth(reconstitutedColumns, tableWidth);
     
     const createRow = (layerIndex) => {
@@ -113,7 +113,11 @@ class TableExcelHelper {
         column.rowspan > 1 && cell.attr("rowspan", column.rowspan);
         //如果包含=开头的，表示表达式计算
         const value = column.title && column.title.startsWith("=")?ExpressionEngine.execute(column.title.substring(1), context):column.title;
-        cell.html(value);
+        if (column.footerCellWrap) {
+          cell.html('<span class="hiprint-text-content-wrap-'+column.footerCellWrap+'">'+value+'</span>');
+        }else{
+          cell.html(value);
+        }
         column.columnId && cell.attr("column-id", column.columnId);
 
         column.hasWidth = false;
@@ -131,15 +135,14 @@ class TableExcelHelper {
 
         column.title && column.title.startsWith("==")&&row.attr("islaststat", "1");
       });
-      thead.append(row);
+      tfoot.append(row);
     };
 
     for (let layerIndex = 0; layerIndex < reconstitutedColumns.totalLayer; layerIndex++) {
       createRow(layerIndex);
     }
-
     //TableExcelHelper.syncTargetWidthToOption(columns);
-    return thead;
+    return tfoot;
   }
 
   /**

@@ -2016,6 +2016,11 @@
           name: 'paddingRight',
           hidden: false
         },
+        
+        {
+          name: 'footerCellWrap',
+          hidden: false
+        },
         {
           name: 'tableSummaryTitle',
           hidden: true

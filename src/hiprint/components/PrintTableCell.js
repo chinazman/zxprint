@@ -246,6 +246,7 @@ class CellEntity {
     this.renderFormatter = cell.renderFormatter && cell.renderFormatter.toString();
     this.cellHiddenExpression = cell.cellHiddenExpression;
     this.cellFormatterExpression = cell.cellFormatterExpression;
+    this.footerCellWrap = cell.footerCellWrap;
     this.formatter2 = cell.formatter2 && cell.formatter2.toString();
     this.styler2 = cell.styler2 && cell.styler2.toString();
     this.stylerHeader = cell.stylerHeader && cell.stylerHeader.toString();
@@ -426,6 +427,7 @@ class PrintTableCell extends TableCell {
     this.vAlign = options.vAlign;
     this.cellHiddenExpression = options.cellHiddenExpression;
     this.cellFormatterExpression = options.cellFormatterExpression;
+    this.footerCellWrap = options.footerCellWrap;
     this.formatter = options.formatter;
     this.styler = options.styler;
     this.renderFormatter = options.renderFormatter;

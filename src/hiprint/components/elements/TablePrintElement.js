@@ -35,6 +35,7 @@ class TableColumnOption {
     this.renderFormatter = options.renderFormatter;
     this.cellHiddenExpression = options.cellHiddenExpression;
     this.cellFormatterExpression = options.cellFormatterExpression;
+    this.footerCellWrap = options.footerCellWrap;
     this.formatter2 = options.formatter2;
     this.styler2 = options.styler2;
     this.stylerHeader = options.stylerHeader;
@@ -544,6 +545,7 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
     if ("yes" == this.options.tableFooterRepeat) {
       let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, true, templateData);
       footer.insertBefore(currentTable.find("tbody"));
+      hinnn.noWrapAndShrink(footer);
     }
     var result;
     var pageData = [];
@@ -648,6 +650,7 @@ getRowsInSpecificHeight(templateData, specificHeight, tableContainer, tableEleme
           }
           let footer = TableExcelHelper.createTableFooter2(this.getColumns(), this.getData(templateData), pageData, result.isEnd, templateData);
           footer.insertBefore(currentTable.find("tbody"));
+          hinnn.noWrapAndShrink(footer);
         // }else{
         //   //移除掉避免出现不必要
         //   let index = this.getColumns().findIndex(column => TableExcelHelper.isFooterRow(column));

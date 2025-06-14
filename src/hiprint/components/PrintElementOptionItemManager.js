@@ -179,6 +179,7 @@ import HColorOption from "./options/HColorOption.js";
 import HFontSizeOption from "./options/HFontSizeOption.js";
 import BgImageOption from "./options/BgImageOption.js";
 import ColumnFieldOption from "./options/ColumnFieldOption.js";
+import FooterCellWrapOption from "./options/FooterCellWrapOption.js";
 
    
   
@@ -354,6 +355,7 @@ class PrintElementOptionItemManager {
 , new HFontSizeOption()
 , new BgImageOption()
 , new ColumnFieldOption()
+, new FooterCellWrapOption()
   ];
 }
 export default PrintElementOptionItemManager;
