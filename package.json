@@ -1,7 +1,7 @@
 {
   "name": "zxprint",
   "description": "hiprint for Vue2.x / Vue3.x 支持拖拽(分页(不分页)、表头表脚、样式设置、复制粘贴、缩放、撤销重做)生成打印模板、导出json模板数据、静默打印/获取MAC地址(借助客户端)",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "author": "fornewtech",
   "license": "MIT",
   "main": "dist/zxprint.js",
@@ -27,6 +27,9 @@
     "build-demo": "vue-cli-service build",
     "build": "cross-env NODE_ENV=production webpack --progress",
     "pub": "npm run build && npm --registry https://registry.npmjs.org/ publish",
+    "version:patch": "npm version patch && git push && git push --tags",
+    "version:minor": "npm version minor && git push && git push --tags",
+    "version:major": "npm version major && git push && git push --tags",
     "up-version": "node ./scripts/change-version.js",
     "pub-beta": "npm run build && npm --registry https://registry.npmjs.org/ publish --tag beta"
   },
