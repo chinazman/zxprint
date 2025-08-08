@@ -1114,4 +1114,5 @@ font-weight: normal;*/
     
     .hiprint-grid-table {
         border-collapse: collapse;
+        table-layout: fixed;
     } 
